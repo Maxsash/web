@@ -133,7 +133,7 @@ body {
 @media (max-width: 900px) {
   .layer-far  { bottom: 10vh; }
   .layer-mid  { bottom: 5vh; }
-  .layer-logo { width: clamp(200px, 50vw, 420px); bottom: 20vh; }
+  .layer-logo { width: clamp(200px, 50vw, 420px); bottom: 20vh; left: 80vw; }
 }
 
 /* ---------- Phones ---------- */
@@ -141,7 +141,7 @@ body {
 @media (max-width: 600px) {
   .layer-far  { bottom: 8vh; }
   .layer-mid  { bottom: 4vh; }
-  .layer-logo { width: min(70vw, 320px); bottom: 3vh; }
+  .layer-logo { width: min(70vw, 320px); bottom: 3vh; right: 50%; left: 50%; }
 
   .layer-near { animation-duration: 10s; }
   .layer-mid  { animation-duration: 14s; }

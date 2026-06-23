@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     title: "Maxsash",
     description:
       "Maxsash is a software development studio specializing in crafting high-quality applications, games, and automation tools.",
-    images: ["/images/cover.png"],
+    images: ["/images/cover-compressed.png"],
     type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
-    images: ["/images/cover.png"],
+    images: ["/images/cover-compressed.png"],
   },
 
   robots: {

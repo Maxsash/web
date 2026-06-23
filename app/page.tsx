@@ -45,14 +45,7 @@ export default function Home() {
               strokeMiterlimit: 1.5,
             }}
           >
-            <g transform="matrix(4.166667,0,0,4.166667,0,0)">
-              <rect
-                x="0"
-                y="0"
-                width="2000"
-                height="2000"
-                style={{ fill: "none" }}
-              />
+           <g transform="matrix(4.166667,0,0,4.166667,0,2000)">
 
               <g>
                 <g transform="matrix(418.592602,18.245463,18.245463,-418.592602,925.432495,947.385428)">

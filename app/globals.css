@@ -84,7 +84,7 @@ body {
   position: absolute;
 
   left: 50%;
-  bottom: 4vh;
+  bottom: 15vh;
 
   width: clamp(220px, 40vw, 640px);
   aspect-ratio: 1;
@@ -128,7 +128,7 @@ body {
 
   .layer-logo {
     width: clamp(200px, 50vw, 420px);
-    bottom: 3vh;
+    bottom: 20vh;
   }
 }
 
@@ -145,12 +145,8 @@ body {
 
   .layer-logo {
     width: min(70vw, 320px);
-    bottom: 1px;
+    bottom: 3vh;
   }
-
-  .layer-logo {
-  border: 2px solid red;
-}
 
   .layer-near {
     animation-duration: 10s;

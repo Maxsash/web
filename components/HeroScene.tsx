@@ -1,6 +1,6 @@
-import styles from "./AnimatedLogo.module.css";
+import styles from "./HeroScene.module.css";
 
-export default function AnimatedLogo() {
+export default function HeroScene() {
   return (
     <div className={styles.scene}>
       <div

@@ -139,7 +139,7 @@ body {
 .layerLogo {
   position: absolute;
   left: 50%;
-  bottom: clamp(40px, 20vh, 190px);
+  bottom: clamp(40px, 12vh, 190px);
 
   width: clamp(220px, 40vw, 640px);
   aspect-ratio: 1;
@@ -208,7 +208,7 @@ body {
 
   .layerLogo {
     width: clamp(200px, 50vw, 420px);
-    bottom: 20vh;
+    bottom: 12vh;
 
     left: auto;
     right: -30vw;
@@ -229,7 +229,7 @@ body {
 
   .layerLogo {
     width: min(70vw, 320px);
-    bottom: 3vh;
+    bottom: 2vh;
 
     left: 50%;
     right: auto;

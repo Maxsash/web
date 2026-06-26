@@ -1,35 +1,47 @@
 :root {
   /* Waves */
-  --wave-far:       #E0F4FF;
-  --wave-mid:       #87C4FF;
-  --wave-near:      #39A7FF;
+  --wave-far: #E0F4FF;
+  --wave-mid: #87C4FF;
+  --wave-near: #39A7FF;
 
   /* Ship */
-  --ship:           #1B2A4A;
+  --ship: #1B2A4A;
 
-/* Sky — Noon */
-  --sky-noon-high:  #fff9e6;   /* bleached white-yellow zenith   */
-  --sky-noon-mid:   #ffeea0;   /* bright sun-soaked yellow        */
-  --sky-noon-low:   #e6bd5e;   /* warm amber-gold at the horizon  */
+  /* Sky — Noon */
+  --sky-noon-high: #fff9e6;
+  --sky-noon-mid: #ffeea0;
+  --sky-noon-low: #e6bd5e;
 
   /* Sky — Sunset */
-  --sky-sunset-high: #2b3a6b;  /* deep cobalt upper sky      */
-  --sky-sunset-mid:  #e8724a;  /* burnt orange horizon band  */
-  --sky-sunset-low:  #f9c574;  /* warm amber where sky meets sea */
+  --sky-sunset-high: #2b3a6b;
+  --sky-sunset-mid: #e8724a;
+  --sky-sunset-low: #f9c574;
 
   /* Sand */
-  --sand-light:     #f5e6c8;
-  --sand-mid:       #d4b483;
-  --sand-dark:      #a07850;
+  --sand-light: #f5e6c8;
+  --sand-mid: #d4b483;
+  --sand-dark: #a07850;
 
   /* Accents */
-  --coral:          #f4845f;
-  --seafoam:        #a8e6cf;
-  --kelp:           #2d6a4f;
-  --dusk-orange:    #f9a825;
-  --dusk-pink:      #f48fb1;
+  --coral: #f4845f;
+  --seafoam: #a8e6cf;
+  --kelp: #2d6a4f;
+  --dusk-orange: #f9a825;
+  --dusk-pink: #f48fb1;
+
+  /* Animation */
+  --wave-speed-far: 18s;
+  --wave-speed-mid: 12s;
+  --wave-speed-near: 8s;
+  --ship-float-speed: 6s;
+
+  /* Layering */
+  --z-wave-far: 0;
+  --z-wave-mid: 1;
+  --z-logo: 2;
+  --z-wave-near: 3;
+  --z-content: 10;
 }
-/* ---------- Page ---------- */
 
 html,
 body {
@@ -39,7 +51,12 @@ body {
 
 body {
   overflow: hidden;
-  background: linear-gradient(180deg, var(--sky-noon-high) 0%, var(--sky-noon-mid) 50%, var(--sky-noon-low) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--sky-noon-high) 0%,
+    var(--sky-noon-mid) 50%,
+    var(--sky-noon-low) 100%
+  );
 }
 
 /* ---------- Scene ---------- */
@@ -58,43 +75,64 @@ body {
   left: -50%;
   width: 300%;
   line-height: 0;
+
+  animation-name: wave-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
   will-change: transform;
+  contain: paint;
+
+  pointer-events: none;
 }
 
 .wave-layer svg {
   display: block;
   width: 100%;
   height: auto;
+
+  user-select: none;
 }
 
 @keyframes wave-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.333%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-33.333%);
+  }
 }
 
 .layer-far {
-  bottom:clamp(40px,8vh,120px);
-  z-index: 0;
-  animation: wave-scroll 18s linear infinite;
+  bottom: clamp(40px, 8vh, 120px);
+  z-index: var(--z-wave-far);
+  animation-duration: var(--wave-speed-far);
 }
 
-.layer-far path  { fill: var(--wave-far); }
+.layer-far path {
+  fill: var(--wave-far);
+}
 
 .layer-mid {
   bottom: clamp(40px, 6vh, 120px);
-  z-index: 1;
-  animation: wave-scroll 12s linear infinite;
+  z-index: var(--z-wave-mid);
+  animation-duration: var(--wave-speed-mid);
 }
 
-.layer-mid path  { fill: var(--wave-mid); }
+.layer-mid path {
+  fill: var(--wave-mid);
+}
 
 .layer-near {
   bottom: 0;
-  z-index: 3;
-  animation: wave-scroll 8s linear infinite;
+  z-index: var(--z-wave-near);
+  animation-duration: var(--wave-speed-near);
 }
 
-.layer-near path { fill: var(--wave-near); }
+.layer-near path {
+  fill: var(--wave-near);
+}
 
 /* ---------- Logo / Ship ---------- */
 
@@ -102,69 +140,121 @@ body {
   position: absolute;
   left: 50%;
   bottom: clamp(40px, 20vh, 190px);
+
   width: clamp(220px, 40vw, 640px);
   aspect-ratio: 1;
-  z-index: 2;
-  filter: drop-shadow(0 20px 28px rgba(15, 8, 0, 0.20));
-  animation: floatShip 6s ease-in-out infinite;
+
+  z-index: var(--z-logo);
+
+  filter: drop-shadow(
+    0
+    clamp(10px, 2vw, 20px)
+    clamp(18px, 3vw, 28px)
+    rgba(15, 8, 0, 0.2)
+  );
+
+  animation: floatShip var(--ship-float-speed) ease-in-out infinite;
+
   will-change: transform;
+
+  pointer-events: none;
 }
 
 .layer-logo svg {
   width: 100%;
   height: 100%;
   display: block;
+
   fill-rule: evenodd;
   clip-rule: evenodd;
+
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-miterlimit: 1.5;
+
   transform-origin: center center;
+
+  user-select: none;
 }
 
-.logo path { fill: var(--ship); }
+.logo path {
+  fill: var(--ship);
+}
 
 /* ---------- Ship Floating ---------- */
 
 @keyframes floatShip {
-  0%, 100% { transform: translateX(-50%) translateY(0)        rotate(-2deg); }
-  50%       { transform: translateX(-50%) translateY(-0.75rem) rotate(1deg);  }
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-0.75rem) rotate(1deg);
+  }
 }
 
 /* ---------- Tablets ---------- */
 
 @media (max-width: 900px) {
-  .layer-far  { bottom: 10vh; }
-  .layer-mid  { bottom: 5vh; }
-  .layer-logo 
-  { 
-    width: clamp(200px, 50vw, 420px); 
-    bottom: 20vh; 
+
+  .layer-far {
+    bottom: 10vh;
+  }
+
+  .layer-mid {
+    bottom: 5vh;
+  }
+
+  .layer-logo {
+    width: clamp(200px, 50vw, 420px);
+    bottom: 20vh;
+
     left: auto;
-    right: -30vw; 
+    right: -30vw;
   }
 }
 
 /* ---------- Phones ---------- */
 
 @media (max-width: 600px) {
-  .layer-far  { bottom: 8vh; }
-  .layer-mid  { bottom: 4vh; }
-  .layer-logo { 
-    width: min(70vw, 320px); 
-    bottom: 3vh; 
-    left: 50%; 
+
+  .layer-far {
+    bottom: 8vh;
+  }
+
+  .layer-mid {
+    bottom: 4vh;
+  }
+
+  .layer-logo {
+    width: min(70vw, 320px);
+    bottom: 3vh;
+
+    left: 50%;
     right: auto;
   }
 
-  .layer-near { animation-duration: 10s; }
-  .layer-mid  { animation-duration: 14s; }
-  .layer-far  { animation-duration: 20s; }
+  .layer-near {
+    animation-duration: 10s;
+  }
+
+  .layer-mid {
+    animation-duration: 14s;
+  }
+
+  .layer-far {
+    animation-duration: 20s;
+  }
 }
 
+/* ---------- Accessibility ---------- */
+
 @media (prefers-reduced-motion: reduce) {
+
   .wave-layer,
   .layer-logo {
     animation: none !important;
+    will-change: auto;
   }
 }

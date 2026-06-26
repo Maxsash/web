@@ -72,7 +72,7 @@ body {
 }
 
 .layer-far {
-  bottom: 12vh;
+  bottom:clamp(40px,8vh,120px);
   z-index: 0;
   animation: wave-scroll 18s linear infinite;
 }
@@ -80,7 +80,7 @@ body {
 .layer-far path  { fill: var(--wave-far); }
 
 .layer-mid {
-  bottom: 6vh;
+  bottom: clamp(40px, 6vh, 120px);
   z-index: 1;
   animation: wave-scroll 12s linear infinite;
 }
@@ -100,7 +100,7 @@ body {
 .layer-logo {
   position: absolute;
   left: 50%;
-  bottom: 15vh;
+  bottom: clamp(40px, 20vh, 190px);
   width: clamp(220px, 40vw, 640px);
   aspect-ratio: 1;
   z-index: 2;
@@ -133,7 +133,13 @@ body {
 @media (max-width: 900px) {
   .layer-far  { bottom: 10vh; }
   .layer-mid  { bottom: 5vh; }
-  .layer-logo { width: clamp(200px, 50vw, 420px); bottom: 20vh; left: 80vw; }
+  .layer-logo 
+  { 
+    width: clamp(200px, 50vw, 420px); 
+    bottom: 20vh; 
+    left: auto;
+    right: -30vw; 
+  }
 }
 
 /* ---------- Phones ---------- */
@@ -141,7 +147,7 @@ body {
 @media (max-width: 600px) {
   .layer-far  { bottom: 8vh; }
   .layer-mid  { bottom: 4vh; }
-  .layer-logo { width: min(70vw, 320px); bottom: 3vh; right: 50%; left: 50%; }
+  .layer-logo { width: min(70vw, 320px); bottom: 3vh; left: 50%; }
 
   .layer-near { animation-duration: 10s; }
   .layer-mid  { animation-duration: 14s; }

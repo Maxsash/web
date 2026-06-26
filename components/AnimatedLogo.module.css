@@ -70,7 +70,7 @@ body {
 
 /* ---------- Waves ---------- */
 
-.wave-layer {
+.waveLayer {
   position: absolute;
   left: -50%;
   width: 300%;
@@ -86,7 +86,7 @@ body {
   pointer-events: none;
 }
 
-.wave-layer svg {
+.waveLayer svg {
   display: block;
   width: 100%;
   height: auto;
@@ -104,39 +104,39 @@ body {
   }
 }
 
-.layer-far {
+.layerFar {
   bottom: clamp(40px, 8vh, 120px);
   z-index: var(--z-wave-far);
   animation-duration: var(--wave-speed-far);
 }
 
-.layer-far path {
+.layerFar path {
   fill: var(--wave-far);
 }
 
-.layer-mid {
+.layerMid {
   bottom: clamp(40px, 6vh, 120px);
   z-index: var(--z-wave-mid);
   animation-duration: var(--wave-speed-mid);
 }
 
-.layer-mid path {
+.layerMid path {
   fill: var(--wave-mid);
 }
 
-.layer-near {
+.layerNear {
   bottom: 0;
   z-index: var(--z-wave-near);
   animation-duration: var(--wave-speed-near);
 }
 
-.layer-near path {
+.layerNear path {
   fill: var(--wave-near);
 }
 
 /* ---------- Logo / Ship ---------- */
 
-.layer-logo {
+.layerLogo {
   position: absolute;
   left: 50%;
   bottom: clamp(40px, 20vh, 190px);
@@ -160,7 +160,7 @@ body {
   pointer-events: none;
 }
 
-.layer-logo svg {
+.layerLogo svg {
   width: 100%;
   height: 100%;
   display: block;
@@ -198,15 +198,15 @@ body {
 
 @media (max-width: 900px) {
 
-  .layer-far {
+  .layerFar {
     bottom: 10vh;
   }
 
-  .layer-mid {
+  .layerMid {
     bottom: 5vh;
   }
 
-  .layer-logo {
+  .layerLogo {
     width: clamp(200px, 50vw, 420px);
     bottom: 20vh;
 
@@ -219,15 +219,15 @@ body {
 
 @media (max-width: 600px) {
 
-  .layer-far {
+  .layerFar {
     bottom: 8vh;
   }
 
-  .layer-mid {
+  .layerMid {
     bottom: 4vh;
   }
 
-  .layer-logo {
+  .layerLogo {
     width: min(70vw, 320px);
     bottom: 3vh;
 
@@ -235,15 +235,15 @@ body {
     right: auto;
   }
 
-  .layer-near {
+  .layerNear {
     animation-duration: 10s;
   }
 
-  .layer-mid {
+  .layerMid {
     animation-duration: 14s;
   }
 
-  .layer-far {
+  .layerFar {
     animation-duration: 20s;
   }
 }
@@ -252,8 +252,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
 
-  .wave-layer,
-  .layer-logo {
+  .waveLayer,
+  .layerLogo {
     animation: none !important;
     will-change: auto;
   }

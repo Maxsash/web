@@ -46,8 +46,6 @@ export default function HeroScene() {
           focusable="false"
         >
             <g transform="matrix(4.166667,0,0,4.166667,0,2000)">
-              <g>
-
                 <g transform="matrix(418.592602,18.245463,18.245463,-418.592602,925.432495,947.385428)">
                   <path
                     fillRule="nonzero"
@@ -77,7 +75,6 @@ export default function HeroScene() {
                   />
                 </g>
 
-              </g>
             </g>
         </svg>
       </div>

@@ -10,10 +10,9 @@ export default function HeroScene() {
         aria-hidden="true"
       >
         <svg
-          viewBox="0 0 2880 160"
+          viewBox="0 0 2880 180"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
-          width="200%"
           focusable="false"
         >
           {/*
@@ -27,7 +26,7 @@ export default function HeroScene() {
             C900,40  1260,120 1440,80
             C1620,40 1980,120 2160,80
             C2340,40 2700,120 2880,80
-            L2880,160 L0,160 Z
+            L2880,180 L0,180 Z
           " />
         </svg>
       </div>
@@ -38,10 +37,9 @@ export default function HeroScene() {
         aria-hidden="true"
       >
         <svg
-          viewBox="0 0 2880 140"
+          viewBox="0 0 2880 160"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
-          width="200%"
           focusable="false"
         >
           <path d="
@@ -52,7 +50,7 @@ export default function HeroScene() {
             C1560,20 1800,100 1920,60
             C2040,20 2280,100 2400,60
             C2520,20 2760,100 2880,60
-            L2880,140 L0,140 Z
+            L2880,160 L0,160 Z
           " />
         </svg>
       </div>
@@ -92,10 +90,9 @@ export default function HeroScene() {
         aria-hidden="true"
       >
         <svg
-          viewBox="0 0 2880 120"
+          viewBox="0 0 2880 140"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
-          width="200%"
           focusable="false"
         >
           <path d="
@@ -108,7 +105,7 @@ export default function HeroScene() {
             C1890,20 2070,80  2160,50
             C2250,20 2430,80  2520,50
             C2610,20 2790,80  2880,50
-            L2880,120 L0,120 Z
+            L2880,140 L0,140 Z
           " />
         </svg>
       </div>

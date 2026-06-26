@@ -1,37 +1,50 @@
-import styles from './AnimatedLogo.module.css';
+import styles from "./AnimatedLogo.module.css";
 
 export default function AnimatedLogo() {
   return (
-    <div>
-      <div className={styles.scene}>
+    <div className={styles.scene}>
+      <div
+        className={`${styles.waveLayer} ${styles.layerFar}`}
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 160"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1350,100 1440,80 L1440,160 L0,160 Z" />
+        </svg>
+      </div>
 
-        <div className={styles['wave-layer'] + ' ' + styles['layer-far']}
-            aria-hidden="true">
-          <svg viewBox="0 0 1440 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1350,100 1440,80 L1440,160 L0,160 Z" />
-          </svg>
-        </div>
+      <div
+        className={`${styles.waveLayer} ${styles.layerMid}`}
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 140"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path d="M0,60 C200,20 400,100 600,60 C800,20 1000,100 1200,60 C1320,40 1390,80 1440,60 L1440,140 L0,140 Z" />
+        </svg>
+      </div>
 
-        <div className={styles['wave-layer'] + ' ' + styles['layer-mid']}
-            aria-hidden="true">
-          <svg viewBox="0 0 1440 140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M0,60 C200,20 400,100 600,60 C800,20 1000,100 1200,60 C1320,40 1390,80 1440,60 L1440,140 L0,140 Z" />
-          </svg>
-        </div>
-
-        <div className={styles.logo + ' ' + styles['layer-logo']}
-            aria-hidden="true">
-          <svg
-            width="100%"
-            height="100%"
-            viewBox="0 0 8334 8334"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            xmlSpace="preserve"
-            aria-hidden="true"
-            focusable="false"
-          >
+      <div
+        className={`${styles.logo} ${styles.layerLogo}`}
+        aria-hidden="true"
+      >
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 8334 8334"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          xmlSpace="preserve"
+          focusable="false"
+        >
             <g transform="matrix(4.166667,0,0,4.166667,0,2000)">
               <g>
 
@@ -66,16 +79,21 @@ export default function AnimatedLogo() {
 
               </g>
             </g>
-          </svg>
-        </div>
+        </svg>
+      </div>
 
-        <div className={styles['wave-layer'] + ' ' + styles['layer-near']}
-            aria-hidden="true">
-          <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M0,50 C160,20 320,80 480,50 C640,20 800,80 960,50 C1120,20 1300,70 1440,50 L1440,120 L0,120 Z" />
-          </svg>
-        </div>
-
+      <div
+        className={`${styles.waveLayer} ${styles.layerNear}`}
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 120"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path d="M0,50 C160,20 320,80 480,50 C640,20 800,80 960,50 C1120,20 1300,70 1440,50 L1440,120 L0,120 Z" />
+        </svg>
       </div>
     </div>
   );

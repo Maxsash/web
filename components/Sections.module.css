@@ -1,0 +1,366 @@
+/* Shared chrome for everything below the waterline. */
+
+.section {
+  padding-block: clamp(3.5rem, 9vh, 7rem);
+}
+
+.head {
+  max-width: 42rem;
+  margin-bottom: clamp(2rem, 5vh, 3.25rem);
+}
+
+.heading {
+  font-size: var(--step-3);
+  margin-block: 0.6rem 0.9rem;
+}
+
+.lede {
+  color: var(--ink-2);
+  font-size: var(--step-1);
+  line-height: 1.55;
+  max-width: 34rem;
+}
+
+/* ---------- project cards ---------- */
+
+.grid {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: clamp(1.25rem, 2.4vw, 1.9rem);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--paper-sunk) 70%, transparent);
+  transition: border-color 220ms var(--ease), background-color 220ms var(--ease);
+}
+
+.card:hover {
+  border-color: var(--rule-strong);
+  background: var(--paper-sunk);
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.15rem;
+}
+
+.counter,
+.status,
+.year {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+}
+
+.counter {
+  color: var(--brass);
+}
+
+/* Status borrows the boatyard: sea for what is out sailing, teak for what is
+   still on the stocks, and a neutral for what is tied up. */
+.status {
+  color: var(--status-ink);
+  background: color-mix(in oklab, var(--status-ink) 14%, transparent);
+  text-transform: lowercase;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status[data-status="sailing"] {
+  --status-ink: var(--accent);
+}
+
+.status[data-status="in the yard"] {
+  --status-ink: var(--teak);
+}
+
+.status[data-status="moored"] {
+  --status-ink: var(--ink-3);
+}
+
+.cardTitle {
+  font-size: var(--step-2);
+  letter-spacing: -0.01em;
+}
+
+.cardBody {
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+.tags li::before {
+  content: "·\00a0";
+  color: var(--rule-strong);
+}
+
+/* The leading separator is for the run of tags only; the year is pushed to the
+   far end and would trail a stray dot. */
+.tags li:first-child::before,
+.tags .year::before {
+  content: none;
+}
+
+.year {
+  margin-left: auto;
+}
+
+.cardLinks {
+  display: flex;
+  gap: 1.1rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--1);
+}
+
+.cardLinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--ink-2);
+  transition: color 200ms var(--ease);
+}
+
+.cardLinks a:hover {
+  color: var(--accent);
+}
+
+.cardLinks svg {
+  transition: translate 200ms var(--ease);
+}
+
+.cardLinks a:hover svg {
+  translate: 2px -2px;
+}
+
+/* ---------- writing ---------- */
+
+.notes {
+  list-style: none;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.note {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr auto;
+  grid-template-areas:
+    "date title arrow"
+    "date body  arrow";
+  align-items: baseline;
+  gap: 0.35rem 1.5rem;
+  padding-block: 1.15rem;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background-color 200ms var(--ease);
+}
+
+.note:hover {
+  background: color-mix(in oklab, var(--paper-sunk) 60%, transparent);
+}
+
+.noteDate {
+  grid-area: date;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+.noteTitle {
+  grid-area: title;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+.noteBody {
+  grid-area: body;
+  color: var(--ink-2);
+  font-size: var(--step--1);
+}
+
+.note svg {
+  grid-area: arrow;
+  align-self: center;
+  color: var(--ink-3);
+  transition: translate 200ms var(--ease), color 200ms var(--ease);
+}
+
+.note:hover svg {
+  color: var(--accent);
+  translate: 2px -2px;
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0.15rem;
+}
+
+.more:hover {
+  color: var(--ink);
+  border-bottom-color: currentColor;
+}
+
+/* ---------- elsewhere ---------- */
+
+.ports {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+}
+
+/* Every child is placed by name: with a two-row icon and a two-row arrow, grid
+   auto-placement fills the definite-row items first and shuffles the rest. */
+.port {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "icon label arrow"
+    "icon blurb arrow";
+  align-items: center;
+  gap: 0.2rem 1rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: border-color 200ms var(--ease), background-color 200ms var(--ease);
+}
+
+.port:hover {
+  border-color: var(--rule-strong);
+  background: color-mix(in oklab, var(--paper-sunk) 70%, transparent);
+}
+
+.portIcon {
+  grid-area: icon;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--sea);
+}
+
+.portLabel {
+  grid-area: label;
+  align-self: end;
+  font-weight: 550;
+}
+
+.portBlurb {
+  grid-area: blurb;
+  align-self: start;
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.port > svg:last-child {
+  grid-area: arrow;
+  color: var(--ink-3);
+  transition: translate 200ms var(--ease), color 200ms var(--ease);
+}
+
+.port:hover > svg:last-child {
+  color: var(--accent);
+  translate: 2px -2px;
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  margin-top: clamp(2rem, 6vh, 4rem);
+  padding-block: clamp(2.5rem, 6vh, 4rem);
+  border-top: 1px solid var(--rule);
+  background: color-mix(in oklab, var(--paper-sunk) 55%, transparent);
+}
+
+.footerInner {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+.colophon {
+  max-width: 32rem;
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-size: var(--step--1);
+}
+
+.footerLinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: var(--ink-2);
+}
+
+.footerLinks a:hover {
+  color: var(--accent);
+}
+
+.credit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 640px) {
+  .note {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date  arrow"
+      "title arrow"
+      "body  arrow";
+  }
+}

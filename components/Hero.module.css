@@ -1,0 +1,160 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding-block: clamp(1.25rem, 3vh, 2.25rem) 0;
+  overflow: hidden;
+}
+
+/* The bar and the copy sit above the sea, which is painted into the same
+   stacking context at z-index 1..5. */
+.bar,
+.stage {
+  position: relative;
+  z-index: 6;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  color: var(--ink);
+}
+
+.nav {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.nav a {
+  text-decoration: none;
+  padding-block: 0.25rem;
+  border-bottom: 1px solid transparent;
+  transition: color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.nav a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule-strong);
+}
+
+/* ---------- headline ---------- */
+
+/* The stage keeps the shell's gutters; the copy claims the left half so the
+   boat has open water to sit in on the right. */
+.stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-block: clamp(2rem, 8vh, 5rem) clamp(9rem, 26vh, 16rem);
+}
+
+.copy {
+  max-width: 33rem;
+}
+
+.eyebrow {
+  margin-bottom: 1.1rem;
+}
+
+.title {
+  font-size: var(--step-5);
+  font-variation-settings: "SOFT" 8, "WONK" 0, "opsz" 144;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
+
+.labs {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 144;
+}
+
+.intro {
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 30rem;
+  text-wrap: pretty;
+}
+
+/* ---------- calls to action ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 200ms var(--ease), border-color 200ms var(--ease),
+    color 200ms var(--ease), translate 200ms var(--ease);
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-mid);
+}
+
+.primary:hover {
+  background: var(--sea-deep);
+  translate: 0 -1px;
+}
+
+.primary svg {
+  transition: translate 200ms var(--ease);
+}
+
+.primary:hover svg {
+  translate: 2px -2px;
+}
+
+.secondary {
+  border: 1px solid var(--rule-strong);
+  color: var(--ink-2);
+}
+
+.secondary:hover {
+  border-color: var(--ink-2);
+  color: var(--ink);
+  background: color-mix(in oklab, var(--paper) 60%, transparent);
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 820px) {
+  .stage {
+    align-items: flex-start;
+    padding-block: clamp(1.5rem, 5vh, 3rem) clamp(12rem, 34vh, 20rem);
+  }
+
+  .copy {
+    max-width: none;
+  }
+
+  .intro {
+    max-width: 26rem;
+  }
+
+  .nav {
+    display: none;
+  }
+}

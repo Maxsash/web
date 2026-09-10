@@ -40,14 +40,7 @@ const bandHtml = (b) => `
 
 const mark = (color, size) => `
   <svg viewBox="0 0 ${logo.box} ${logo.box}" style="width:${size}px;height:${size}px;display:block">
-    <g transform="translate(${logo.offX} ${logo.offY}) scale(1 -1)" fill="${color}"
-       stroke="${color}" stroke-width="${logo.round * 2}" stroke-linejoin="round">
-      <path d="${logo.integralD}"/>
-      <circle cx="${logo.ballTop[0]}" cy="${logo.ballTop[1]}" r="${logo.ballR}"/>
-      <circle cx="${logo.ballBottom[0]}" cy="${logo.ballBottom[1]}" r="${logo.ballR}"/>
-      <path d="${logo.sailD}"/>
-      <path d="${logo.hullD}"/>
-    </g>
+    <g transform="translate(${logo.offX} ${logo.offY}) scale(1 -1)" fill="${color}">${logo.body}</g>
   </svg>`;
 
 writeFileSync(
@@ -71,7 +64,7 @@ writeFileSync(
     <div style="font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.18em;
       text-transform:uppercase;color:#6E8A97;margin-bottom:22px">software, games, and tools</div>
     <div style="font-size:104px;line-height:.92;font-weight:600;letter-spacing:-.03em">Maxsash</div>
-    <div style="font-size:104px;line-height:1.02;font-style:italic;font-weight:400;color:#1E7392">Labs</div>
+    <div style="font-size:104px;line-height:1.02;font-style:italic;font-weight:400;color:#1E7392">Studio</div>
   </div>
 </div>
 </body>`,

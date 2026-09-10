@@ -172,7 +172,8 @@
 
   .boat {
     left: auto;
-    right: -6%;
+    /* Keep the complete bow visible, including the small sailing rotation. */
+    right: 2%;
     bottom: 15vw;
     width: min(54vw, 250px);
     translate: 0;

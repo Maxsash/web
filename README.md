@@ -1,6 +1,6 @@
-# Maxsash Labs
+# Maxsash Studio
 
-The front door for everything built under the Maxsash Labs name, plus links out
+The front door for everything built under the Maxsash Studio name, plus links out
 to the personal site, résumé and writing.
 
 ```bash
@@ -26,23 +26,27 @@ a normal build never needs to run them:
 | `node tools/build-logo.mjs` | `components/Mark.tsx`, `app/icon.svg`, `public/mark.svg` | The mark's integral is one spine with exact 180° rotational symmetry, and the sail's luff and the hull's stern both ride a single offset of it, so the white channel beside the mast is a constant width. Hand-drawn, none of that stays true. |
 | `node tools/build-waves.mjs` | `components/wave-paths.ts` | Each wave band is a Gerstner surface whose component wavelengths all divide the tile exactly, so scrolling the strip by one tile loops with no seam and no drift. |
 
-Re-run `build-logo.mjs` after changing a dial at the top of that file; it will
-refuse to emit a sail whose leech carries an inflection. Re-run
+Re-run `build-logo.mjs` after changing a dial at the top of that file; it checks
+the leech, tangent terminals, head daylight, channel width and branch opening.
+The sail foot and deck share a gently curved normal offset; the mark is three
+filled outlines with real fillets. Re-run
 `build-waves.mjs` after changing a band, and it will refuse a steepness that
 folds the surface over itself.
 
-`node tools/preview-logo.mjs` writes a page showing the mark on both grounds
-and down at 32px, which is where the hook counters and the channel beside the
-mast give out first. `tools/scan.py` compares two rendered marks by
-proportion, which is how the current one was calibrated.
+`node tools/preview-logo.mjs` writes both grounds at display size and
+120 / 56 / 32 / 16px, enlarged junctions, monochrome stamps and actual favicon
+tiles. `node tools/render-logo.mjs --pixels` renders that proof and 900px
+comparison images using Chrome. `tools/scan.py` compares them by proportion.
+Run `node --test tools/geometry.test.mjs` for the geometry regressions.
 
 [`docs/mark.md`](docs/mark.md) is the design record for the mark: what it
 means, which relationships are enforced and where, how it was measured, and a
 frank list of what is still weak in it.
 
-The icon PNGs (`app/apple-icon.png`, `app/favicon.ico`) and the social card
-(`public/images/cover.png`) are rendered from those SVGs with a browser;
-`tools/build-cover.mjs` writes the card's page for that step.
+`node tools/render-logo.mjs --assets` regenerates `app/apple-icon.png`,
+`app/favicon.ico` and both social-card PNGs from the same generated mark and
+waves. It needs Chrome and ImageMagick; use `CHROME_BIN` for a custom browser
+path. `tools/build-cover.mjs` writes the card's page for that step.
 
 ## Design tokens
 

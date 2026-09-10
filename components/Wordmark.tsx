@@ -11,7 +11,7 @@ export default function Wordmark({ href = "/" }: { href?: string }) {
     <a className={styles.lockup} href={href}>
       <Mark className={styles.mark} />
       <span className={styles.name}>
-        Maxsash <span className={styles.labs}>Labs</span>
+        Maxsash <span className={styles.studio}>Studio</span>
       </span>
       <span className="visually-hidden">{site.name} home</span>
     </a>

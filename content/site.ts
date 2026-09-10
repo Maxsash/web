@@ -36,12 +36,12 @@ export type Note = {
 };
 
 export const site = {
-  name: "Maxsash Labs",
+  name: "Maxsash Studio",
   tagline: "software, games, and tools",
   owner: "Yash",
 
   description:
-    "Maxsash Labs is where I keep the things I build — applications, games, " +
+    "Maxsash Studio is where I keep the things I build — applications, games, " +
     "and small tools — alongside notes on how they were made.",
 
   /** The blurb under the wordmark in the hero. */

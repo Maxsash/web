@@ -25,7 +25,7 @@ export default function Hero() {
           <p className={`eyebrow ${styles.eyebrow}`}>{site.tagline}</p>
 
           <h1 className={styles.title}>
-            Maxsash <span className={styles.labs}>Labs</span>
+            Maxsash <span className={styles.studio}>Studio</span>
           </h1>
 
           <p className={styles.intro}>{site.intro}</p>

@@ -28,8 +28,9 @@ export function cubicAt(p0, c1, c2, p3, t) {
 }
 
 /**
- * Fit one cubic through `pts` with the given unit end tangents, solving the two
- * handle lengths by least squares (Schneider). Returns [c1, c2].
+ * Fit one cubic through `pts`, solving the two handle lengths by least squares
+ * (Schneider). t0 points forward; t1 points backwards, into the curve from its
+ * endpoint. Keep that convention both in the solve and in the emitted handle.
  */
 function fitOne(pts, t0, t1) {
   const p0 = pts[0], p3 = pts[pts.length - 1];
@@ -63,47 +64,91 @@ function fitOne(pts, t0, t1) {
   if (!(alpha0 > floor) || !(alpha1 > floor)) {
     alpha0 = alpha1 = V.dist(p0, p3) / 3;
   }
-  return [V.add(p0, V.mul(t0, alpha0)), V.add(p3, V.mul(t1, -alpha1))];
+  return { c1: V.add(p0, V.mul(t0, alpha0)), c2: V.add(p3, V.mul(t1, alpha1)), u };
 }
 
-function maxError(pts, p0, c1, c2, p3) {
-  // Dense reference sampling of the candidate curve, then nearest-point search.
-  const M = Math.max(120, pts.length * 2);
-  const ref = [];
-  for (let j = 0; j <= M; j++) ref.push(cubicAt(p0, c1, c2, p3, j / M));
-  let worst = 0;
-  let guess = 0;
-  for (let i = 1; i < pts.length - 1; i++) {
-    let best = Infinity, bestJ = guess;
-    for (let j = Math.max(0, guess - 8); j <= M; j++) {
-      const d = V.dist(pts[i], ref[j]);
-      if (d < best) { best = d; bestJ = j; }
-      else if (j > bestJ + 8) break; // distance is rising again; stop walking
-    }
-    guess = bestJ;
-    if (best > worst) worst = best;
+function cubicDerivative(p0, c1, c2, p3, t) {
+  const s = 1 - t;
+  return V.mul(V.add(V.add(
+    V.mul(V.sub(c1, p0), s * s),
+    V.mul(V.sub(c2, c1), 2 * s * t),
+  ), V.mul(V.sub(p3, c2), t * t)), 3);
+}
+
+function maxError(pts, u, p0, c1, c2, p3) {
+  // On each source interval, compare the restricted cubic with that interval's
+  // straight interpolation, expressed as a cubic too. Their difference stays
+  // in the convex hull of its four control points. This is a conservative,
+  // two-sided bound for the entire curve, not a one-way nearest-sample test
+  // that could miss a bulge or a reversed handle between source points.
+  let worst = 0, reverses = false;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1], span = (u[i + 1] - u[i]) / 3;
+    const q0 = cubicAt(p0, c1, c2, p3, u[i]);
+    const q3 = cubicAt(p0, c1, c2, p3, u[i + 1]);
+    const q1 = V.add(q0, V.mul(cubicDerivative(p0, c1, c2, p3, u[i]), span));
+    const q2 = V.sub(q3, V.mul(cubicDerivative(p0, c1, c2, p3, u[i + 1]), span));
+    // Also check the quadratic velocity, including its interior extremum.
+    // A fit may be close to a densely sampled edge yet still double back in a
+    // tiny loop. It must progress along every corresponding source interval.
+    const chord = V.sub(b, a);
+    const da = V.dot(V.sub(q1, q0), chord), db = V.dot(V.sub(q2, q1), chord);
+    const dc = V.dot(V.sub(q3, q2), chord), bend = da - 2 * db + dc;
+    const t = Math.abs(bend) > 1e-12 ? (da - db) / bend : -1;
+    const mid = t > 0 && t < 1 ? da * (1 - t) ** 2 + 2 * db * t * (1 - t) + dc * t * t : Infinity;
+    if (Math.min(da, dc, mid) < -1e-10) reverses = true;
+    worst = Math.max(worst, V.dist(q0, a), V.dist(q3, b),
+      V.dist(q1, V.add(a, V.mul(V.sub(b, a), 1 / 3))),
+      V.dist(q2, V.add(a, V.mul(V.sub(b, a), 2 / 3))));
   }
-  return worst;
+  return { error: worst, reverses };
 }
 
 /**
  * Fit a chain of cubics to a dense polyline, splitting where the error is too
  * large. `tangentAt(i)` supplies the analytic unit tangent at sample i.
  */
-export function fitPath(pts, tangentAt, tol = 0.25, depth = 0) {
+export function fitPath(pts, tangentAt, tol = 0.25) {
+  if (pts.length < 2 || !(tol > 0) || !Number.isFinite(tol) ||
+      pts.some((p) => p.length !== 2 || p.some((x) => !Number.isFinite(x)))) {
+    throw new Error("a fitted path needs finite points and a positive tolerance");
+  }
+  const chain = fitSpan(pts, tangentAt, tol);
+  for (let i = 1; i < chain.length; i++) {
+    const a = chain[i - 1], b = chain[i];
+    const into = V.norm(V.sub(a.p3, a.c2)), out = V.norm(V.sub(b.c1, b.p0));
+    if (V.dist(a.p3, b.p0) > 1e-9 || V.dot(into, out) < 1 - 1e-10) {
+      throw new Error("a fitted path lost position or forward tangency at a join");
+    }
+  }
+  return chain;
+}
+
+function fitSpan(pts, tangentAt, tol) {
   const p0 = pts[0], p3 = pts[pts.length - 1];
-  const t0 = tangentAt(0);
-  const t1 = tangentAt(pts.length - 1);
-  const [c1, c2] = fitOne(pts, t0, V.mul(t1, -1));
-  if (depth > 9 || pts.length < 5 || maxError(pts, p0, c1, c2, p3) <= tol) {
-    return [{ p0, c1, c2, p3 }];
+  const t0 = V.norm(tangentAt(0));
+  const t1 = V.norm(tangentAt(pts.length - 1));
+  if (!(V.len(t0) >= 0.99) || !(V.len(t1) >= 0.99)) {
+    throw new Error("a fitted path has a zero or invalid endpoint tangent");
+  }
+  const { c1, c2, u } = fitOne(pts, t0, V.mul(t1, -1));
+  const { error, reverses } = maxError(pts, u, p0, c1, c2, p3);
+  if (error <= tol && !reverses) {
+    if (!(V.dot(V.sub(c1, p0), t0) > 0) || !(V.dot(V.sub(p3, c2), t1) > 0)) {
+      throw new Error("a fitted path reverses direction at an endpoint");
+    }
+    return [{ p0, c1, c2, p3, error }];
+  }
+  if (pts.length <= 2) {
+    throw new Error(`a fitted path ${reverses ? "doubles back" : `cannot meet tolerance ${tol}`} ` +
+      `between source samples (bound ${error.toFixed(3)}); sample the source more densely`);
   }
   const mid = Math.floor(pts.length / 2);
   const left = pts.slice(0, mid + 1);
   const right = pts.slice(mid);
   return [
-    ...fitPath(left, (i) => tangentAt(i), tol, depth + 1),
-    ...fitPath(right, (i) => tangentAt(i + mid), tol, depth + 1),
+    ...fitSpan(left, (i) => tangentAt(i), tol),
+    ...fitSpan(right, (i) => tangentAt(i + mid), tol),
   ];
 }
 

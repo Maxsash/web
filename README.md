@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maxsash Labs
 
-## Getting Started
-
-First, run the development server:
+The front door for everything built under the Maxsash Labs name, plus links out
+to the personal site, résumé and writing.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What to edit
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Almost all of the copy and every link lives in [`content/site.ts`](content/site.ts):
+the intro, the nav, the project cards, the writing list and the outbound
+destinations. Nothing else reads from it, so adding a project is one entry.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Generated artwork
 
-## Learn More
+Two pieces of the design are computed rather than drawn, because the qualities
+that matter about them are numeric. Both write files that **are** committed, so
+a normal build never needs to run them:
 
-To learn more about Next.js, take a look at the following resources:
+| Command | Writes | Why it is generated |
+| --- | --- | --- |
+| `node tools/build-logo.mjs` | `components/Mark.tsx`, `app/icon.svg`, `public/mark.svg` | The mark's integral is one spine with exact 180° rotational symmetry, and the sail's luff and the hull's stern both ride a single offset of it, so the white channel beside the mast is a constant width. Hand-drawn, none of that stays true. |
+| `node tools/build-waves.mjs` | `components/wave-paths.ts` | Each wave band is a Gerstner surface whose component wavelengths all divide the tile exactly, so scrolling the strip by one tile loops with no seam and no drift. |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Re-run `build-logo.mjs` after changing a dial at the top of that file; it will
+refuse to emit a sail whose leech carries an inflection. Re-run
+`build-waves.mjs` after changing a band, and it will refuse a steepness that
+folds the surface over itself.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`node tools/preview-logo.mjs` writes a page showing the mark on both grounds
+and down at 32px, which is where the hook counters and the channel beside the
+mast give out first. `tools/scan.py` compares two rendered marks by
+proportion, which is how the current one was calibrated.
 
-## Deploy on Vercel
+[`docs/mark.md`](docs/mark.md) is the design record for the mark: what it
+means, which relationships are enforced and where, how it was measured, and a
+frank list of what is still weak in it.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The icon PNGs (`app/apple-icon.png`, `app/favicon.ico`) and the social card
+(`public/images/cover.png`) are rendered from those SVGs with a browser;
+`tools/build-cover.mjs` writes the card's page for that step.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design tokens
+
+The palette, the type scale and the motion timings are all in
+[`app/globals.css`](app/globals.css) as custom properties. Light is a bright
+noon offshore, dark is the same water at dusk; the two share one blue ramp.

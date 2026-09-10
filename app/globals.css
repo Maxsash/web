@@ -1,41 +1,279 @@
+/* ==========================================================================
+   Maxsash Labs — design tokens
+
+   Two things run through the palette: the sea (a single blue ramp from the
+   shallows to deep water) and mathematics (paper, graphite rule, brass
+   instruments).  Everything on the page is drawn from those, so the boat, the
+   water and the text belong to the same world.
+
+   Light is a bright noon offshore.  Dark is the same water at dusk.
+   ========================================================================== */
+
 :root {
-  /* Waves */
-  --wave-far:       #E0F4FF;
-  --wave-mid:       #87C4FF;
-  --wave-near:      #39A7FF;
+  color-scheme: light;
 
-  /* Ship */
-  --ship:           #FFEED9;
+  /* --- the sea ramp ---------------------------------------------------- */
+  --foam:        #E7F5F1;
+  --shallow:     #A5DCDE;
+  --sea-lit:     #4EA5B8;
+  --sea:         #1E7392;
+  --sea-deep:    #0E4A66;
+  --sea-abyss:   #082F44;
 
-/* Sky — Noon */
-  --sky-noon-high:  #fff9e6;   /* bleached white-yellow zenith   */
-  --sky-noon-mid:   #ffeea0;   /* bright sun-soaked yellow        */
-  --sky-noon-low:   #e6bd5e;   /* warm amber-gold at the horizon  */
+  /* --- shore and paper -------------------------------------------------- */
+  --sand-pale:   #FBF5E9;
+  --sand:        #F2E6CF;
+  --sand-warm:   #E5D3B0;
 
-  /* Sky — Sunset */
-  --sky-sunset-high: #2b3a6b;  /* deep cobalt upper sky      */
-  --sky-sunset-mid:  #e8724a;  /* burnt orange horizon band  */
-  --sky-sunset-low:  #f9c574;  /* warm amber where sky meets sea */
+  /* --- boatyard: the warm half, for anything under construction --------- */
+  --teak:        #9A5C33;
+  --brass:       #9C7220;
 
-  /* Sand */
-  --sand-light:     #f5e6c8;
-  --sand-mid:       #d4b483;
-  --sand-dark:      #a07850;
+  /* --- sky -------------------------------------------------------------- */
+  --sky-high:    #D8ECF7;
+  --sky-mid:     #EDF4F1;
+  --sky-low:     #FBEFD6;
 
-  /* Accents */
-  --coral:          #f4845f;
-  --seafoam:        #a8e6cf;
-  --kelp:           #2d6a4f;
-  --dusk-orange:    #f9a825;
-  --dusk-pink:      #f48fb1;
+  /* --- semantic --------------------------------------------------------- */
+  --paper:       var(--sand-pale);
+  --paper-sunk:  #F5EDDD;
+  --paper-edge:  var(--sand-warm);
+
+  --ink:         #0C2E3F;
+  --ink-2:       #3B5D6E;
+  --ink-3:       #6E8A97;
+
+  --accent:      var(--sea);
+  --accent-ink:  #FFFFFF;
+  --accent-soft: #DCEDF3;
+
+  /* The hull reads as a dark silhouette on bright water, and as a moonlit one
+     after sunset — so it is a token, not a fixed step on the sea ramp. */
+  --boat:        var(--sea-abyss);
+
+  --rule:        color-mix(in oklab, var(--ink) 14%, transparent);
+  --rule-strong: color-mix(in oklab, var(--ink) 26%, transparent);
+  --grid:        color-mix(in oklab, var(--ink) 5%, transparent);
+  --grid-major:  color-mix(in oklab, var(--ink) 8%, transparent);
+
+  --shadow-mid:  0 12px 28px -14px color-mix(in oklab, var(--sea-abyss) 40%, transparent);
+
+  /* --- type ------------------------------------------------------------- */
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans:    var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:    var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step--2: clamp(0.72rem, 0.70rem + 0.10vw, 0.78rem);
+  --step--1: clamp(0.83rem, 0.80rem + 0.16vw, 0.92rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.20vw, 1.125rem);
+  --step-1:  clamp(1.18rem, 1.10rem + 0.42vw, 1.44rem);
+  --step-2:  clamp(1.45rem, 1.28rem + 0.85vw, 2.05rem);
+  --step-3:  clamp(1.85rem, 1.50rem + 1.70vw, 3rem);
+  --step-4:  clamp(2.6rem, 1.90rem + 3.40vw, 4.6rem);
+  --step-5:  clamp(3.2rem, 1.90rem + 6.40vw, 7rem);
+
+  /* --- rhythm ----------------------------------------------------------- */
+  --gutter:   clamp(1.25rem, 5vw, 4.5rem);
+  --radius:   14px;
+  --radius-lg: 22px;
+
+  /* --- motion ----------------------------------------------------------- */
+  /* Each band scrolls one tile per cycle. The ratios are the parallax: the
+     near swell covers ground about three times faster than the horizon. */
+  --drift-far:  58s;
+  --drift-mid:  34s;
+  --drift-near: 20s;
+  --heave-far:  13s;
+  --heave-mid:  9.5s;
+  --heave-near: 7s;
+  --ship-heave: 8.5s;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* ---------- Reset ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --foam:      #6FA7B2;
+    --shallow:   #2E7E93;
+    --sea-lit:   #1B5F79;
+    --sea:       #12455E;
+    --sea-deep:  #0B3046;
+    --sea-abyss: #041A28;
+
+    --sky-high:  #101F38;
+    --sky-mid:   #3B3357;
+    --sky-low:   #B0563F;
+
+    --paper:      #071D2A;
+    --paper-sunk: #0B2A3A;
+    --paper-edge: #12384C;
+
+    --ink:   #E9F2F3;
+    --ink-2: #A6C2CB;
+    --ink-3: #6D8B97;
+
+    --teak:  #CE9067;
+    --brass: #D8AB4A;
+
+    --accent:      #57B2C6;
+    --accent-ink:  #04202E;
+    --accent-soft: #10394C;
+    --boat:        #B9D8DD;
+
+    --grid:       color-mix(in oklab, var(--ink) 5%, transparent);
+    --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
+    --shadow-mid: 0 12px 28px -14px rgb(0 0 0 / 0.6);
+  }
+}
+
+/* ---------- reset ---------- */
 
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink);
+  background-color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  font-variation-settings: "SOFT" 12, "WONK" 0, "opsz" 96;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 26%, transparent);
+}
+
+/* Faint graph paper behind the written part of the page: the mathematics half
+   of the brand, kept quiet enough to read as texture rather than decoration.
+   It starts below the hero so it never sits on top of the sky. */
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 128px 128px, 128px 128px, 32px 32px, 32px 32px;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 10rem,
+    #000 calc(100% - 8rem),
+    transparent 100%
+  );
+}
+
+/* ---------- shared layout ---------- */
+
+.shell {
+  width: min(100% - var(--gutter) * 2, 76rem);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Keyboard-only shortcut past the hero. */
+.skip {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 20;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: var(--step--1);
+  text-decoration: none;
+  translate: 0 -150%;
+  transition: translate 160ms var(--ease);
+}
+
+.skip:focus-visible {
+  translate: 0 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

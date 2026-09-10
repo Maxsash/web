@@ -1,54 +1,72 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { site } from "@/content/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/* Fraunces carries the display voice: an old-style face with enough warmth for
+   the nautical half of the brand.  SOFT and WONK are pinned low in globals.css
+   so headings stay precise rather than whimsical. */
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  axes: ["SOFT", "WONK", "opsz"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/* Monospace does the mathematics: labels, counters, coordinates. */
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono-jb",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#87C4FF",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#D8ECF7" },
+    { media: "(prefers-color-scheme: dark)", color: "#10233B" },
+  ],
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.maxsash.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url),
 
   title: {
-    default: "Maxsash",
-    template: "%s | Maxsash",
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s | ${site.name}`,
   },
 
-  description:
-    "Maxsash is a software development studio specializing in crafting high-quality applications, games, and automation tools. We are dedicated to delivering innovative solutions that enhance productivity and provide engaging experiences for our users.",
+  description: site.description,
 
   openGraph: {
-    title: "Maxsash",
-    description:
-      "Maxsash is a software development studio specializing in crafting high-quality applications, games, and automation tools.",
+    title: site.name,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
     images: ["/images/cover-compressed.png"],
     type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
+    title: site.name,
+    description: site.description,
     images: ["/images/cover-compressed.png"],
   },
 
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -57,7 +75,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={geistMono.variable}>
+      <body className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable}`}>
         {children}
       </body>
     </html>

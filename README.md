@@ -62,3 +62,8 @@ coverage. It saves screenshots and measured reports under `tools/.out/`.
 `--no-fill` temporarily disables the wave extension in the test browser to
 confirm that the check detects the old gaps. See [docs/responsive.md](docs/responsive.md)
 for the layout rules, animation fix and complete verification matrix.
+
+## Open follow-ups
+
+Keyboard support, cursor effects and the broader accessibility review are
+tracked in [docs/follow-ups.md](docs/follow-ups.md).

@@ -57,7 +57,7 @@ export const site = {
     resume: "/resume.pdf",
     blog: "/blog",
     github: "https://github.com/maxsash",
-    email: "mailto:hello@maxsash.com",
+    email: "mailto:yash@maxsash.com",
   },
 
   nav: [

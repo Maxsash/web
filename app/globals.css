@@ -41,7 +41,7 @@
 
   --ink:         #0C2E3F;
   --ink-2:       #3B5D6E;
-  --ink-3:       #6E8A97;
+  --ink-3:       #4F6977;
 
   --accent:      var(--sea);
   --accent-ink:  #FFFFFF;
@@ -64,7 +64,7 @@
   --font-mono:    var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
 
   --step--2: clamp(0.72rem, 0.70rem + 0.10vw, 0.78rem);
-  --step--1: clamp(0.83rem, 0.80rem + 0.16vw, 0.92rem);
+  --step--1: clamp(0.875rem, 0.85rem + 0.16vw, 0.95rem);
   --step-0:  clamp(1rem, 0.96rem + 0.20vw, 1.125rem);
   --step-1:  clamp(1.18rem, 1.10rem + 0.42vw, 1.44rem);
   --step-2:  clamp(1.45rem, 1.28rem + 0.85vw, 2.05rem);
@@ -74,6 +74,8 @@
 
   /* --- rhythm ----------------------------------------------------------- */
   --gutter:   clamp(1.25rem, 5vw, 4.5rem);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
   --radius:   14px;
   --radius-lg: 22px;
 
@@ -226,8 +228,19 @@ main::before {
 /* ---------- shared layout ---------- */
 
 .shell {
-  width: min(100% - var(--gutter) * 2, 76rem);
-  margin-inline: auto;
+  width: auto;
+  /* Independent margins also handle a notch on only one landscape edge. */
+  margin-left: max(var(--gutter), var(--safe-left), calc((100% - 76rem) / 2));
+  margin-right: max(var(--gutter), var(--safe-right), calc((100% - 76rem) / 2));
+}
+
+/* Long labels and enlarged text must reflow, including within grid tracks. */
+:where(h1, h2, h3, p, li, a) {
+  overflow-wrap: anywhere;
+}
+
+section[id] {
+  scroll-margin-block-start: 1rem;
 }
 
 .eyebrow {

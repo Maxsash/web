@@ -8,12 +8,11 @@ import styles from "./Wordmark.module.css";
 
 export default function Wordmark({ href = "/" }: { href?: string }) {
   return (
-    <a className={styles.lockup} href={href}>
+    <a className={styles.lockup} href={href} aria-label={`${site.name} home`}>
       <Mark className={styles.mark} />
       <span className={styles.name}>
         Maxsash <span className={styles.studio}>Studio</span>
       </span>
-      <span className="visually-hidden">{site.name} home</span>
     </a>
   );
 }

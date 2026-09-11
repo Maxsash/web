@@ -74,10 +74,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable}`}>
-        {children}
-      </body>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

@@ -53,3 +53,12 @@ path. `tools/build-cover.mjs` writes the card's page for that step.
 The palette, the type scale and the motion timings are all in
 [`app/globals.css`](app/globals.css) as custom properties. Light is a bright
 noon offshore, dark is the same water at dusk; the two share one blue ramp.
+
+## Responsive verification
+
+Run `node tools/check-responsive.mjs` against the local server to check phone,
+tablet, desktop, landscape, enlarged text, touch navigation and animated wave
+coverage. It saves screenshots and measured reports under `tools/.out/`.
+`--no-fill` temporarily disables the wave extension in the test browser to
+confirm that the check detects the old gaps. See [docs/responsive.md](docs/responsive.md)
+for the layout rules, animation fix and complete verification matrix.

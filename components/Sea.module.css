@@ -2,11 +2,13 @@
    waterline: the shore band is filled with --paper, so the beach and the rest
    of the document are literally the same surface.
 
-   Band heights scale with viewport width (the SVGs keep their aspect), so the
-   bands are stacked in vw as well — that keeps the four waterlines the same
-   distance apart at every size. */
+   Surface height and stacking use one bounded scene scale. On ultrawide
+   screens the curves stretch horizontally while their height stays restrained.
+   Each surface also fills down past the hero, independently of its neighbours. */
 
 .sea {
+  --sea-width: min(100vw, 100rem);
+  --wave-span: calc(var(--sea-width) * 2);
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -53,6 +55,18 @@
   will-change: transform;
 }
 
+/* Each moving surface owns solid water all the way down. The old finite
+   strips could expose the sky when adjacent layers heaved in opposite phases.
+   Overlap the SVG's solid bottom by 2px to avoid a fractional-pixel seam. */
+.band::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% - 2px);
+  height: max(100lvh, var(--scene-height));
+  background: var(--water);
+}
+
 .drift {
   /* Three tiles wide; the keyframe below moves it by exactly one of them. */
   width: 200%;
@@ -84,7 +98,7 @@
 }
 
 .far {
-  bottom: 14.4vw;
+  bottom: calc(var(--sea-width) * 0.144);
   z-index: 1;
   --water: var(--shallow);
   --speed: var(--drift-far);
@@ -94,7 +108,7 @@
 }
 
 .mid {
-  bottom: 9.7vw;
+  bottom: calc(var(--sea-width) * 0.097);
   z-index: 2;
   --water: var(--sea-lit);
   --crest: color-mix(in oklab, var(--shallow) 70%, white);
@@ -104,7 +118,7 @@
 }
 
 .near {
-  bottom: 3.4vw;
+  bottom: calc(var(--sea-width) * 0.034);
   z-index: 4;
   --water: var(--sea);
   --crest: var(--foam);
@@ -116,7 +130,7 @@
 /* The beach.  Filled with the page background so the hero dissolves into the
    document instead of ending on a hard edge. */
 .shore {
-  bottom: -4vw;
+  bottom: calc(var(--sea-width) * -0.04);
   z-index: 5;
   --water: var(--paper);
   --speed: calc(var(--drift-near) * 1.9);
@@ -129,7 +143,7 @@
 .boat {
   position: absolute;
   left: 68%;
-  bottom: 12.5vw;
+  bottom: calc(var(--sea-width) * 0.125);
   z-index: 3;
   width: clamp(150px, 19vw, 280px);
   aspect-ratio: 1;
@@ -158,24 +172,28 @@
 
 /* ---------- narrow screens ---------- */
 
-@media (max-width: 820px) {
+@media (max-width: 64rem) {
+  .sea {
+    --wave-span: clamp(60rem, 240vw, 100rem);
+  }
+
   .drift {
     /* Fewer pixels across, so show fewer wavelengths and keep the bands tall
        enough to read as water. */
-    width: 340%;
+    width: var(--wave-span);
   }
 
-  .far   { bottom: 24vw; }
-  .mid   { bottom: 16vw; }
-  .near  { bottom: 5vw; }
-  .shore { bottom: -7vw; }
+  .far   { bottom: calc(var(--scene-height) * 0.25); }
+  .mid   { bottom: calc(var(--scene-height) * 0.17); }
+  .near  { bottom: calc(var(--scene-height) * 0.045); }
+  .shore { bottom: calc(var(--scene-height) * -0.08); }
 
   .boat {
     left: auto;
     /* Keep the complete bow visible, including the small sailing rotation. */
-    right: 2%;
-    bottom: 15vw;
-    width: min(54vw, 250px);
+    right: max(var(--gutter), var(--safe-right));
+    bottom: calc(var(--scene-height) * 0.22);
+    width: var(--boat-width);
     translate: 0;
   }
 }

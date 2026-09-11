@@ -16,10 +16,17 @@ import styles from "./Sea.module.css";
  * the surface perfectly because it is the surface. */
 function Band({ name, foam = 0 }: { name: WaveBandName; foam?: number }) {
   const band = WAVE_BANDS[name];
+  const [, , width, height] = band.viewBox.split(" ").map(Number);
   return (
     <div className={`${styles.band} ${styles[name]}`}>
       <div className={styles.drift}>
-        <svg viewBox={band.viewBox} xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <svg
+          viewBox={band.viewBox}
+          preserveAspectRatio="none"
+          style={{ height: `calc(var(--wave-span) * ${height / width})` }}
+          xmlns="http://www.w3.org/2000/svg"
+          focusable="false"
+        >
           {foam ? (
             <path className={styles.foam} d={band.body} transform={`translate(0 ${-foam})`} />
           ) : null}

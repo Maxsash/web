@@ -1,4 +1,5 @@
 import Mark from "./Mark";
+import SeaMotion from "./SeaMotion";
 import { WAVE_BANDS, type WaveBandName } from "./wave-paths";
 import styles from "./Sea.module.css";
 
@@ -52,6 +53,7 @@ export default function Sea() {
 
       <Band name="near" foam={7} />
       <Band name="shore" />
+      <SeaMotion />
     </div>
   );
 }

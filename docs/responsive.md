@@ -53,6 +53,29 @@ strip still travels exactly one third of its width; the width remaining after
 that translation covers the viewport. Reduced-motion preferences stop heave,
 drift and boat movement.
 
+## Follow-up: seat the boat in the water
+
+The previous independent boat animation could leave the keel 32px above the
+foreground surface on a 390px phone and 73px above it at 1440px desktop in the
+sampled frames. Those offsets read as hovering, even though the mark overlapped
+a more distant water layer.
+
+`SeaMotion.tsx` now samples the **rendered near-wave path**, reusing its emitted
+curve without shipping a second set of wave coordinates. The boat's anchor is
+derived from the generated hull bounds. Its height follows the water at that
+anchor with immersion equal to 2% of boat width; its pitch follows a wider span
+of the surface, attenuated and limited to ±2.4°. CSS drift, heave and responsive
+stretch are included through the SVG's current screen transform. The generator
+now asserts that fitted wave control points remain monotone in x, so there is
+one surface height at each horizontal position.
+
+A small client controller writes transforms directly, without React renders per
+frame. It stops continuous work offscreen, in hidden tabs and for reduced motion;
+resize and preference changes reposition the boat. Server-rendered CSS provides
+a lower fallback position and shares the foreground heave period. Water-fill
+extensions and responsive content layout are preserved. This is a decorative
+surface follower, not a fluid or buoyancy simulation.
+
 ## Reproducing verification
 
 With the development server running:
@@ -60,12 +83,16 @@ With the development server running:
 ```bash
 npm run dev
 # In another terminal:
-node tools/check-responsive.mjs http://127.0.0.1:3000
-node tools/check-responsive.mjs http://127.0.0.1:3000 --no-fill
+node tools/check-responsive.mjs http://localhost:3000
+node tools/check-responsive.mjs http://localhost:3000 --no-fill
 npx tsc --noEmit
 npm run lint
 npm run build
 ```
+
+Use the development server’s advertised hostname: a server started on
+`localhost` can reject the HMR connection from `127.0.0.1` before hydration.
+The checker now verifies hydration instead of accepting the CSS fallback.
 
 The browser checker requires Node 22 and Chrome, with `CHROME_BIN` available for
 custom executable paths. It opens an isolated local Chrome profile and writes
@@ -85,8 +112,11 @@ ten timeline positions plus every high/low combination of the four heaving
 layers, including drift endpoints. It probes the transformed SVG fill and its
 extension down each sampled screen column, requiring continuous coverage below
 the first water surface. It also checks the animated boat against the text and
-viewport. This is sampled browser geometry plus visual inspection, not an
-exhaustive raster proof for every device and browser.
+viewport. It now also waits for the boat controller to initialize, yields two
+animation frames after every timeline seek, and requires the hull anchor to
+track the actual water fill within 1px of its intended immersion. This is
+sampled browser geometry plus visual inspection, not an exhaustive raster proof
+for every device and browser.
 
 `--no-fill` is a negative control: it temporarily disables the extension only
 inside the test browser. The old gaps must then be detected. This succeeded at

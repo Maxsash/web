@@ -9,7 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const url = new URL(process.argv.find((arg) => /^https?:/.test(arg)) || "http://127.0.0.1:3000");
+const url = new URL(process.argv.find((arg) => /^https?:/.test(arg)) || "http://localhost:3000");
 if (!["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)) throw new Error("Use a local server.");
 const baseline = process.argv.includes("--baseline");
 const noFill = process.argv.includes("--no-fill");
@@ -65,6 +65,7 @@ try {
     return result.result.value;
   };
   await call("Page.enable");
+  await call("Page.bringToFront");
   const cases = noFill ? [[320,568], [390,844], [768,1024]] : [
     [320, 568], [360, 640], [390, 844], [430, 932], [600, 800], [768, 1024],
     [820, 900], [821, 900], [1024, 768], [1025, 768], [1440, 1000], [1440, 600], [1920, 1080], [2560, 1080],
@@ -83,6 +84,13 @@ try {
       for (let i = 0; i < 400; i++) {
         if (await evaluate(`location.href === ${JSON.stringify(url.href)} && document.readyState === 'complete'`)) break;
         if (i === 399) throw new Error("Local page did not load");
+        await delay(50);
+      }
+      // Hydration is required for the boat's surface follower, including in
+      // reduced motion. A static screenshot alone could silently test fallback.
+      for(let i=0; i<200; i++) {
+        if(await evaluate("Boolean(document.querySelector('[data-floating=true]'))")) break;
+        if(i===199) throw new Error("Boat surface follower did not initialize");
         await delay(50);
       }
       await evaluate(`document.documentElement.style.fontSize = '${textScale * 100}%'; document.fonts.ready.then(() => true)`);
@@ -146,7 +154,7 @@ try {
           { name: "prefers-color-scheme", value: theme }, { name: "prefers-reduced-motion", value: "no-preference" },
         ] });
         await evaluate("new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
-        const frames = await evaluate(`(() => {
+        const frames = await evaluate(`(async () => {
           const header=document.querySelector('header');
           const scene=header.querySelector('[class*="sea"]');
           const bands=[...scene.querySelectorAll('[class*="band"]')];
@@ -163,6 +171,7 @@ try {
                 a.animationName==='heave' ? (((frame-times.length) >> heave++) & 1)*duration/2 :
                 duration*((frame%2) ? .9999 : 0);
             }
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
             const layers=bands.map(band=>{
               const svg=band.querySelector('svg'), path=svg.querySelector('path:last-child');
               const r=band.getBoundingClientRect(), box=svg.getBoundingClientRect();
@@ -193,12 +202,23 @@ try {
             const c=header.querySelector('h1').parentElement.getBoundingClientRect();
             const collision=Math.min(b.right,c.right)>Math.max(b.left,c.left)+1 && Math.min(b.bottom,c.bottom)>Math.max(b.top,c.top)+1;
             const clipped=b.left<0 || b.right>innerWidth+1;
-            result.push({frame,time:times[frame] ?? 'opposed heave',holes,firstHole,collision,clipped});
+            const boat=scene.querySelector('[class*="boat"]');
+            const hull=boat.querySelector('path:last-child'), mark=boat.querySelector('svg');
+            const hb=hull.getBBox();
+            const anchor=new DOMPoint(hb.x+hb.width/2,hb.y).matrixTransform(hull.getScreenCTM());
+            const near=scene.querySelector('[class*="near"] svg path:last-child');
+            const surface=new Path2D(near.getAttribute('d'));
+            const inv=near.getScreenCTM().inverse();
+            const immersion=boat.offsetWidth*.02;
+            const below=new DOMPoint(anchor.x,anchor.y-immersion+1).matrixTransform(inv);
+            const above=new DOMPoint(anchor.x,anchor.y-immersion-1).matrixTransform(inv);
+            const contact=boat.dataset.floating==='true' && canvas.isPointInPath(surface,below.x,below.y) && !canvas.isPointInPath(surface,above.x,above.y);
+            result.push({contact,frame,time:times[frame] ?? 'opposed heave',holes,firstHole,collision,clipped});
           }
           return result;
         })()`);
         waveReports.push({width,height,theme,frames});
-        if(frames.some(f=>f.holes || f.collision || f.clipped)) report.failures.push('wave/boat animation coverage failed');
+        if(frames.some(f=>f.holes || f.collision || f.clipped || !f.contact)) report.failures.push('wave/boat animation coverage failed');
         if([390,1440].includes(width)) {
           const shot=await call("Page.captureScreenshot", {format:"png",captureBeyondViewport:true,
             clip:{x:0,y:Math.max(0,report.heroHeight-420),width,height:Math.min(420,report.heroHeight),scale:1}});
@@ -211,7 +231,7 @@ try {
   }
   writeFileSync(join(out,"report.json"),JSON.stringify(reports,null,2));
   writeFileSync(join(out,"waves.json"),JSON.stringify(waveReports,null,2));
-  console.log(`Checked ${waveReports.reduce((n,r)=>n+r.frames.length,0)} animation frames for exposed sky and boat collisions.`);
+  console.log(`Checked ${waveReports.reduce((n,r)=>n+r.frames.length,0)} animation frames for exposed sky, boat collisions and water contact.`);
   if(noFill) {
     if(!waveReports.some(r=>r.frames.some(f=>f.holes))) throw new Error("Negative control failed to detect the old wave gaps");
     console.log("Negative control detected the wave gaps when downward fill was disabled.");

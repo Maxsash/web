@@ -113,12 +113,54 @@ const hookAt = (u) => {
   return [hookCentre[0] + r * Math.cos(phi), hookCentre[1] + r * Math.sin(phi)];
 };
 
+const SHOULDER_BLEND = 0.10; // half-width of the curvature-continuous transition
 const STEM_SHARE = 0.5; // of the half-spine's parameter range
 
-const upperAt = (t) =>
+// A local quintic matches position, velocity and acceleration at both ends.
+// Tangency alone left an abrupt jump from the almost straight stem to the hook.
+const rawUpperAt = (t) =>
   t <= STEM_SHARE
     ? cubicAt(stem.p0, stem.c1, stem.c2, stem.p3, t / STEM_SHARE)
     : hookAt((t - STEM_SHARE) / (1 - STEM_SHARE));
+const blendLo = STEM_SHARE - SHOULDER_BLEND;
+const blendHi = STEM_SHARE + SHOULDER_BLEND;
+const blendSpan = blendHi - blendLo;
+const jet = (f, t) => {
+  const h = 1e-4;
+  const a = f(t - h), b = f(t), c = f(t + h);
+  return [
+    b,
+    V.mul(V.sub(c, a), blendSpan / (2 * h)),
+    V.mul(V.add(V.sub(c, V.mul(b, 2)), a), blendSpan ** 2 / h ** 2),
+  ];
+};
+const [bp0, bv0, ba0] = jet(rawUpperAt, blendLo);
+const [bp1, bv1, ba1] = jet(rawUpperAt, blendHi);
+const blendCoefficients = [0, 1].map((i) => {
+  const a = bp0[i], b = bv0[i], c = ba0[i] / 2;
+  const d = bp1[i] - a - b - c;
+  const e = bv1[i] - b - 2 * c;
+  const f = ba1[i] - 2 * c;
+  return [a, b, c, 10 * d - 4 * e + f / 2,
+    -15 * d + 7 * e - f, 6 * d - 3 * e + f / 2];
+});
+const upperAt = (t) => {
+  if (t <= blendLo || t >= blendHi) return rawUpperAt(t);
+  const u = (t - blendLo) / blendSpan;
+  return blendCoefficients.map((coefficients) =>
+    coefficients.reduceRight((value, coefficient) => value * u + coefficient, 0));
+};
+const curvature = (f, t) => {
+  const h = 1e-5;
+  const a = f(t - h), b = f(t), c = f(t + h);
+  const d = V.mul(V.sub(c, a), 1 / (2 * h));
+  const dd = V.mul(V.add(V.sub(c, V.mul(b, 2)), a), 1 / h ** 2);
+  return (d[0] * dd[1] - d[1] * dd[0]) / V.dist([0, 0], d) ** 3;
+};
+for (const t of [blendLo, blendHi]) {
+  if (Math.abs(curvature(upperAt, t - 2e-5) - curvature(upperAt, t + 2e-5)) > 2e-5)
+    throw new Error("Shoulder curvature discontinuity");
+}
 
 /** The whole spine: s in [-1,1]; the negative half is the 180 degree rotation. */
 const spineAt = (s) => {
@@ -137,10 +179,10 @@ const speedAt = (s) =>
 
 /* ------------------------------------------------------------- the pen -- */
 
-/* Smoothstep between knots: level at every knot, so the profile is smooth at
- * the inflection (where |s| folds), at the shoulder and at the waist alike. */
-const smoothstep = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
-const between = (a, b, t) => a + (b - a) * smoothstep(t);
+/* Quintic easing: both slope and acceleration vanish at each width knot. */
+const smootherstep = (t) =>
+  (t <= 0 ? 0 : t >= 1 ? 1 : t * t * t * (10 + t * (-15 + 6 * t)));
+const between = (a, b, t) => a + (b - a) * smootherstep(t);
 
 const R_MAX = STROKE_MAX / 2;
 const R_SHOULDER = R_MAX * SHOULDER_F;
@@ -148,12 +190,14 @@ const R_WAIST = R_MAX * WAIST_F;
 const R_BALL = R_MAX * BALL_F;
 const S_WAIST = STEM_SHARE + (1 - STEM_SHARE) * WAIST_AT;
 
-/* The last run is a Hermite rather than a smoothstep so the pen can still be
+/* The last run is a quintic Hermite so the pen can still be
  * opening when it reaches the tip. That is what makes a ball read as a ball:
  * the terminal arc then wraps past a half turn instead of stopping at one. */
 const hermiteUp = (y0, y1, m1, t) => {
   const t2 = t * t, t3 = t2 * t;
-  return (2 * t3 - 3 * t2 + 1) * y0 + (-2 * t3 + 3 * t2) * y1 + (t3 - t2) * m1;
+  const d = y1 - y0;
+  return y0 + (10 * d - 4 * m1) * t3 + (-15 * d + 7 * m1) * t3 * t +
+    (6 * d - 3 * m1) * t3 * t2;
 };
 
 const penAt = (s) => {
@@ -165,6 +209,22 @@ const penAt = (s) => {
   const t = (a - S_WAIST) / (1 - S_WAIST);
   return hermiteUp(R_WAIST, R_BALL, BALL_SWELL * (R_BALL - R_WAIST), t);
 };
+
+// Guard the profile's acceleration continuity as well as its visible width.
+const penAcceleration = (t) =>
+  (penAt(t + 1e-5) - 2 * penAt(t) + penAt(t - 1e-5)) / 1e-10;
+for (const t of [0, STEM_SHARE, S_WAIST]) {
+  if (Math.abs(penAcceleration(t - 2e-5) - penAcceleration(t + 2e-5)) > 2)
+    throw new Error("Pen width acceleration discontinuity");
+}
+const rawShoulder = Array.from({ length: 1001 }, (_, i) =>
+  rawUpperAt(blendLo + blendSpan * i / 1000));
+const shoulderDisplacement = Math.max(...Array.from({ length: 201 }, (_, i) => {
+  const t = blendLo + blendSpan * i / 200;
+  return distToPolyline(upperAt(t), rawShoulder);
+}));
+if (shoulderDisplacement > STROKE_MAX * 0.1)
+  throw new Error("Shoulder blend changes the silhouette by more than a tenth of a stroke");
 
 const dPen = (s) => (penAt(clampS(s + H)) - penAt(clampS(s - H))) / (clampS(s + H) - clampS(s - H));
 
@@ -668,6 +728,7 @@ writeFileSync(new URL("../public/mark.svg", import.meta.url), iconSvg({ fg: "cur
 
 const f = (n) => +n.toFixed(3);
 console.log(JSON.stringify({
+  shoulderDisplacement: f(shoulderDisplacement),
   integralHeight: +Hi.toFixed(1),
   strokeOverHeight: f(STROKE_MAX / Hi),          // original 0.092
   ballOverStroke: f(BALL_F),

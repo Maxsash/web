@@ -54,7 +54,7 @@ boat dimensions use the integral's own height. Corner radii use `STROKE_MAX`.
 | --- | --- |
 | Pen | `STROKE_MAX` 73, `SHOULDER_F` 0.80, `WAIST_F` 0.66, `WAIST_AT` 0.52, `BALL_F` 1.10, `BALL_SWELL` 1.25 |
 | Stem | `STEM_ANGLE_MID` 9°, `STEM_ANGLE_TOP` 18°, `SHOULDER` [76, 320] |
-| Hook | `HOOK_R0` 68, `HOOK_R1` 60, `HOOK_SWEEP` 168° |
+| Hook | `HOOK_R0` 68, `HOOK_R1` 60, `HOOK_SWEEP` 168°, `SHOULDER_BLEND` 0.10 |
 | Channel | `GAP_F` 0.035, paired tack/stern radius 0.04 × stroke |
 | Hull | `DECK_ANGLE` 11°, `DECK_LEFT_YF` 0.808, `DECK_LEN_F` 0.650, `KEEL_YF` 0.960, `BOW_RAKE` 36° |
 | Gentle curves | `DECK_SAG_F` 0.010, `KEEL_SAG_F` 0.008, `BOW_SAG_F` 0.003 |
@@ -63,9 +63,10 @@ boat dimensions use the integral's own height. Corner radii use `STROKE_MAX`.
 | Safeguards | head daylight ≥ 1 gap, head distance ≥ 1.15 gaps, hook bay ≥ 1 gap, fork expansion ≤ 1.25 × its unfilleted opening, curve-fit bound 0.20 units |
 | Framing | mark padding 0.04; browser tile inset 0.10; Apple tile inset 0.235 |
 
-The hook remains a spiral, with radius `R0 → R1` as `u²`, making its start
-join tangent to the stem. The pen eases from full stem to shoulder and hook
-waist, then a Hermite profile swells into the ball. The waist opens the counter;
+The hook remains a spiral, with radius `R0 → R1` as `u²`. A local quintic
+transition around the shoulder matches position, velocity and acceleration to
+the stem and spiral. The pen uses quintic easing from full stem through the
+shoulder and waist, then a quintic Hermite profile swells into the ball. The waist opens the counter;
 it is not a smaller terminal used to disguise a notch.
 
 ## Refinement decisions
@@ -82,7 +83,7 @@ The three-way junction cannot have the same width in every direction: a channel
 has to open where it branches. The construction now controls that opening.
 Tack and stern share a small radius, and the distance between their contact
 points along the common rail may grow by at most 25% over the unfilleted
-junction. The current increase is **21.2%**. The rail is oblique to the deck,
+junction. The current increase is **21.3%**. The rail is oblique to the deck,
 so this along-rail measure is distinct from the normal channel width.
 
 The inherited weight targets were reconsidered against **rendered ink**. The
@@ -91,6 +92,26 @@ The opened hook and pen profile earn their changes through a clearer counter
 and tangent ball joins. At midheight, actual stem weight is now almost the same
 as the original. The boat's small curves answer the owner's request for a less
 ruler-straight hull while preserving its endpoint layout and restrained lean.
+
+### Follow-up: the shoulder bump
+
+The owner correctly spotted a remaining bump. The old stem/spiral join was
+only tangent-continuous: its curvature jumped abruptly. Width easing also
+changed acceleration at its knots. These were construction artifacts, not
+intentional features of an integral sign.
+
+~~**The shoulder enters the hook with an abrupt change in bending.**~~ A local
+quintic now matches both derivatives at its ends; the width profile has matching
+second derivatives too. The generator checks curvature on both sides of the
+blend boundaries and width acceleration at each knot. It also caps the sampled
+spine displacement from the old shoulder at a tenth of the stroke; the measured
+displacement is **0.818 design units**, about 0.1% of mark height. The emitted
+outline remains a bounded G1 cubic approximation, not an assertion of exact G2
+continuity at every serialized cubic join.
+
+The terminal diameter, weight dials, lean and boat layout remain unchanged.
+The regenerated proof was inspected at 32px on both grounds and in enlarged
+hook views. The scan against the original remains in the same silhouette range.
 
 Additional defects surfaced:
 
@@ -118,13 +139,13 @@ values supersede the old record's 0.957 aspect and nominal 0.093 stem weight.
 
 | Rendered measure | Original | Previous committed output | Refined |
 | --- | ---: | ---: | ---: |
-| Aspect W/H | 0.962 | 0.919 | 0.949 |
+| Aspect W/H | 0.962 | 0.919 | 0.947 |
 | Midheight mast span / height | 0.092 | 0.114 | 0.094 |
 | Midheight horizontal channel / height | 0.036 | 0.022 | 0.036 |
 | Leech right edge at 30% height, relative to mast centre | +0.311 | +0.273 | +0.281 |
-| Leech right edge at 40% height | +0.388 | +0.347 | +0.367 |
+| Leech right edge at 40% height | +0.388 | +0.347 | +0.365 |
 | Leech right edge at 50% height | +0.424 | +0.404 | +0.416 |
-| Leech right edge at 60% height | +0.451 | +0.442 | +0.448 |
+| Leech right edge at 60% height | +0.451 | +0.442 | +0.447 |
 
 The differences are concentrated in the intentionally opened hooks, separated
 head and deck/foot junction. At 25% height the sail's right edge is +0.210
@@ -137,12 +158,12 @@ recorded rather than passed off as an exact raster trace.
 
 Current generator diagnostics include:
 
-- Integral height 780.5 units; channel 27.3 units.
-- Hook bay 2.121 gaps; vertical head daylight 1.172 gaps.
-- Nearest head clearance 1.312 gaps; foot/deck clearance 1.000 gap.
-- Pen slope/travel at most 0.252; minimum forward envelope cosine 0.968.
-- Whole-curve fit bound at most 0.182 units before 0.01-unit serialization.
-- Analytic terminal tangent error 0°; rendered terminal error 0.084° (limit 0.1°).
+- Integral height 780.0 units; channel 27.3 units.
+- Hook bay 2.168 gaps; vertical head daylight 1.178 gaps.
+- Nearest head clearance 1.311 gaps; foot/deck clearance 1.000 gap.
+- Pen slope/travel at most 0.271; minimum forward envelope cosine 0.963.
+- Whole-curve fit bound at most 0.156 units before 0.01-unit serialization.
+- Analytic terminal tangent error 0°; rendered terminal error 0.064° (limit 0.1°).
   Serialized boat corner joins are checked below 0.5°.
 
 `assertSimpleOutline()` also checks dense output samples for crossings, touches,

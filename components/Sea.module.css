@@ -143,13 +143,15 @@
 .boat {
   position: absolute;
   left: 68%;
-  bottom: calc(var(--sea-width) * 0.125);
+  bottom: calc(var(--sea-width) * 0.085);
   z-index: 3;
-  width: clamp(150px, 19vw, 280px);
+  --boat-size: clamp(150px, 19vw, 280px);
+  width: var(--boat-size);
   aspect-ratio: 1;
-  translate: -50% 0;
+  margin-left: calc(var(--boat-size) * -0.5);
   transform-origin: 50% 86%;
-  animation: sail var(--ship-heave) ease-in-out infinite;
+  --lift: 10px;
+  animation: heave var(--heave-near) ease-in-out infinite;
   will-change: transform;
 }
 
@@ -161,13 +163,9 @@
     color-mix(in oklab, var(--sea-abyss) 26%, transparent));
 }
 
-/* Pitch and heave together, the way a hull answers a swell: it rises as it
-   rolls back, and the roll leads the rise slightly. */
-@keyframes sail {
-  0%, 100% { transform: translateY(0) rotate(-2.4deg); }
-  28%      { transform: translateY(-3%) rotate(0.4deg); }
-  52%      { transform: translateY(-1.2%) rotate(2.2deg); }
-  76%      { transform: translateY(-3.4%) rotate(0.2deg); }
+.boat[data-floating="true"] {
+  animation: none;
+  transform: translateY(var(--float-y, 0px)) rotate(var(--pitch, 0deg));
 }
 
 /* ---------- narrow screens ---------- */
@@ -192,9 +190,9 @@
     left: auto;
     /* Keep the complete bow visible, including the small sailing rotation. */
     right: max(var(--gutter), var(--safe-right));
-    bottom: calc(var(--scene-height) * 0.22);
+    bottom: calc(var(--scene-height) * 0.15);
     width: var(--boat-width);
-    translate: 0;
+    margin-left: 0;
   }
 }
 

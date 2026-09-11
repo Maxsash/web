@@ -91,6 +91,13 @@ const build = (band) => {
     V.norm(V.sub(pts[Math.min(STEPS, i + 1)], pts[Math.max(0, i - 1)]));
   const chain = fitPath(pts, tangents, 0.6);
 
+  // The boat locates a surface height by x. Preserve a single-valued curve
+  // through fitting and serialization, not only in the analytic Gerstner sum.
+  for (const seg of chain) {
+    const xs=[seg.p0,seg.c1,seg.c2,seg.p3].map(p=>+p[0].toFixed(2));
+    if(xs.some((x,i)=>i>0 && x<xs[i-1]))
+      throw new Error(`${band.name}: fitted surface folds backward in x`);
+  }
   const body = `M${fmt(pts[0])}${chainToD(chain)}L${span},${height}L0,${height}Z`;
 
   return {

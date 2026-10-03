@@ -67,3 +67,11 @@ for the layout rules, animation fix and complete verification matrix.
 
 Keyboard support, cursor effects and the broader accessibility review are
 tracked in [docs/follow-ups.md](docs/follow-ups.md).
+
+## Creative roadmap
+
+The accepted Sea, Ship, Math direction, staged tasks, review routes, decisions and
+commit policy live in [docs/creative-roadmap.md](docs/creative-roadmap.md). Actual
+checks and remaining validation live in
+[docs/creative-validation.md](docs/creative-validation.md). Experimental UI stays
+uncommitted until a sample is selected by the user.

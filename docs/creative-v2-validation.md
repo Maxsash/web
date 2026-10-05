@@ -4,6 +4,56 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Latest checkpoint — approved Work spreads on the homepage
+
+User explicitly requested promoting the revised sample into production Work.
+`components/Work.tsx` now replaces the old cards with the selected lead Household
+Hub spread (populated light expense Insights) and the wedding companion spread.
+Images moved to `public/images/work/`; presentation moved to `Work.module.css`.
+The homepage retains one h1, Work h2, project h3 and a single `#work` anchor.
+All demo/case-study links, privacy captions and Portfolio access remain. No
+review labels, sample navigation or new animation/client engine are introduced.
+
+The old `/samples/work` page is a permanent 308 redirect to `/#work`; its sample
+CSS and `/samples` review card are removed. The user selection authorizes this
+code/assets/documentation commit. No other unselected experiment is included.
+
+Fresh production build (includes types), lint, harness syntax and diff checks
+pass. Full local browser report `tools/.out/creative-home/report.json`,
+`2026-10-05T13:42:42.507Z`, temporary `http://localhost:3006/`: **93 records pass**
+(41 captures, 51 assertions, one cadence run), no runtime exceptions, GL errors
+or detected overflow. Two additional full Work-section images are saved as
+`home-1440-work-spreads.png` and `home-390-work-spreads.png`; both were visually
+inspected for correct Insights image, readable content and reachable links.
+New assertions verify promoted figure sources, semantic hierarchy, figure
+bounds and the old sample redirect. Existing mobile progression/rotation,
+reversal, reduced motion, desktop, fallback and no-JS checks pass.
+
+The user's previously reported iPhone smoothness acceptance remains recorded;
+this Work promotion is not a fresh physical-device measurement. QA server stopped
+via EXIT trap. No push or hosting deployment. Commit subject:
+`feat: promote approved project spreads into Work`. Next is feedback on the
+integrated production build, then remaining publication/Elsewhere refinements.
+
+## Work study revision — light Insights preview
+
+User requested the Household Hub Insights view instead of Log and asked about
+light mode. Captured the public `/expense` Insights page in an isolated browser
+with `prefers-color-scheme: light`, using its openly published family demo PIN
+for a temporary viewing session. No household records or system settings changed.
+The populated Need again view now replaces the rent dashboard image at
+`/images/work-study/household-insights-light.webp`; its distinct URL avoids stale
+Next image-optimization cache. Alt text and plate label match the new view.
+
+The tenant app stylesheet follows system color preference; no theme override
+was added to either app. The whole Work composition remains unselected and
+uncommitted. Production build/types, lint and diff checks pass. Fresh sample
+report `2026-10-05T13:37:59.775Z` contains 12 passing records at 320/390/844/1440 px with no
+runtime errors or detected overflow. Visually verified the desktop spread shows
+the light, populated Insights view. External capture checker still flags the
+intentionally offscreen skip link; no external layout-audit success is claimed.
+Temporary preview server stopped; no commit, push or deploy for this revision.
+
 ## Latest checkpoint — accepted phone feedback, real projects and Work study
 
 User confirms the latest production three-stage reveal feels smooth on iPhone

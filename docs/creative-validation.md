@@ -16,14 +16,13 @@ new scroll samples over idle cadence limits; actual validation is in v2 evidence
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).
 
-## Latest evidence — real projects and mobile edge cases
+## Latest evidence — approved Work spreads promoted
 
-The user confirms iPhone Air Safari now feels smooth on the latest staged build.
-Real project demos/case studies and a Portfolio destination replace placeholders.
-Build/types/lint and **89 public browser records** pass, including rotation,
-interrupted reveal reversal and paused transitions. The unselected `/samples/work`
-spread study has a separate 12-record layout check at four widths and remains
-uncommitted. Exact evidence and limits are in `creative-v2-validation.md`.
+The selected project spreads now live in homepage Work; `/samples/work` redirects
+to `/#work`. Household Hub uses the light expense Insights preview. Fresh
+build/types/lint and **93 browser records** pass, with desktop/phone section
+captures visually reviewed. Exact checks and remaining physical-device limits
+are in `creative-v2-validation.md`. Temporary QA server is stopped.
 
 ## Original comparison baseline
 

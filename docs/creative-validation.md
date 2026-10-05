@@ -6,7 +6,9 @@ The latest scroll-synchronization checkpoint passes 66 browser records.
 Browser-gesture before/after tests reduced measured style work by about 93% in
 the local samples. Read-only live scrolling still did not reproduce visible
 lag in headless Chrome; the user's iPhone Air/MacBook Pro scroll report remains
-an open physical-device gate. Production still uses the older rendering path.
+an open physical-device gate. Production now shows direct Writing and compact
+rendering; fresh live gesture diagnostics measure 14.1/18.8 ms style totals at
+desktop/phone viewport. All repo dev/preview servers are stopped.
 Exact commands, scope, changes and next rechecks are recorded there.
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).

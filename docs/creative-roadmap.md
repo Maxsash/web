@@ -60,7 +60,7 @@ does not change hosting or deploy new revisions.
 
 1. **Current priority, clarified feedback:** sea reveal stutters while scrolling
    on production (MacBook Pro/Chrome and iPhone Air/Safari). Writing's one-click
-   fix is committed locally; qualify scroll synchronization/compositing before
+   fix and scroll optimizations are now observable live; qualify physical scrolling before
    new features. Idle cadence alone does not qualify this interaction.
 2. Recheck the updated revision on those physical devices in the same browser;
    qualify renderer/fallbacks, quality budgets and accessibility from evidence.
@@ -123,3 +123,15 @@ unchanged chapter/style writes, and hides the covered SVG fallback after a GPU
 draw. Added programmatic and browser-gesture scrolling diagnostics. Actual
 results, local/production revision distinction and physical limits belong in
 current validation. This clarification supersedes idle-only smoothness checks.
+
+## Current release state and next gate
+
+5 October: all repo dev/preview servers stopped at user request (ports
+3000/3001/3002/3004/3005 verified closed). Local `740b738` matches the tracking
+reference; live Writing goes directly to `/blog` and phone viewport uses the
+compact renderer. Fresh live browser-gesture diagnostics reach the drawing with
+16.7 ms draw p95 and no observed long tasks; style work is 14.1/18.8 ms across
+desktop/phone-viewport runs. No deploy or push performed in this turn.
+Next gate is the user's updated production scroll result on Mac Chrome and
+iPhone Air Safari, then a native trace if it still stutters. New features remain
+lower priority. Headless results do not close physical-device acceptance.

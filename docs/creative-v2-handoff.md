@@ -59,10 +59,10 @@ SVG-home browser harness were retired; Work/Elsewhere and useful generated
 artwork remain. Two essays remain sample content and noindex;
 public routing does not turn sample prose into final authored writing.
 
-The current final production preview is **http://localhost:3005**. Check whether it is
-running before starting another: `pnpm build`, then
-`pnpm start --hostname localhost --port 3005`. The preexisting dev server on 3000
-was left intact. Current server state and check results belong in validation.
+**Current server state: all repo servers are stopped at user request**, including
+dev 3000 and previews 3001/3002/3004/3005; listener checks confirmed closure.
+Do not restart a preview as part of a handoff. The current test target is live
+`https://www.maxsash.com`. Earlier preview references below are historical.
 
 ## Mechanism and limits
 
@@ -151,8 +151,15 @@ reproduce visible stutter. Commit subject:
 `fix: synchronize sea reveal with scroll frames`. Final preview is now
 `http://localhost:3005`; read current validation for exact commands/reports.
 
-**Next bounded task:** deploy this revision through the user's hosting workflow,
-then compare production/local on Mac Chrome and recheck iPhone Air Safari,
+**Updated release checkpoint:** `740b738` matches local `origin/main`; Writing
+and compact rendering are observable live. Fresh production native-scroll
+diagnostics show 16.7 ms draw p95, zero observed long tasks and 14.1/18.8 ms
+style totals for desktop/phone viewport. All repo servers stopped. Only active
+docs changed this turn; no application edits, push or hosting action. Exact
+evidence and physical limits are in current validation.
+
+**Next bounded task:** obtain the user's reloaded production scroll result on
+Mac Chrome and iPhone Air Safari,
 prioritizing wheel/touch scroll through the reveal and warm/cold runs. Record browser/OS/version, refresh
 and Low Power settings; trace persistent production-only Mac stalls. Performance
 remains open until actual physical-device evidence improves. This precedes

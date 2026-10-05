@@ -4,6 +4,40 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Current refinement — responsive long mobile opening
+
+The user reported that Sea → Structure held still for too long and then rushed.
+The 1,800 ms opening now uses quadratic ease-out `t * (2 - t)` instead of the
+flat-start quintic smootherstep. Mobile progress below .55 maps directly from
+reveal 0 to the original Structure endpoint `(0.55 - 0.14) / 0.75`, eliminating
+the initial desktop scroll hold in that mobile range. The mappings meet exactly
+at Structure. Stage 2 → 3 retains its 600 ms smootherstep and original reveal
+path; desktop continuous scrolling is unchanged. Reverse moves retain their
+600 ms smootherstep but use the continuous mobile opening mapping. Reduced
+motion still jumps immediately to the same stage endpoints.
+
+Validation on 5 October 2026: production build/types, lint, harness syntax and
+diff checks pass. Full isolated Chrome report `tools/.out/creative-home/report.json`,
+`2026-10-05T16:21:27.691Z`: **121 records pass**, no runtime exceptions, GL errors
+or detected overflow. A new regression reads the actual WebGL `uReveal` uniform
+at roughly 200/800/1600/1880 ms after an opening swipe. Two passes returned:
+
+| Sample | First opening | Repeated opening |
+| --- | --- | --- |
+| 200 ms | .1102 | .1139 |
+| 800 ms | .3751 | .3774 |
+| 1600 ms | .5393 | .5398 |
+| Settled | .5467 | .5467 |
+
+This verifies an early reveal, continued progress across the longer interval,
+and the original settled endpoint. Existing 2 → 3, rotation, interrupted reverse,
+pause, reduced-motion, lifecycle, field parity, controls, fallback and no-JS
+checks pass. Sampling timings include browser/tool overhead; these are not a
+physical Safari animation trace. Port 3006 verified closed after temporary QA.
+Documentation updated with the revised easing and unchanged durations. Changes
+remain uncommitted for review, with no push/deploy. Physical iPhone Air Safari
+acceptance must be repeated for this revised curve.
+
 ## Current controls — visitor opt-in audio and footer-only system-default theme
 
 User prioritizes visitor choice and browser policy compliance while keeping wave

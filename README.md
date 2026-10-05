@@ -100,7 +100,8 @@ Old observatory/atlas sample URLs redirect to the corresponding public routes.
 The earlier Wind/Helm, blog workbenches and voyage were removed. The foundation
 commit is authorized; its actual record is in the handoff. Future unselected
 experiments remain uncommitted until approved. The user has deployed the
-foundation to `maxsash.com`; latest fixes require their hosting workflow.
+foundation to `maxsash.com`; direct Writing and compact/optimized scroll rendering
+are now observable live. Local dev/preview servers were stopped at user request.
 
 Production feedback prioritizes direct Writing navigation and smoothness on
 iPhone Air/MacBook Pro. Writing now opens `/blog` directly. Touch/narrow screens

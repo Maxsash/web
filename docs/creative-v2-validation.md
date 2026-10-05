@@ -4,6 +4,38 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Server shutdown and updated production qualification — latest state
+
+5 October: user requested all servers shut down and continuation. Tree was clean
+at `740b738`, with `main` matching the local `origin/main` tracking reference;
+the three fixes have been pushed outside this agent turn. No push or deployment
+was performed here. Live HTML now has Writing → `/blog`, and the production
+diagnostic confirms compact phone rendering plus reduced scroll style cost.
+This verifies live behavior, not an exact hosting deployment commit hash.
+
+Confirmed working directories before sending TERM to this repo's dev server
+and four preview servers. Closed ports **3000, 3001, 3002, 3004, 3005**;
+`lsof` found no remaining listeners on those ports. No local server was restarted.
+Earlier preview-running descriptions below are historical, not current state.
+
+Completed the next read-only live qualification:
+`node tools/check-creative-v2.mjs https://www.maxsash.com --diagnose --native-scroll`.
+Report: `tools/.out/creative-production-native-scroll/report.json`, timestamp
+`2026-10-05T12:18:17.091Z`. Two browser-gesture traversals reach the
+atlas chapter, with no runtime exceptions or observed long tasks/overflow.
+Desktop and phone-viewport callback/draw p95 both **16.7 ms**, 482 scene draws
+in each 8-second window. Live style totals now **14.1 ms desktop / 18.8 ms phone
+viewport**, versus 278.3/212.9 ms on the old production path. Phone canvas is
+now compact at **329,160 pixels**, versus the old 740,610 pixels. This is a
+single headless Chrome/M4 Pro sample, not actual iPhone Safari acceptance.
+
+Physical MacBook Pro/Chrome and iPhone Air/Safari recheck is pending user
+feedback after reload. Ask whether sea-reveal scrolling is smooth, improved
+but stuttering, or still laggy. If improved, record the user's actual result;
+if not, prioritize a native browser trace during the failing scroll before
+new features. User's physical feedback is not replaced by these headless numbers.
+Build/model checks were not repeated: no application code changed this turn.
+
 ## Scroll-specific feedback — current checkpoint
 
 User clarified that **scrolling down through the sea reveal** is noticeably

@@ -221,6 +221,12 @@ coalesces scroll events and hides the covered fallback while WebGL is active.
 Use `--diagnose --native-scroll` for browser-gesture/style-cost evidence; still
 require real-device verification after the local revisions reach production.
 
+Latest release state: direct Writing and compact rendering are now observable
+in production, and the live native-scroll style cost matches the optimized
+path. All local repo servers were shut down at user request. Next step is actual
+Mac Chrome/iPhone Safari feedback on the updated live scroll, followed by a
+native trace if it still stutters; no new feature takes priority over that gate.
+
 5 October feedback supersedes the generic order below: eliminate the Writing
 intermediate click and investigate lag on iPhone Air and MacBook Pro at
 `maxsash.com`, despite smooth localhost. Prioritize this before new content

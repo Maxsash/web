@@ -10,6 +10,9 @@ an open physical-device gate. Production now shows direct Writing and compact
 rendering; fresh live gesture diagnostics measure 14.1/18.8 ms style totals at
 desktop/phone viewport. All repo dev/preview servers are stopped.
 Exact commands, scope, changes and next rechecks are recorded there.
+Latest physical feedback: Mac Chrome is much better; supplied iPhone Air Safari
+recording shows the remaining scroll issue. The current checkpoint prioritizes
+new scroll samples over idle cadence limits; actual validation is in v2 evidence.
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).
 

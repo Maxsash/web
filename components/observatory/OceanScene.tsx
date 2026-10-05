@@ -25,6 +25,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     let pointer:[number,number]=[0,0], target:[number,number]=[0,0];
     let slowFrames=0, sampleFrames=0, performanceStart=0;
     let scrollDirty=true, lastScrollY=-1;
+    let nextDraw=0;
     const opacityGroups=[
       [styles.intro,styles.shade,styles.sceneMeta],
       [styles.middle,styles.technical],
@@ -52,11 +53,13 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       frame=0;
       if(disposed)return;
       const active=visible&&!document.hidden&&!stopped&&!media.matches;
-      // Bound GPU work on high-refresh displays; slow delivery uses a 30 Hz ceiling.
-      // Scroll/pause/reduced-motion stills continue to request finite draws.
-      if(engine&&active&&lastTime&&now-lastTime<1000/(low?30:60)-1){frame=requestAnimationFrame(render);return;}
+      const scrollChanged=scrollDirty||window.scrollY!==lastScrollY;
+      // Pace idle animation, never hold back a new scroll sample behind that budget.
+      // Advance a deadline rather than restarting the interval after each draw:
+      // slightly early/variable Safari callbacks must not repeatedly skip a frame.
+      if(engine&&active&&!scrollChanged&&nextDraw>now+1){frame=requestAnimationFrame(render);return;}
       // HTML reveal and GPU camera now sample the same scroll position in one frame.
-      if(scrollDirty||window.scrollY!==lastScrollY)updateScroll();
+      if(scrollChanged)updateScroll();
       if(!engine||!visible||document.hidden)return;
       const interval=lastTime?(now-lastTime)/1000:0;
       const delta=lastTime?Math.min((now-lastTime)/1000,.05):0;
@@ -66,6 +69,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       pointer=media.matches?[0,0]:[pointer[0]+(target[0]-pointer[0])*damping,pointer[1]+(target[1]-pointer[1])*damping];
       const reveal=media.matches?(progress>.45?1:0):clamp((progress-.14)/.75);
       engine.draw(elapsed,reveal,pointer);
+      const drawInterval=1000/(low?30:60);
+      nextDraw=!active?0:scrollChanged||!nextDraw||now-nextDraw>drawInterval?now+drawInterval:nextDraw+drawInterval;
       if(!presented){presented=true;canvas.dataset.renderer="webgl2";scene.dataset.rendering="webgl2";setReady(true);}
       canvas.dataset.quality=media.matches?"still":low?"low":compact?"compact":"high";
       if(active) {
@@ -79,7 +84,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       }
     };
     const requestFrame=()=>{if(!frame&&!disposed)frame=requestAnimationFrame(render);};
-    const restart=()=>{cancelAnimationFrame(frame);frame=0;lastTime=0;requestFrame();};
+    const restart=()=>{cancelAnimationFrame(frame);frame=0;lastTime=0;nextDraw=0;requestFrame();};
     const resize=()=>{
       const bounds=scene.getBoundingClientRect();start=bounds.top+scrollY;
       width=stage.clientWidth;height=stage.clientHeight;distance=Math.max(1,scene.offsetHeight-height);

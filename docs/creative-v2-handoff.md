@@ -83,7 +83,9 @@ sea. Coarse pointer or <760 px at mount chooses compact, retained across resize:
 360,000 pixels/DPR 1 versus desktop 1.5 million/DPR 1.25. Fixed wave constants
 are prepared once for shaders. Animation is bounded to 60 Hz, with sustained
 slow delivery reducing resolution and ceiling to 30 Hz. These are workload
-budgets, not qualified GPU tiers. Context loss stays on fallback until reload. The vessel is a
+budgets, not qualified GPU tiers. Latest scheduler correction applies these
+ceilings to idle motion; new scroll samples draw at the next browser callback.
+Context loss stays on fallback until reload. The vessel is a
 procedural sailboat, not the exact integral brand mark. Fine light ripples and
 wake are approximations; this is not a fluid simulation or live ocean feed.
 
@@ -164,6 +166,19 @@ prioritizing wheel/touch scroll through the reveal and warm/cold runs. Record br
 and Low Power settings; trace persistent production-only Mac stalls. Performance
 remains open until actual physical-device evidence improves. This precedes
 new creative features and portfolio work. Authentic content still needs facts.
+
+**Latest physical feedback:** user supplied an 8.17 s iPhone Air Safari recording
+and says Mac Chrome is much better. Recording frames reviewed; Safari reveal
+stutter remains open, without a measured root cause. Changed `OceanScene.tsx`
+to let new scroll samples bypass idle cadence and to advance idle deadlines,
+plus the browser regression and active docs. GPU/model/composition stay intact;
+scroll can now draw faster than the idle ceiling. Commit subject:
+`fix: prioritize scroll input over idle sea cadence`. Consult latest validation
+for actual checks: build/types/lint and 67 browser records pass, including scroll
+priority in low quality (21 draws for 20 synthetic scroll samples). Temporary QA
+server closed, with no repo listeners; no persistent
+preview. Next is deploy/repeat the same iPhone gestures, then a native Safari
+trace/version investigation if it still stutters. Mac gains must be preserved.
 
 **After the foundation commit:** qualify on named physical phones, then continue
 authentic project/content work and focused refinements from the implementation

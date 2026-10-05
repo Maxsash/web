@@ -2,9 +2,11 @@
 
 Updated: 5 October 2026. Current evidence is in
 [creative-v2-validation.md](creative-v2-validation.md).
-The latest Writing/performance checkpoint passes 64 browser records. Read-only
-live/local diagnostics did not reproduce sustained lag in headless Chrome;
-the user's iPhone Air/MacBook Pro report remains an open physical-device gate.
+The latest scroll-synchronization checkpoint passes 66 browser records.
+Browser-gesture before/after tests reduced measured style work by about 93% in
+the local samples. Read-only live scrolling still did not reproduce visible
+lag in headless Chrome; the user's iPhone Air/MacBook Pro scroll report remains
+an open physical-device gate. Production still uses the older rendering path.
 Exact commands, scope, changes and next rechecks are recorded there.
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).

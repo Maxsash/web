@@ -59,9 +59,9 @@ SVG-home browser harness were retired; Work/Elsewhere and useful generated
 artwork remain. Two essays remain sample content and noindex;
 public routing does not turn sample prose into final authored writing.
 
-The current final production preview is **http://localhost:3004**. Check whether it is
+The current final production preview is **http://localhost:3005**. Check whether it is
 running before starting another: `pnpm build`, then
-`pnpm start --hostname localhost --port 3004`. The preexisting dev server on 3000
+`pnpm start --hostname localhost --port 3005`. The preexisting dev server on 3000
 was left intact. Current server state and check results belong in validation.
 
 ## Mechanism and limits
@@ -123,7 +123,7 @@ subject: `fix: dispose ocean engine on context loss`. Preview is running on
 The fallback-on-loss policy remains; automatic restoration is not introduced.
 This checkpoint is committed as `86f1589`.
 
-**Current feedback checkpoint:** user reported Writing's extra click and lag on
+**Completed feedback checkpoint (`df871c3`):** user reported Writing's extra click and lag on
 production `maxsash.com`: iPhone Air/Safari and MacBook Pro/Chrome, despite smooth
 localhost. Writing now opens `/blog` directly. Smaller compact mesh/pixel budget,
 precomputed shader constants, bounded draw cadence, reachable slow-frame
@@ -137,9 +137,23 @@ Full evidence and approximation limits are in validation.
 Commit subject: `fix: streamline Writing and reduce sea rendering cost`.
 Final preview is `http://localhost:3004`; no remote push/deployment in this session.
 
+**Latest clarification/checkpoint:** lag occurs specifically while scrolling
+down through the sea reveal on Mac Chrome and iPhone Air Safari. Opacity updates
+now share the GPU's scroll sample/frame, scroll events queue work, unchanged
+values are skipped, and the covered SVG fallback is hidden while WebGL is active
+(restored on loss). Changes: `OceanScene.tsx`, scoped Observatory CSS, browser
+harness and checkpoint docs. Build/types/lint and 66 browser records pass;
+desktop/phone reveal and fallback captures reviewed. Native browser-gesture
+local before/after measurements cut style recalculation by ~93% in the samples;
+GPU/physical-phone improvement is not established. Production still has the
+older Writing link and larger phone canvas; live headless gesture tests did not
+reproduce visible stutter. Commit subject:
+`fix: synchronize sea reveal with scroll frames`. Final preview is now
+`http://localhost:3005`; read current validation for exact commands/reports.
+
 **Next bounded task:** deploy this revision through the user's hosting workflow,
 then compare production/local on Mac Chrome and recheck iPhone Air Safari,
-including scroll/reveal and warm/cold runs. Record browser/OS/version, refresh
+prioritizing wheel/touch scroll through the reveal and warm/cold runs. Record browser/OS/version, refresh
 and Low Power settings; trace persistent production-only Mac stalls. Performance
 remains open until actual physical-device evidence improves. This precedes
 new creative features and portfolio work. Authentic content still needs facts.

@@ -58,9 +58,10 @@ does not change hosting or deploy new revisions.
 
 ## Sequence and commit boundaries
 
-1. **Current priority, from production feedback:** Writing opens `/blog` in one
-   click; reduce sea rendering cost and investigate production/local smoothness
-   on the user's iPhone Air and MacBook Pro. Foundation promotion is complete.
+1. **Current priority, clarified feedback:** sea reveal stutters while scrolling
+   on production (MacBook Pro/Chrome and iPhone Air/Safari). Writing's one-click
+   fix is committed locally; qualify scroll synchronization/compositing before
+   new features. Idle cadence alone does not qualify this interaction.
 2. Recheck the updated revision on those physical devices in the same browser;
    qualify renderer/fallbacks, quality budgets and accessibility from evidence.
 3. Develop authentic project spreads and refine the whole main-site journey.
@@ -112,3 +113,13 @@ desktop retains 60,000 triangles/1.5 million pixels. Fixed wave constants are
 prepared once, animation draw rate is bounded, and the slow-frame downgrade no
 longer excludes sub-20-fps devices. Validation and exact limits belong in
 `creative-v2-validation.md`; no physical-device improvement is claimed yet.
+
+## Scroll-specific continuation
+
+User clarified the lag appears when scrolling down through the sea reveal on
+both devices. Current local work coalesces scroll updates with the GPU draw,
+sets only affected opacity layers (instead of inherited scene variables), avoids
+unchanged chapter/style writes, and hides the covered SVG fallback after a GPU
+draw. Added programmatic and browser-gesture scrolling diagnostics. Actual
+results, local/production revision distinction and physical limits belong in
+current validation. This clarification supersedes idle-only smoothness checks.

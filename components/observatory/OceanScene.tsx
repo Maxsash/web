@@ -25,7 +25,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const stageLabel=stageControls?.querySelector<HTMLElement>("[data-stage-label]");
     const previousButton=stageControls?.querySelector<HTMLButtonElement>("[data-stage-previous]");
     const nextButton=stageControls?.querySelector<HTMLButtonElement>("[data-stage-next]");
-    let stageIndex=0,stageProgress=0,stageFrom=0,stageTarget=0,stageStarted=0;
+    let stageIndex=0,stageProgress=0,stageFrom=0,stageTarget=0,stageStarted=0,stageDuration=600;
     if(staged)scene.dataset.staged="true";
     const events=new AbortController();
     let engine: Awaited<ReturnType<typeof import("./ocean-engine").createOceanEngine>> | undefined;
@@ -62,7 +62,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       frame=0;
       if(disposed)return;
       if(stageStarted){
-        const t=media.matches?1:clamp((now-stageStarted)/600);
+        const t=media.matches?1:clamp((now-stageStarted)/stageDuration);
         // Smootherstep gently accelerates and settles with zero endpoint acceleration.
         const eased=t*t*t*(t*(t*6-15)+10);
         stageProgress=stageFrom+(stageTarget-stageFrom)*eased;
@@ -112,7 +112,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     stageRef.current=direction=>{
       if(!staged)return;
       if(direction>0&&stageIndex===stages.length-1){document.getElementById("work")?.scrollIntoView({behavior:media.matches?"instant":"smooth"});return;}
+      const previousIndex=stageIndex;
       stageIndex=Math.max(0,Math.min(stages.length-1,stageIndex+direction));
+      // Let the first dimensional reveal unfold; other moves stay responsive.
+      stageDuration=previousIndex===0&&stageIndex===1?1800:600;
       stageFrom=stageProgress;stageTarget=stages[stageIndex].progress;
       stageStarted=media.matches?0:performance.now();
       if(media.matches)stageProgress=stageTarget;

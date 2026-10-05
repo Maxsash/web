@@ -202,11 +202,12 @@ try{
    results.push({name:'mobile-multitouch-keeps-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'")});
    await call('Emulation.setPageScaleFactor',{pageScaleFactor:1});
    const swipe=async(direction)=>{
+     const openingReveal=direction>0&&await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'");
      const from=direction>0?620:300,to=direction>0?300:620;
      await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:180,y:from,id:1}]});
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:(from+to)/2,id:1}]});await delay(20);
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
-     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(680);
+     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(openingReveal?1880:680);
    };
    for(let index=1;index<=2;index++){
      await swipe(1);

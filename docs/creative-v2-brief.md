@@ -50,11 +50,6 @@ and identity with A while using different page composition and colour.
 
 ## Foundation scope and next work
 
-The public foundation is `/` and `/blog`, including two labelled sample essays.
-`/samples` records that foundation; old observatory/atlas sample URLs redirect to
-the corresponding public routes. Existing Work/Elsewhere access remains useful
-while its final project/port art direction is developed.
-
 The user approved this foundation, not a claim that the entire roadmap is done.
 Real project content/spreads, richer article instruments, physical phone
 qualification, meaningful optional tilt, observation ingestion and C remain
@@ -67,3 +62,7 @@ record, [the plan](creative-v2-plan.md) for ordered implementation, and
 [engineering study](research/creative-engineering-v2.md), and
 [whole-site audit](research/creative-audit-v2.md) preserve the rationale and
 unselected alternatives.
+
+
+Current workflow: edit the main site directly, leave changes uncommitted for
+review, and commit accepted work with documentation. Sample routes are retired.

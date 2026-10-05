@@ -22,7 +22,7 @@ if(!local&&!(diagnostic&&base.protocol==='https:'&&['maxsash.com','www.maxsash.c
 const quick=process.argv.includes("--quick");
 const out=diagnostic?`tools/.out/creative-${local?'local':'production'}-${nativeScroll?'native-scroll':scrollDiagnostic?'scroll':'diagnostic'}`:"tools/.out/creative-home";mkdirSync(out,{recursive:true});
 const articlePaths=["/blog/three-waves-one-sea","/blog/an-integral-under-sail"];
-const publicPaths=["/","/samples","/blog",...articlePaths];
+const publicPaths=["/","/blog",...articlePaths];
 const chrome=process.env.CHROME_BIN||["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","/usr/bin/google-chrome","/usr/bin/chromium"].find(existsSync);
 if(!chrome)throw new Error("Chrome not found");
 const profile=mkdtempSync(join(tmpdir(),"maxsash-v2-"));
@@ -31,18 +31,6 @@ let browserLog="",socket;child.stderr.on("data",d=>browserLog=(browserLog+d.toSt
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 const results=[],errors=[],assets={};
 try{
- // Legacy bookmarks must preserve their destination and authored sea identity.
- for(const [source,target] of (diagnostic?[]:[
-   ["/samples/observatory?seed=27c4b901","/?seed=27c4b901"],
-   ["/samples/atlas","/blog"],
-   ["/samples/atlas/three-waves-one-sea",articlePaths[0]],
-   ["/samples/atlas/an-integral-under-sail",articlePaths[1]],
- ])){
-   const response=await fetch(new URL(source,base),{redirect:"manual",signal:AbortSignal.timeout(20000)});
-   const location=response.headers.get("location");
-   results.push({name:"legacy-redirect",source,target,status:response.status,location,pass:response.status===308&&location!==null&&new URL(location,base).href===new URL(target,base).href});
-   await response.arrayBuffer();
- }
  const portPath=join(profile,"DevToolsActivePort");
  for(let i=0;!existsSync(portPath);i++){if(i>200||child.exitCode!==null)throw new Error(`Chrome startup: ${browserLog}`);await delay(50);}
  const port=readFileSync(portPath,"utf8").split("\n")[0];
@@ -101,8 +89,7 @@ try{
  const projectContent=await evaluate("(()=>{const w=document.getElementById('work');return {titles:[...w.querySelectorAll('article')].map(e=>e.getAttribute('aria-label')),links:[...w.querySelectorAll('a')].map(a=>a.getAttribute('href'))};})()");
  results.push({name:'real-projects-and-case-studies',...projectContent,pass:projectContent.titles.join('|')==='Household Hub|Wedding Photo Platform'&&['https://tenant-management-2my6.vercel.app/','https://wedding-demo-teal.vercel.app/','https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html','https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html'].every(url=>projectContent.links.includes(url))&&!projectContent.links.includes('#')});
  results.push({name:'approved-work-spreads',pass:await evaluate("(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===2&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('light theme')&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===2&&!w.textContent.includes('awaiting selection');})()")});
- const workRedirect=await fetch(new URL('/samples/work',base),{redirect:'manual'});
- results.push({name:'selected-work-study-redirect',pass:workRedirect.status===308&&workRedirect.headers.get('location')==='/#work'});await workRedirect.arrayBuffer();
+ results.push({name:'approved-elsewhere-and-contact',pass:await evaluate("(()=>{const e=document.getElementById('elsewhere');return e.querySelectorAll('ul a').length===3&&e.querySelector('h2#elsewhere-heading')!==null&&e.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('main footer').length===1;})()")});
  results.push({name:'portfolio-replaces-placeholder-destinations',pass:await evaluate("!!document.querySelector('#elsewhere a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]') && !document.querySelector('#elsewhere a[href=\"/resume.pdf\"]') && !document.querySelector('#elsewhere a[href=\"https://www.maxsash.com\"]')")});
 
  await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]').click()");
@@ -110,12 +97,12 @@ try{
  results.push({name:"writing-one-click-navigation",pass:await evaluate("location.pathname==='/blog' && !document.querySelector('canvas[data-ocean]')")});
  await load('/');results.push({name:'desktop-remains-continuous',pass:await evaluate("!document.querySelector('[data-observatory]').dataset.staged && getComputedStyle(document.querySelector('[data-stage-controls]')).display==='none'")});
  await load("/blog");
- const notebook=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),articles:[...new Set([...document.querySelectorAll('a[href^="/blog/"]')].map(e=>e.getAttribute('href')))],legacyArticleLinks:document.querySelectorAll('a[href^="/samples/atlas/"]').length}))()`);
- results.push({name:"public-blog-index",...notebook,pass:/\bnoindex\b/i.test(notebook.robots)&&articlePaths.every(path=>notebook.articles.includes(path))&&notebook.legacyArticleLinks===0});
+ const notebook=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),articles:[...new Set([...document.querySelectorAll('a[href^="/blog/"]')].map(e=>e.getAttribute('href')))]}))()`);
+ results.push({name:"public-blog-index",...notebook,pass:/\bnoindex\b/i.test(notebook.robots)&&articlePaths.every(path=>notebook.articles.includes(path))});
  for(const path of articlePaths){
    await load(path);
-   const article=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),heading:document.querySelector('h1')?.textContent,blogLinks:document.querySelectorAll('a[href="/blog"]').length,legacyArticleLinks:document.querySelectorAll('a[href^="/samples/atlas"]').length}))()`);
-   results.push({name:"public-blog-article",path,...article,pass:/\bnoindex\b/i.test(article.robots)&&Boolean(article.heading?.trim())&&article.blogLinks>0&&article.legacyArticleLinks===0});
+   const article=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),heading:document.querySelector('h1')?.textContent,blogLinks:document.querySelectorAll('a[href="/blog"]').length}))()`);
+   results.push({name:"public-blog-article",path,...article,pass:/\bnoindex\b/i.test(article.robots)&&Boolean(article.heading?.trim())&&article.blogLinks>0});
  }
  for(const [width,height] of (quick?[[1440,1000],[390,844]]:[[1440,1000],[390,844],[320,568],[768,1024],[1024,768],[844,390]])){
    await call("Emulation.setDeviceMetricsOverride",{width,height,deviceScaleFactor:1,mobile:width<760});
@@ -132,11 +119,20 @@ try{
      const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});writeFileSync(join(out,`home-${width}-work-spreads.png`),Buffer.from(shot.data,'base64'));
      results.push({name:'work-spread-figure-layout',width,pass:await evaluate("(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===2&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()")});
    }
+   if(width===1440||width===390){
+     await evaluate("document.getElementById('elsewhere').scrollIntoView({behavior:'instant'})");await delay(100);
+     const clip=await evaluate("(()=>{const r=document.getElementById('elsewhere').getBoundingClientRect();return {x:0,y:r.top+scrollY,width:innerWidth,height:r.height,scale:1};})()");
+     const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});writeFileSync(join(out,`home-${width}-elsewhere-spread.png`),Buffer.from(shot.data,'base64'));
+     results.push({name:'elsewhere-link-layout',width,pass:await evaluate("[...document.querySelectorAll('#elsewhere a')].every(a=>{const r=a.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.height>=44;})")});
+   }
    await load("/blog");await snapshot(`atlas-${width}`,true);
    if(!quick&&width===390){await load(articlePaths[0]);await snapshot("article-390",true);await load(articlePaths[1]);await snapshot("mark-article-390",true);}
  }
  if(!quick){
    // Exercise lifecycle instead of inferring it from stills.
+   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await load('/');
+   await evaluate("document.documentElement.style.fontSize='200%';document.getElementById('elsewhere').scrollIntoView({behavior:'instant'})");await delay(100);results.push({name:'elsewhere-390-text-200',pass:await evaluate("[...document.querySelectorAll('#elsewhere h2,#elsewhere h3,#elsewhere p,#elsewhere a')].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})")});
+   await evaluate("document.documentElement.style.fontSize=''");
    await load("/");await delay(100);
    const frames=()=>evaluate("Number(document.querySelector('canvas[data-ocean]').dataset.frameCount)");
    await evaluate("document.querySelector('button[aria-pressed]').click()");await delay(120);

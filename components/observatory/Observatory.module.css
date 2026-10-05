@@ -102,9 +102,6 @@
 .publication h2 em { font-weight:350; color:#c2a879; }
 .publication a > div > p { max-width:18rem; font-size:.85rem; line-height:1.8; color:#c4cebc; }
 .publication .textLink { color:#e8e5d8; }
-.footer { padding:1.3rem var(--obs-gutter); display:flex; align-items:center; justify-content:space-between; gap:1.5rem; font:.6rem/1.6 var(--font-mono); }
-.footer a { display:inline-flex; align-items:center; min-height:44px; text-decoration:none; }
-.footer > span { opacity:.6; }
 @media(max-width:760px) {
  .story { height:230svh; min-height:1350px; }
  .stage { min-height:100svh; }
@@ -140,7 +137,6 @@
  .publicationTop { font-size:.47rem; }
  .publication > a { grid-template-columns:1fr; gap:2rem; }
  .publication h2 { font-size:clamp(3.4rem,13vw,5rem); }
- .footer { flex-wrap:wrap; gap:.3rem 1rem; font-size:.53rem; }
 }
 @media(max-height:620px) {
  .stage { min-height:100svh; }

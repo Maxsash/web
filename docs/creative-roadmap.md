@@ -10,22 +10,24 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
-## Current continuation — approved Work spreads promoted
+## Current workflow and checkpoint — main site only
 
-The user selected the project-spread composition and explicitly requested moving
-it from samples into production Work. The homepage `#work` now shows the leading
-Household Hub spread with its populated light-theme expense Insights capture,
-followed by Wedding Photo Platform. Demo/privacy captions, case-study/demo links
-and Portfolio access are preserved. Semantic hierarchy is Work h2 / project h3;
-there is still one homepage h1 and one `#work` target.
+The user selected Elsewhere and explicitly retired the sample-route workflow.
+Elsewhere now lives in the homepage with numbered destination rows, direct email
+contact and a colophon. The duplicate old homepage footer is removed. The sample
+route tree, review-only stylesheet, old card/port stylesheet and sample redirect
+configuration are deleted. Sample URL compatibility is intentionally retired.
 
-`components/Work.tsx` and `Work.module.css` own the accepted composition; images
-are under `public/images/work/`. The sample UI/CSS and review notice are removed;
-`/samples/work` now permanently redirects to `/#work`. The earlier review link
-is removed from `/samples`. This user selection authorizes committing the
-accepted code/assets and documentation together. No new motion/client engine.
-Next: production feedback on the integrated section, then the remaining
-publication/Elsewhere refinements. No hosting deployment in this checkpoint.
+Future creative work goes directly into the main site, stays uncommitted for
+user review, and is committed only when accepted. Do not create sample pages or
+review galleries. AGENTS.md records this instruction; it supersedes historical
+sample workflow descriptions in research and validation. The labelled sample
+essays in the notebook are writing-content status, not sample-route scaffolding;
+they remain honest and noindex until actual authored writing is supplied.
+
+Next: feedback on the integrated homepage, then deepen one notebook explanation
+or replace sample writing with user-authored posts when available. No sensor/C
+feature or hosting deployment is included in this checkpoint.
 
 ## Latest selected interaction — staged mobile sea
 
@@ -57,19 +59,6 @@ A is the main website; B is its distinct publication; C remains an optional
 mathematical discovery to develop later. **The Living Atlas** uses one authored
 sea that reveals its construction through native scrolling and becomes a
 reproducible printed plate. The notebook has its own editorial composition.
-
-| Route | Purpose |
-| --- | --- |
-| `/` | Living Atlas homepage: ocean/ship → drawing, existing Work and Elsewhere access, edition explanation, notebook threshold and contact |
-| `/?seed=27c4b901` | Another deterministic authored sea edition |
-| `/blog` | Engraved Navigator's Notebook index |
-| `/blog/three-waves-one-sea` | Six-wave sample essay; inherited slug |
-| `/blog/an-integral-under-sail` | Brand construction sample essay |
-| `/samples` | Index of the approved foundation and a home for future explorations |
-| `/samples/observatory` | Redirect to `/`; retains old review links |
-| `/samples/atlas` and `/samples/atlas/:slug` | Redirect to `/blog` and `/blog/:slug` |
-| `/api/sea-edition` | Reproducible authored coefficients |
-| `/api/sea-edition/print` | Printable SVG at model time zero |
 
 Two articles remain clearly labelled samples. Work now has two verified real
 projects; their proposed spreads and the final port treatment remain under review. No new sensor interaction, real ocean feed or C experience is
@@ -112,12 +101,6 @@ does not change hosting or deploy new revisions.
 6. Earn optional phone orientation with a worthwhile inspection view.
 7. Prototype and review one strong C discovery independently.
 8. Complete release qualification; deploy only when requested.
-
-Each step's dependencies, files and acceptance gates are in
-[the implementation plan](creative-v2-plan.md). Commit accepted work together
-with its documentation. Future unselected experiments remain under `/samples`
-and uncommitted until approved. That rule does **not** block the explicitly
-authorized Living Atlas foundation commit. Stage related files deliberately.
 
 Fresh promotion checks belong in [current validation](creative-v2-validation.md).
 The earlier prototype measurements are historical comparisons until rerun on

@@ -4,6 +4,62 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Latest checkpoint — Elsewhere promoted; sample workflow removed
+
+User selected Elsewhere and explicitly requested removing sample scaffolding,
+with future changes made directly in the main site and left uncommitted until
+accepted. Updated AGENTS.md and active roadmap/plan/handoff/brief accordingly.
+Historical validation/research remains a record, not a current instruction.
+
+Homepage Elsewhere now contains the selected destination rows, decorative
+compass, email contact panel and colophon. Semantic hierarchy is Elsewhere h2
+and subsection h3; one homepage h1 and one footer remain. The duplicate old
+footer and its CSS are removed. The entire `app/samples` tree, review-only CSS,
+old shared card/port CSS and sample-only `next.config.ts` redirects are deleted.
+No sample-route references remain in runtime app/components or the browser
+harness. Removed unused ignored sample check adapters and sample capture folders.
+Shared artwork/model/generator tools and honest sample essay labels remain.
+Former sample URLs now have no route; compatibility redirects are intentionally
+retired per user request, not silently preserved as extra scaffolding.
+
+Production build (includes types), lint, harness syntax and diff checks pass.
+Build route inventory contains only homepage, blog/articles, edition APIs and
+icons. Full local browser report `tools/.out/creative-home/report.json`,
+`2026-10-05T14:07:01.999Z`, temporary `http://localhost:3006/`: **92 records pass**
+(41 captures, 50 assertions, one cadence run), no runtime exceptions, GL errors
+or detected overflow. Five obsolete sample redirect assertions were removed;
+new checks cover Elsewhere semantics/contact, 44 px link targets at desktop and
+phone widths, and scoped 200% text bounds. Two additional full-section captures
+`home-1440-elsewhere-spread.png` and `home-390-elsewhere-spread.png` were visually
+reviewed. Existing Work, Writing, mobile stages, lifecycle, fallback and no-JS
+checks pass. CSS text enlargement is not a physical VoiceOver/browser zoom test.
+
+QA server stopped via EXIT trap. No push or hosting deploy. Commit subject:
+`feat: promote Elsewhere and remove sample scaffolding`. Next work is directly
+in the main site, with review before committing new creative changes.
+
+## Elsewhere composition study — awaiting selection
+
+Built `/samples/elsewhere` with existing destinations, decorative compass,
+numbered text links, email contact panel and colophon. Metadata is noindex;
+no JavaScript/client engine or external content dependency is introduced. Public
+homepage remains unchanged. Route/CSS and `/samples` discovery card are uncommitted
+until selection; documentation records this working-tree review state.
+
+Production build (includes types), lint, diff checks and sample-specific isolated
+browser checks pass. Report `tools/.out/elsewhere-study/report.json`,
+`2026-10-05T13:51:35.118Z`, temporary `http://localhost:3006/`: **13 records pass** including
+five captures (320/390/844/1440 px and 390 px at 200% root text size), sample link/
+noindex assertions and inherited compatibility redirects. No runtime exceptions
+or detected overflow. Visually inspected 1440 px and 390 px captures: clear row
+hierarchy, preserved destination descriptions, readable contact and colophon.
+The text-size check is CSS enlargement, not physical browser zoom or VoiceOver.
+The ignored checker adapts the existing CDP harness; the 93-record public-site
+checkpoint remains the latest full public result and was not needlessly repeated.
+
+QA server stopped automatically. No commit, push or deployment. Next is selecting
+or revising the concrete study before moving it into homepage Elsewhere.
+
 ## Latest checkpoint — approved Work spreads on the homepage
 
 User explicitly requested promoting the revised sample into production Work.

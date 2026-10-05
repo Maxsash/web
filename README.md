@@ -93,10 +93,9 @@ Public routes:
 - `/blog` — engraved Navigator's Notebook with two labelled sample essays
 - `/blog/three-waves-one-sea` — the six-wave study, retaining its original slug
 - `/blog/an-integral-under-sail` — the studio mark construction essay
-- `/samples` — approved-foundation index and future review entry point
 - `/api/sea-edition/print?seed=5ea5cafe&version=1` — reproducible vector engraving
 
-Old observatory/atlas sample URLs redirect to the corresponding public routes.
+The sample gallery, sample routes and their compatibility redirects are removed.
 The earlier Wind/Helm, blog workbenches and voyage were removed. The foundation
 commit is authorized; its actual record is in the handoff. Future unselected
 experiments remain uncommitted until approved. The user has deployed the
@@ -119,7 +118,9 @@ Work now lists Household Hub and Wedding Photo Platform, linking their public
 demos and portfolio case studies. Elsewhere includes the professional Portfolio.
 The user reports the latest staged flow is smooth on iPhone Air Safari.
 The approved project-spread composition now lives in homepage Work, with the
-light-theme expense Insights preview. `/samples/work` redirects to `/#work`.
+light-theme expense Insights preview. Elsewhere includes the destination list,
+contact panel and colophon. Future changes go directly into the main site for
+review while uncommitted; no separate sample pages are used.
 
 This is a foundation: project spread design, optional sensors, a deeper
 mathematical Easter egg and physical-device qualification remain separate tasks.

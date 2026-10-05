@@ -5,9 +5,8 @@ requested promotion to the actual homepage/blog, updated documentation and a
 commit.** Do not ask for that approval again. This is foundation promotion, not
 a claim that the entire creative roadmap or release qualification is complete.
 
-**Foundation commit:** `feat: promote Living Atlas homepage and notebook`
-(5 October 2026). This handoff travels with that commit; use Git history for its
-identifier. The user also explicitly requested push to `origin/main` and wants
+**Foundation commit:** `6adbb9a` — `feat: promote Living Atlas homepage and notebook`
+(5 October 2026). The user also explicitly requested push to `origin/main` and wants
 to deploy the domain themselves for real feedback. Original plan: `012e164`.
 
 ## User intent and decisions

@@ -44,4 +44,3 @@ test("the engraving is a stable t=0 artifact with no active content",()=>{
   const digest=createHash("sha256").update(JSON.stringify(edition)).digest("hex");
   assert.equal(digest,"8ff7cd9c669cae591e6ae7c3ddca9c7ffff876420088dd242603b9478752ac64");
 });
-

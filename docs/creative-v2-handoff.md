@@ -13,7 +13,7 @@ to deploy the domain themselves for real feedback. Original plan: `012e164`.
 
 User explicitly chose stage-by-stage mobile gestures, keeping continuous
 desktop scrolling. This is selected work at `/`, not a sample awaiting approval.
-Three states Sea/Structure/Drawing (0/.55/1) use bounded 420 ms easing:
+Three states Sea/Structure/Drawing (0/.55/1) use bounded 600 ms easing:
 two forward swipes reach Drawing, the next scroll gesture enters Work normally.
 Reverse gestures visit the previous state. Previous/Next buttons and direct
 Work/Writing/skip exits remain. Coarse primary pointer selects mobile at mount;
@@ -31,7 +31,7 @@ Build/types/lint and 81 browser records pass (40 captures, 40 assertions, cadenc
 Actual touch-event progression, reversal, native final exit and reduced-motion
 button flow pass; 390 px Structure/Drawing captures reviewed. Physical Safari smoothness,
 VoiceOver, rotation-session and real pinch zoom remain open. No field/model/API
-change, push or deploy. Commit subject: `refactor: simplify mobile sea to three stages`.
+change, push or deploy. Commit subject: `refactor: soften mobile sea transition pacing`.
 All temporary QA servers are closed after this checkpoint. Next bounded task:
 deploy and verify this selected mobile flow on iPhone Air Safari, preserving the
 user-reported Mac Chrome gains. See latest validation for exact evidence.

@@ -4,7 +4,26 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
-## Latest checkpoint — three mobile stages
+## Latest checkpoint — gentler mobile transition pacing
+
+User requested slightly slower animation and an easing curve that allows the
+design to be appreciated. Mobile stage transitions now take **600 ms** (previously
+420 ms), using quintic smootherstep `6t⁵ − 15t⁴ + 10t³`. Its zero velocity and
+acceleration at both endpoints give a gentle start and settle without overshoot.
+The three stages stay 0/.55/1; reverse transitions use the same curve. Desktop
+continuous scrolling and ambient sea speed remain unchanged. Reduced motion
+still switches immediately. Gesture QA waits now allow the full 600 ms transition.
+
+Production build (including types), lint, harness syntax and diff checks pass.
+Full isolated Chrome report: `tools/.out/creative-home/report.json`,
+`2026-10-05T13:02:23.362Z`, temporary `http://localhost:3006/`.
+**81 records pass: 40 captures, 40 assertions and one cadence run**, with no
+runtime exceptions, GL errors or detected overflow. Forward/reverse stage
+progression, native Work exit and reduced-motion controls pass. This validates
+behavior, not physical Safari smoothness. Temporary server stopped automatically;
+no push or deployment. Commit subject: `refactor: soften mobile sea transition pacing`.
+
+## Previous checkpoint — three mobile stages
 
 The user requested merging Waves and Structure because they looked too similar.
 Started clean at `de12187`, matching `origin/main`. The selected flow is now

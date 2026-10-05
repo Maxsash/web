@@ -206,7 +206,7 @@ try{
      await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:180,y:from,id:1}]});
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:(from+to)/2,id:1}]});await delay(20);
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
-     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(480);
+     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(680);
    };
    for(let index=1;index<=2;index++){
      await swipe(1);

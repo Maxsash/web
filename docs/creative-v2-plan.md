@@ -15,7 +15,7 @@ this plan is a result.
 
 User directly authorized this behavior at `/`; commit it with documentation.
 Three stages: Sea/Structure/Drawing (0/.55/1), one stage per predominantly
-vertical >=35 px swipe, with 420 ms bounded easing. Previous/Next controls are
+vertical >=35 px swipe, with 600 ms smootherstep easing. Previous/Next controls are
 available; final Next becomes View work. Two forward gestures reach Drawing,
 then the next gesture scrolls normally into Work. Back swipes reverse stages at
 scroll top. Direct navigation/skip links remain intact.

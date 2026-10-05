@@ -62,8 +62,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       frame=0;
       if(disposed)return;
       if(stageStarted){
-        const t=media.matches?1:clamp((now-stageStarted)/420);
-        stageProgress=stageFrom+(stageTarget-stageFrom)*t*t*(3-2*t);
+        const t=media.matches?1:clamp((now-stageStarted)/600);
+        // Smootherstep gently accelerates and settles with zero endpoint acceleration.
+        const eased=t*t*t*(t*(t*6-15)+10);
+        stageProgress=stageFrom+(stageTarget-stageFrom)*eased;
         scrollDirty=true;
         if(t===1)stageStarted=0;
       }

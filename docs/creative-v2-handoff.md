@@ -9,22 +9,24 @@ a claim that the entire creative roadmap or release qualification is complete.
 (5 October 2026). The user also explicitly requested push to `origin/main` and wants
 to deploy the domain themselves for real feedback. Original plan: `012e164`.
 
-## Current continuation — approved Work spreads promoted
+## Current workflow and checkpoint — main site only
 
-The user selected the project-spread composition and explicitly requested moving
-it from samples into production Work. The homepage `#work` now shows the leading
-Household Hub spread with its populated light-theme expense Insights capture,
-followed by Wedding Photo Platform. Demo/privacy captions, case-study/demo links
-and Portfolio access are preserved. Semantic hierarchy is Work h2 / project h3;
-there is still one homepage h1 and one `#work` target.
+The user selected Elsewhere and explicitly retired the sample-route workflow.
+Elsewhere now lives in the homepage with numbered destination rows, direct email
+contact and a colophon. The duplicate old homepage footer is removed. The sample
+route tree, review-only stylesheet, old card/port stylesheet and sample redirect
+configuration are deleted. Sample URL compatibility is intentionally retired.
 
-`components/Work.tsx` and `Work.module.css` own the accepted composition; images
-are under `public/images/work/`. The sample UI/CSS and review notice are removed;
-`/samples/work` now permanently redirects to `/#work`. The earlier review link
-is removed from `/samples`. This user selection authorizes committing the
-accepted code/assets and documentation together. No new motion/client engine.
-Next: production feedback on the integrated section, then the remaining
-publication/Elsewhere refinements. No hosting deployment in this checkpoint.
+Future creative work goes directly into the main site, stays uncommitted for
+user review, and is committed only when accepted. Do not create sample pages or
+review galleries. AGENTS.md records this instruction; it supersedes historical
+sample workflow descriptions in research and validation. The labelled sample
+essays in the notebook are writing-content status, not sample-route scaffolding;
+they remain honest and noindex until actual authored writing is supplied.
+
+Next: feedback on the integrated homepage, then deepen one notebook explanation
+or replace sample writing with user-authored posts when available. No sensor/C
+feature or hosting deployment is included in this checkpoint.
 
 ## Latest selected checkpoint — three mobile sea stages
 
@@ -84,19 +86,6 @@ smaller `lib/sea-edition.ts` v1 contract is authoritative. Read installed Next
 docs before changing Next-specific APIs; params/searchParams are promises.
 
 ## Public foundation routes
-
-- `/`: native-scroll sea → moving drawing, procedural ship, shared wave field,
-  edition explanation/export, notebook threshold, retained Work/Elsewhere access
-  and contact.
-- `/?seed=27c4b901`: alternate authored edition.
-- `/blog`: distinct engraved Navigator's Notebook.
-- `/blog/three-waves-one-sea`: six-wave sample essay; inherited slug retained.
-- `/blog/an-integral-under-sail`: original mark construction sample essay.
-- `/samples`: approved-foundation index and future review entry point.
-- Old `/samples/observatory`, `/samples/atlas` and atlas article URLs redirect to
-  their public counterparts. Check seed/slug preservation in promotion QA.
-- `/api/sea-edition` and `/api/sea-edition/print`: JSON and standalone SVG,
-  default seed `5ea5cafe`, optional `version=1`.
 
 The rejected v1 blog/harbour/voyage implementations were removed. The new `/blog`
 is the accepted Atlas publication. Unused original-home components and the old
@@ -224,11 +213,6 @@ priority in low quality (21 draws for 20 synthetic scroll samples). Temporary QA
 server closed, with no repo listeners; no persistent
 preview. Next is deploy/repeat the same iPhone gestures, then a native Safari
 trace/version investigation if it still stutters. Mac gains must be preserved.
-
-**After the foundation commit:** qualify on named physical phones, then continue
-authentic project/content work and focused refinements from the implementation
-plan. Put new materially different alternatives under `/samples`; sensors,
-external data and C each need a visible payoff and their own review.
 
 At each handoff update: user decision, public/review route, changed files, checks
 actually run, known limits, commit state and next bounded task. Stage deliberate

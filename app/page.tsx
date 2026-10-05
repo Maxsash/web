@@ -74,7 +74,6 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
       </section>
       <Elsewhere />
 
-      <footer className={styles.footer}><Link prefetch={false} href="/">Maxsash Studio</Link><span>© {new Date().getFullYear()} · Sea. Ship. Math.</span><a href={site.links.email}>Start a conversation ↗</a></footer>
     </main>
   );
 }

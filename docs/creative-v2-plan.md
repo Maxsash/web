@@ -11,22 +11,24 @@ what exists from what is proposed. Read the repository `AGENTS.md`,
 indexes [current v2 validation](creative-v2-validation.md); no unchecked gate in
 this plan is a result.
 
-## Current continuation — approved Work spreads promoted
+## Current workflow and checkpoint — main site only
 
-The user selected the project-spread composition and explicitly requested moving
-it from samples into production Work. The homepage `#work` now shows the leading
-Household Hub spread with its populated light-theme expense Insights capture,
-followed by Wedding Photo Platform. Demo/privacy captions, case-study/demo links
-and Portfolio access are preserved. Semantic hierarchy is Work h2 / project h3;
-there is still one homepage h1 and one `#work` target.
+The user selected Elsewhere and explicitly retired the sample-route workflow.
+Elsewhere now lives in the homepage with numbered destination rows, direct email
+contact and a colophon. The duplicate old homepage footer is removed. The sample
+route tree, review-only stylesheet, old card/port stylesheet and sample redirect
+configuration are deleted. Sample URL compatibility is intentionally retired.
 
-`components/Work.tsx` and `Work.module.css` own the accepted composition; images
-are under `public/images/work/`. The sample UI/CSS and review notice are removed;
-`/samples/work` now permanently redirects to `/#work`. The earlier review link
-is removed from `/samples`. This user selection authorizes committing the
-accepted code/assets and documentation together. No new motion/client engine.
-Next: production feedback on the integrated section, then the remaining
-publication/Elsewhere refinements. No hosting deployment in this checkpoint.
+Future creative work goes directly into the main site, stays uncommitted for
+user review, and is committed only when accepted. Do not create sample pages or
+review galleries. AGENTS.md records this instruction; it supersedes historical
+sample workflow descriptions in research and validation. The labelled sample
+essays in the notebook are writing-content status, not sample-route scaffolding;
+they remain honest and noindex until actual authored writing is supplied.
+
+Next: feedback on the integrated homepage, then deepen one notebook explanation
+or replace sample writing with user-authored posts when available. No sensor/C
+feature or hosting deployment is included in this checkpoint.
 
 ## Latest explicit selection — mobile stages, continuous desktop
 
@@ -57,30 +59,6 @@ verification, including rotation, pinch zoom, fast/reverse swipes and exit.
 
 ## 1. Decisions that must survive a handoff
 
-1. The user rejected review set 01. Do not ask them to choose Wind versus Helm
-   again. The notebook felt unchanged and the explicit controls felt too simple.
-2. The creative standard is much higher: beautiful immediately, impressive to a
-   casual visitor, and coherent enough to reward technical inspection. Avoid
-   adding user effort without a substantial visible consequence.
-3. The roles remain **A = main website; B = blog/publication; C = optional
-   discovery/Easter egg**. The rejected implementations are not the approved
-   meaning of those roles.
-4. The current direction is **The Living Atlas**: a sea becomes its own drawing
-   through ordinary scrolling. B is a distinctly composed engraved publication.
-5. The user first authorized a working prototype and isolated headless Chrome
-   QA. On 5 October they explicitly approved Living Atlas A/B as the foundation
-   and requested its actual homepage/blog promotion, updated docs and a commit.
-   Complete that authorized checkpoint without asking for the same approval again.
-6. Future unselected explorations stay under `/samples/...` and uncommitted until
-   selected. The accepted foundation belongs at `/` and `/blog`, with its related
-   code, tests and documentation committed together. Foundation approval is not
-   approval of every future sensor, backend, project or C experiment.
-7. Keep performance proportional to the result. A tiny bundle alone is not a
-   successful design; a spectacular desktop recording alone is not a mobile
-   performance result.
-8. Documentation must carry the full task state, including rejected choices,
-   exact contracts, route map, evidence, known limits, and the next bounded task.
-
 ## 2. Approved foundation: exact scope
 
 ### Routes that exist
@@ -94,13 +72,6 @@ verification, including rotation, pinch zoom, fast/reverse swipes and exit.
 | `/blog/an-integral-under-sail` | Sample essay about the generated integral-mast brand mark, presented as a publication article |
 | `/api/sea-edition?seed=5ea5cafe&version=1` | Deterministic authored coefficient JSON with validation, caching headers and ETag |
 | `/api/sea-edition/print?seed=5ea5cafe&version=1` | Deterministic SVG plate from the same coefficients at scene time zero |
-
-The approved foundation now targets the real homepage and blog. The homepage
-retains Work and Elsewhere access while adopting the Living Atlas scene, edition
-explanation and publication threshold. Two essays remain labelled samples.
-`/samples` is the approved-foundation index. Old `/samples/observatory` and
-`/samples/atlas` URLs, including article paths, redirect to public counterparts;
-verify query/slug preservation as part of promotion QA.
 
 The rejected first blog, harbour and voyage implementations were removed during
 the 5 October cleanup. The new `/blog` is the accepted Atlas presentation. The obsolete original-home Hero/Sea/Wordmark/Writing/footer components and
@@ -206,20 +177,6 @@ handling that preserve existing links.
 
 ## 4. File map for the next implementer
 
-| Area | Files | Responsibility |
-| --- | --- | --- |
-| A page / art direction | `app/page.tsx`, `components/observatory/Observatory.module.css` | Readable HTML, composition, native scroll chapters, edition and notebook links |
-| A lifecycle | `components/observatory/OceanScene.tsx` | Engine import, input, scroll progress, visibility, resize, reduced motion, pause and fallback |
-| A graphics | `components/observatory/ocean-engine.ts`, `ocean-shaders.ts` | Camera, procedural mesh, water/ship/sky drawing and resource disposal |
-| Shared mathematical state | `lib/sea-edition.ts` | Seed/version contract, coefficient generation, analytic samples, export SVG |
-| B routes | `app/blog/layout.tsx`, `page.tsx`, `[slug]/page.tsx` | Publication chrome, index, sample articles and metadata |
-| B figures / styles | `components/atlas/Atlas.module.css`, `OceanPlate.tsx`, `MarkPlate.tsx` | Distinct printed art direction, server-rendered shared-field plate, original-mark plate |
-| Current sample content | `content/notebook.ts` | Canonical v2 titles, prose, captions and margin notes; static essays with no obsolete slider instructions |
-| Legacy review links | `next.config.ts`, `app/samples/page.tsx` | Old sample URL redirects and the approved-foundation index |
-| Edition endpoints | `app/api/sea-edition/route.ts`, `print/route.ts` | Parameter validation, authored JSON/SVG, caching and deterministic representation |
-| Browser evidence | `tools/check-creative-v2.mjs`, ignored `tools/.out/creative-home/` | Isolated headless captures and actual recorded browser assertions |
-| Geometry / payload | `tools/sea-edition.test.mjs`, `sea-api.test.mjs`, `sea-gpu-probe.mjs`, `geometry.test.mjs`, `measure-routes.mjs` | Mathematical regression checks, original mark geometry, route asset inventory |
-
 Read the relevant installed Next 16.2.9 guides in `node_modules/next/dist/docs/`
 before changing route, rendering, metadata or cache behaviour. In particular,
 route `params`/`searchParams` are promises. Do not “fix” this to older Next
@@ -233,24 +190,6 @@ examples. CSS for B stays scoped; do not force its ink/paper tokens onto A.
 recorded in `5eddf76`. Public-route QA evidence is in the validation document.
 
 Tasks in this checkpoint:
-
-1. Serve the accepted Living Atlas at `/`; retain direct Work, notebook and
-   contact/Elsewhere access. Do not discard the real site's useful sections to
-   leave only an isolated graphics demonstration.
-2. Serve the accepted publication at `/blog` and both sample essay paths. Keep
-   sample labels, readable server-rendered text and appropriate noindex metadata.
-3. Redirect the former observatory/atlas review URLs to their public counterparts.
-   Preserve an edition's seed and an article's slug; verify the actual responses.
-4. Keep `/samples` as an approved-foundation index and a place for future
-   alternatives. It should not describe the accepted design as awaiting approval.
-5. Remove only obsolete components with no remaining consumers. Preserve the
-   shared mathematical model, original mark, useful artwork generators and tests.
-6. Run fresh production checks against `/` and `/blog`, including retained
-   section navigation, edition APIs and the compatibility redirects. Earlier
-   sample-route evidence is useful history, not proof of the promoted routes.
-7. Update roadmap, brief, plan, handoff, README and validation, then commit the
-   accepted foundation and its related tests/docs. Stage explicit related files.
-   The user has already authorized this commit; no renewed permission is needed.
 
 **Complete when:** the public routes and redirect checks pass, known limitations
 remain explicit, documentation matches the implemented scope, and the actual
@@ -305,19 +244,6 @@ Do not claim this is a proven production-lag fix before physical rechecks.
 they are not a reason to hold the authorized foundation promotion/commit.
 
 Tasks, driven by actual feedback and observations:
-
-1. Refine composition, lighting, scale, camera, timing or hierarchy within the
-   accepted direction. Put materially different alternatives under `/samples`
-   and keep them uncommitted until selected.
-2. Make the relationship between integral branding and procedural ship a
-   deliberate decision. The current vessel is not an exact extrusion of the mark.
-   Possible later treatments include a mark on its sail or a recognisable
-   integral-mast interpretation; those choices remain open.
-3. Compress any scroll stretch where no useful visual or editorial change occurs.
-   Content links remain direct and keyboard reachable.
-4. Keep the ship clear of title/copy at all target widths. Fine details support
-   a strong silhouette rather than replace it.
-5. Preserve B's distinct masthead, plate scale, density, margins and colour.
 
 **Done when:** the specific refinement addresses its stated problem and passes
 fresh layout/motion checks. Record any newly selected alternatives and commit
@@ -584,7 +510,7 @@ At the beginning of a new work session:
 3. Preserve the latest explicit decision: on 5 October the user approved the
    Living Atlas A/B foundation, public promotion and commit. Do not ask again.
    Read the handoff commit record to determine whether that checkpoint is done.
-   Future unselected alternatives still belong under samples and remain uncommitted.
+   Future changes go directly into the main site and remain uncommitted for user review.
 4. Read the actual files listed for that task and relevant installed Next docs.
    Do not rebuild the app from the research prose or assume proposed APIs exist.
 5. Take one bounded checkpoint. Run checks appropriate to what changed, record

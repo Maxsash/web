@@ -1,28 +1,17 @@
 # Creative validation — evidence index
 
-Updated: 5 October 2026. Current evidence is in
-[creative-v2-validation.md](creative-v2-validation.md).
-The latest scroll-synchronization checkpoint passes 66 browser records.
-Browser-gesture before/after tests reduced measured style work by about 93% in
-the local samples. Read-only live scrolling still did not reproduce visible
-lag in headless Chrome; the user's iPhone Air/MacBook Pro scroll report remains
-an open physical-device gate. Production now shows direct Writing and compact
-rendering; fresh live gesture diagnostics measure 14.1/18.8 ms style totals at
-desktop/phone viewport. All repo dev/preview servers are stopped.
-Exact commands, scope, changes and next rechecks are recorded there.
-Latest physical feedback: Mac Chrome is much better; supplied iPhone Air Safari
-recording shows the remaining scroll issue. The current checkpoint prioritizes
-new scroll samples over idle cadence limits; actual validation is in v2 evidence.
-The current scope and ordered work are in
-[creative-v2-plan.md](creative-v2-plan.md).
+Updated: 5 October 2026. Exact evidence and historical comparisons are in
+[creative-v2-validation.md](creative-v2-validation.md). Current scope and next
+work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## Latest evidence — approved Work spreads promoted
+## Latest evidence — Elsewhere and sample cleanup
 
-The selected project spreads now live in homepage Work; `/samples/work` redirects
-to `/#work`. Household Hub uses the light expense Insights preview. Fresh
-build/types/lint and **93 browser records** pass, with desktop/phone section
-captures visually reviewed. Exact checks and remaining physical-device limits
-are in `creative-v2-validation.md`. Temporary QA server is stopped.
+Approved Elsewhere is in the homepage; the sample route tree and review-only
+scaffolding are removed. Future changes go directly into the main site and stay
+uncommitted until accepted. Fresh build/types/lint and **92 browser records**
+pass, with desktop/phone Elsewhere captures visually reviewed and enlarged-text
+bounds checked. Temporary QA servers are stopped. User reports the staged sea
+is smooth on iPhone Air Safari; broader physical qualification remains separate.
 
 ## Original comparison baseline
 

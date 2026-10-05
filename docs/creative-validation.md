@@ -18,7 +18,8 @@ The current scope and ordered work are in
 
 ## Latest evidence — selected mobile stages
 
-The user selected three mobile gesture stages; desktop remains continuous.
+The user selected three mobile gesture stages with 600 ms smootherstep
+transitions; desktop remains continuous.
 Fresh local build/types/lint and **81 browser records** pass, including touch
 progression/reversal, native final exit and reduced-motion stage buttons.
 Exact report, command scope and physical Safari limitations are at the top of

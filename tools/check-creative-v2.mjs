@@ -98,6 +98,10 @@ try{
  results.push({name:"public-homepage-content",...homepage,pass:homepage.anchors.every(a=>a.targets===1&&(a.id==='writing'||a.links>0))&&!/\bnoindex\b/i.test(homepage.robots)});
  const writing=await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]')?.textContent");
  results.push({name:"writing-direct-link",pass:writing==='Writing'});
+ const projectContent=await evaluate("(()=>{const w=document.getElementById('work');return {titles:[...w.querySelectorAll('h3')].map(e=>e.textContent),links:[...w.querySelectorAll('a')].map(a=>a.getAttribute('href'))};})()");
+ results.push({name:'real-projects-and-case-studies',...projectContent,pass:projectContent.titles.join('|')==='Household Hub|Wedding Photo Platform'&&['https://tenant-management-2my6.vercel.app/','https://wedding-demo-teal.vercel.app/','https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html','https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html'].every(url=>projectContent.links.includes(url))&&!projectContent.links.includes('#')});
+ results.push({name:'portfolio-replaces-placeholder-destinations',pass:await evaluate("!!document.querySelector('#elsewhere a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]') && !document.querySelector('#elsewhere a[href=\"/resume.pdf\"]') && !document.querySelector('#elsewhere a[href=\"https://www.maxsash.com\"]')")});
+
  await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]').click()");
  for(let i=0;i<100;i++){if(await evaluate("location.pathname==='/blog' && Boolean(document.querySelector('h1')) && !document.querySelector('canvas[data-ocean]')"))break;await delay(50);}
  results.push({name:"writing-one-click-navigation",pass:await evaluate("location.pathname==='/blog' && !document.querySelector('canvas[data-ocean]')")});
@@ -201,24 +205,43 @@ try{
    await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    results.push({name:'mobile-multitouch-keeps-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'")});
    await call('Emulation.setPageScaleFactor',{pageScaleFactor:1});
-   const swipe=async(direction)=>{
+   const swipe=async(direction,settle)=>{
      const openingReveal=direction>0&&await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'");
      const from=direction>0?620:300,to=direction>0?300:620;
      await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:180,y:from,id:1}]});
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:(from+to)/2,id:1}]});await delay(20);
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
-     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(openingReveal?1880:680);
+     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(settle??(openingReveal?1880:680));
    };
    for(let index=1;index<=2;index++){
      await swipe(1);
      const state=await evaluate("(()=>{const s=document.querySelector('[data-observatory]');return {stage:s.dataset.stage,scrollY,label:s.querySelector('[data-stage-label]').textContent};})()");
      results.push({name:'mobile-swipe-one-stage',index,...state,pass:state.stage===String(index)&&state.scrollY<=2&&state.label===`${index+1} / 3 · ${['Sea','Structure','Drawing'][index]}`});
      await snapshot('staged-390-'+['sea','structure','drawing'][index]);
+     if(index===1){
+       await call('Emulation.setDeviceMetricsOverride',{width:844,height:390,deviceScaleFactor:3,mobile:true});await delay(180);
+       const rotated=await evaluate("(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()");
+       results.push({name:'mobile-rotation-retains-structure',...rotated,pass:rotated.stage==='1'&&rotated.chapter==='structure'&&rotated.staged==='true'&&rotated.pixels<=361200&&rotated.triangles===21600});
+       await snapshot('staged-landscape-structure');
+       await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await delay(180);
+       results.push({name:'mobile-rotation-return-retains-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-observatory]').dataset.chapter==='structure' && scrollY<=2")});
+     }
    }
    await call('Input.synthesizeScrollGesture',{x:180,y:600,yDistance:-350,speed:900,gestureSourceType:'touch'});await delay(200);
    results.push({name:'mobile-final-stage-releases-page',pass:await evaluate("scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='2'")});
    await evaluate('scrollTo(0,0)');await delay(100);await swipe(-1);
    results.push({name:'mobile-reverse-one-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='1' && scrollY<=2")});
+
+   await swipe(-1);
+   await swipe(1,150);await swipe(-1);
+   results.push({name:'mobile-interrupted-reveal-reverses',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0' && document.querySelector('[data-observatory]').dataset.chapter==='sea' && scrollY<=2")});
+   await delay(1300);
+   results.push({name:'mobile-interrupted-reveal-stays-reversed',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0' && document.querySelector('[data-observatory]').dataset.chapter==='sea'")});
+   await evaluate("document.querySelector('button[aria-pressed]').click()");
+   await swipe(1);
+   const pausedFrames=await frames();await delay(200);
+   results.push({name:'mobile-paused-sea-stage-settles',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-observatory]').dataset.chapter==='structure' && document.querySelector('button[aria-pressed]').getAttribute('aria-pressed')==='true'")&&(await frames())===pausedFrames});
+   await evaluate("document.querySelector('button[aria-pressed]').click()");
    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
    await evaluate("document.querySelector('[data-stage-next]').click()");await delay(120);
    const stillBefore=await frames();await delay(200);

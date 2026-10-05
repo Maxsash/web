@@ -112,10 +112,16 @@ Latest selected mobile interaction: Sea → Structure → Drawing, one
 stage per vertical swipe or stage button, with gentle smootherstep easing: 1.8 seconds
 for Sea → Structure and 600 ms for every other move. The next swipe after Drawing continues
 into Work. Desktop remains continuous. Reduced motion uses immediate stills;
-no-JS retains the readable native-scroll fallback. Physical iPhone Safari
-verification is still required after deployment.
+no-JS retains the readable native-scroll fallback. The user confirmed the latest
+flow feels smooth on iPhone Air Safari; broader device qualification remains open.
 
-This is a foundation: real project content/spreads, optional sensors, a deeper
+Work now lists Household Hub and Wedding Photo Platform, linking their public
+demos and portfolio case studies. Elsewhere includes the professional Portfolio.
+The user reports the latest staged flow is smooth on iPhone Air Safari.
+A new spread composition is under review at `/samples/work` in the working tree;
+its route/assets stay uncommitted until selected.
+
+This is a foundation: project spread design, optional sensors, a deeper
 mathematical Easter egg and physical-device qualification remain separate tasks.
 
 ```bash

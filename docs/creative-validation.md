@@ -16,14 +16,14 @@ new scroll samples over idle cadence limits; actual validation is in v2 evidence
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).
 
-## Latest evidence — selected mobile stages
+## Latest evidence — real projects and mobile edge cases
 
-The user selected three mobile gesture stages with smootherstep easing:
-1,800 ms Sea → Structure, 600 ms for other transitions; desktop remains continuous.
-Fresh local build/types/lint and **81 browser records** pass, including touch
-progression/reversal, native final exit and reduced-motion stage buttons.
-Exact report, command scope and physical Safari limitations are at the top of
-`creative-v2-validation.md`. This supersedes earlier counts as current evidence.
+The user confirms iPhone Air Safari now feels smooth on the latest staged build.
+Real project demos/case studies and a Portfolio destination replace placeholders.
+Build/types/lint and **89 public browser records** pass, including rotation,
+interrupted reveal reversal and paused transitions. The unselected `/samples/work`
+spread study has a separate 12-record layout check at four widths and remains
+uncommitted. Exact evidence and limits are in `creative-v2-validation.md`.
 
 ## Original comparison baseline
 

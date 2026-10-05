@@ -48,7 +48,8 @@ suggestion to deepen notebook writing as the immediate next task.
 Next gate: review the day/night sea and beach on `/`, then repeat iPhone Air
 Safari interaction checks for this additional footer before accepting the work.
 The prior three-stage mobile sea was confirmed smooth by the user; that result
-predates this exploration. Keep the existing 1,800/600 ms staged flow and continuous
+predates this exploration. Keep the 1,800/600 ms durations, with the revised responsive
+opening curve/removal of its reveal hold, and continuous
 fine-pointer desktop reveal unchanged. Stop temporary QA servers after checks.
 
 ## Previous accepted checkpoint and continuing workflow — main site only
@@ -74,8 +75,8 @@ feature or hosting deployment is included in this checkpoint.
 
 User directly authorized this behavior at `/`; commit it with documentation.
 Three stages: Sea/Structure/Drawing (0/.55/1), one stage per predominantly
-vertical >=35 px swipe, with smootherstep easing: 1,800 ms for Sea → Structure
-and 600 ms otherwise. Previous/Next controls are
+vertical >=35 px swipe, with a responsive quadratic ease-out for the 1,800 ms Sea → Structure
+opening and smootherstep for the 600 ms otherwise. Previous/Next controls are
 available; final Next becomes View work. Two forward gestures reach Drawing,
 then the next gesture scrolls normally into Work. Back swipes reverse stages at
 scroll top. Direct navigation/skip links remain intact.
@@ -569,3 +570,14 @@ handoff: renderer lifecycle hardening, then physical-device qualification and au
 project/content work, with further creative choices reviewed independently. Do
 not restart broad research, resurrect the old steering choice, or treat sensors,
 live data and C as prerequisites for committing the already approved foundation.
+
+## Mobile opening curve refinement
+
+The user reported that the 1 → 2 animation seemed idle and then rushed. The long
+opening now uses `t * (2 - t)` instead of a flat-start quintic smootherstep.
+Mobile progress 0–.55 maps directly onto reveal 0–.5466667, removing the desktop
+intro hold for this range. That mapping meets the original mapping exactly at
+Structure, so 2 → 3 keeps its original 600 ms curve and reveal path. Desktop
+continuous scroll, stage targets, pauses, reduced-motion stills and reversals stay
+intact. Actual GPU uniform samples and regression evidence are recorded in current
+validation; physical iPhone acceptance must be repeated for this curve.

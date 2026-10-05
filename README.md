@@ -130,8 +130,9 @@ use a smaller rendering budget; physical rechecks remain open. See current
 validation for the production/local comparison and exact limits.
 
 Latest selected mobile interaction: Sea → Structure → Drawing, one
-stage per vertical swipe or stage button, with gentle smootherstep easing: 1.8 seconds
-for Sea → Structure and 600 ms for every other move. The next swipe after Drawing continues
+stage per vertical swipe or stage button: a responsive 1.8-second ease-out for
+Sea → Structure, with no initial reveal hold, and unchanged 600 ms smootherstep
+for other moves. The next swipe after Drawing continues
 into Work. Desktop remains continuous. Reduced motion uses immediate stills;
 no-JS retains the readable native-scroll fallback. The user confirmed the latest
 flow feels smooth on iPhone Air Safari; broader device qualification remains open.

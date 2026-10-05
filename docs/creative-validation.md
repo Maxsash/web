@@ -4,7 +4,14 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## Latest evidence — sea/shore/audio refinement
+## Latest work — mobile opening curve
+
+The first stage transition now starts promptly and decelerates across its existing
+1.8-second duration. The mobile opening reveal hold is removed; 2 → 3 keeps its
+600 ms smootherstep/reveal path. Exact timed GPU-uniform checks and remaining
+iPhone acceptance are in [current validation](creative-v2-validation.md).
+
+## Previous evidence — sea/shore/audio refinement
 
 Current uncommitted work aligns wave/ship lighting with the sky disc, narrows the
 shore and blends it into Elsewhere. Audio is now explicitly opt-in via one-tap

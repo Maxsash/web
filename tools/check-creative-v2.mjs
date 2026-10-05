@@ -216,7 +216,15 @@ try{
      await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:180,y:from,id:1}]});
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:(from+to)/2,id:1}]});await delay(20);
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
-     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(settle??(openingReveal?1880:680));
+     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+     if(openingReveal&&settle===undefined){
+       const reveal=()=>evaluate("(()=>{const gl=document.querySelector('canvas[data-ocean]').getContext('webgl2');const program=gl.getParameter(gl.CURRENT_PROGRAM);return gl.getUniform(program,gl.getUniformLocation(program,'uReveal'));})()");
+       await delay(200);const early=await reveal();
+       await delay(600);const middle=await reveal();
+       await delay(800);const late=await reveal();
+       await delay(280);const end=await reveal();
+       results.push({name:'mobile-opening-reveal-spreads-through-duration',early,middle,late,end,pass:early>.05&&early<.25&&middle>early+.1&&late>middle+.05&&Math.abs(end-(.55-.14)/.75)<.002});
+     }else await delay(settle??680);
    };
    for(let index=1;index<=2;index++){
      await swipe(1);

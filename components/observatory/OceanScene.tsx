@@ -63,8 +63,9 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       if(disposed)return;
       if(stageStarted){
         const t=media.matches?1:clamp((now-stageStarted)/stageDuration);
-        // Smootherstep gently accelerates and settles with zero endpoint acceleration.
-        const eased=t*t*t*(t*(t*6-15)+10);
+        // The long opening responds immediately, then gently decelerates.
+        // Keep the existing smootherstep for every other stage move.
+        const eased=stageDuration===1800?t*(2-t):t*t*t*(t*(t*6-15)+10);
         stageProgress=stageFrom+(stageTarget-stageFrom)*eased;
         scrollDirty=true;
         if(t===1)stageStarted=0;
@@ -84,7 +85,9 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       lastTime=active?now:0;
       const damping=1-Math.exp(-delta*4);
       pointer=media.matches?[0,0]:[pointer[0]+(target[0]-pointer[0])*damping,pointer[1]+(target[1]-pointer[1])*damping];
-      const reveal=media.matches&&!staged?(progress>.45?1:0):clamp((progress-.14)/.75);
+      // Mobile opening has no desktop scroll hold: all 1.8 seconds reveal the scene.
+      // Meet the original mapping at Structure so stage 2 → 3 stays unchanged.
+      const reveal=media.matches&&!staged?(progress>.45?1:0):staged&&progress<.55?clamp(progress/.55*((.55-.14)/.75)):clamp((progress-.14)/.75);
       engine.draw(elapsed,reveal,pointer,document.documentElement.dataset.studioTheme==="night"?1:0);
       const drawInterval=1000/(low?30:60);
       nextDraw=!active?0:scrollChanged||!nextDraw||now-nextDraw>drawInterval?now+drawInterval:nextDraw+drawInterval;

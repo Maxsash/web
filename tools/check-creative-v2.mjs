@@ -1,5 +1,6 @@
 /** User-authorized isolated headless Chrome review. No npm dependencies.
  * node tools/check-creative-v2.mjs [http://localhost:3000] [--quick]
+ * --diagnose: read-only desktop load/cadence; also permits HTTPS maxsash.com.
  * Captures are review evidence, not physical-device performance measurements.
  */
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
@@ -12,9 +13,11 @@ import { fieldGLSL } from "../components/observatory/ocean-shaders.ts";
 import { probeSeaGPU } from "./sea-gpu-probe.mjs";
 
 const base=new URL(process.argv.find(x=>/^https?:/.test(x))||"http://localhost:3000");
-if(!["localhost","127.0.0.1","[::1]"].includes(base.hostname))throw new Error("Local server required");
+const diagnostic=process.argv.includes('--diagnose');
+const local=["localhost","127.0.0.1","[::1]"].includes(base.hostname);
+if(!local&&!(diagnostic&&base.protocol==='https:'&&['maxsash.com','www.maxsash.com'].includes(base.hostname)))throw new Error("Local server required except read-only maxsash.com diagnostics");
 const quick=process.argv.includes("--quick");
-const out="tools/.out/creative-home";mkdirSync(out,{recursive:true});
+const out=diagnostic?`tools/.out/creative-${local?'local':'production'}-diagnostic`:"tools/.out/creative-home";mkdirSync(out,{recursive:true});
 const articlePaths=["/blog/three-waves-one-sea","/blog/an-integral-under-sail"];
 const publicPaths=["/","/samples","/blog",...articlePaths];
 const chrome=process.env.CHROME_BIN||["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","/usr/bin/google-chrome","/usr/bin/chromium"].find(existsSync);
@@ -26,12 +29,12 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
 const results=[],errors=[],assets={};
 try{
  // Legacy bookmarks must preserve their destination and authored sea identity.
- for(const [source,target] of [
+ for(const [source,target] of (diagnostic?[]:[
    ["/samples/observatory?seed=27c4b901","/?seed=27c4b901"],
    ["/samples/atlas","/blog"],
    ["/samples/atlas/three-waves-one-sea",articlePaths[0]],
    ["/samples/atlas/an-integral-under-sail",articlePaths[1]],
- ]){
+ ])){
    const response=await fetch(new URL(source,base),{redirect:"manual",signal:AbortSignal.timeout(20000)});
    const location=response.headers.get("location");
    results.push({name:"legacy-redirect",source,target,status:response.status,location,pass:response.status===308&&location!==null&&new URL(location,base).href===new URL(target,base).href});
@@ -60,9 +63,24 @@ try{
    const shot=await call("Page.captureScreenshot",{format:"png",captureBeyondViewport:full,...(full?{clip:{x:0,y:0,width:info.width,height:Math.min(info.pageHeight,11000),scale:1}}:{})});
    writeFileSync(join(out,`${name}.png`),Buffer.from(shot.data,"base64"));results.push({name,...info});console.log(name,JSON.stringify({renderer:info.renderer,gpu:info.gpu,quality:info.quality,overflow:info.overflow}));return info;
  };
+ if(diagnostic){
+   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+   const observe=await call('Page.addScriptToEvaluateOnNewDocument',{source:"window.__seaLongTasks=[];new PerformanceObserver(list=>window.__seaLongTasks.push(...list.getEntries().map(e=>({start:e.startTime,duration:e.duration})))).observe({type:'longtask',buffered:true});"});
+   await load('/');await snapshot('desktop-opening');
+   const opening=await evaluate("(()=>({navigation:performance.getEntriesByType('navigation')[0]?.toJSON(),resources:performance.getEntriesByType('resource').map(r=>r.toJSON()),writing:document.querySelector('nav[aria-label=\"Studio\"]')?.innerHTML,canvasQuality:document.querySelector('canvas[data-ocean]')?.dataset.quality}))()");
+   console.log('Measuring production/local desktop callback delivery for 30 seconds.');
+   const cadence=await evaluate("new Promise(resolve=>{const intervals=[];const c=document.querySelector('canvas[data-ocean]');const before=Number(c.dataset.frameCount);let start=0,last=0;function step(now){if(!start)start=now;if(last)intervals.push(now-last);last=now;if(now-start<30000){requestAnimationFrame(step);return;}intervals.sort((a,b)=>a-b);resolve({p50Ms:intervals[Math.floor(intervals.length*.5)],p95Ms:intervals[Math.floor(intervals.length*.95)],within20Ms:intervals.filter(v=>v<=20).length/intervals.length,draws:Number(c.dataset.frameCount)-before,longTasks:window.__seaLongTasks,quality:c.dataset.quality});}requestAnimationFrame(step);})");
+   results.push({name:'read-only-desktop-diagnostic',opening,cadence});
+   await call('Page.removeScriptToEvaluateOnNewDocument',{identifier:observe.identifier});
+ }else{
  await load("/");
  const homepage=await evaluate(`(()=>{const anchors=['work','writing','elsewhere'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`);
- results.push({name:"public-homepage-content",...homepage,pass:homepage.anchors.every(a=>a.targets===1&&a.links>0)&&!/\bnoindex\b/i.test(homepage.robots)});
+ results.push({name:"public-homepage-content",...homepage,pass:homepage.anchors.every(a=>a.targets===1&&(a.id==='writing'||a.links>0))&&!/\bnoindex\b/i.test(homepage.robots)});
+ const writing=await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]')?.textContent");
+ results.push({name:"writing-direct-link",pass:writing==='Writing'});
+ await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]').click()");
+ for(let i=0;i<100;i++){if(await evaluate("location.pathname==='/blog' && Boolean(document.querySelector('h1')) && !document.querySelector('canvas[data-ocean]')"))break;await delay(50);}
+ results.push({name:"writing-one-click-navigation",pass:await evaluate("location.pathname==='/blog' && !document.querySelector('canvas[data-ocean]')")});
  await load("/blog");
  const notebook=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),articles:[...new Set([...document.querySelectorAll('a[href^="/blog/"]')].map(e=>e.getAttribute('href')))],legacyArticleLinks:document.querySelectorAll('a[href^="/samples/atlas/"]').length}))()`);
  results.push({name:"public-blog-index",...notebook,pass:/\bnoindex\b/i.test(notebook.robots)&&articlePaths.every(path=>notebook.articles.includes(path))&&notebook.legacyArticleLinks===0});
@@ -75,6 +93,7 @@ try{
    await call("Emulation.setDeviceMetricsOverride",{width,height,deviceScaleFactor:1,mobile:width<760});
    await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-color-scheme",value:"light"},{name:"prefers-reduced-motion",value:"no-preference"}]});
    await load("/");await delay(700);await snapshot(`observatory-${width}-sea`);
+   if(width<760){const budget=await evaluate("(()=>{const c=document.querySelector('canvas[data-ocean]');return {pixels:c.width*c.height,triangles:Number(c.dataset.triangles),quality:c.dataset.quality};})()");results.push({name:'compact-render-budget',width,...budget,pass:budget.pixels<=361200&&budget.triangles===21600&&budget.quality==='compact'});}
    for(const p of [.52,1]){await evaluate(`(()=>{const s=document.querySelector('[data-observatory]');scrollTo(0,s.offsetTop+(s.offsetHeight-s.firstElementChild.clientHeight)*${p});})()`);await delay(120);await snapshot(`observatory-${width}-${p===1?"drawing":"reveal"}`);}
    if(!quick&&(width===1440||width===390)){
      for(const section of ["work","writing","elsewhere"]){await evaluate("document.getElementById("+JSON.stringify(section)+").scrollIntoView()");await delay(100);await snapshot("home-"+width+"-"+section);}
@@ -128,6 +147,24 @@ try{
    await load("/");
    results.push({name:"shader-link-failure-fallback",pass:await evaluate("document.querySelector('[data-observatory]').dataset.rendering==='fallback' && document.querySelector('button[aria-pressed]').disabled && !document.querySelector('canvas[data-ocean]').dataset.frameCount && Boolean(document.querySelector('#work'))")});
    await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:failedLink.identifier});
+   await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"no-preference"}]});
+   const slowFrames=await call("Page.addScriptToEvaluateOnNewDocument",{source:"window.requestAnimationFrame=callback=>setTimeout(()=>callback(performance.now()),65);window.cancelAnimationFrame=id=>clearTimeout(id);"});
+   await load("/");await delay(2800);
+   const slowBudget=await evaluate("(()=>{const c=document.querySelector('canvas[data-ocean]');return {quality:c.dataset.quality,pixels:c.width*c.height,frames:Number(c.dataset.frameCount)};})()");
+   results.push({name:'sustained-slow-delivery-downgrades',...slowBudget,pass:slowBudget.quality==='low'&&slowBudget.pixels<=177500&&slowBudget.frames>12});
+   await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:slowFrames.identifier});
+   const fastFrames=await call("Page.addScriptToEvaluateOnNewDocument",{source:"window.requestAnimationFrame=callback=>setTimeout(()=>callback(performance.now()),8);window.cancelAnimationFrame=id=>clearTimeout(id);"});
+   await load("/");await delay(100);const fastBefore=await frames();await delay(500);const fastDraws=(await frames())-fastBefore;
+   results.push({name:'high-refresh-bounds-draws',drawsIn500Ms:fastDraws,pass:fastDraws>=12&&fastDraws<=34});
+   await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:fastFrames.identifier});
+   const coarsePointer=await call("Page.addScriptToEvaluateOnNewDocument",{source:"const originalMatchMedia=window.matchMedia.bind(window);window.matchMedia=query=>originalMatchMedia(query==='(pointer: coarse)'?'(min-width: 0px)':query);"});
+   await call('Emulation.setDeviceMetricsOverride',{width:844,height:390,deviceScaleFactor:3,mobile:true});
+   await load('/');
+   const landscape=await evaluate("(()=>{const c=document.querySelector('canvas[data-ocean]');return {pixels:c.width*c.height,triangles:Number(c.dataset.triangles),quality:c.dataset.quality};})()");
+   results.push({name:'touch-landscape-compact-budget',...landscape,pass:landscape.pixels<=361200&&landscape.triangles===21600&&landscape.quality==='compact'});
+   await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:coarsePointer.identifier});
+   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+   await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"reduce"}]});
    const injection=await call("Page.addScriptToEvaluateOnNewDocument",{source:"const originalGetContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:originalGetContext.call(this,kind,...args)}"});
    await load("/");await snapshot("fallback-390");await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:injection.identifier});
    await call("Emulation.setScriptExecutionDisabled",{value:true});
@@ -146,6 +183,7 @@ try{
      assets[path]={html:{raw:Buffer.byteLength(html),gzip:gzipSync(html).length},files};
    }
    writeFileSync(join(out,"assets.json"),JSON.stringify(assets,null,2));
+ }
  }
  writeFileSync(join(out,"report.json"),JSON.stringify({at:new Date().toISOString(),base:base.href,mode:"headless Chrome; not physical-device performance",results,errors},null,2));
  if(errors.length||results.some(r=>r.scrollWidth>r.width+1||r.overflow?.length||r.pass===false||r.glError>0))process.exitCode=1;

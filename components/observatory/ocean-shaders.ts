@@ -1,15 +1,15 @@
 // The same six coefficients drive the GPU, CPU ship pose and server print.
 export const fieldGLSL = `
-uniform vec4 uWaves[6];
+// Edition constants are prepared once on the CPU, not recomputed per fragment.
+uniform vec4 uWaveVectors[6];
+uniform float uAmplitudes[6];
 uniform float uTime;
 vec3 field(vec2 p) {
   vec3 s = vec3(0.0);
   for (int i=0; i<6; i++) {
-    vec4 w=uWaves[i];
-    float k=6.28318530718/w.y;
-    vec2 d=vec2(cos(w.z),sin(w.z));
-    float a=k*dot(d,p)-sqrt(9.81*k)*uTime+w.w;
-    s += vec3(w.x*sin(a),w.x*k*cos(a)*d);
+    vec4 w=uWaveVectors[i];
+    float a=dot(w.xy,p)-w.z*uTime+w.w;
+    s += uAmplitudes[i]*vec3(sin(a),cos(a)*w.xy);
   }
   return s;
 }`;

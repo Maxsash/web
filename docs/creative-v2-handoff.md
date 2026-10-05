@@ -59,9 +59,9 @@ SVG-home browser harness were retired; Work/Elsewhere and useful generated
 artwork remain. Two essays remain sample content and noindex;
 public routing does not turn sample prose into final authored writing.
 
-The production preview has used **http://localhost:3001**. Check whether it is
+The current final production preview is **http://localhost:3004**. Check whether it is
 running before starting another: `pnpm build`, then
-`pnpm start --hostname localhost --port 3001`. The preexisting dev server on 3000
+`pnpm start --hostname localhost --port 3004`. The preexisting dev server on 3000
 was left intact. Current server state and check results belong in validation.
 
 ## Mechanism and limits
@@ -78,8 +78,12 @@ separate projection of the same t=0 field. `content/notebook.ts` owns essay copy
 metadata and captions. Atlas components own the scoped publication CSS.
 
 The renderer has no new dependency, texture or downloaded model. Its current
-three draws include a 60,000-triangle sea, with bounded pixels and paused/reduced
-motion stills. Context loss stays on fallback until reload. The vessel is a
+three draws include a 60,000-triangle desktop sea or 21,600-triangle compact
+sea. Coarse pointer or <760 px at mount chooses compact, retained across resize:
+360,000 pixels/DPR 1 versus desktop 1.5 million/DPR 1.25. Fixed wave constants
+are prepared once for shaders. Animation is bounded to 60 Hz, with sustained
+slow delivery reducing resolution and ceiling to 30 Hz. These are workload
+budgets, not qualified GPU tiers. Context loss stays on fallback until reload. The vessel is a
 procedural sailboat, not the exact integral brand mark. Fine light ripples and
 wake are approximations; this is not a fluid simulation or live ocean feed.
 
@@ -117,8 +121,28 @@ Changed `OceanScene.tsx`, the browser harness and checkpoint docs. Commit
 subject: `fix: dispose ocean engine on context loss`. Preview is running on
 `http://localhost:3002`; existing 3000/3001 servers were left intact.
 The fallback-on-loss policy remains; automatic restoration is not introduced.
-Next bounded work: physical-phone qualification and remaining lifecycle checks
-listed in validation. Authentic project content needs actual user facts/links.
+This checkpoint is committed as `86f1589`.
+
+**Current feedback checkpoint:** user reported Writing's extra click and lag on
+production `maxsash.com`: iPhone Air/Safari and MacBook Pro/Chrome, despite smooth
+localhost. Writing now opens `/blog` directly. Smaller compact mesh/pixel budget,
+precomputed shader constants, bounded draw cadence, reachable slow-frame
+downgrade and unchanged-size canvas resize guard address unnecessary work.
+Changed homepage/nav content, scene lifecycle, engine/shaders, GPU probe,
+browser harness and active docs. Final build/types/lint, 13 model/geometry tests
+and 64 browser records pass; phone/desktop captures reviewed. Local and live
+stationary Chrome diagnostics both had steady 16.7 ms median/p95 callbacks;
+production load was slower, but sustained user-reported lag was not reproduced.
+Full evidence and approximation limits are in validation.
+Commit subject: `fix: streamline Writing and reduce sea rendering cost`.
+Final preview is `http://localhost:3004`; no remote push/deployment in this session.
+
+**Next bounded task:** deploy this revision through the user's hosting workflow,
+then compare production/local on Mac Chrome and recheck iPhone Air Safari,
+including scroll/reveal and warm/cold runs. Record browser/OS/version, refresh
+and Low Power settings; trace persistent production-only Mac stalls. Performance
+remains open until actual physical-device evidence improves. This precedes
+new creative features and portfolio work. Authentic content still needs facts.
 
 **After the foundation commit:** qualify on named physical phones, then continue
 authentic project/content work and focused refinements from the implementation

@@ -33,7 +33,7 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
           <div className={styles.paperVeil} />
           <header className={styles.nav}>
             <Link prefetch={false} href="/" className={styles.brand}><Mark /><span>Maxsash Studio</span></Link>
-            <nav aria-label="Studio">{site.nav.map(item=><a key={item.href} href={item.href}>{item.label}</a>)}</nav>
+            <nav aria-label="Studio">{site.nav.map(item=>item.href.startsWith("#")?<a key={item.href} href={item.href}>{item.label}</a>:<Link prefetch={false} key={item.href} href={item.href}>{item.label}</Link>)}</nav>
             <span className={styles.proof}>Software / Games / Experiments</span>
           </header>
           <div className={styles.intro}>

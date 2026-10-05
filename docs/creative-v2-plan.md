@@ -103,7 +103,8 @@ of real project spreads, the final port chart or the entire creative roadmap.
   checkpoint; these richer whole-site treatments remain next-stage work.
 - No new C experience or hidden entrance. The old mini-game is not the chosen C.
 - No physical iOS/Android quality, thermal, battery or sensor acceptance.
-- No production field Web Vitals result or deployment.
+- No production field Web Vitals result. The user has deployed the foundation
+  to `maxsash.com`; current fixes are local until their hosting workflow runs.
 
 Do not make marketing copy imply any of these features exists.
 
@@ -210,6 +211,27 @@ Tasks in this checkpoint:
 **Complete when:** the public routes and redirect checks pass, known limitations
 remain explicit, documentation matches the implemented scope, and the actual
 foundation commit is recorded. No deployment is part of this authorization.
+
+### Current priority — production navigation and smoothness
+
+5 October feedback supersedes the generic order below: eliminate the Writing
+intermediate click and investigate lag on iPhone Air and MacBook Pro at
+`maxsash.com`, despite smooth localhost. Prioritize this before new content
+layouts, richer notebook mechanics, sensors or C. The user has deployed the
+foundation; this session performs read-only production diagnostics, not hosting
+changes. Compare in the same browser/device and retain physical evidence as a
+separate gate from headless measurements.
+
+Implemented budget: compact startup when `(pointer: coarse)` or stage width
+is below 760 px, selected at mount and retained through rotation/resizing.
+120 × 90 segments / 21,600 sea triangles, DPR cap 1 and 360,000 pixels;
+desktop remains 200 × 150 / 60,000 triangles, DPR 1.25 and 1.5 million pixels.
+GPU wave vectors/frequencies are prepared once without changing v1 coefficients.
+Normal animation has a 60 Hz ceiling; sustained slow callbacks reduce resolution
+by 0.7 and use a 30 Hz ceiling. Twelve samples suffice for downgrade evaluation
+after 1.6 seconds, replacing the unreachable >30 gate on sub-20-fps devices.
+These are conservative workload budgets, not measured hardware/GPU quality tiers.
+Do not claim this is a proven production-lag fix before physical rechecks.
 
 ### Checkpoint 1 — refine the accepted art direction
 

@@ -4,6 +4,88 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Production feedback checkpoint — Writing and rendering cost
+
+5 October: user reports lag on physical **iPhone Air** and **MacBook Pro** at
+`maxsash.com`, while localhost is smooth. User confirmed **Chrome on Mac,
+Safari on iPhone**. This is reported physical evidence of a problem,
+not a completed qualification. Navigation/performance now precede new creative
+features. Started with clean tree at lifecycle commit `86f1589` (one ahead of
+the local tracking reference); no deployment or remote push performed here.
+
+Implemented:
+
+- Studio **Writing → `/blog`** directly via Next Link, with prefetch disabled.
+  Work/Elsewhere remain anchors; `#writing` still resolves the optional homepage
+  publication section and legacy links. No extra click is required by navigation.
+- At mount, coarse-pointer or <760 px stage uses 120 × 90 sea segments:
+  **21,600 triangles, 64% fewer** than desktop's unchanged 60,000. Compact DPR
+  cap is 1, pixel cap 360,000 (previous narrow cap 780,000/DPR 1.5). Portrait
+  and touch landscape keep the same compact geometry across resizes. This is a
+  conservative workload budget, not a device-speed classification.
+- Edition wave vectors/frequencies are calculated once on the CPU. GLSL no
+  longer calculates fixed direction trigonometry, wave number or dispersion in
+  each vertex/fragment. Height/slope equations, v1 coefficients, CPU ship pose
+  and export remain unchanged. No GPU speedup percentage is claimed.
+- Normal animation has a 60 Hz draw ceiling; slow delivery reduces resolution
+  by 0.7 and uses a 30 Hz ceiling. The 1.6-second downgrade window now accepts
+  12 samples; its prior >30 requirement excluded sub-20-fps devices. Actual
+  callback interval is sampled separately from clamped simulation time.
+- Resize avoids assigning unchanged canvas dimensions (which reset the buffer).
+
+Read-only live diagnostics used isolated headless Chrome on Apple M4 Pro,
+1440 × 1000/DPR 1. Reports: `tools/.out/creative-production-diagnostic/report.json`
+at `2026-10-05T11:30:54.589Z`, and `creative-local-diagnostic/report.json` at
+`2026-10-05T11:31:47.505Z`. Sequential commands:
+
+```sh
+node tools/check-creative-v2.mjs https://www.maxsash.com --diagnose
+node tools/check-creative-v2.mjs http://localhost:3003 --diagnose
+```
+
+Both stationary 30-second runs: callback median/p95 **16.7/16.7 ms**, 1,802
+scene draws, zero observed long tasks. Cold document load completion was
+787.5 ms live versus 123.5 ms local; final response headers 404.1 versus 69.6 ms.
+These individual loads are not statistically established latency, Core Web
+Vitals or GPU-time results. The local comparison used the earlier compact-budget
+revision before final shader/pacing changes; desktop mesh was unchanged.
+Production Writing still pointed to `#writing`. A separate curl confirmed the
+apex redirects to `www` and both respond successfully. Production sustained lag
+was **not reproduced** by this desktop Chrome stationary test; Safari/physical
+device, scrolling, thermal state, high-refresh presentation and extensions remain
+unresolved. Do not substitute this result for the user's experience.
+
+Final full local production report: `tools/.out/creative-home/report.json`,
+`2026-10-05T11:34:42.266Z`, `http://localhost:3004/`. **64 records pass**:
+35 captures, 28 assertions, one cadence run. Zero runtime exceptions, GL errors
+or detected overflow. Added checks verify actual one-click Writing navigation,
+portrait and DPR-3 touch-landscape budgets, synthetic 65 ms callback downgrade
+(161,343 pixels, low quality), and synthetic high-refresh draw bounds (28 draws
+in 500 ms). CPU/GPU maximum component error across 192 samples: **0.0000177263**
+(tolerance 0.0002). Final desktop callback median/p95: 16.7/16.7 ms; no long tasks.
+Synthetic timers test scheduling policy, not real phone performance/GPU cost.
+
+Passed: build (includes types), separate TypeScript check, lint, 13 geometry/model
+tests, browser script syntax and diff whitespace. Model/API representation bytes
+did not change; HTTP tests were not rerun. Visually inspected new desktop sea
+and 390 px sea/drawing captures: readable composition, vessel/contours retained.
+Compact geometry further under-resolves the smallest wave; analytic fragment
+normals/contours retain all six components. Real phone shimmer/crispness remains
+an acceptance gate. Prior report sections below are historical checkpoints.
+
+Commit subject: `fix: streamline Writing and reduce sea rendering cost`.
+Final preview: `pnpm start --hostname localhost --port 3004`.
+Stopped this task's temporary comparison server on 3003; retained the final
+3004 preview and left preexisting 3000/3001/3002 servers intact.
+**Next bounded task:** put this revision on production through the user's hosting
+workflow, then compare the same revision/browser on iPhone Air and MacBook Pro:
+initial load, 30 seconds idle sea, scroll through reveal, pause/resume and Writing.
+Record Chrome/Safari versions, OS, refresh/Low Power setting and warm/cold results;
+capture a Chrome trace if production-only Mac lag persists and a Safari trace
+where available on iPhone;
+do not mark performance solved merely from headless 60 Hz results. New portfolio,
+notebook, backend, sensors and C features remain lower priority.
+
 ## Renderer lifecycle continuation — 5 October
 
 Started from a clean tree at `5eddf76`; `main` matched the local `origin/main`

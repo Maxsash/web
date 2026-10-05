@@ -16,6 +16,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const stage=canvas?.parentElement;
     if(!canvas||!scene||!stage)return;
     const media=matchMedia("(prefers-reduced-motion: reduce)");
+    // Conservative startup budget, including phones in landscape. Not a hardware benchmark.
+    const compact=matchMedia("(pointer: coarse)").matches||stage.clientWidth<760;
     const events=new AbortController();
     let engine: Awaited<ReturnType<typeof import("./ocean-engine").createOceanEngine>> | undefined;
     let frame=0, visible=true, stopped=false, disposed=false, presented=false, lastTime=0, elapsed=0;
@@ -38,6 +40,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       frame=0;
       if(!engine||disposed||!visible||document.hidden)return;
       const active=visible&&!document.hidden&&!stopped&&!media.matches;
+      // Bound GPU work on high-refresh displays; slow delivery uses a 30 Hz ceiling.
+      // Scroll/pause/reduced-motion stills continue to request finite draws.
+      if(active&&lastTime&&now-lastTime<1000/(low?30:60)-1){frame=requestAnimationFrame(render);return;}
+      const interval=lastTime?(now-lastTime)/1000:0;
       const delta=lastTime?Math.min((now-lastTime)/1000,.05):0;
       if(active)elapsed+=delta;
       lastTime=active?now:0;
@@ -46,14 +52,14 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       const reveal=media.matches?(progress>.45?1:0):clamp((progress-.14)/.75);
       engine.draw(elapsed,reveal,pointer);
       if(!presented){presented=true;canvas.dataset.renderer="webgl2";scene.dataset.rendering="webgl2";setReady(true);}
-      canvas.dataset.quality=media.matches?"still":low?"low":"high";
+      canvas.dataset.quality=media.matches?"still":low?"low":compact?"compact":"high";
       if(active) {
         // Adapt to sustained frame delivery, never claim this measures GPU time.
         if(lastTime-performanceStart>1600) {
-          if(sampleFrames>30&&slowFrames/sampleFrames>.3&&!low){low=true;ratio*=.7;engine.resize(width,height,ratio);}
+          if(sampleFrames>=12&&slowFrames/sampleFrames>.3&&!low){low=true;ratio*=.7;engine.resize(width,height,ratio);}
           performanceStart=now;sampleFrames=0;slowFrames=0;
         }
-        sampleFrames++;if(delta>.029)slowFrames++;
+        sampleFrames++;if(interval>(low?.058:.029))slowFrames++;
         frame=requestAnimationFrame(render);
       }
     };
@@ -62,8 +68,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const resize=()=>{
       const bounds=scene.getBoundingClientRect();start=bounds.top+scrollY;
       width=stage.clientWidth;height=stage.clientHeight;distance=Math.max(1,scene.offsetHeight-height);
-      const pixelCap=width<760?780000:1500000;
-      ratio=Math.min(devicePixelRatio||1,width<760?1.5:1.25,Math.sqrt(pixelCap/(width*height)))*(low?.7:1);
+      const pixelCap=compact?360000:1500000;
+      ratio=Math.min(devicePixelRatio||1,compact?1:1.25,Math.sqrt(pixelCap/(width*height)))*(low?.7:1);
       engine?.resize(width,height,ratio);updateScroll();requestFrame();
     };
     const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(stage);resizeObserver.observe(scene);
@@ -85,7 +91,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     import("./ocean-engine").then(({createOceanEngine})=>{
       if(disposed)return;
       try {
-        engine=createOceanEngine(canvas,edition);resize();cancelAnimationFrame(frame);frame=0;render(performance.now());
+        engine=createOceanEngine(canvas,edition,compact);resize();cancelAnimationFrame(frame);frame=0;render(performance.now());
       } catch(error) {
         canvas.dataset.renderer="fallback";scene.dataset.rendering="fallback";
         console.warn("The sea is using its static field plate.",error);

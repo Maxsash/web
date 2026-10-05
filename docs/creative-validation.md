@@ -18,8 +18,8 @@ The current scope and ordered work are in
 
 ## Latest evidence — selected mobile stages
 
-The user selected four mobile gesture stages; desktop remains continuous.
-Fresh local build/types/lint and **83 browser records** pass, including touch
+The user selected three mobile gesture stages; desktop remains continuous.
+Fresh local build/types/lint and **81 browser records** pass, including touch
 progression/reversal, native final exit and reduced-motion stage buttons.
 Exact report, command scope and physical Safari limitations are at the top of
 `creative-v2-validation.md`. This supersedes earlier counts as current evidence.

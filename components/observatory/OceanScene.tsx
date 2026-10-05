@@ -20,7 +20,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     // Conservative startup budget, including phones in landscape. Not a hardware benchmark.
     const compact=matchMedia("(pointer: coarse)").matches||stage.clientWidth<760;
     const staged=matchMedia("(pointer: coarse)").matches;
-    const stages=[{label:"Sea",progress:0},{label:"Waves",progress:.42},{label:"Structure",progress:.68},{label:"Drawing",progress:1}];
+    const stages=[{label:"Sea",progress:0},{label:"Structure",progress:.55},{label:"Drawing",progress:1}];
     const stageControls=stage.querySelector<HTMLElement>("[data-stage-controls]");
     const stageLabel=stageControls?.querySelector<HTMLElement>("[data-stage-label]");
     const previousButton=stageControls?.querySelector<HTMLButtonElement>("[data-stage-previous]");
@@ -183,7 +183,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       </button>
       <div className={styles.stageControls} data-stage-controls>
         <button type="button" data-stage-previous disabled aria-label="Previous sea stage" onClick={()=>stageRef.current?.(-1)}>↓ Back</button>
-        <span data-stage-label role="status" aria-live="polite" aria-atomic="true">1 / 4 · Sea</span>
+        <span data-stage-label role="status" aria-live="polite" aria-atomic="true">1 / 3 · Sea</span>
         <button type="button" data-stage-next aria-label="Next sea stage or view work" onClick={()=>stageRef.current?.(1)}>Next ↑</button>
       </div>
     </>

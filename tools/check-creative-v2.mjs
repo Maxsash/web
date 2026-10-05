@@ -208,20 +208,20 @@ try{
      await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
      await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(480);
    };
-   for(let index=1;index<=3;index++){
+   for(let index=1;index<=2;index++){
      await swipe(1);
      const state=await evaluate("(()=>{const s=document.querySelector('[data-observatory]');return {stage:s.dataset.stage,scrollY,label:s.querySelector('[data-stage-label]').textContent};})()");
-     results.push({name:'mobile-swipe-one-stage',index,...state,pass:state.stage===String(index)&&state.scrollY<=2});
-     await snapshot('staged-390-'+['sea','waves','structure','drawing'][index]);
+     results.push({name:'mobile-swipe-one-stage',index,...state,pass:state.stage===String(index)&&state.scrollY<=2&&state.label===`${index+1} / 3 · ${['Sea','Structure','Drawing'][index]}`});
+     await snapshot('staged-390-'+['sea','structure','drawing'][index]);
    }
    await call('Input.synthesizeScrollGesture',{x:180,y:600,yDistance:-350,speed:900,gestureSourceType:'touch'});await delay(200);
-   results.push({name:'mobile-final-stage-releases-page',pass:await evaluate("scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='3'")});
+   results.push({name:'mobile-final-stage-releases-page',pass:await evaluate("scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='2'")});
    await evaluate('scrollTo(0,0)');await delay(100);await swipe(-1);
-   results.push({name:'mobile-reverse-one-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='2' && scrollY<=2")});
+   results.push({name:'mobile-reverse-one-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='1' && scrollY<=2")});
    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
    await evaluate("document.querySelector('[data-stage-next]').click()");await delay(120);
    const stillBefore=await frames();await delay(200);
-   results.push({name:'mobile-reduced-motion-stage-still',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='3' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')")&&(await frames())===stillBefore});
+   results.push({name:'mobile-reduced-motion-stage-still',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='2' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')")&&(await frames())===stillBefore});
    await evaluate("document.querySelector('[data-stage-next]').click()");await delay(100);
    results.push({name:'mobile-stage-button-exits-to-work',pass:await evaluate("document.getElementById('work').getBoundingClientRect().top<innerHeight && scrollY>30")});
    await call('Emulation.setDeviceMetricsOverride',{width:320,height:568,deviceScaleFactor:1,mobile:true});await load('/');await snapshot('staged-320-sea');

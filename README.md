@@ -108,7 +108,7 @@ iPhone Air/MacBook Pro. Writing now opens `/blog` directly. Touch/narrow screens
 use a smaller rendering budget; physical rechecks remain open. See current
 validation for the production/local comparison and exact limits.
 
-Latest selected mobile interaction: Sea → Waves → Structure → Drawing, one
+Latest selected mobile interaction: Sea → Structure → Drawing, one
 stage per vertical swipe or stage button. The next swipe after Drawing continues
 into Work. Desktop remains continuous. Reduced motion uses immediate stills;
 no-JS retains the readable native-scroll fallback. Physical iPhone Safari

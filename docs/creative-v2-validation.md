@@ -4,7 +4,35 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
-## User-selected mobile stages — latest checkpoint
+## Latest checkpoint — three mobile stages
+
+The user requested merging Waves and Structure because they looked too similar.
+Started clean at `de12187`, matching `origin/main`. The selected flow is now
+**Sea → Structure → Drawing**, at progress **0 / .55 / 1**. The combined middle
+stage shows contours and vessel construction together. Two upward swipes reach
+Drawing; the next gesture scrolls natively into Work. Desktop remains continuous.
+The bounded 420 ms transition, reverse gestures, accessible controls, reduced
+motion and no-JS behavior retain the preceding contract.
+
+Changed `OceanScene.tsx`, gesture assertions and active documentation. Production
+build (including TypeScript), lint, harness syntax and diff checks pass. The first
+sandboxed build stalled and was terminated; the permitted retry completed.
+Fresh full browser report: `tools/.out/creative-home/report.json`,
+`2026-10-05T12:59:29.118Z`, temporary `http://localhost:3006/`.
+**81 records pass: 40 captures, 40 assertions and one cadence run**, with no
+runtime exceptions, GL errors or detected overflow. Actual dispatched swipes
+advance 0→1→2 with exact three-stage labels and no page movement. Final native
+exit, reversal to Structure, reduced-motion controls and fine-pointer continuous
+desktop all pass. Visually inspected the 390 px Structure and Drawing captures:
+readable copy, distinct states and reachable controls. The full matrix also
+covers desktop, narrow/landscape, fallback and no-JS layouts.
+
+Temporary QA server stopped via EXIT trap. No push or deployment. Commit subject:
+`refactor: simplify mobile sea to three stages`. Physical iPhone Air Safari
+smoothness, VoiceOver, rotation-session and real pinch zoom remain unqualified;
+next step is deploying and checking this three-stage flow on that device.
+
+## Previous checkpoint — four mobile stages
 
 User explicitly requested mobile gesture stages and unchanged continuous
 desktop scrolling. This authorizes the change at `/`; no exploratory sample or

@@ -4,6 +4,18 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
+## Search and sharing checkpoint — 5 October 2026
+
+User requested WhatsApp sharing checks, SEO and AI/LLM discovery. Local changes
+add per-page social cards, shared canonical origin, robots/sitemap and accurate
+homepage entity/project JSON-LD. Sample notebook pages remain noindex. The user approved this checkpoint and requested commit/push to `origin/main`
+with its documentation. Commit subject: `feat: improve social sharing and search discovery`.
+No manual deployment or post-push live verification is included; hosting may deploy on push. Production build, types,
+lint and 20 crawler/page cases pass. Read-only live homepage/card checks pass;
+actual WhatsApp app previews, Search Console and AI citation outcomes remain open.
+Details, commands and next gates: [search and sharing](seo-and-sharing.md).
+
+
 ## Latest work — mobile opening curve
 
 The first stage transition now starts promptly and decelerates across its existing

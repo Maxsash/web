@@ -1,11 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { sharingMetadata } from "@/lib/seo";
 import Mark from "@/components/Mark";
 import styles from "@/components/atlas/Atlas.module.css";
 
 export const metadata: Metadata = {
   title: "Navigator's Notebook — an atlas of things made",
   description: "Studies in sea, ship, and mathematics. A new publication from Maxsash Studio.",
+  ...sharingMetadata("Navigator’s Notebook | Maxsash Studio", "Sample studies in sea, ship, and mathematics from Maxsash Studio.", "/blog"),
   robots: { index: false, follow: true },
 };
 

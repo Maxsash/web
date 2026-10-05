@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { sharingMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { notebook, findPost } from "@/content/notebook";
@@ -20,7 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.summary,
-    alternates: { canonical: `/blog/${post.slug}` },
+    ...sharingMetadata(`${post.title} | Maxsash Studio`, `Sample essay: ${post.summary}`, `/blog/${post.slug}`, "article"),
+    robots: { index: false, follow: true },
   };
 }
 

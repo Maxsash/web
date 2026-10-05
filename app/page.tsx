@@ -5,6 +5,7 @@ import Mark from "@/components/Mark";
 import Work from "@/components/Work";
 import Elsewhere from "@/components/Elsewhere";
 import { site } from "@/content/site";
+import { sharingMetadata, studioStructuredData } from "@/lib/seo";
 import { WaveSoundControl } from "@/components/shore/WaveSound";
 import ShoreFooter from "@/components/shore/ShoreFooter";
 import OceanScene from "@/components/observatory/OceanScene";
@@ -15,7 +16,7 @@ import styles from "@/components/observatory/Observatory.module.css";
 export const metadata: Metadata = {
   title: { absolute: "Maxsash Studio — Sea. Ship. Math." },
   description: site.description,
-  alternates: { canonical: "/" },
+  ...sharingMetadata("Maxsash Studio — Sea. Ship. Math.", site.description, "/"),
 };
 
 export default async function Home({searchParams}: {searchParams:Promise<{seed?:string|string[]}>}) {
@@ -26,6 +27,7 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
   const nextSeed=seed===DEFAULT_SEA_SEED?"27c4b901":DEFAULT_SEA_SEED;
   return (
     <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(studioStructuredData).replace(/</g, "\\u003c") }} />
       <a className={styles.skip} href="#work">Skip to the work</a>
       <section className={styles.story} data-observatory aria-label="From open water to its mathematical construction">
         <div className={styles.stage}>

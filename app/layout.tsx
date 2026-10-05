@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { site } from "@/content/site";
+import { siteOrigin, sharingMetadata } from "@/lib/seo";
 import "./globals.css";
 
 /* Fraunces carries the display voice: an old-style face with enough warmth for
@@ -37,7 +38,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url),
+  metadataBase: new URL(siteOrigin),
 
   title: {
     default: `${site.name} — ${site.tagline}`,
@@ -46,21 +47,8 @@ export const metadata: Metadata = {
 
   description: site.description,
 
-  openGraph: {
-    title: site.name,
-    description: site.description,
-    url: site.url,
-    siteName: site.name,
-    images: ["/images/cover-compressed.png"],
-    type: "website",
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: site.name,
-    description: site.description,
-    images: ["/images/cover-compressed.png"],
-  },
+  ...sharingMetadata(`${site.name} — ${site.tagline}`, site.description, "/"),
+  authors: [{ name: site.owner, url: site.links.portfolio }],
 
   robots: {
     index: true,

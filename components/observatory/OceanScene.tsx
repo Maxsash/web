@@ -77,7 +77,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     document.addEventListener("visibilitychange",restart,{signal:events.signal});
     media.addEventListener("change",restart,{signal:events.signal});
     canvas.addEventListener("webglcontextlost",event=>{
-      event.preventDefault();cancelAnimationFrame(frame);frame=0;engine=undefined;
+      event.preventDefault();cancelAnimationFrame(frame);frame=0;engine?.dispose();engine=undefined;
       canvas.dataset.renderer="fallback";scene.dataset.rendering="fallback";setReady(false);
     },{signal:events.signal});
     pauseRef.current=()=>{stopped=!stopped;restart();return stopped;};
@@ -90,7 +90,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         canvas.dataset.renderer="fallback";scene.dataset.rendering="fallback";
         console.warn("The sea is using its static field plate.",error);
       }
-    }).catch(()=>{canvas.dataset.renderer="fallback";scene.dataset.rendering="fallback";});
+    }).catch(()=>{if(disposed)return;canvas.dataset.renderer="fallback";scene.dataset.rendering="fallback";});
     return()=>{
       disposed=true;events.abort();cancelAnimationFrame(frame);resizeObserver.disconnect();intersection.disconnect();engine?.dispose();pauseRef.current=null;
     };

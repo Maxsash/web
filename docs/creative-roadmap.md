@@ -90,3 +90,12 @@ tests and 54 browser records pass. The user explicitly requested commit and
 push to the existing repository, then intends domain deployment for feedback.
 Commit subject: `feat: promote Living Atlas homepage and notebook`. Next work
 starts from feedback, real project/link content and documented device checks.
+
+## Renderer hardening continuation
+
+5 October: completed explicit context-loss disposal and a late-import rejection
+guard. Full local production browser validation passes 57 records, including
+three new failure/cleanup assertions; build, types, lint and 13 model/geometry
+tests pass. Details and limitations are in current validation. Focused commit:
+`fix: dispose ocean engine on context loss`. Physical-device qualification,
+remaining lifecycle gates and authentic project/link content remain next.

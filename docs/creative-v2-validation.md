@@ -4,6 +4,44 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Renderer lifecycle continuation — 5 October
+
+Started from a clean tree at `5eddf76`; `main` matched the local `origin/main`
+tracking reference (no fresh fetch). Foundation promotion was already done.
+Fixed `OceanScene.tsx` to dispose the engine before dropping its reference on
+context loss, and ignore a delayed import rejection after unmount. Context loss
+already invalidates GPU resources; this closes explicit ownership cleanup
+rather than proving a GPU memory leak. Fallback remains in place until reload.
+
+Added three browser assertions: loss invokes deletion for all three buffers,
+three vertex arrays and three programs; loss stops drawing; forced shader-link
+failure exposes fallback, disables pause and retains Work without drawing.
+The import-rejection guard was reviewed/typechecked, not tested by injecting a
+rejected module fetch. Visual design and the versioned sea model did not change.
+
+Fresh full production report: `tools/.out/creative-home/report.json`,
+`2026-10-05T11:22:08.079Z`, `http://localhost:3002/`. **57 records pass**:
+35 captures, 21 assertions and one cadence run, with zero runtime exceptions,
+GL errors or detected horizontal overflows. Cleanup counters are 3/3/3.
+Desktop callback median/p95: 16.7/16.7 ms over 30 seconds; 1,802 scene draws,
+zero long tasks. Captures are automated regression evidence, not a new visual
+composition review or physical-phone qualification.
+
+Completed: `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm build`,
+`node --check tools/check-creative-v2.mjs`, 13 geometry/model tests,
+`node tools/check-creative-v2.mjs http://localhost:3002`, and `git diff --check`.
+The sandboxed build stalled at compile with no CPU activity; stopped only this
+task's identified build processes and retried outside the sandbox successfully.
+Port 3001 was occupied and left intact. This preview remains running on 3002,
+started with `pnpm start --hostname localhost --port 3002`. API tests were not
+rerun because endpoints/model did not change.
+
+Focused commit subject: `fix: dispose ocean engine on context loss`.
+Next: physical iOS/Android qualification and remaining lifecycle checks
+(hidden initialization/tab visibility, repeated SPA navigation/resizes,
+sustained downgrade). Authentic project facts/links remain needed. No deployment
+or automatic context restoration is claimed.
+
 ## Public foundation promotion — final checkpoint
 
 The Living Atlas is now `app/page.tsx`; the publication is `app/blog/`. Work and

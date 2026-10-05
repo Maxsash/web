@@ -11,6 +11,28 @@ what exists from what is proposed. Read the repository `AGENTS.md`,
 indexes [current v2 validation](creative-v2-validation.md); no unchecked gate in
 this plan is a result.
 
+## Latest explicit selection — mobile stages, continuous desktop
+
+User directly authorized this behavior at `/`; commit it with documentation.
+Four stages: Sea/Waves/Structure/Drawing (0/.42/.68/1), one stage per predominantly
+vertical >=35 px swipe, with 420 ms bounded easing. Previous/Next controls are
+available; final Next becomes View work. Three forward gestures reach Drawing,
+then the next gesture scrolls normally into Work. Back swipes reverse stages at
+scroll top. Direct navigation/skip links remain intact.
+
+Primary `(pointer: coarse)` chooses staged mode at mount, retained across resize;
+narrow fine-pointer desktop still uses continuous scroll math. Staged story is
+one 100svh viewport; desktop retains 255svh. Touch interception is limited to
+the hero at its top: interactive targets, horizontal/multitouch gestures,
+boundary scrolling and lower page content are not intercepted. No global lock
+or wheel override. Reduced motion changes stage immediately; no-JS retains
+original server content/native-scroll fallback. The prior native-only gesture
+restriction is superseded only by this explicit mobile choice.
+
+Local build/types/lint and 83 browser records pass. Treat gesture correctness
+and real Safari smoothness as separate gates. Next is production/iPhone Air
+verification, including rotation, pinch zoom, fast/reverse swipes and exit.
+
 ## 1. Decisions that must survive a handoff
 
 1. The user rejected review set 01. Do not ask them to choose Wind versus Helm

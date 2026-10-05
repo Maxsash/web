@@ -4,6 +4,56 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## User-selected mobile stages — latest checkpoint
+
+User explicitly requested mobile gesture stages and unchanged continuous
+desktop scrolling. This authorizes the change at `/`; no exploratory sample or
+further selection is required. Started clean at `39d5b42`, matching the local
+tracking reference. No push or deployment in this turn.
+
+`OceanScene.tsx` implements four states: Sea (0), Waves (.42), Structure (.68),
+Drawing (1). A predominantly vertical >=35 px swipe advances one state; a
+bounded 420 ms ease replaces finger-momentum/camera coupling. Reduced motion
+uses immediate stills. Sea animation still respects pause, visibility and idle
+budgets. Three upward swipes reach Drawing; another upward gesture uses native
+page scrolling into Work. Back swipes reverse one stage when at scroll top;
+partly scrolled content remains native, so returning from Work is not trapped.
+
+Primary `(pointer: coarse)` selects mode at mount, not user-agent or width alone.
+Fine-pointer desktop retains existing continuous reveal/camera equations and
+255svh story. Staged hero uses one 100svh viewport. Scoped CSS adds a polite live
+stage label and Previous/Next buttons; final Next becomes View work. Existing
+navigation/skip remain direct exits. Listeners ignore links/buttons/inputs,
+horizontal gestures and multitouch. A non-passive touchmove listener consumes
+only in-range hero stage gestures. No global scroll lock, wheel override,
+browser setting or dependency. No-JS keeps native-scroll server content and
+plate. GL failure does not disable the independent stage controls.
+
+Completed build (includes types), lint, browser script syntax and diff checks.
+Full local report: `tools/.out/creative-home/report.json`,
+`2026-10-05T12:45:24.953Z`, temporary `http://localhost:3006/`.
+**83 records pass: 41 captures, 41 assertions, one cadence run**, with zero
+runtime exceptions, GL errors or detected overflow. New checks include:
+
+- Actual dispatched single-touch swipes advance 0→1→2→3, with scrollY staying 0.
+- Browser-generated touch scroll exits Drawing; reverse swipe returns to stage 2.
+- Horizontal/multitouch events do not advance stage (not full pinch-zoom QA).
+- Stage-button exit reaches Work; reduced-motion stage idles without new draws.
+- Fine-pointer desktop remains continuous and stage controls stay hidden.
+- Staged 390 px four-state, 320 px and landscape captures have no overflow.
+
+Visually inspected Waves/Drawing at 390 px and landscape opening: readable copy,
+retained vessel/contours and reachable stage controls. 320 px/landscape captures
+use reduced motion; portrait four-state captures use normal motion. Standard
+no-JS/fallback and renderer lifecycle/parity assertions also pass; no physical
+Safari, VoiceOver, real pinch zoom or rotation-session qualification is claimed.
+The geometry/model/shaders/API did not change; pure/HTTP tests were not repeated.
+
+QA server used an EXIT trap; no persistent preview is intended. Commit subject:
+`feat: add staged mobile sea gestures`. Next: deploy/recheck the same gestures on
+iPhone Air Safari, including first/last boundaries, reversal, rotation and pinch
+zoom. Bounded transitions are not proof of smoother physical presentation.
+
 ## iPhone Safari recording — current feedback and scheduling correction
 
 User reports **MacBook Pro/Chrome is much better** on the latest build but

@@ -101,6 +101,7 @@ try{
  await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]').click()");
  for(let i=0;i<100;i++){if(await evaluate("location.pathname==='/blog' && Boolean(document.querySelector('h1')) && !document.querySelector('canvas[data-ocean]')"))break;await delay(50);}
  results.push({name:"writing-one-click-navigation",pass:await evaluate("location.pathname==='/blog' && !document.querySelector('canvas[data-ocean]')")});
+ await load('/');results.push({name:'desktop-remains-continuous',pass:await evaluate("!document.querySelector('[data-observatory]').dataset.staged && getComputedStyle(document.querySelector('[data-stage-controls]')).display==='none'")});
  await load("/blog");
  const notebook=await evaluate(`(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),articles:[...new Set([...document.querySelectorAll('a[href^="/blog/"]')].map(e=>e.getAttribute('href')))],legacyArticleLinks:document.querySelectorAll('a[href^="/samples/atlas/"]').length}))()`);
  results.push({name:"public-blog-index",...notebook,pass:/\bnoindex\b/i.test(notebook.robots)&&articlePaths.every(path=>notebook.articles.includes(path))&&notebook.legacyArticleLinks===0});
@@ -188,7 +189,45 @@ try{
    await load('/');
    const landscape=await evaluate("(()=>{const c=document.querySelector('canvas[data-ocean]');return {pixels:c.width*c.height,triangles:Number(c.dataset.triangles),quality:c.dataset.quality};})()");
    results.push({name:'touch-landscape-compact-budget',...landscape,pass:landscape.pixels<=361200&&landscape.triangles===21600&&landscape.quality==='compact'});
+   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+   await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
+   await load('/');await snapshot('staged-390-sea');
+   await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:100,y:400,id:1}]});
+   await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:260,y:410,id:1}]});
+   await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   results.push({name:'mobile-horizontal-gesture-keeps-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'")});
+   await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:150,y:400,id:1},{x:210,y:400,id:2}]});
+   await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:100,y:400,id:1},{x:260,y:400,id:2}]});
+   await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   results.push({name:'mobile-multitouch-keeps-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'")});
+   await call('Emulation.setPageScaleFactor',{pageScaleFactor:1});
+   const swipe=async(direction)=>{
+     const from=direction>0?620:300,to=direction>0?300:620;
+     await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:180,y:from,id:1}]});
+     await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:(from+to)/2,id:1}]});await delay(20);
+     await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:180,y:to,id:1}]});
+     await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(480);
+   };
+   for(let index=1;index<=3;index++){
+     await swipe(1);
+     const state=await evaluate("(()=>{const s=document.querySelector('[data-observatory]');return {stage:s.dataset.stage,scrollY,label:s.querySelector('[data-stage-label]').textContent};})()");
+     results.push({name:'mobile-swipe-one-stage',index,...state,pass:state.stage===String(index)&&state.scrollY<=2});
+     await snapshot('staged-390-'+['sea','waves','structure','drawing'][index]);
+   }
+   await call('Input.synthesizeScrollGesture',{x:180,y:600,yDistance:-350,speed:900,gestureSourceType:'touch'});await delay(200);
+   results.push({name:'mobile-final-stage-releases-page',pass:await evaluate("scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='3'")});
+   await evaluate('scrollTo(0,0)');await delay(100);await swipe(-1);
+   results.push({name:'mobile-reverse-one-stage',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='2' && scrollY<=2")});
+   await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+   await evaluate("document.querySelector('[data-stage-next]').click()");await delay(120);
+   const stillBefore=await frames();await delay(200);
+   results.push({name:'mobile-reduced-motion-stage-still',pass:await evaluate("document.querySelector('[data-observatory]').dataset.stage==='3' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')")&&(await frames())===stillBefore});
+   await evaluate("document.querySelector('[data-stage-next]').click()");await delay(100);
+   results.push({name:'mobile-stage-button-exits-to-work',pass:await evaluate("document.getElementById('work').getBoundingClientRect().top<innerHeight && scrollY>30")});
+   await call('Emulation.setDeviceMetricsOverride',{width:320,height:568,deviceScaleFactor:1,mobile:true});await load('/');await snapshot('staged-320-sea');
+   await call('Emulation.setDeviceMetricsOverride',{width:844,height:390,deviceScaleFactor:1,mobile:true});await load('/');await snapshot('staged-landscape-sea');
    await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:coarsePointer.identifier});
+   await call('Emulation.setTouchEmulationEnabled',{enabled:false});
    await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
    await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"reduce"}]});
    const injection=await call("Page.addScriptToEvaluateOnNewDocument",{source:"const originalGetContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:originalGetContext.call(this,kind,...args)}"});

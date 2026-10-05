@@ -1,0 +1,18 @@
+.gallery { max-width: 76rem; padding-block: clamp(3rem, 8vw, 7rem); }
+.intro { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 3rem; align-items: center; padding-bottom: 4rem; }
+.intro h1 { font-size: clamp(3rem, 7vw, 6.5rem); max-width: 10ch; margin-block: 1rem 1.5rem; }
+.intro h1 em { font-weight: 400; color: var(--accent); }
+.lede { max-width: 34rem; font-size: var(--step-1); color: var(--ink-2); }
+.group { padding-block: 3rem; border-top: 1px solid var(--rule-strong); }
+.groupHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.75rem; }
+.group h2 { font-size: var(--step-3); }
+.groupHead > p { font-family: var(--font-mono); font-size: var(--step--2); color: var(--ink-3); }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.card { display: flex; flex-direction: column; gap: 1rem; padding: clamp(1.4rem, 3vw, 2.25rem); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--paper-sunk); }
+.card h3 { font-size: var(--step-2); }
+.card > p { color: var(--ink-2); }
+.card a { display: flex; align-items: center; gap: 0.6rem; min-height: 44px; width: fit-content; font-size: var(--step--1); margin-top: auto; color: var(--accent); }
+.footnote { margin-top: 3rem; font-size: var(--step--1); color: var(--ink-3); max-width: 45rem; }
+.footnote a { display: inline-flex; align-items: center; min-height: 44px; }
+.textLink { display:inline-flex; align-items:center; min-height:44px; margin-top:2rem; }
+@media (max-width:44rem) { .intro { grid-template-columns:1fr; gap:1rem; padding-bottom:2rem; } .cards { grid-template-columns:1fr; } .group { padding-block:2rem; } }

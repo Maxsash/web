@@ -9,6 +9,29 @@ a claim that the entire creative roadmap or release qualification is complete.
 (5 October 2026). The user also explicitly requested push to `origin/main` and wants
 to deploy the domain themselves for real feedback. Original plan: `012e164`.
 
+## Latest selected checkpoint — four mobile sea stages
+
+User explicitly chose stage-by-stage mobile gestures, keeping continuous
+desktop scrolling. This is selected work at `/`, not a sample awaiting approval.
+Four states Sea/Waves/Structure/Drawing (0/.42/.68/1) use bounded 420 ms easing:
+three forward swipes reach Drawing, the next scroll gesture enters Work normally.
+Reverse gestures visit the previous state. Previous/Next buttons and direct
+Work/Writing/skip exits remain. Coarse primary pointer selects mobile at mount;
+fine-pointer desktop remains continuous. Reduced motion uses immediate stills;
+no-JS retains the original server/native-scroll fallback. Only local hero stage
+gestures are consumed; horizontal/multitouch, links and lower page stay native.
+
+Changed `OceanScene.tsx`, scoped Observatory CSS, browser harness and active docs.
+Build/types/lint and 83 browser records pass (41 captures, 41 assertions, cadence).
+Actual touch-event progression, reversal, native final exit and reduced-motion
+button flow pass; desktop/phone captures reviewed. Physical Safari smoothness,
+VoiceOver, rotation-session and real pinch zoom remain open. No field/model/API
+change, push or deploy. Commit subject: `feat: add staged mobile sea gestures`.
+All temporary QA servers are closed after this checkpoint. Next bounded task:
+deploy and verify this selected mobile flow on iPhone Air Safari, preserving the
+user-reported Mac Chrome gains. See latest validation for exact evidence.
+Earlier checkpoint descriptions below preserve history.
+
 ## User intent and decisions
 
 The soul is **Sea. Ship. Math.** A serves the main site, B the blog, and C an

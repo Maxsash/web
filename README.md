@@ -11,15 +11,21 @@ pnpm build
 
 ## What to edit
 
-Almost all of the copy and every link lives in [`content/site.ts`](content/site.ts):
-the intro, the nav, the project cards, the writing list and the outbound
-destinations. Nothing else reads from it, so adding a project is one entry.
+Site copy and destinations live in [`content/site.ts`](content/site.ts): the
+site destinations, project cards and outbound links. The Living Atlas homepage
+is composed in `app/page.tsx`; its scene styles and renderer live in
+`components/observatory/`. The notebook articles live in
+[`content/notebook.ts`](content/notebook.ts). Public publication routes live in
+`app/blog/`, with their own
+layout and styling in `components/atlas/`. Add a project or note at its content
+source; keep placeholder/sample status explicit until real content is supplied.
 
 ## Generated artwork
 
-Two pieces of the design are computed rather than drawn, because the qualities
-that matter about them are numeric. Both write files that **are** committed, so
-a normal build never needs to run them:
+The brand mark and legacy vector wave artwork are computed rather than drawn.
+Their generated files are committed, so a normal build does not need to run
+these tools. The Living Atlas ocean instead uses `lib/sea-edition.ts` and the
+procedural renderer; the legacy wave generator is not its geometry source.
 
 | Command | Writes | Why it is generated |
 | --- | --- | --- |
@@ -50,28 +56,68 @@ path. `tools/build-cover.mjs` writes the card's page for that step.
 
 ## Design tokens
 
-The palette, the type scale and the motion timings are all in
-[`app/globals.css`](app/globals.css) as custom properties. Light is a bright
-noon offshore, dark is the same water at dusk; the two share one blue ramp.
+Shared typography and inherited site tokens live in
+[`app/globals.css`](app/globals.css). The Living Atlas scene is art-directed in
+`components/observatory/Observatory.module.css` and its shaders. The publication
+uses scoped ink/bone/vermilion tokens in `components/atlas/Atlas.module.css`; its
+identity deliberately differs from the homepage. Existing font files are reused.
 
 ## Responsive verification
 
-Run `node tools/check-responsive.mjs` against the local server to check phone,
-tablet, desktop, landscape, enlarged text, touch navigation and animated wave
-coverage. It saves screenshots and measured reports under `tools/.out/`.
-`--no-fill` temporarily disables the wave extension in the test browser to
-confirm that the check detects the old gaps. See [docs/responsive.md](docs/responsive.md)
-for the layout rules, animation fix and complete verification matrix.
+Use `tools/check-creative-v2.mjs` for current homepage/blog production checks;
+commands appear below. It records screenshots, actual loaded assets and specific
+browser assertions. See [current validation](docs/creative-v2-validation.md) for
+what was actually run and what remains unverified.
+
+[The earlier responsive record](docs/responsive.md) documents the retired vector
+home treatment at commit `d10c21a`. Its saved captures are historical evidence,
+not qualification of the new homepage; the retired wave-coverage harness has
+been removed from the current tree.
 
 ## Open follow-ups
 
 Keyboard support, cursor effects and the broader accessibility review are
 tracked in [docs/follow-ups.md](docs/follow-ups.md).
 
-## Creative roadmap
+## Approved Living Atlas foundation
 
-The accepted Sea, Ship, Math direction, staged tasks, review routes, decisions and
-commit policy live in [docs/creative-roadmap.md](docs/creative-roadmap.md). Actual
-checks and remaining validation live in
-[docs/creative-validation.md](docs/creative-validation.md). Experimental UI stays
-uncommitted until a sample is selected by the user.
+On **5 October 2026**, the user approved Living Atlas A/B as the foundation and
+requested promotion to the actual site, current documentation and a commit.
+Start with [the handoff](docs/creative-v2-handoff.md), then the
+[ordered plan](docs/creative-v2-plan.md) and
+[measured validation](docs/creative-v2-validation.md).
+
+Public routes:
+
+- `/` — Living Atlas sea-to-drawing scene, Work/Elsewhere access and notebook link
+- `/blog` — engraved Navigator's Notebook with two labelled sample essays
+- `/blog/three-waves-one-sea` — the six-wave study, retaining its original slug
+- `/blog/an-integral-under-sail` — the studio mark construction essay
+- `/samples` — approved-foundation index and future review entry point
+- `/api/sea-edition/print?seed=5ea5cafe&version=1` — reproducible vector engraving
+
+Old observatory/atlas sample URLs redirect to the corresponding public routes.
+The earlier Wind/Helm, blog workbenches and voyage were removed. The foundation
+commit is authorized; its actual record is in the handoff. Future unselected
+experiments remain uncommitted until approved. No deployment was requested.
+
+This is a foundation: real project content/spreads, optional sensors, a deeper
+mathematical Easter egg and physical-device qualification remain separate tasks.
+
+```bash
+pnpm lint
+node --test tools/geometry.test.mjs tools/sea-edition.test.mjs
+pnpm build
+pnpm start --hostname localhost --port 3001
+# In another terminal, with that production server running:
+SEA_TEST_BASE=http://localhost:3001 node --test tools/sea-api.test.mjs
+node tools/check-creative-v2.mjs http://localhost:3001
+node tools/measure-routes.mjs --output=tools/.out/creative-home/static-assets.json
+```
+
+The browser tool creates its own temporary Chrome profile, removes it on exit,
+and leaves public-route screenshots/reports in ignored `tools/.out/creative-home/`.
+Earlier prototype evidence remains under `tools/.out/creative-v2/`. It captures
+actual loaded JS, including the deferred renderer; `--quick` is only a small
+screenshot subset. Physical phone GPU/battery, full accessibility, and field Web
+Vitals are separate gates. Read the validation record before repeating checks.

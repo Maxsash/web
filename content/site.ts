@@ -28,13 +28,6 @@ export type Project = {
   status: "sailing" | "in the yard" | "moored";
 };
 
-export type Note = {
-  title: string;
-  href: string;
-  date: string;
-  summary: string;
-};
-
 export const site = {
   name: "Maxsash Studio",
   tagline: "software, games, and tools",
@@ -136,21 +129,5 @@ export const projects: Project[] = [
     year: "2025",
     repo: "#",
     status: "moored",
-  },
-];
-
-/* TODO: replace with real posts, or wire this to the blog. */
-export const notes: Note[] = [
-  {
-    title: "A first note",
-    href: "#",
-    date: "2026-08-14",
-    summary: "What this one is about, in a line.",
-  },
-  {
-    title: "A second note",
-    href: "#",
-    date: "2026-06-02",
-    summary: "Short enough that the list stays scannable.",
   },
 ];

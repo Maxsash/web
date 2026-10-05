@@ -214,6 +214,13 @@ foundation commit is recorded. No deployment is part of this authorization.
 
 ### Current priority — production navigation and smoothness
 
+Latest clarification: lag is specifically during scroll-to-drawing reveal on
+Mac Chrome and iPhone Safari. Idle cadence alone does not exercise it. The
+current continuation synchronizes affected opacity layers with the GPU frame,
+coalesces scroll events and hides the covered fallback while WebGL is active.
+Use `--diagnose --native-scroll` for browser-gesture/style-cost evidence; still
+require real-device verification after the local revisions reach production.
+
 5 October feedback supersedes the generic order below: eliminate the Writing
 intermediate click and investigate lag on iPhone Air and MacBook Pro at
 `maxsash.com`, despite smooth localhost. Prioritize this before new content

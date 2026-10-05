@@ -132,10 +132,17 @@ Read-only desktop production diagnostics (isolated Chrome, never phone QA):
 
 ```bash
 node tools/check-creative-v2.mjs https://www.maxsash.com --diagnose
-node tools/check-creative-v2.mjs http://localhost:3004 --diagnose
+node tools/check-creative-v2.mjs http://localhost:3005 --diagnose
+node tools/check-creative-v2.mjs https://www.maxsash.com --diagnose --native-scroll
+node tools/check-creative-v2.mjs http://localhost:3005 --diagnose --native-scroll
 ```
 
 Run sequentially to avoid competing for GPU time. Diagnostic reports live in
 `tools/.out/creative-production-diagnostic/` and `creative-local-diagnostic/`.
 Remote diagnostics are restricted to HTTPS `maxsash.com`/`www.maxsash.com`;
 the full regression/failure matrix still requires a local server.
+`--native-scroll` measures browser-generated wheel/touch gestures through the
+sea reveal at desktop/phone viewports, including style/layout totals; reports
+use `creative-{production,local}-native-scroll/`. `--scroll` uses programmatic
+scroll instead. Neither is physical Safari testing. The user's latest feedback
+concerns scrolling specifically; prioritize that check over idle cadence.

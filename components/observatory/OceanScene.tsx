@@ -24,25 +24,40 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     let start=0, distance=1, progress=0, width=1,height=1, ratio=1, low=false;
     let pointer:[number,number]=[0,0], target:[number,number]=[0,0];
     let slowFrames=0, sampleFrames=0, performanceStart=0;
+    let scrollDirty=true, lastScrollY=-1;
+    const opacityGroups=[
+      [styles.intro,styles.shade,styles.sceneMeta],
+      [styles.middle,styles.technical],
+      [styles.end],
+      [styles.paperVeil],
+    ].map(classes=>classes.flatMap(name=>Array.from(scene.querySelectorAll<HTMLElement>(`.${name}`))));
+    const lastOpacity=[-1,-1,-1,-1];
     const clamp=(n:number)=>Math.min(1,Math.max(0,n));
     const updateScroll=()=>{
-      progress=clamp((window.scrollY-start)/distance);
+      lastScrollY=window.scrollY;scrollDirty=false;
+      progress=clamp((lastScrollY-start)/distance);
       const intro=1-clamp((progress-.06)/.24);
       const middle=clamp((progress-.23)/.22)*(1-clamp((progress-.68)/.2));
       const end=clamp((progress-.75)/.2);
-      scene.style.setProperty("--intro-opacity",String(intro));
-      scene.style.setProperty("--middle-opacity",String(middle));
-      scene.style.setProperty("--end-opacity",String(end));
-      scene.style.setProperty("--ink-progress",String(clamp((progress-.17)/.3)));
-      scene.dataset.chapter=progress<.33?"sea":progress<.8?"structure":"atlas";
+      // Avoid invalidating inherited properties throughout the SVG/text subtree.
+      [intro,middle,end,clamp((progress-.17)/.3)].forEach((opacity,i)=>{
+        if(opacity===lastOpacity[i])return;
+        lastOpacity[i]=opacity;
+        opacityGroups[i].forEach(element=>{element.style.opacity=String(opacity);});
+      });
+      const chapter=progress<.33?"sea":progress<.8?"structure":"atlas";
+      if(scene.dataset.chapter!==chapter)scene.dataset.chapter=chapter;
     };
     const render=(now:number)=>{
       frame=0;
-      if(!engine||disposed||!visible||document.hidden)return;
+      if(disposed)return;
       const active=visible&&!document.hidden&&!stopped&&!media.matches;
       // Bound GPU work on high-refresh displays; slow delivery uses a 30 Hz ceiling.
       // Scroll/pause/reduced-motion stills continue to request finite draws.
-      if(active&&lastTime&&now-lastTime<1000/(low?30:60)-1){frame=requestAnimationFrame(render);return;}
+      if(engine&&active&&lastTime&&now-lastTime<1000/(low?30:60)-1){frame=requestAnimationFrame(render);return;}
+      // HTML reveal and GPU camera now sample the same scroll position in one frame.
+      if(scrollDirty||window.scrollY!==lastScrollY)updateScroll();
+      if(!engine||!visible||document.hidden)return;
       const interval=lastTime?(now-lastTime)/1000:0;
       const delta=lastTime?Math.min((now-lastTime)/1000,.05):0;
       if(active)elapsed+=delta;
@@ -70,11 +85,11 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       width=stage.clientWidth;height=stage.clientHeight;distance=Math.max(1,scene.offsetHeight-height);
       const pixelCap=compact?360000:1500000;
       ratio=Math.min(devicePixelRatio||1,compact?1:1.25,Math.sqrt(pixelCap/(width*height)))*(low?.7:1);
-      engine?.resize(width,height,ratio);updateScroll();requestFrame();
+      engine?.resize(width,height,ratio);scrollDirty=true;requestFrame();
     };
     const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(stage);resizeObserver.observe(scene);
     const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;restart();});intersection.observe(scene);
-    window.addEventListener("scroll",()=>{updateScroll();requestFrame();},{passive:true,signal:events.signal});
+    window.addEventListener("scroll",()=>{scrollDirty=true;requestFrame();},{passive:true,signal:events.signal});
     scene.addEventListener("pointermove",event=>{
       if(event.pointerType!=="mouse"||media.matches)return;
       target=[(event.clientX/width-.5)*2,(event.clientY/height-.5)*2];

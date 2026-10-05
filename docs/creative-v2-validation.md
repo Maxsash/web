@@ -4,6 +4,72 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Scroll-specific feedback — current checkpoint
+
+User clarified that **scrolling down through the sea reveal** is noticeably
+less smooth at production on MacBook Pro/Chrome and iPhone Air/Safari. This
+supersedes idle-only diagnostics. Started from clean local `df871c3`, two commits
+ahead of the tracking reference. Production remains an older revision: the live
+diagnostic still finds Writing → `#writing` and a 740,610-pixel/high-quality phone
+canvas; local compact rendering is 329,160 pixels. Local fixes are not live yet.
+
+`OceanScene.tsx` now queues scroll events and samples scroll position inside the
+same animation frame as the GPU draw. Opacity is assigned directly to affected
+layers, with unchanged-value and chapter guards, instead of rewriting four
+inherited scene properties on each event. Fallback/no-engine, pause and reduced
+motion still request finite updates. The covered static SVG is hidden only
+while WebGL is active; context loss restores it. Only the two full-screen shade
+layers receive explicit opacity compositor hints. Native browser scrolling is
+retained; no wheel/touch hijack or scroll smoothing library was introduced.
+
+Added `--diagnose --scroll` (two programmatic reveal cycles in 8 seconds) and
+`--diagnose --native-scroll` (browser-generated wheel at desktop, touch at phone
+viewport, traversing the reveal in ~7 seconds within an 8-second measurement).
+Native diagnostics use 1440 × 1000 and 390 × 844 at DPR 2 on isolated headless
+Chrome/Apple M4 Pro. They measure callback/draw intervals plus CDP style/layout
+and task totals. Emulated touch is not iPhone Safari or physical-device testing.
+The first native attempt failed because gesture speed must be an integer;
+corrected and reran successfully. All comparison browser runs were sequential.
+
+Before/after local native-scroll results, same mesh/pixel budgets:
+
+| Viewport | Before style time | After style time | Before task time | After task time |
+| --- | ---: | ---: | ---: | ---: |
+| Desktop | 267.7 ms | 17.9 ms | 717.8 ms | 446.5 ms |
+| Phone viewport | 248.0 ms | 17.0 ms | 620.6 ms | 356.6 ms |
+
+Each row covers one 8-second run, not per-frame cost. Style recalculation time
+fell about 93% in these samples; callback/draw p95 remained ~16.7–16.8 ms and
+there were no observed long tasks. This shows reduced main-thread style work,
+not a measured phone FPS/GPU improvement or proof production lag is solved.
+Native gestures reached the drawing chapter on both surfaces.
+
+Evidence (ignored): local baseline `creative-local-native-scroll/baseline-df871c3.json`,
+after `creative-local-native-scroll/report.json` at `2026-10-05T11:45:19.043Z`;
+live `creative-production-native-scroll/report.json` at `2026-10-05T11:44:35.728Z`.
+Live native callback/draw p95 was 16.8 ms desktop and 16.7 ms phone viewport,
+with zero observed long tasks; style totals 278.3/212.9 ms. Production stutter
+still was not reproduced in this headless environment. Programmatic reports
+are under `creative-production-scroll/` and the preserved local
+`creative-local-scroll/baseline-df871c3.json`. Live user evidence remains open.
+
+Build, separate types, lint, script syntax and diff checks passed. Full local
+production regression report at `2026-10-05T11:46:44.605Z` on port 3005 passes
+**66 records: 35 captures, 30 assertions and one cadence run**, with zero
+runtime exceptions, GL errors or overflow. The new paused-scroll assertion
+dispatches 100 events: no synchronous opacity change, one finite draw, correct
+middle chapter, and no inherited opacity writes. Covered fallback hiding and
+visibility restoration after context loss pass. Reviewed desktop/390 px reveal
+and static fallback captures for readable composition and retained drawing.
+Geometry/model and API
+were unchanged; pure/HTTP tests were not repeated for this scroll-only change.
+Final preview: `pnpm start --hostname localhost --port 3005`.
+Commit subject: `fix: synchronize sea reveal with scroll frames`.
+Next: deploy local revisions via the user's workflow, then verify the actual
+scroll reveal on Mac Chrome/iPhone Safari. If lag persists, collect the native
+browser performance/compositing trace during scrolling, including refresh,
+power settings and warm/cold state. Keep this ahead of new creative features.
+
 ## Production feedback checkpoint — Writing and rendering cost
 
 5 October: user reports lag on physical **iPhone Air** and **MacBook Pro** at

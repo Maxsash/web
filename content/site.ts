@@ -45,7 +45,7 @@ export const site = {
   links: {
     portfolio: "https://ctrl-alt-yash.github.io/portfolio/",
     blog: "/blog",
-    github: "https://github.com/maxsash",
+    github: "https://github.com/ctrl-alt-yash",
     email: "mailto:yash@maxsash.com",
   },
 
@@ -73,7 +73,7 @@ export const destinations: Destination[] = [
   {
     label: "GitHub",
     href: site.links.github,
-    blurb: "Source for most of what is listed here.",
+    blurb: "Code, experiments, and public repositories.",
     icon: "github",
     external: true,
   },

@@ -4,6 +4,162 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Current controls — visitor opt-in audio and footer-only system-default theme
+
+User prioritizes visitor choice and browser policy compliance while keeping wave
+sound easy to play. Audio now requires selecting “Play waves” in either header or
+footer. The previous automatic interaction unlock described below is superseded:
+all global click/touch/key/wheel/scroll unlock listeners are removed. No audio
+context is created until that sound control is selected; a saved enable never
+autoplays on reload. Both controls stay synchronized and offer immediate “Mute
+waves”. Muting closes the context, cancels pending resume updates and is remembered.
+Browser failures stay ready for explicit retry; no autoplay restrictions are bypassed.
+Hidden-tab suspension and unmount cleanup remain. This follows
+[browser autoplay guidance](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay)
+and makes playback an explicit visitor choice; it is not a universal legal or
+accessibility certification.
+
+Removed the theme button from the header; exactly one remains in the footer.
+Without a saved manual choice, the theme follows system preference on load and
+on OS changes. The footer switch saves an override and takes priority thereafter.
+Invalid saved values are ignored. System listeners are cleaned up on unmount.
+
+Build/types and lint pass. Focused Chrome report
+`tools/.out/creative-home/report.json`, `2026-10-05T15:10:53.538Z`: **51 records pass**,
+no runtime exceptions, GL errors or detected overflow. Checks cover silent ordinary
+click/touch/scroll, explicit play including trusted touch on the button, shared
+control state, persisted mute, exactly one footer theme button/two audio buttons,
+system dark default, live system changes and saved manual priority. Final header
+capture was visually reviewed. Harness syntax/diff checks pass; port 3006 verified
+closed. Previous full sea geometry/lifecycle run remains historical
+coverage of the renderer, which is unchanged here. Physical iPhone Safari sound,
+keyboard/screen-reader and complete contrast checks remain open. Changes are
+uncommitted for review; no push/deploy is performed.
+
+## Previous refinement — aligned light, shallow blended tide, automatic ambient sound
+
+The user identified a right-hand sun/moon with left-hand wave lighting, requested
+less footer water blended into Elsewhere, and selected sound enabled on the first
+interaction. This changes the earlier opt-in audio contract below. All exploration
+code remains uncommitted on `/`; no sample route, push or deployment is introduced.
+
+`ocean-light.ts` shares a screen anchor with the sky shader and projects its ray
+through the same camera basis/FOV/aspect used by the scene. Water specular light
+and ship diffuse light use that direction; the sky disc now compensates for aspect
+ratio to remain circular on phones. Geometry/model coefficients are unchanged.
+`allowImportingTsExtensions` supports the shared typed shader dependency in the
+existing direct Node browser/GPU probe; TypeScript remains no-emit.
+
+The shoreline baseline is now 8.5% of footer height, with small oscillations
+(about 5.5–11.5% total), versus the preceding 25% baseline. Wet sand extends
+another 3.5%. Its water gradient starts at Elsewhere's exact `#eae7d9` day /
+`#122126` night, fading toward translucent-looking shallows, rather than a large
+blue region. Desktop/mobile top padding and fallback gradients shrink with it.
+Existing sand/shells, tracks, bounds, offscreen pause and reduced motion remain.
+
+A single `WaveSoundController` serves synchronized header/footer controls. Sound
+is enabled by default but no AudioContext is created on load. Trusted touch/click,
+key or scroll/wheel input attempts the unlock in the input handler; browser policy
+may require a tap/click rather than scrolling alone. A blocked resume stays ready
+and can retry on a qualifying gesture or the control. Scroll retries are bounded
+to one attempt per mount, avoiding repeated pending promises during scrolling.
+The generated graph/volume/swell stays the same. Muting closes the context,
+prevents pending-resume races, and persists `studio-wave-sound=off`; further input
+or a reload cannot override that choice. Manual enable is always available.
+Hidden tabs suspend audio; leaving the homepage closes it and removes listeners.
+See [browser autoplay rules](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay).
+
+Validation, 5 October 2026:
+
+- Final production build/types and lint pass. Harness syntax/diff checks pass.
+- `node --test tools/ocean-light.test.mjs`: one projection regression passes
+  across 36 aspect/camera/pointer combinations, verifying normalized direction
+  and its exact projection to the sky anchor, rather than a copied sign check.
+- Full isolated Chrome run at temporary `http://localhost:3006/`, saved in
+  `tools/.out/creative-home/coastal-full-report.json`,
+  `2026-10-05T15:01:40.636Z`: **112 records pass**, no runtime exceptions, GL
+  errors or detected horizontal overflow. Existing three-stage/timing, geometry,
+  GPU parity, lifecycle, Work/Elsewhere, no-JS and fallback checks remain passing.
+- New real trusted mouse/touch input checks verify ready before interaction,
+  first-click/touch sound start, synchronized controls, no restart after mute,
+  and mute persistence across reload. Manual enable/off checks still pass.
+- Final quick rerun after aspect-correct discs and bounded scroll retries:
+  `tools/.out/creative-home/report.json`, `2026-10-05T15:02:53.001Z`: **44 records
+  pass**, no runtime exceptions/GL errors/overflow. Visually inspected final
+  desktop/phone shore and hero captures. Port 3006 is verified closed.
+
+Remaining gates: user's visual selection and physical iPhone Air Safari audio
+unlock/scroll smoothness, perceived volume, complete accessibility/contrast review.
+Simulated touch in Chrome is not a Safari test. Temporary servers are stopped
+at the end of review; no commit/push/deploy is performed.
+
+## Previous checkpoint — first day/night shoreline exploration
+
+User requested light/dark sea, a beach footer with sand/shells/wet tide and mouse
+tracks, optional wave sound, version details, and GitHub activity for
+`ctrl-alt-yash`. This is implemented directly on `/` and remains **uncommitted
+for visual review**. No samples, push, deployment or physical acceptance claimed.
+
+Implementation: header/footer theme buttons read initial system preference and
+persist an explicit selection. A `uNight` uniform changes sea/sky/ship/drawing
+palettes without new geometry or GL resources. Homepage sections follow the
+palette; blog B keeps its publication treatment. Three-stage coarse-pointer
+flow and 1,800/600 ms timings are unchanged. A darker upper sky overlay preserves
+small navigation readability; no complete contrast audit is claimed.
+
+One new semantic footer replaces the simple Elsewhere colophon. Cached procedural
+sand/shells are rendered to a bounded Canvas2D shoreline; water/foam/wet sand move,
+mouse tracks fade or are washed away. At most 48 tracks; no touch trail or scroll
+interception. Canvas budget is about 420,000 pixels, 30 Hz while visible; pauses
+when offscreen/hidden or selected by the user. Reduced motion draws a still.
+Sound uses local filtered noise with a slow gain swell, explicitly enabled by a
+button, and closes on off/unmount; hidden tabs suspend it. No audio request or
+autoplay is made. Tests validate controls/state, not perceived sound quality.
+
+The server workbench retrieves three validated public events from the requested
+GitHub account, with hourly caching, a 2.5-second timeout, Suspense loading text,
+and a profile-link fallback on failure. No access token, browser polling, private
+data or fabricated contributions. Public events can be delayed; see
+[GitHub event API](https://docs.github.com/en/rest/activity/events?apiVersion=2022-11-28).
+The local live API returned public `Maxsash/web` push events during review; the
+repository owner differs from the requested profile login legitimately.
+Release label uses package version `0.1.0`, with a short revision only if
+`VERCEL_GIT_COMMIT_SHA` / `NEXT_PUBLIC_BUILD_SHA` is present and valid. It is not a
+claim of a new production release. Sea model version is labelled separately.
+
+Validation on 5 October 2026:
+
+- Production build/types and lint pass on the final implementation. Harness
+  syntax and `git diff --check` pass. Route inventory contains only homepage,
+  blog/articles, edition APIs and icons; homepage remains server-rendered.
+- Full isolated Chrome run at temporary `http://localhost:3006/`, report
+  `tools/.out/creative-home/coastal-full-report.json`,
+  `2026-10-05T14:44:08.694Z`: **107 records pass** (47 captures, 59 assertions,
+  one cadence run), zero runtime exceptions, GL errors or detected overflow.
+  Existing edition/model GPU parity, resource cleanup, mobile gesture flow,
+  Work/Elsewhere, fallback and no-JS checks pass.
+- Final quick run after navigation shading/system-preference fallback refinements,
+  `tools/.out/creative-home/report.json`, `2026-10-05T14:45:20.270Z`:
+  **39 records pass**, zero exceptions/GL errors/overflow. Shore-specific checks
+  cover visible rendering, offscreen stop, pause, tracks, synchronized/persistent
+  theme, explicit sound on/off and reduced-motion still/bounded pixels. Sound
+  uses a simulated user activation, matching browser autoplay requirements.
+- Initially one audio assertion failed because a programmatic click had no user
+  activation. Corrected the test to supply user activation; on/off passes.
+  Visual review also found and fixed a left-edge water polygon gap. Theme shots
+  now wait for the existing canvas entrance fade before capturing final colors.
+- Visually inspected final day/night hero, desktop shore and complete phone shore
+  screenshots in `tools/.out/creative-home/coast-*.png`. Two additional
+  `coast-day-mobile-full.png` / `coast-night-mobile-full.png` show the entire
+  footer without cropping its water. Captures are ignored local review evidence.
+- Temporary server stopped after each run; port 3006 verified closed. No server
+  is left running for review. No commit, push or deploy performed.
+
+Open gates: user's design selection, iPhone Air Safari footer/theme/sound feel,
+actual audio listening, keyboard/screen-reader and full contrast review. The
+user's earlier smooth iPhone result covers the preceding staged sea release,
+not the new shore. Headless Chrome does not measure physical Safari cadence.
+
 ## Latest checkpoint — Elsewhere promoted; sample workflow removed
 
 User selected Elsewhere and explicitly requested removing sample scaffolding,

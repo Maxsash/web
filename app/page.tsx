@@ -5,6 +5,8 @@ import Mark from "@/components/Mark";
 import Work from "@/components/Work";
 import Elsewhere from "@/components/Elsewhere";
 import { site } from "@/content/site";
+import { WaveSoundControl } from "@/components/shore/WaveSound";
+import ShoreFooter from "@/components/shore/ShoreFooter";
 import OceanScene from "@/components/observatory/OceanScene";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed } from "@/lib/sea-edition";
@@ -34,7 +36,7 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
           <header className={styles.nav}>
             <Link prefetch={false} href="/" className={styles.brand}><Mark /><span>Maxsash Studio</span></Link>
             <nav aria-label="Studio">{site.nav.map(item=>item.href.startsWith("#")?<a key={item.href} href={item.href}>{item.label}</a>:<Link prefetch={false} key={item.href} href={item.href}>{item.label}</Link>)}</nav>
-            <span className={styles.proof}>Software / Games / Experiments</span>
+            <div className={styles.sceneControls}><WaveSoundControl /></div>
           </header>
           <div className={styles.intro}>
             <p className={styles.eyebrow}>A place for things worth making</p>
@@ -73,6 +75,7 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
         <Link prefetch={false} href="/blog"><h2>For the<br /><em>curious mind.</em></h2><div><p>The drawings. The small discoveries. The arithmetic beneath the surface.</p><span className={styles.textLink}>Open the notebook <span aria-hidden="true">↗</span></span></div></Link>
       </section>
       <Elsewhere />
+      <ShoreFooter />
 
     </main>
   );

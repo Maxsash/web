@@ -1,3 +1,4 @@
+import { SEA_HALF_FOV, seaLightDirection } from "./ocean-light";
 import { sampleSea, type SeaEdition } from "@/lib/sea-edition";
 import { seaVertex, seaFragment, skyVertex, skyFragment, shipVertex, shipFragment } from "./ocean-shaders";
 
@@ -13,7 +14,7 @@ function multiply(a: Float32Array, b: Float32Array) {
   return result;
 }
 function perspective(aspect: number) {
-  const f=1/Math.tan(Math.PI/7), near=.1, far=450;
+  const f=1/Math.tan(SEA_HALF_FOV), near=.1, far=450;
   return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]);
 }
 function lookAt(eye: V3, target: V3) {
@@ -100,8 +101,8 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
   for(let i=0;i<4;i++){gl.enableVertexAttribArray(i);gl.vertexAttribPointer(i,3,gl.FLOAT,false,48,i*12);}
   const skyVAO=vao();
   const locations=(p:WebGLProgram,names:string[])=>Object.fromEntries(names.map(n=>[n,gl.getUniformLocation(p,n)]));
-  const su=locations(sea,["uVP","uTime","uWaveVectors[0]","uAmplitudes[0]","uEye","uResolution","uReveal"]);
-  const bu=locations(boat,["uVP","uModel","uReveal"]), ku=locations(sky,["uReveal"]);
+  const su=locations(sea,["uVP","uTime","uWaveVectors[0]","uAmplitudes[0]","uEye","uResolution","uReveal","uNight","uLight"]);
+  const bu=locations(boat,["uVP","uModel","uReveal","uNight","uLight"]), ku=locations(sky,["uReveal","uNight","uAspect"]);
   const vectors=new Float32Array(edition.waves.flatMap(w=>{
     const k=2*Math.PI/w.wavelength;
     return [k*Math.cos(w.direction),k*Math.sin(w.direction),Math.sqrt(9.81*k),w.phase];
@@ -118,19 +119,20 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       if(canvas.height!==nextHeight)canvas.height=nextHeight;
       aspect=width/height;gl.viewport(0,0,canvas.width,canvas.height);
     },
-    draw(time:number,reveal:number,pointer:[number,number]) {
+    draw(time:number,reveal:number,pointer:[number,number],night=0) {
       const orbit=reveal*reveal*(3-2*reveal), narrow=aspect<.8;
       const eye:V3=[mix(0,10,orbit)+pointer[0]*.75,mix(narrow?6.8:5,29,orbit)+pointer[1]*.35,mix(narrow?24:18,16,orbit)];
       const target:V3=[mix(narrow?2.5:0,0,orbit),mix(.6,-.4,orbit),-7];
       const vp=multiply(perspective(aspect),lookAt(eye,target));
+      const light=seaLightDirection(eye,target,aspect);
       gl.clearColor(.07,.16,.21,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-      gl.disable(gl.DEPTH_TEST);gl.useProgram(sky);gl.bindVertexArray(skyVAO);gl.uniform1f(ku.uReveal,reveal);gl.drawArrays(gl.TRIANGLES,0,3);
+      gl.disable(gl.DEPTH_TEST);gl.useProgram(sky);gl.bindVertexArray(skyVAO);gl.uniform1f(ku.uReveal,reveal);gl.uniform1f(ku.uNight,night);gl.uniform1f(ku.uAspect,aspect);gl.drawArrays(gl.TRIANGLES,0,3);
       gl.enable(gl.DEPTH_TEST);gl.useProgram(sea);gl.bindVertexArray(seaVAO);
-      gl.uniformMatrix4fv(su.uVP,false,vp);gl.uniform1f(su.uTime,time);gl.uniform1f(su.uReveal,reveal);
+      gl.uniformMatrix4fv(su.uVP,false,vp);gl.uniform1f(su.uTime,time);gl.uniform1f(su.uReveal,reveal);gl.uniform1f(su.uNight,night);gl.uniform3fv(su.uLight,light);
       gl.uniform3fv(su.uEye,eye);gl.uniform2f(su.uResolution,canvas.width,canvas.height);gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);
       const surface=sampleSea(edition,4.5,-5.5,time);
       gl.useProgram(boat);gl.bindVertexArray(boatVAO);gl.uniformMatrix4fv(bu.uVP,false,vp);
-      gl.uniformMatrix4fv(bu.uModel,false,modelMatrix(surface.height,surface.dx,surface.dz));gl.uniform1f(bu.uReveal,reveal);
+      gl.uniformMatrix4fv(bu.uModel,false,modelMatrix(surface.height,surface.dx,surface.dz));gl.uniform1f(bu.uReveal,reveal);gl.uniform1f(bu.uNight,night);gl.uniform3fv(bu.uLight,light);
       gl.drawArrays(gl.TRIANGLES,0,boatData.length/12);
       canvas.dataset.frameCount=String(++frames);
     },

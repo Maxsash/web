@@ -40,7 +40,7 @@ try{
  let id=0;const pending=new Map();
  socket.addEventListener("message",({data})=>{const message=JSON.parse(data);if(message.method==="Runtime.exceptionThrown")errors.push(message.params.exceptionDetails.exception?.description||message.params.exceptionDetails.text);const waiter=pending.get(message.id);if(!waiter)return;pending.delete(message.id);clearTimeout(waiter.timer);if(message.error)waiter.reject(new Error(JSON.stringify(message.error)));else waiter.resolve(message.result);});
  const call=(method,params={})=>new Promise((resolve,reject)=>{const key=++id;const timer=setTimeout(()=>{pending.delete(key);reject(new Error(method+" timeout"));},45000);pending.set(key,{resolve,reject,timer});socket.send(JSON.stringify({id:key,method,params}));});
- const evaluate=async expression=>{const result=await call("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true});if(result.exceptionDetails)throw new Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);return result.result.value;};
+ const evaluate=async (expression,userGesture=false)=>{const result=await call("Runtime.evaluate",{expression,userGesture,returnByValue:true,awaitPromise:true});if(result.exceptionDetails)throw new Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);return result.result.value;};
  await call("Page.enable");await call("Runtime.enable");
  const load=async path=>{
    const url=new URL(path,base).href;await call("Page.navigate",{url});
@@ -267,6 +267,88 @@ try{
    results.push({name:"no-js-content",pass:await evaluate("document.querySelector('h1')?.textContent.includes('Sea.') && document.querySelector('a[href=\"/blog\"]')!==null && document.querySelectorAll('#work').length===1 && !document.querySelector('canvas[data-ocean]').dataset.renderer")});
    await call("Emulation.setScriptExecutionDisabled",{value:false});
  }
+ // Coastal exploration: theme, viewport scheduling, tracks, and explicit sound controls.
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'},{name:'prefers-color-scheme',value:'light'}]});
+ await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+ await load('/');
+ await evaluate("localStorage.setItem('studio-wave-sound','off')");await load('/');
+ await evaluate("localStorage.removeItem('studio-theme');document.documentElement.dataset.studioTheme='day';window.dispatchEvent(new Event('studio-theme'))");
+ await delay(800);await snapshot('coast-day-sea');
+ const shoreFrames=()=>evaluate("Number(document.querySelector('[data-shore] canvas').dataset.shoreFrames)");
+ await delay(150);const offscreen=await shoreFrames();await delay(180);
+ results.push({name:'shore-offscreen-stops',pass:offscreen===await shoreFrames()});
+ await evaluate("document.querySelector('[data-shore]').scrollIntoView({block:'end'})");await delay(250);
+ await snapshot('coast-day-shore');
+ const active=await shoreFrames();await delay(180);
+ results.push({name:'shore-visible-animates',pass:await shoreFrames()>active});
+ const point=await evaluate("(()=>{const r=document.querySelector('[data-shore]').getBoundingClientRect();return {x:80,y:Math.min(innerHeight-80,r.bottom-100)}})()");
+ for(let i=0;i<8;i++)await call('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x+i*30,y:point.y});
+ await delay(80);
+ results.push({name:'shore-mouse-tracks',pass:await evaluate("Number(document.querySelector('[data-shore] canvas').dataset.shoreSteps)>0")});
+ await evaluate("document.querySelector('[data-shore-pause]').click()");await delay(100);const paused=await shoreFrames();await delay(180);
+ results.push({name:'shore-paused-stops',pass:paused===await shoreFrames()});
+ await evaluate("document.querySelector('[data-theme-toggle]').click()");await delay(150);
+ await snapshot('coast-night-shore');
+ results.push({name:'night-theme-synchronizes',pass:await evaluate("document.documentElement.dataset.studioTheme==='night' && [...document.querySelectorAll('[data-theme-toggle]')].every(b=>b.getAttribute('aria-pressed')==='true')")});
+ await evaluate("document.querySelector('[data-wave-sound]').click()",true);await delay(200);
+ results.push({name:'wave-sound-manual-enable',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='true'")});
+ await evaluate("document.querySelector('[data-wave-sound]').click()",true);await delay(100);
+ results.push({name:'wave-sound-off',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='false'")});
+ // Ordinary page interaction must stay silent; only sound controls start playback.
+ await evaluate("localStorage.removeItem('studio-wave-sound')");await load('/');
+ results.push({name:'wave-sound-default-silent',pass:await evaluate("[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.textContent.includes('Play waves') && b.getAttribute('aria-pressed')==='false')")});
+ await call('Input.dispatchMouseEvent',{type:'mousePressed',x:1200,y:700,button:'left',clickCount:1});
+ await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:1200,y:700,button:'left',clickCount:1});await delay(250);
+ results.push({name:'ordinary-click-keeps-sound-off',pass:await evaluate("[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.getAttribute('aria-pressed')==='false')")});
+ await call('Input.synthesizeScrollGesture',{x:1200,y:700,yDistance:-200,speed:900,gestureSourceType:'mouse'});await delay(150);
+ results.push({name:'ordinary-scroll-keeps-sound-off',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='false'")});
+ await evaluate("document.querySelector('[data-wave-sound]').click()",true);await delay(200);
+ results.push({name:'play-button-synchronizes-both-controls',pass:await evaluate("[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.getAttribute('aria-pressed')==='true')")});
+ await evaluate("document.querySelector('[data-wave-sound]').click()",true);
+ await call('Input.dispatchMouseEvent',{type:'mousePressed',x:1200,y:700,button:'left',clickCount:1});
+ await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:1200,y:700,button:'left',clickCount:1});await delay(100);
+ results.push({name:'wave-sound-mute-prevents-restart',pass:await evaluate("[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.getAttribute('aria-pressed')==='false')")});
+ await load('/');
+ results.push({name:'wave-sound-mute-persists',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='false' && localStorage.getItem('studio-wave-sound')==='off'")});
+ await call('Emulation.setTouchEmulationEnabled',{enabled:true});
+ await evaluate("localStorage.removeItem('studio-wave-sound')");await load('/');
+ await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:1000,y:700,id:1}]});
+ await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(250);
+ results.push({name:'ordinary-touch-keeps-sound-off',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='false'")});
+ const soundPoint=await evaluate("(()=>{const r=document.querySelector('[data-wave-sound]').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()");
+ await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...soundPoint,id:1}]});
+ await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(250);
+ results.push({name:'sound-button-touch-plays',pass:await evaluate("document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='true'")});
+ await evaluate("document.querySelector('[data-wave-sound]').click()",true);
+ await call('Emulation.setTouchEmulationEnabled',{enabled:false});
+ await load('/');await delay(800);await snapshot('coast-night-sea');
+ results.push({name:'night-theme-persists',pass:await evaluate("document.documentElement.dataset.studioTheme==='night'")});
+ await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+ await load('/');await evaluate("document.querySelector('[data-shore]').scrollIntoView({block:'end'})");await delay(200);
+ await snapshot('coast-night-mobile');const still=await shoreFrames();await delay(180);
+ results.push({name:'shore-reduced-motion-still-and-bounded',pass:still===await shoreFrames()&&await evaluate("Number(document.querySelector('[data-shore] canvas').dataset.shorePixels)<=421200 && document.querySelector('[data-wave-sound]').getAttribute('aria-pressed')==='false' && document.querySelector('a[href=\"https://github.com/ctrl-alt-yash\"]')!==null")});
+ await evaluate("document.querySelector('[data-theme-toggle]').click()");await delay(120);await snapshot('coast-day-mobile');
+ for(const theme of ['day','night']){
+   if(theme==='night'){await evaluate("document.querySelector('[data-theme-toggle]').click()");await delay(100);}
+   const clip=await evaluate("(()=>{const r=document.querySelector('[data-shore]').getBoundingClientRect();return {x:0,y:r.top+scrollY,width:innerWidth,height:r.height,scale:1}})()");
+   const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});
+   writeFileSync(join(out,`coast-${theme}-mobile-full.png`),Buffer.from(shot.data,'base64'));
+ }
+ await evaluate("document.querySelector('[data-theme-toggle]').click()");
+
+ results.push({name:'control-placement',pass:await evaluate("document.querySelectorAll('[data-theme-toggle]').length===1 && document.querySelector('[data-shore] [data-theme-toggle]')!==null && document.querySelectorAll('[data-wave-sound]').length===2 && document.querySelector('header [data-wave-sound]')!==null")});
+ await evaluate("localStorage.removeItem('studio-theme')");
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'dark'}]});await load('/');await delay(100);
+ results.push({name:'theme-default-follows-system-dark',pass:await evaluate("document.documentElement.dataset.studioTheme==='night'")});
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'light'}]});await delay(100);
+ results.push({name:'theme-follows-system-change',pass:await evaluate("document.documentElement.dataset.studioTheme==='day'")});
+ await evaluate("document.querySelector('[data-theme-toggle]').click()");
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'dark'}]});
+ await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'light'}]});await delay(100);
+ results.push({name:'manual-theme-overrides-system',pass:await evaluate("document.documentElement.dataset.studioTheme==='night'")});
+ await evaluate("document.querySelector('[data-theme-toggle]').click()");
+
  if(!quick){
    await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"no-preference"}]});
    for(const path of publicPaths){

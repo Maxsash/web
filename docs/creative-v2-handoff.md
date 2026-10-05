@@ -9,7 +9,47 @@ a claim that the entire creative roadmap or release qualification is complete.
 (5 October 2026). The user also explicitly requested push to `origin/main` and wants
 to deploy the domain themselves for real feedback. Original plan: `012e164`.
 
-## Current workflow and checkpoint — main site only
+## Active exploration — day/night sea and shoreline
+
+5 October 2026: the user requested light/dark sea, a beach footer, sand tracks,
+optional wave sound, release details, and GitHub activity. Implemented directly
+on `/`, **uncommitted and awaiting visual selection**. No sample route, commit,
+push or deployment is part of this exploration. It supersedes the earlier
+suggestion to deepen notebook writing as the immediate next task.
+
+- The day/night switch is only in the shoreline footer. Theme follows the system
+  by default, including OS preference changes, until an explicit choice is saved.
+  Sea, ship, drawing phase,
+  Work and Elsewhere palettes follow the choice; the blog keeps direction B.
+  A shared screen anchor projects the sun/moon direction through the camera for
+  both water highlights and ship lighting, including phone aspect ratios.
+- One shoreline footer follows Elsewhere, with cached procedural sand/shells,
+  a narrow tide (roughly 6–12% of footer height), foam, moving wet sand, and
+  bounded fading mouse footprints. Water starts in Elsewhere’s exact day/night
+  colour and blends into the beach instead of a large blue expanse.
+  Touch keeps native scrolling; it adds no pointer trail. Shore animation is
+  capped near 30 Hz and 420,000 canvas pixels, pauses offscreen/hidden, and
+  respects reduced motion. These budgets are not physical-device qualification.
+- Wave sound is explicitly opt-in via “Play waves” in both header and footer.
+  Ordinary scrolling, tapping and key presses never start sound. One tap/click
+  on either control starts it, and both become “Mute waves”. Mute is remembered;
+  a previous enable does not automatically play on reload. Browser restrictions
+  are respected, with retry available if playback is blocked. Hidden tabs suspend
+  sound; no external audio asset or analytics is used.
+- GitHub points to `ctrl-alt-yash`. The workbench shows three validated public
+  events from GitHub, cached hourly with a 2.5-second fetch timeout and a usable
+  profile-link fallback. It is neither a live feed nor a contributions chart.
+- Release text uses the actual package version, currently `0.1.0`; a short commit
+  is shown only when Vercel/build SHA environment metadata exists. Sea model v1
+  is labelled separately, without inventing deployment or version data.
+
+Next gate: review the day/night sea and beach on `/`, then repeat iPhone Air
+Safari interaction checks for this additional footer before accepting the work.
+The prior three-stage mobile sea was confirmed smooth by the user; that result
+predates this exploration. Keep the existing 1,800/600 ms staged flow and continuous
+fine-pointer desktop reveal unchanged. Stop temporary QA servers after checks.
+
+## Previous accepted checkpoint and continuing workflow — main site only
 
 The user selected Elsewhere and explicitly retired the sample-route workflow.
 Elsewhere now lives in the homepage with numbered destination rows, direct email
@@ -24,8 +64,8 @@ sample workflow descriptions in research and validation. The labelled sample
 essays in the notebook are writing-content status, not sample-route scaffolding;
 they remain honest and noindex until actual authored writing is supplied.
 
-Next: feedback on the integrated homepage, then deepen one notebook explanation
-or replace sample writing with user-authored posts when available. No sensor/C
+The next task at that checkpoint was integrated homepage feedback and deeper
+notebook writing; the day/night shoreline request above now takes priority. No sensor/C
 feature or hosting deployment is included in this checkpoint.
 
 ## Latest selected checkpoint — three mobile sea stages

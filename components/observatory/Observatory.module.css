@@ -155,3 +155,18 @@
  .chapterRail,.pause { bottom:.7rem; }
 }
 @media(prefers-reduced-motion:reduce) { .canvas { transition:none; } }
+:global(html[data-studio-theme="night"]) .page { --obs-paper:#122126; --obs-ink:#d8e2dc; --paper-sunk:#192e34; --ink-2:#bdcec7; --ink-3:#9fb7b4; --accent:#d4a880; --rule:#b5d1ca30; --rule-strong:#b5d1ca60; color-scheme:dark; }
+:global(html[data-studio-theme="night"]) .paperVeil { background:linear-gradient(90deg,#122126fa,#122126e8 24%,transparent 75%),linear-gradient(#122126,transparent 22%); }
+:global(html[data-studio-theme="night"]) .editionPlate { background:#24363b; }
+:global(html[data-studio-theme="night"]) .editionPlate svg { filter:invert(.86) hue-rotate(140deg); }
+:global(html[data-studio-theme="night"]) .fallback { background:#122126; }
+:global(html[data-studio-theme="night"]) .fallback svg { filter:invert(.86) hue-rotate(140deg); }
+@media(max-width:48rem) { .nav { flex-wrap:wrap; } .nav>.sceneControls { margin-left:auto; } }
+
+/* Keep small navigation text readable against the brighter day sky. */
+.shade { background:linear-gradient(180deg,rgba(4,25,31,.62),transparent 19%),linear-gradient(90deg,rgba(4,25,31,.56),transparent 64%); }
+@media(max-width:760px) { .shade { background:linear-gradient(180deg,rgba(4,25,31,.62),transparent 25%),linear-gradient(90deg,rgba(4,25,31,.5),transparent 85%); } }
+
+.sceneControls { display:flex; gap:.5rem; flex-wrap:wrap; }
+.sceneControls>button { min-height:44px; border:1px solid currentColor; border-radius:99px; color:inherit; background:transparent; padding:.2rem .65rem; font:.65rem/1.3 var(--font-mono); cursor:pointer; }
+@media(max-width:48rem) { .sceneControls>button { font-size:.55rem; } }

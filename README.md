@@ -99,7 +99,13 @@ Public routes:
 Old observatory/atlas sample URLs redirect to the corresponding public routes.
 The earlier Wind/Helm, blog workbenches and voyage were removed. The foundation
 commit is authorized; its actual record is in the handoff. Future unselected
-experiments remain uncommitted until approved. No deployment was requested.
+experiments remain uncommitted until approved. The user has deployed the
+foundation to `maxsash.com`; latest fixes require their hosting workflow.
+
+Production feedback prioritizes direct Writing navigation and smoothness on
+iPhone Air/MacBook Pro. Writing now opens `/blog` directly. Touch/narrow screens
+use a smaller rendering budget; physical rechecks remain open. See current
+validation for the production/local comparison and exact limits.
 
 This is a foundation: real project content/spreads, optional sensors, a deeper
 mathematical Easter egg and physical-device qualification remain separate tasks.
@@ -121,3 +127,15 @@ Earlier prototype evidence remains under `tools/.out/creative-v2/`. It captures
 actual loaded JS, including the deferred renderer; `--quick` is only a small
 screenshot subset. Physical phone GPU/battery, full accessibility, and field Web
 Vitals are separate gates. Read the validation record before repeating checks.
+
+Read-only desktop production diagnostics (isolated Chrome, never phone QA):
+
+```bash
+node tools/check-creative-v2.mjs https://www.maxsash.com --diagnose
+node tools/check-creative-v2.mjs http://localhost:3004 --diagnose
+```
+
+Run sequentially to avoid competing for GPU time. Diagnostic reports live in
+`tools/.out/creative-production-diagnostic/` and `creative-local-diagnostic/`.
+Remote diagnostics are restricted to HTTPS `maxsash.com`/`www.maxsash.com`;
+the full regression/failure matrix still requires a local server.

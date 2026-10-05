@@ -16,7 +16,11 @@ export function probeSeaGPU({ fieldGLSL, edition, coordinates, times }) {
   const input=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,input);
   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(coordinates.flat()),gl.STATIC_DRAW);
   gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-  gl.uniform4fv(gl.getUniformLocation(p,"uWaves[0]"),new Float32Array(edition.waves.flatMap(w=>[w.amplitude,w.wavelength,w.direction,w.phase])));
+  gl.uniform4fv(gl.getUniformLocation(p,"uWaveVectors[0]"),new Float32Array(edition.waves.flatMap(w=>{
+    const k=2*Math.PI/w.wavelength;
+    return [k*Math.cos(w.direction),k*Math.sin(w.direction),Math.sqrt(9.81*k),w.phase];
+  })));
+  gl.uniform1fv(gl.getUniformLocation(p,"uAmplitudes[0]"),new Float32Array(edition.waves.map(w=>w.amplitude)));
   const output=gl.createBuffer();gl.bindBuffer(gl.TRANSFORM_FEEDBACK_BUFFER,output);
   gl.bufferData(gl.TRANSFORM_FEEDBACK_BUFFER,coordinates.length*3*4,gl.STREAM_READ);
   gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER,0,output);gl.enable(gl.RASTERIZER_DISCARD);

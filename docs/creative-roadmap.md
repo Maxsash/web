@@ -33,7 +33,8 @@ reproducible printed plate. The notebook has its own editorial composition.
 Two articles remain clearly labelled samples. Main Work/Elsewhere functionality
 is retained while authentic project spreads and the final port treatment remain
 future work. No new sensor interaction, real ocean feed or C experience is
-claimed. Deployment has not been requested.
+claimed. The user has deployed the foundation to `maxsash.com`; this session
+does not change hosting or deploy new revisions.
 
 ## Decision record
 
@@ -57,11 +58,11 @@ claimed. Deployment has not been requested.
 
 ## Sequence and commit boundaries
 
-1. **Current authorized checkpoint:** promote approved A/B to `/` and `/blog`,
-   preserve useful main-site sections, redirect old review URLs, validate public
-   routes, update docs and commit the coherent foundation.
-2. Qualify renderer/fallbacks on named physical phones; refine measured quality
-   tiers and accessibility from actual evidence.
+1. **Current priority, from production feedback:** Writing opens `/blog` in one
+   click; reduce sea rendering cost and investigate production/local smoothness
+   on the user's iPhone Air and MacBook Pro. Foundation promotion is complete.
+2. Recheck the updated revision on those physical devices in the same browser;
+   qualify renderer/fallbacks, quality budgets and accessibility from evidence.
 3. Develop authentic project spreads and refine the whole main-site journey.
    Real project facts/assets/links are required; do not invent them.
 4. Deepen one notebook explanation when it improves the essay, retaining
@@ -99,3 +100,15 @@ three new failure/cleanup assertions; build, types, lint and 13 model/geometry
 tests pass. Details and limitations are in current validation. Focused commit:
 `fix: dispose ocean engine on context loss`. Physical-device qualification,
 remaining lifecycle gates and authentic project/link content remain next.
+
+## Production feedback — navigation and performance first
+
+5 October: user reported the extra Writing click and production lag on iPhone
+Air/Safari, also visible on MacBook Pro/Chrome despite smooth localhost. These take priority
+over new project layouts, notebook features, sensors and C. Writing now routes
+directly to `/blog`; its homepage publication section remains optional.
+Touch/narrow startup uses a 21,600-triangle sea and a 360,000-pixel budget;
+desktop retains 60,000 triangles/1.5 million pixels. Fixed wave constants are
+prepared once, animation draw rate is bounded, and the slow-frame downgrade no
+longer excludes sub-20-fps devices. Validation and exact limits belong in
+`creative-v2-validation.md`; no physical-device improvement is claimed yet.

@@ -2,8 +2,10 @@
 
 Updated: 5 October 2026. Current evidence is in
 [creative-v2-validation.md](creative-v2-validation.md).
-The latest renderer-hardening run passes 57 browser records; its exact scope,
-commands and remaining device/lifecycle gates are recorded there.
+The latest Writing/performance checkpoint passes 64 browser records. Read-only
+live/local diagnostics did not reproduce sustained lag in headless Chrome;
+the user's iPhone Air/MacBook Pro report remains an open physical-device gate.
+Exact commands, scope, changes and next rechecks are recorded there.
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).
 

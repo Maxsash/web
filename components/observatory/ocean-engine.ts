@@ -70,7 +70,7 @@ function boatMesh() {
 }
 
 /** Three draws, no textures/FBOs/post-processing; dispose all owned GPU objects. */
-export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition) {
+export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition, compact=false) {
   const gl=canvas.getContext("webgl2", {alpha:false,antialias:false,depth:true,powerPreference:"low-power"});
   if(!gl) throw new Error("WebGL2 is unavailable");
   const programs: WebGLProgram[]=[], buffers: WebGLBuffer[]=[], arrays: WebGLVertexArrayObject[]=[];
@@ -88,7 +88,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
   catch(error) {programs.forEach(p=>gl.deleteProgram(p));throw error;}
   const vao=()=>{const a=gl.createVertexArray()!;arrays.push(a);gl.bindVertexArray(a);return a;};
   const buffer=(target:number,data:Float32Array|Uint16Array)=>{const b=gl.createBuffer()!;buffers.push(b);gl.bindBuffer(target,b);gl.bufferData(target,data,gl.STATIC_DRAW);};
-  const seaVAO=vao(), nx=200,nz=150,vertices:number[]=[],indices:number[]=[];
+  const seaVAO=vao(), nx=compact?120:200,nz=compact?90:150,vertices:number[]=[],indices:number[]=[];
   for(let z=0;z<=nz;z++)for(let x=0;x<=nx;x++) {
     const u=x/nx*2-1,v=z/nz*2-1;
     vertices.push(u*24+Math.sign(u)*Math.pow(Math.abs(u),6)*150,v*32+Math.pow(Math.min(v,0),3)*190);
@@ -100,14 +100,22 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
   for(let i=0;i<4;i++){gl.enableVertexAttribArray(i);gl.vertexAttribPointer(i,3,gl.FLOAT,false,48,i*12);}
   const skyVAO=vao();
   const locations=(p:WebGLProgram,names:string[])=>Object.fromEntries(names.map(n=>[n,gl.getUniformLocation(p,n)]));
-  const su=locations(sea,["uVP","uTime","uWaves[0]","uEye","uResolution","uReveal"]);
+  const su=locations(sea,["uVP","uTime","uWaveVectors[0]","uAmplitudes[0]","uEye","uResolution","uReveal"]);
   const bu=locations(boat,["uVP","uModel","uReveal"]), ku=locations(sky,["uReveal"]);
-  const waves=new Float32Array(edition.waves.flatMap(w=>[w.amplitude,w.wavelength,w.direction,w.phase]));
-  gl.useProgram(sea);gl.uniform4fv(su["uWaves[0]"],waves);
+  const vectors=new Float32Array(edition.waves.flatMap(w=>{
+    const k=2*Math.PI/w.wavelength;
+    return [k*Math.cos(w.direction),k*Math.sin(w.direction),Math.sqrt(9.81*k),w.phase];
+  }));
+  gl.useProgram(sea);gl.uniform4fv(su["uWaveVectors[0]"],vectors);
+  gl.uniform1fv(su["uAmplitudes[0]"],new Float32Array(edition.waves.map(w=>w.amplitude)));
   let aspect=1, frames=0;
+  canvas.dataset.triangles=String(nx*nz*2);
   return {
     resize(width:number,height:number,ratio:number) {
-      canvas.width=Math.max(1,Math.round(width*ratio));canvas.height=Math.max(1,Math.round(height*ratio));
+      const nextWidth=Math.max(1,Math.round(width*ratio)),nextHeight=Math.max(1,Math.round(height*ratio));
+      // Assigning either dimension clears/reallocates the drawing buffer, even if unchanged.
+      if(canvas.width!==nextWidth)canvas.width=nextWidth;
+      if(canvas.height!==nextHeight)canvas.height=nextHeight;
       aspect=width/height;gl.viewport(0,0,canvas.width,canvas.height);
     },
     draw(time:number,reveal:number,pointer:[number,number]) {

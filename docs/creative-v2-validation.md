@@ -4,6 +4,57 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## iPhone Safari recording — current feedback and scheduling correction
+
+User reports **MacBook Pro/Chrome is much better** on the latest build but
+iPhone Air/Safari still stutters during the sea reveal. This records qualitative
+physical Mac improvement, not full Mac qualification. The iPhone gate remains
+open. Source: `/Users/yash/Downloads/ScreenRecording_10-05-2026 17-55-12_1.MP4`.
+ffprobe: 8.17 seconds, HEVC, 1260 × 2736, nominal 60 fps. Decoded 490 frames;
+reviewed 1-second overview and 20-fps forward/reversal frame sheets. Derived
+images/analysis are ignored under `tools/.out/iphone-recording/`; source video
+was not modified or copied into committed assets.
+
+The reveal advances unevenly through quick down/up gestures while Safari's
+bottom toolbar collapses/expands. The footage does not provide touch timestamps,
+scroll offsets, callbacks or GPU timing. A coarse grayscale-difference check
+found no ≥3-frame near-identical whole-content runs at its chosen threshold;
+that cannot rule out jank, compositor lag, recording noise or layer-specific
+stalls. Do not infer an FPS drop or a specific Safari defect from this alone.
+
+Code inspection found an independent scheduling issue: the idle 60/30 Hz gate
+also deferred newly changed scroll samples. Slightly early callbacks could skip
+an extra frame because each draw restarted the interval. `OceanScene.tsx` now
+prioritizes dirty/changed scroll on the next callback, with HTML/GPU still sharing
+the same sample, and advances a deadline for idle pacing. Compact resolution,
+adaptive downgrade, offscreen/pause/reduced-motion policy and v1 field are retained.
+During scroll, drawing can exceed the idle ceiling if the browser supplies more
+callbacks; this trades some temporary GPU headroom for direct response. This is
+a candidate fix for a concrete input-delay path, not proof of the video's cause.
+
+WebKit's [Safari 26.4 notes](https://webkit.org/blog/17862/webkit-features-for-safari-26-4/)
+describe compositor-thread scroll-driven animations. That reinforces separating
+browser-native scrolling from main-thread/canvas cadence; it does not establish
+the user's Safari version or a matching bug. No user-agent workaround, forced
+browser settings, scroll interception or invented physical trace was added.
+
+Build/types and lint passed. Browser validation adds a synthetic low-quality
+scroll test: after forcing slow callbacks to downgrade, it restores fast callbacks
+and changes scroll each frame, verifying scroll draws are not held to the idle
+30 Hz budget. Full production-build report at `2026-10-05T12:31:40.835Z` on
+temporary port 3006 passes **67 records: 35 captures, 31 assertions, one cadence
+run**. No runtime exceptions, GL errors or detected overflow. New synthetic
+scroll test draws 21 times for 20 changed scroll samples in low quality; the
+existing idle high-refresh test stays bounded at 30 draws in 500 ms. These are
+scheduling assertions, not measured physical iPhone frames. QA server used an
+EXIT trap and was closed; `lsof` confirms no listeners on repo ports including
+3006. Build/types, lint, script syntax and diff whitespace pass.
+No geometry/model/API byte changes or pure/HTTP test rerun in this checkpoint.
+Commit subject: `fix: prioritize scroll input over idle sea cadence`.
+Next: update production through the existing workflow, repeat the same iPhone
+gesture/recording, and obtain iOS/Safari version plus a native Web Inspector
+scroll/compositing trace if stutter persists. Keep Mac gains intact.
+
 ## Server shutdown and updated production qualification — latest state
 
 5 October: user requested all servers shut down and continuation. Tree was clean

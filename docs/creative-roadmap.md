@@ -59,7 +59,7 @@ does not change hosting or deploy new revisions.
 ## Sequence and commit boundaries
 
 1. **Current priority, clarified feedback:** sea reveal stutters while scrolling
-   on production (MacBook Pro/Chrome and iPhone Air/Safari). Writing's one-click
+   on iPhone Air/Safari; user says latest MacBook Pro/Chrome is much better. Writing's one-click
    fix and scroll optimizations are now observable live; qualify physical scrolling before
    new features. Idle cadence alone does not qualify this interaction.
 2. Recheck the updated revision on those physical devices in the same browser;
@@ -135,3 +135,16 @@ desktop/phone-viewport runs. No deploy or push performed in this turn.
 Next gate is the user's updated production scroll result on Mac Chrome and
 iPhone Air Safari, then a native trace if it still stutters. New features remain
 lower priority. Headless results do not close physical-device acceptance.
+
+## iPhone recording and scroll-priority scheduling
+
+User supplied an 8.17-second Safari recording of continued iPhone Air stutter
+on the latest build, while reporting Mac Chrome is much better. Reviewed decoded
+frames across forward/reverse reveal and Safari toolbar expansion/collapse.
+This does not identify GPU time, actual callback cadence or a confirmed browser
+bug. Current fix removes the idle frame-budget gate from new scroll samples and
+uses deadline-based idle pacing to avoid repeatedly skipping early/variable
+callbacks. Idle animation budgets and compact resolution remain; fast scrolling
+can draw at browser callback cadence. The recording, validation and remaining
+physical acceptance are documented in current validation. No new features take
+priority over this iPhone issue; local servers must be closed after temporary QA.

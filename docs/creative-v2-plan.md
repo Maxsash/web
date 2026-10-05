@@ -214,6 +214,14 @@ foundation commit is recorded. No deployment is part of this authorization.
 
 ### Current priority — production navigation and smoothness
 
+Latest physical evidence: user says Mac Chrome is much better, but provides an
+iPhone Air Safari recording with continued reveal stutter. Current scheduling
+fix draws dirty/changed scroll samples without applying the idle 60/30 Hz gate;
+idle deadlines advance without repeatedly resetting for early callbacks. This
+may spend more GPU work during high-refresh gestures, while preserving compact
+resolution and idle bounds. Retest iPhone after deployment; no cause or physical
+fix is claimed from the screen recording/headless tests alone.
+
 Latest clarification: lag is specifically during scroll-to-drawing reveal on
 Mac Chrome and iPhone Safari. Idle cadence alone does not exercise it. The
 current continuation synchronizes affected opacity layers with the GPU frame,
@@ -240,7 +248,8 @@ is below 760 px, selected at mount and retained through rotation/resizing.
 120 × 90 segments / 21,600 sea triangles, DPR cap 1 and 360,000 pixels;
 desktop remains 200 × 150 / 60,000 triangles, DPR 1.25 and 1.5 million pixels.
 GPU wave vectors/frequencies are prepared once without changing v1 coefficients.
-Normal animation has a 60 Hz ceiling; sustained slow callbacks reduce resolution
+Idle animation has a 60 Hz ceiling; new scroll samples bypass idle pacing.
+Sustained slow callbacks reduce resolution
 by 0.7 and use a 30 Hz ceiling. Twelve samples suffice for downgrade evaluation
 after 1.6 seconds, replacing the unreachable >30 gate on sub-20-fps devices.
 These are conservative workload budgets, not measured hardware/GPU quality tiers.

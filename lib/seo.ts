@@ -5,10 +5,10 @@ import { site, projects } from "@/content/site";
 export const siteOrigin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url).origin;
 export const absoluteUrl = (path: string) => new URL(path, `${siteOrigin}/`).href;
 export const socialImage = {
-  url: absoluteUrl("/images/cover-compressed.png"),
+  url: absoluteUrl("/images/living-atlas-day-v1.jpg"),
   width: 1200,
   height: 630,
-  alt: "Maxsash Studio — software, games, and tools. Sea, ship, and mathematics.",
+  alt: "Maxsash Studio — Sea. Ship. Math. A sailboat on the sunlit Living Atlas sea.",
 };
 
 export function sharingMetadata(title: string, description: string, path: string, type: "website" | "article" = "website"): Metadata {

@@ -4,6 +4,18 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
+## Daytime sharing banner — 5 October 2026
+
+User requested replacing the old WhatsApp banner with the daytime Living Atlas
+and explicitly authorized commit/push. New 1200 × 630 static JPEG captures the
+actual sunlit sea/ship renderer with site typography; all sharing metadata uses
+`/images/living-atlas-day-v1.jpg`. The new filename changes the image URL for
+fresh crawler requests. Compressed image visually reviewed; explicit day/WebGL2
+capture, build, lint, types and 20 crawler/page checks pass. QA servers stopped.
+Commit subject: `fix: refresh social banner with daytime Living Atlas`.
+No manual deployment or actual WhatsApp app/cache refresh is claimed.
+Remaining work and full evidence: [search and sharing](seo-and-sharing.md).
+
 ## Search and sharing checkpoint — 5 October 2026
 
 User requested WhatsApp sharing checks, SEO and AI/LLM discovery. Local changes

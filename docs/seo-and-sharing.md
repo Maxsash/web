@@ -7,12 +7,39 @@ deployment or post-push live verification is included; hosting may deploy on pus
 ## Completed
 
 - One production origin (`NEXT_PUBLIC_SITE_URL`, default `https://www.maxsash.com`) supplies metadata, canonical URLs, discovery files and JSON-LD.
-- Homepage, notebook index and both sample essays have their own Open Graph/Twitter title, description and URL. Essay cards explicitly say sample essay. The existing visually inspected 1200 × 630 PNG remains the shared image, with explicit dimensions and alternative text.
+- Homepage, notebook index and both sample essays have their own Open Graph/Twitter title, description and URL. Essay cards explicitly say sample essay. The shared image is now the visually inspected 1200 × 630 daytime Living Atlas JPEG (`/images/living-atlas-day-v1.jpg`), with explicit dimensions and alternative text. This replaces the old flat-wave artwork.
 - Next.js 16.2.9 already recognizes WhatsApp, Facebook and Twitter as HTML-limited bots; no custom bot override is necessary. Metadata stays in the head for these crawlers.
 - `/robots.txt` allows public crawling, excludes API endpoints and advertises `/sitemap.xml`. The sitemap includes the homepage only: the notebook remains noindex while its writing is sample content. Seed variants canonicalize to `/`.
 - Homepage JSON-LD describes the website, Yash, verified external profiles and two real projects using the visible project descriptions. It invents no ratings, credentials or business claims. JSON-LD is escaped for HTML embedding.
 
-## Evidence
+## Daytime banner correction — 5 October 2026
+
+The initial SEO checkpoint (`32f9815`) retained the old banner artwork. The user
+requested replacement with the daytime site theme and explicitly authorized
+commit/push. Commit subject: `fix: refresh social banner with daytime Living Atlas`.
+
+The new card captures the real homepage WebGL2 sea, sailboat, sun and site fonts.
+Capture-only layout removes interactive controls, enlarges the studio identity
+and adds the domain. These styles do not change the public homepage. The theme
+is explicitly day regardless of system preference. The image is a static JPEG,
+1200 × 630, 198803 bytes, visually inspected after compression. It uses a new
+versioned filename so new crawler fetches do not reuse the old image URL.
+Existing WhatsApp message cards may remain cached; no actual app refresh is claimed.
+
+Regenerate with a local production server and
+`node tools/build-living-atlas-cover.mjs`; requires Chrome and ImageMagick. The
+script uses an isolated browser profile, waits for fonts and the real renderer,
+pauses the sea before capture and closes Chrome/removes its temporary profile.
+The rendered wave moment may vary slightly between captures.
+
+Fresh validation: `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm build` and
+`node tools/check-seo.mjs` pass. All 20 crawler/page cases point both Open Graph
+and Twitter images to the new JPEG, which returns HTTP 200 with `image/jpeg`.
+Dimensions verified with `sips`; day/WebGL2/high renderer confirmed in ignored
+`tools/.out/seo/cover-report.json`. Production QA server stopped after checks.
+No manual deployment or post-push live/app verification is included.
+
+## Initial SEO checkpoint evidence
 
 - `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm build` passed. The production build required network access for existing Google font downloads.
 - `node tools/check-seo.mjs` against a temporary production server at `127.0.0.1:3010` passed 20 crawler/page combinations: WhatsApp, facebookexternalhit, Twitterbot and Googlebot across the homepage, a seed variant, notebook index and two essays. Checks cover canonical/card URLs, titles, descriptions, image dimensions/alt, card type, index/noindex and homepage structured-data JSON.

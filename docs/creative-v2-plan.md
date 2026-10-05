@@ -11,30 +11,22 @@ what exists from what is proposed. Read the repository `AGENTS.md`,
 indexes [current v2 validation](creative-v2-validation.md); no unchecked gate in
 this plan is a result.
 
-## Current continuation — real Work content and composition review
+## Current continuation — approved Work spreads promoted
 
-The user reports the latest three-stage flow feels smooth on iPhone Air Safari,
-including the slower first reveal. The reported scrolling issue is accepted by
-that feedback; this is not a measured FPS, VoiceOver, thermal or battery result.
-Mac Chrome was already reported much better. Keep the selected mobile timing.
+The user selected the project-spread composition and explicitly requested moving
+it from samples into production Work. The homepage `#work` now shows the leading
+Household Hub spread with its populated light-theme expense Insights capture,
+followed by Wedding Photo Platform. Demo/privacy captions, case-study/demo links
+and Portfolio access are preserved. Semantic hierarchy is Work h2 / project h3;
+there is still one homepage h1 and one `#work` target.
 
-The user supplied Household Hub and Wedding Photo Platform demo URLs and their
-professional portfolio. Verified public pages, case-study links and read-only
-local project documentation. `/` now replaces all three placeholder cards with
-the two real projects, links to their public demos and case studies, and labels
-the outbound action View demo. No private repository Source link is published.
-Elsewhere's Portfolio link replaces the self-link and missing `/resume.pdf`.
-
-A new **unselected, uncommitted** composition study lives at `/samples/work`,
-with Household Hub as the leading spread and Wedding Photo Platform following.
-It uses captures of the public demos, preserves demo/privacy captions and adds
-no animation/client engine. `/samples` links to it in the working tree. These
-sample route/assets/index changes must remain uncommitted until selected under
-the repository creative workflow. Current public Work keeps its existing layout.
-
-Next: review that composition, then promote it if selected. Afterward continue
-with authentic project imagery/details and the remaining publication/Elsewhere
-refinements; sensors and the optional C discovery remain lower priority.
+`components/Work.tsx` and `Work.module.css` own the accepted composition; images
+are under `public/images/work/`. The sample UI/CSS and review notice are removed;
+`/samples/work` now permanently redirects to `/#work`. The earlier review link
+is removed from `/samples`. This user selection authorizes committing the
+accepted code/assets and documentation together. No new motion/client engine.
+Next: production feedback on the integrated section, then the remaining
+publication/Elsewhere refinements. No hosting deployment in this checkpoint.
 
 ## Latest explicit selection — mobile stages, continuous desktop
 

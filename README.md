@@ -118,8 +118,8 @@ flow feels smooth on iPhone Air Safari; broader device qualification remains ope
 Work now lists Household Hub and Wedding Photo Platform, linking their public
 demos and portfolio case studies. Elsewhere includes the professional Portfolio.
 The user reports the latest staged flow is smooth on iPhone Air Safari.
-A new spread composition is under review at `/samples/work` in the working tree;
-its route/assets stay uncommitted until selected.
+The approved project-spread composition now lives in homepage Work, with the
+light-theme expense Insights preview. `/samples/work` redirects to `/#work`.
 
 This is a foundation: project spread design, optional sensors, a deeper
 mathematical Easter egg and physical-device qualification remain separate tasks.

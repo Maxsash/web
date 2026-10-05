@@ -98,8 +98,11 @@ try{
  results.push({name:"public-homepage-content",...homepage,pass:homepage.anchors.every(a=>a.targets===1&&(a.id==='writing'||a.links>0))&&!/\bnoindex\b/i.test(homepage.robots)});
  const writing=await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]')?.textContent");
  results.push({name:"writing-direct-link",pass:writing==='Writing'});
- const projectContent=await evaluate("(()=>{const w=document.getElementById('work');return {titles:[...w.querySelectorAll('h3')].map(e=>e.textContent),links:[...w.querySelectorAll('a')].map(a=>a.getAttribute('href'))};})()");
+ const projectContent=await evaluate("(()=>{const w=document.getElementById('work');return {titles:[...w.querySelectorAll('article')].map(e=>e.getAttribute('aria-label')),links:[...w.querySelectorAll('a')].map(a=>a.getAttribute('href'))};})()");
  results.push({name:'real-projects-and-case-studies',...projectContent,pass:projectContent.titles.join('|')==='Household Hub|Wedding Photo Platform'&&['https://tenant-management-2my6.vercel.app/','https://wedding-demo-teal.vercel.app/','https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html','https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html'].every(url=>projectContent.links.includes(url))&&!projectContent.links.includes('#')});
+ results.push({name:'approved-work-spreads',pass:await evaluate("(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===2&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('light theme')&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===2&&!w.textContent.includes('awaiting selection');})()")});
+ const workRedirect=await fetch(new URL('/samples/work',base),{redirect:'manual'});
+ results.push({name:'selected-work-study-redirect',pass:workRedirect.status===308&&workRedirect.headers.get('location')==='/#work'});await workRedirect.arrayBuffer();
  results.push({name:'portfolio-replaces-placeholder-destinations',pass:await evaluate("!!document.querySelector('#elsewhere a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]') && !document.querySelector('#elsewhere a[href=\"/resume.pdf\"]') && !document.querySelector('#elsewhere a[href=\"https://www.maxsash.com\"]')")});
 
  await evaluate("document.querySelector('nav[aria-label=\"Studio\"] a[href=\"/blog\"]').click()");
@@ -122,6 +125,12 @@ try{
    for(const p of [.52,1]){await evaluate(`(()=>{const s=document.querySelector('[data-observatory]');scrollTo(0,s.offsetTop+(s.offsetHeight-s.firstElementChild.clientHeight)*${p});})()`);await delay(120);await snapshot(`observatory-${width}-${p===1?"drawing":"reveal"}`);}
    if(!quick&&(width===1440||width===390)){
      for(const section of ["work","writing","elsewhere"]){await evaluate("document.getElementById("+JSON.stringify(section)+").scrollIntoView()");await delay(100);await snapshot("home-"+width+"-"+section);}
+   }
+   if(width===1440||width===390){
+     await evaluate("document.getElementById('work').scrollIntoView({behavior:'instant'})");await delay(300);
+     const clip=await evaluate("(()=>{const r=document.getElementById('work').getBoundingClientRect();return {x:0,y:r.top+scrollY,width:innerWidth,height:r.height,scale:1};})()");
+     const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});writeFileSync(join(out,`home-${width}-work-spreads.png`),Buffer.from(shot.data,'base64'));
+     results.push({name:'work-spread-figure-layout',width,pass:await evaluate("(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===2&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()")});
    }
    await load("/blog");await snapshot(`atlas-${width}`,true);
    if(!quick&&width===390){await load(articlePaths[0]);await snapshot("article-390",true);await load(articlePaths[1]);await snapshot("mark-article-390",true);}

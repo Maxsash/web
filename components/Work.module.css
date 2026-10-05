@@ -1,0 +1,30 @@
+.section { --paper:#eae7d9; --ink:#17383d; --muted:#506468; --rule:#17383d33; background:var(--paper); color:var(--ink); padding:1.5rem clamp(1.25rem,6vw,7rem) 3rem; }
+.links a { display:inline-flex; align-items:center; min-height:44px; text-underline-offset:.3em; }
+.header { padding-block:clamp(3rem,9vw,8rem) 2.5rem; max-width:58rem; }
+.kicker,.plateHead,.caption,.facts dt,.footer { font-family:var(--font-mono); font-size:.7rem; letter-spacing:.08em; }
+.kicker { text-transform:uppercase; margin-bottom:1.2rem; }
+.header h2 { font-size:clamp(3.5rem,9vw,8.5rem); line-height:.95; letter-spacing:-.06em; font-weight:400; margin-bottom:2rem; }
+.header>p:last-child { max-width:31rem; color:var(--muted); font-size:1.1rem; line-height:1.65; }
+.feature { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:clamp(2rem,6vw,6rem); padding-block:4rem; align-items:center; border-bottom:1px solid var(--rule); }
+.plate { background:#d9dfd6; padding:clamp(1rem,2.5vw,2rem); min-width:0; }
+.plateHead { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.8rem; padding-bottom:1rem; border-bottom:1px solid var(--rule); }
+.caption { color:var(--muted); letter-spacing:.02em; line-height:1.6; }
+.description h3,.secondary h3 { font-size:clamp(2.5rem,4.5vw,5rem); line-height:1; letter-spacing:-.04em; font-weight:400; margin-bottom:1.5rem; }
+.description p:not(.kicker),.secondary p:not(.kicker) { color:var(--muted); line-height:1.7; max-width:32rem; }
+.description .summary { font-size:1.25rem; color:var(--ink); margin-bottom:1rem; }
+.facts { display:grid; gap:.8rem; margin-block:1.75rem; padding-block:1.25rem; border-block:1px solid var(--rule); }
+.facts>div { display:grid; grid-template-columns:7rem minmax(0,1fr); gap:1rem; }
+.facts dt { color:var(--muted); align-self:center; }
+.facts dd { margin:0; font-size:.85rem; }
+.links { display:flex; flex-direction:column; align-items:flex-start; gap:.25rem; font-size:.9rem; }
+.secondary { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.6fr); gap:clamp(2rem,7vw,7rem); align-items:center; padding-block:4rem; }
+.secondary h3 { font-size:clamp(2.5rem,3.5vw,4rem); }
+.footer { border-top:1px solid var(--rule); padding-top:1.5rem; line-height:1.7; letter-spacing:.02em; color:var(--muted); }
+@media(max-width:48rem) { .feature,.secondary { grid-template-columns:1fr; padding-block:2.5rem; gap:2rem; } .feature .description { max-width:34rem; } .header { padding-top:3.5rem; } }
+@media(prefers-reduced-motion:no-preference) { .links a { transition:color 180ms ease; } .links a:hover { color:#865136; } }
+.plate { margin:0; }
+.plate img,.weddingPlate img { display:block; width:100%; height:auto; margin-block:1.5rem; }
+.weddingPlate { margin:0; min-width:0; }
+.secondary { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); }
+.footer a { display:inline-flex; align-items:center; min-height:44px; }
+@media(max-width:48rem) { .secondary { grid-template-columns:1fr; } }

@@ -4,7 +4,27 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
-## Latest checkpoint — gentler mobile transition pacing
+## Latest checkpoint — linger on Sea → Structure
+
+The user requested a substantially slower first transition to appreciate the
+3D-to-2D reveal, keeping Structure → Drawing as it is. Sea → Structure now takes
+**1,800 ms**; all other moves, including reverse gestures, remain **600 ms**.
+Quintic smootherstep easing is retained. Reduced motion remains immediate and
+desktop continuous scrolling is unchanged. An interrupted transition still
+starts the next move from the current displayed progress.
+
+Production build (including types), lint, harness syntax and diff checks pass.
+The swipe harness waits for the longer opening reveal before checking its state.
+Full isolated Chrome report: `tools/.out/creative-home/report.json`,
+`2026-10-05T13:08:58.055Z`, temporary `http://localhost:3006/`.
+**81 records pass: 40 captures, 40 assertions and one cadence run**, with no
+runtime exceptions, GL errors or detected overflow. Forward/reverse progression,
+final native exit and reduced-motion controls pass. Physical iPhone Air Safari
+smoothness still requires device verification after deployment. Temporary server
+stopped automatically; no push or deployment. Commit subject:
+`refactor: linger on the first mobile sea reveal`.
+
+## Previous checkpoint — gentler mobile transition pacing
 
 User requested slightly slower animation and an easing curve that allows the
 design to be appreciated. Mobile stage transitions now take **600 ms** (previously

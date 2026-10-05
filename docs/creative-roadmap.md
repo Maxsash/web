@@ -15,7 +15,8 @@ Start with [the handoff](creative-v2-handoff.md), then the
 The user explicitly selected stage-by-stage mobile gestures and unchanged
 continuous desktop scrolling. This is approved work on `/`, not an unselected
 sample alternative. Three states: **Sea → Structure → Drawing** at
-progress 0/.55/1, with bounded 600 ms smootherstep transitions. Two upward swipes reach
+progress 0/.55/1, with smootherstep easing: 1,800 ms for Sea → Structure
+and 600 ms for other moves. Two upward swipes reach
 Drawing; the next upward gesture scrolls into Work normally. Reverse swipes
 visit the previous stage. Previous/Next buttons, direct Work/Writing and skip
 links remain available. Coarse primary pointer selects mobile mode at mount;
@@ -29,7 +30,7 @@ the endpoints.
 This selection supersedes the earlier native-only hero gesture rule specifically
 within the staged mobile hero. Full local validation passes 81 browser records,
 with actual touch-event progression/reversal and final native exit. Physical
-Safari smoothness remains open. Commit subject: `refactor: soften mobile sea transition pacing`.
+Safari smoothness remains open. Commit subject: `refactor: linger on the first mobile sea reveal`.
 Next: deploy/recheck this three-stage flow on iPhone Air Safari, preserving Mac
 Chrome improvement. All temporary QA servers are closed after validation.
 

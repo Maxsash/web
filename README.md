@@ -109,8 +109,8 @@ use a smaller rendering budget; physical rechecks remain open. See current
 validation for the production/local comparison and exact limits.
 
 Latest selected mobile interaction: Sea → Structure → Drawing, one
-stage per vertical swipe or stage button, with a gentle 600 ms smootherstep
-transition. The next swipe after Drawing continues
+stage per vertical swipe or stage button, with gentle smootherstep easing: 1.8 seconds
+for Sea → Structure and 600 ms for every other move. The next swipe after Drawing continues
 into Work. Desktop remains continuous. Reduced motion uses immediate stills;
 no-JS retains the readable native-scroll fallback. Physical iPhone Safari
 verification is still required after deployment.

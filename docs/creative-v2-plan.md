@@ -11,6 +11,31 @@ what exists from what is proposed. Read the repository `AGENTS.md`,
 indexes [current v2 validation](creative-v2-validation.md); no unchecked gate in
 this plan is a result.
 
+## Current continuation — real Work content and composition review
+
+The user reports the latest three-stage flow feels smooth on iPhone Air Safari,
+including the slower first reveal. The reported scrolling issue is accepted by
+that feedback; this is not a measured FPS, VoiceOver, thermal or battery result.
+Mac Chrome was already reported much better. Keep the selected mobile timing.
+
+The user supplied Household Hub and Wedding Photo Platform demo URLs and their
+professional portfolio. Verified public pages, case-study links and read-only
+local project documentation. `/` now replaces all three placeholder cards with
+the two real projects, links to their public demos and case studies, and labels
+the outbound action View demo. No private repository Source link is published.
+Elsewhere's Portfolio link replaces the self-link and missing `/resume.pdf`.
+
+A new **unselected, uncommitted** composition study lives at `/samples/work`,
+with Household Hub as the leading spread and Wedding Photo Platform following.
+It uses captures of the public demos, preserves demo/privacy captions and adds
+no animation/client engine. `/samples` links to it in the working tree. These
+sample route/assets/index changes must remain uncommitted until selected under
+the repository creative workflow. Current public Work keeps its existing layout.
+
+Next: review that composition, then promote it if selected. Afterward continue
+with authentic project imagery/details and the remaining publication/Elsewhere
+refinements; sensors and the optional C discovery remain lower priority.
+
 ## Latest explicit selection — mobile stages, continuous desktop
 
 User directly authorized this behavior at `/`; commit it with documentation.
@@ -241,7 +266,7 @@ foundation commit is recorded. No deployment is part of this authorization.
 
 ### Current priority — production navigation and smoothness
 
-Latest physical evidence: user says Mac Chrome is much better, but provides an
+Historical physical evidence before staged mode: user said Mac Chrome was much better, but provided an
 iPhone Air Safari recording with continued reveal stutter. Current scheduling
 fix draws dirty/changed scroll samples without applying the idle 60/30 Hz gate;
 idle deadlines advance without repeatedly resetting for early callbacks. This

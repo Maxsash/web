@@ -4,6 +4,61 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Latest checkpoint — accepted phone feedback, real projects and Work study
+
+User confirms the latest production three-stage reveal feels smooth on iPhone
+Air Safari, including the slow first transition. This closes the reported
+scrolling issue by user acceptance, not measured FPS or broad device qualification.
+Mac Chrome was already reported much better. No renderer/timing change this turn.
+
+The user supplied two demos and their professional portfolio, asking us to
+explore their local repositories and add the portfolio. Read-only public review:
+- [Household Hub](https://tenant-management-2my6.vercel.app/), plus `/tenant` and
+  `/expense`: public invented demo household, rent dashboard and spending.
+- [Wedding demo](https://wedding-demo-teal.vercel.app/), plus `/story`: chapter
+  narrative, reels/albums, sample names/dates and faces hidden for privacy.
+- [Portfolio](https://ctrl-alt-yash.github.io/portfolio/) and both linked tenant
+  and wedding case-study pages: HTTP 200, dates/stack and implementation facts.
+
+Read relevant README/demo documentation and package manifests in the local
+`personal/whats-app/tenant-manager` and `personal/akrati/wedding` repos. No secret
+files, app data changes or source publication. Tenant repo states it is private;
+therefore no Source link is added. No unsupported adoption/result metrics are
+copied. Browser connector and web reader were unavailable for these pages;
+HTTP reads and isolated headless captures provided the evidence instead. The
+external capture checker flagged intentionally offscreen skip links in tenant
+pages; that is not evidence of a demo defect or a passing external layout audit.
+
+Accepted public changes: replace placeholder projects with Household Hub and
+Wedding Photo Platform, provide View demo/Case study links, and replace the
+self-link/missing résumé PDF with Portfolio. Existing public card composition
+is retained. Extended the browser harness with actual-session rotation and
+portrait return, interrupted long reveal/reversal, paused finite transition,
+real project links and removal of placeholder destinations.
+
+Fresh production build (including types), lint, harness syntax and diff checks
+pass. Full report: `tools/.out/creative-home/report.json`, `2026-10-05T13:22:31.381Z`,
+temporary `http://localhost:3006/`: **89 records pass** (41 captures, 47 assertions,
+one cadence run), with zero runtime exceptions, GL errors or detected overflow.
+Rotation retains Structure and compact budget; rapid reversal stays at Sea after
+the old opening duration; paused transitions settle and stop drawing. These are
+Chrome emulations, not physical rotation/VoiceOver/pinch tests.
+
+Unselected Work spread study: `/samples/work`, its CSS, local optimized public
+demo captures under `public/images/work-study/`, and `/samples` discovery link
+remain **uncommitted** under AGENTS.md. A lead Household Hub spread is followed
+by a smaller wedding entry. No new client engine or dependency. Sample-specific
+isolated check report `tools/.out/work-study/report.json`, `2026-10-05T13:22:33.303Z`:
+12 passing records, captures at 320/390/844/1440 px, noindex, ordinary valid links,
+no canvas, no runtime errors or detected overflow. Visually inspected desktop
+and 390 px real-project captures. The temporary ignored check script was adapted
+from the existing CDP harness. Public and sample evidence are kept separate.
+
+Temporary server stopped automatically; no push or deployment. Accepted content,
+QA and documentation commit subject: `feat: add real studio projects and portfolio`.
+Next: user selection of the spread study before promotion. Broader physical
+accessibility/thermal checks remain open; optional sensors and C stay deferred.
+
 ## Latest checkpoint — linger on Sea → Structure
 
 The user requested a substantially slower first transition to appreciate the

@@ -26,14 +26,15 @@ function Card({ project, index }: { project: Project; index: number }) {
         <li className={styles.year}>{project.year}</li>
       </ul>
 
-      {project.href || project.repo ? (
+      {project.href || project.repo || project.caseStudy ? (
         <div className={styles.cardLinks}>
           {project.href ? (
             <a href={project.href}>
-              Visit
+              View demo
               <Icon name="arrow" size={16} />
             </a>
           ) : null}
+          {project.caseStudy ? <a href={project.caseStudy}>Case study<Icon name="arrow" size={16} /></a> : null}
           {project.repo ? (
             <a href={project.repo}>
               <Icon name="github" size={16} />

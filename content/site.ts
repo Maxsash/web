@@ -1,11 +1,7 @@
 import type { IconName } from "@/components/Icon";
 
-/* ---------------------------------------------------------------------------
- * Everything the site says about itself lives here.
- *
- * The projects and writing entries below are placeholders with the right shape,
- * so the layout can be seen.  Replace them; nothing else reads from them.
- * ------------------------------------------------------------------------- */
+/* Public studio content. Project facts are checked against the supplied demos,
+ * portfolio case studies and local project documentation. */
 
 export type Destination = {
   label: string;
@@ -25,6 +21,7 @@ export type Project = {
   year: string;
   href?: string;
   repo?: string;
+  caseStudy?: string;
   status: "sailing" | "in the yard" | "moored";
 };
 
@@ -44,10 +41,9 @@ export const site = {
 
   url: "https://www.maxsash.com",
 
-  /* TODO: point these at the real destinations. */
+  /* The portfolio carries professional background and project case studies. */
   links: {
-    personal: "https://www.maxsash.com",
-    resume: "/resume.pdf",
+    portfolio: "https://ctrl-alt-yash.github.io/portfolio/",
     blog: "/blog",
     github: "https://github.com/maxsash",
     email: "mailto:yash@maxsash.com",
@@ -62,17 +58,11 @@ export const site = {
 
 export const destinations: Destination[] = [
   {
-    label: "Personal site",
-    href: site.links.personal,
-    blurb: "Who I am away from the workbench.",
-    icon: "globe",
-    external: true,
-  },
-  {
-    label: "Résumé",
-    href: site.links.resume,
-    blurb: "Where I have worked and what I shipped.",
+    label: "Portfolio",
+    href: site.links.portfolio,
+    blurb: "Experience, skills, and the stories behind the projects.",
     icon: "resume",
+    external: true,
   },
   {
     label: "Writing",
@@ -95,39 +85,25 @@ export const destinations: Destination[] = [
   },
 ];
 
-/* TODO: replace with real projects. */
 export const projects: Project[] = [
   {
-    slug: "first-project",
-    title: "First project",
-    summary:
-      "A one or two sentence description of what it does and who it is for. " +
-      "Keep it concrete — what problem it solves reads better than what it is built with.",
-    tags: ["typescript", "web"],
+    slug: "household-hub",
+    title: "Household Hub",
+    summary: "Rent, tenant records, and household spending in one place. Track payments, plan rent increases, and turn handwritten expense slips into entries you review before saving.",
+    tags: ["Next.js", "Supabase", "slip scanning"],
     year: "2026",
-    href: "#",
-    repo: "#",
+    href: "https://tenant-management-2my6.vercel.app/",
+    caseStudy: "https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html",
     status: "sailing",
   },
   {
-    slug: "second-project",
-    title: "Second project",
-    summary:
-      "Another placeholder. Entries without a href render as plain cards, so " +
-      "unreleased work still has a home on the page.",
-    tags: ["game", "godot"],
-    year: "2025",
-    status: "in the yard",
-  },
-  {
-    slug: "third-project",
-    title: "Third project",
-    summary:
-      "Tags are free-form. Two or three carry best; more and the chips start " +
-      "competing with the title for attention.",
-    tags: ["automation", "cli"],
-    year: "2025",
-    repo: "#",
-    status: "moored",
+    slug: "wedding-photo-platform",
+    title: "Wedding Photo Platform",
+    summary: "A wedding told in chapters, photo reels, and albums. An offline photo pipeline removes duplicates and groups faces so guests can find their photographs. The public demo hides faces for privacy.",
+    tags: ["Next.js", "offline ML", "Cloudflare R2"],
+    year: "2026",
+    href: "https://wedding-demo-teal.vercel.app/",
+    caseStudy: "https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html",
+    status: "sailing",
   },
 ];

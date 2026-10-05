@@ -20,6 +20,28 @@ is composed in `app/page.tsx`; its scene styles and renderer live in
 layout and styling in `components/atlas/`. Add a project or note at its content
 source; keep placeholder/sample status explicit until real content is supplied.
 
+## Sea theme and shoreline
+
+The current uncommitted exploration adds persistent day/night sea controls and
+`components/shore/`: cached sand/shell artwork, a viewport-bound shoreline,
+mouse-only fading tracks, pause and synthesized wave sound. The narrow tide blends
+from Elsewhere’s colour. Sun/moon and wave/ship lighting share a projected anchor.
+Reduced motion uses a still shore. Sound stays silent until the visitor taps or
+clicks “Play waves” in the header or footer; both controls then offer “Mute waves”.
+Mute is remembered, and reload never automatically plays audio. Hidden tabs
+suspend sound. Theme follows the system by default, including preference changes;
+the sole day/night switch is in the footer and persists a manual override.
+
+The shoreline workbench fetches `ctrl-alt-yash` public GitHub events on the server,
+with hourly caching, a short timeout and a profile-link fallback. Release text is
+read from `package.json`. Vercel's `VERCEL_GIT_COMMIT_SHA` or an explicitly provided
+`NEXT_PUBLIC_BUILD_SHA` supplies the optional short revision; absent metadata is
+omitted. There are no tokens, private GitHub data or browser polling.
+
+Review evidence and remaining physical Safari checks are in
+[`docs/creative-v2-validation.md`](docs/creative-v2-validation.md). Creative changes
+stay in the main site uncommitted until selected; no sample gallery is used.
+
 ## Generated artwork
 
 The brand mark and legacy vector wave artwork are computed rather than drawn.

@@ -28,3 +28,5 @@
 .secondary { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); }
 .footer a { display:inline-flex; align-items:center; min-height:44px; }
 @media(max-width:48rem) { .secondary { grid-template-columns:1fr; } }
+:global(html[data-studio-theme="night"]) .section { --paper:#122126; --ink:#d8e2dc; --muted:#b4c8c4; --rule:#b5d1ca33; }
+:global(html[data-studio-theme="night"]) .plate { background:#20343a; }

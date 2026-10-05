@@ -4,7 +4,15 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## Latest evidence — Elsewhere and sample cleanup
+## Latest evidence — sea/shore/audio refinement
+
+Current uncommitted work aligns wave/ship lighting with the sky disc, narrows the
+shore and blends it into Elsewhere. Audio is now explicitly opt-in via one-tap
+“Play waves” in header/footer; ordinary gestures remain silent. Theme is system
+default with only a footer switch. Exact latest checks and physical-device limits are in
+[creative-v2-validation.md](creative-v2-validation.md).
+
+## Previous evidence — Elsewhere and sample cleanup
 
 Approved Elsewhere is in the homepage; the sample route tree and review-only
 scaffolding are removed. Future changes go directly into the main site and stay
@@ -48,3 +56,9 @@ Use the v2 validation document for exact commands, environment, screenshots,
 math/API/lifecycle assertions, payload measurements, cleanup, and open gates.
 Do not resurrect old Wind/Helm selection tasks or claim physical phone,
 screen-reader, field performance, or release acceptance from headless Chrome.
+
+## Day/night shoreline exploration
+
+The active uncommitted exploration is documented in `creative-v2-validation.md`.
+The previous release checks are historical evidence; they do not qualify the new
+shoreline or opt-in audio on physical iPhone Safari.

@@ -85,7 +85,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       const damping=1-Math.exp(-delta*4);
       pointer=media.matches?[0,0]:[pointer[0]+(target[0]-pointer[0])*damping,pointer[1]+(target[1]-pointer[1])*damping];
       const reveal=media.matches&&!staged?(progress>.45?1:0):clamp((progress-.14)/.75);
-      engine.draw(elapsed,reveal,pointer);
+      engine.draw(elapsed,reveal,pointer,document.documentElement.dataset.studioTheme==="night"?1:0);
       const drawInterval=1000/(low?30:60);
       nextDraw=!active?0:scrollChanged||!nextDraw||now-nextDraw>drawInterval?now+drawInterval:nextDraw+drawInterval;
       if(!presented){presented=true;canvas.dataset.renderer="webgl2";scene.dataset.rendering="webgl2";setReady(true);}
@@ -158,6 +158,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       target=[(event.clientX/width-.5)*2,(event.clientY/height-.5)*2];
     },{passive:true,signal:events.signal});
     scene.addEventListener("pointerleave",()=>{target=[0,0];},{signal:events.signal});
+    window.addEventListener("studio-theme",()=>{scrollDirty=true;requestFrame();},{signal:events.signal});
     document.addEventListener("visibilitychange",restart,{signal:events.signal});
     media.addEventListener("change",restart,{signal:events.signal});
     canvas.addEventListener("webglcontextlost",event=>{

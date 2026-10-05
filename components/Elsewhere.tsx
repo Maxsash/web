@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Icon from "@/components/Icon";
 import { destinations, site } from "@/content/site";
 import styles from "./Elsewhere.module.css";
@@ -20,6 +19,5 @@ export default function Elsewhere() {
       </a></li>)}</ul>
     </section>
     <section className={styles.contact} aria-labelledby="contact-title"><div><p className={styles.overline}>An open line</p><h3 id="contact-title">Something<br /><em>on your mind?</em></h3><p>A question, an idea, or a thing worth building together.</p></div><a href={site.links.email} className={styles.email}>{site.links.email.slice(7)}<span aria-hidden="true">↗</span></a></section>
-    <footer className={styles.footer}><Link prefetch={false} href="/">Maxsash Studio</Link><span>Sea. Ship. Math.</span><span>By Yash · {new Date().getFullYear()}</span></footer>
   </section>;
 }

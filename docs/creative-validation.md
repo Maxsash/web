@@ -2,6 +2,8 @@
 
 Updated: 5 October 2026. Current evidence is in
 [creative-v2-validation.md](creative-v2-validation.md).
+The latest renderer-hardening run passes 57 browser records; its exact scope,
+commands and remaining device/lifecycle gates are recorded there.
 The current scope and ordered work are in
 [creative-v2-plan.md](creative-v2-plan.md).
 

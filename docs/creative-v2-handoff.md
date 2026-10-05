@@ -104,10 +104,21 @@ validation; rerun checks justified by the actual changes.
 
 ## Immediate and subsequent tasks
 
-**Immediate authorized task:** complete promotion checks on `/` and `/blog`,
-verify existing sections and old-URL redirects, update validation, stage the
-coherent approved foundation with its docs/tests, and commit. Fill the commit
-record at the top from the actual result. No renewed approval is required.
+**Foundation checkpoint is complete:** `6adbb9a`, followed by documentation
+checkpoint `5eddf76`; both were present locally and `main` matched the local
+`origin/main` tracking reference at the start of the continuation. No remote
+fetch or deployment is implied by that comparison.
+
+**Completed continuation:** renderer lifecycle hardening on `/`: explicit
+context-loss disposal and ignoring import rejection after unmount. Build,
+types, lint, 13 geometry/model tests and 57 production browser records pass,
+including loss cleanup/stopped drawing and shader-link failure fallback.
+Changed `OceanScene.tsx`, the browser harness and checkpoint docs. Commit
+subject: `fix: dispose ocean engine on context loss`. Preview is running on
+`http://localhost:3002`; existing 3000/3001 servers were left intact.
+The fallback-on-loss policy remains; automatic restoration is not introduced.
+Next bounded work: physical-phone qualification and remaining lifecycle checks
+listed in validation. Authentic project content needs actual user facts/links.
 
 **After the foundation commit:** qualify on named physical phones, then continue
 authentic project/content work and focused refinements from the implementation

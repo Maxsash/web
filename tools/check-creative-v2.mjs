@@ -96,8 +96,12 @@ try{
    results.push({name:"offscreen-stops-draws",before:outsideBefore,after:outsideAfter,pass:outsideBefore===outsideAfter});
    await evaluate("scrollTo(0,0)");await delay(150);
    results.push({name:"return-resumes-draws",pass:(await frames())>outsideBefore});
-   await evaluate("document.querySelector('canvas[data-ocean]').getContext('webgl2').getExtension('WEBGL_lose_context').loseContext()");await delay(120);
+   await evaluate(`(()=>{const gl=document.querySelector('canvas[data-ocean]').getContext('webgl2');window.__seaDeletes={buffers:0,arrays:0,programs:0};for(const [method,key] of [['deleteBuffer','buffers'],['deleteVertexArray','arrays'],['deleteProgram','programs']]){const original=gl[method].bind(gl);gl[method]=object=>{window.__seaDeletes[key]++;return original(object);};}gl.getExtension('WEBGL_lose_context').loseContext();})()`);await delay(120);
    results.push({name:"context-loss-fallback",pass:await evaluate("document.querySelector('[data-observatory]').dataset.rendering==='fallback' && document.querySelector('button[aria-pressed]').disabled")});
+   const released=await evaluate("window.__seaDeletes");
+   results.push({name:"context-loss-releases-engine",...released,pass:released.buffers===3&&released.arrays===3&&released.programs===3});
+   const lostBefore=await frames();await delay(350);
+   results.push({name:"context-loss-stops-draws",pass:(await frames())===lostBefore});
    const edition=createSeaEdition();
    const coordinates=Array.from({length:64},(_,i)=>[-19+i*.59,13-i*.37]),times=[0,1.25,97.4];
    const gpuSamples=await evaluate("("+probeSeaGPU.toString()+")("+JSON.stringify({fieldGLSL,edition,coordinates,times})+")");
@@ -120,6 +124,10 @@ try{
    await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
    await call("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"reduce"}]});
    await load("/");await delay(250);const before=await snapshot("reduced-motion-390");await delay(400);const count=await evaluate("document.querySelector('canvas[data-ocean]').dataset.frameCount");results.push({name:"reduced-motion-idle",before:before.frames,after:count,pass:before.frames===count});
+   const failedLink=await call("Page.addScriptToEvaluateOnNewDocument",{source:"const originalParameter=WebGL2RenderingContext.prototype.getProgramParameter;WebGL2RenderingContext.prototype.getProgramParameter=function(program,parameter){return parameter===this.LINK_STATUS?false:originalParameter.call(this,program,parameter)}"});
+   await load("/");
+   results.push({name:"shader-link-failure-fallback",pass:await evaluate("document.querySelector('[data-observatory]').dataset.rendering==='fallback' && document.querySelector('button[aria-pressed]').disabled && !document.querySelector('canvas[data-ocean]').dataset.frameCount && Boolean(document.querySelector('#work'))")});
+   await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:failedLink.identifier});
    const injection=await call("Page.addScriptToEvaluateOnNewDocument",{source:"const originalGetContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:originalGetContext.call(this,kind,...args)}"});
    await load("/");await snapshot("fallback-390");await call("Page.removeScriptToEvaluateOnNewDocument",{identifier:injection.identifier});
    await call("Emulation.setScriptExecutionDisabled",{value:true});

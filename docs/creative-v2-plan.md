@@ -184,9 +184,8 @@ examples. CSS for B stays scoped; do not force its ink/paper tokens onto A.
 
 ### Checkpoint 0 — approved foundation promotion and commit
 
-**Status:** user approval received on 5 October. Homepage/blog promotion and its
-commit are explicitly authorized. Complete final public-route QA, update the
-validation record and record the actual commit hash in the handoff.
+**Status:** completed on 5 October in `6adbb9a`, with the accepted checkpoint
+recorded in `5eddf76`. Public-route QA evidence is in the validation document.
 
 Tasks in this checkpoint:
 
@@ -241,6 +240,11 @@ accepted work with updated evidence. The broad A/B choice is already settled.
 **Depends on:** the selected foundation. Some local lifecycle and parity checks
 already passed; consult current validation before repeating them. Physical-phone
 and deeper recovery/quality work remain open after the foundation commit.
+
+5 October continuation: focused context-loss disposal and late-import rejection
+hardening, with new browser assertions for cleanup, stopped drawing and forced
+shader-link failure. This does not implement context restoration or qualify
+physical devices; actual outcomes belong in current validation.
 
 Tasks in this order:
 
@@ -506,9 +510,8 @@ changed; checks actually run; known limitations; next bounded task**. Include
 the local server command/port and commit state when relevant. A list of generic
 aspirations is not a sufficient handoff.
 
-The immediate authorized checkpoint is **finish public homepage/blog validation,
-update the evidence and commit the accepted foundation**. After that, follow the
-next bounded task in the handoff: physical-device qualification and authentic
+The foundation checkpoint is complete. Follow the current bounded task in the
+handoff: renderer lifecycle hardening, then physical-device qualification and authentic
 project/content work, with further creative choices reviewed independently. Do
 not restart broad research, resurrect the old steering choice, or treat sensors,
 live data and C as prerequisites for committing the already approved foundation.

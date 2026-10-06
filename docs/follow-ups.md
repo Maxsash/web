@@ -10,10 +10,8 @@ complete. The rejected sliders and voyage have been removed.
   skip navigation, and that every interactive element works without a pointer.
 - [x] **Shoreline review.** Accepted 6 October 2026; user reports it works on
   physical devices.
-- [ ] **GitHub activity look.** The user is not happy with the current visual
-  treatment of the workbench's GitHub activity (three cached public events).
-  Rework the design later; keep the honest "not live / not a contributions
-  chart" framing and the profile-link fallback.
+- [x] **GitHub activity look.** Redesigned as the site's own commit log
+  (three latest commits, no counts) (awaiting the user's review). Optional `GITHUB_TOKEN` for rate limits.
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and
   related brand assets for the studio's new pages.
 - [ ] **Search Console.** Property verified, indexing requested, sitemap submitted;

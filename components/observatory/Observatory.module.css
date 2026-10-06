@@ -18,7 +18,7 @@
   background: var(--obs-paper);
   color-scheme: light;
 }
-.page::before { display: none; }
+.page::before, .page main::before { display: none; }
 .page h1, .page h2, .page h3 { font-weight: 450; font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 144; letter-spacing: -.055em; }
 .skip { position:absolute; left:1rem; top:1rem; z-index:40; background:var(--obs-paper); color:var(--obs-ink); padding:.8rem; translate:0 -180%; }
 .skip:focus-visible { translate:0 0; }
@@ -76,31 +76,21 @@
 .end { position:absolute; z-index:4; left:var(--obs-gutter); right:var(--obs-gutter); top:15%; color:var(--obs-ink); opacity:var(--end-opacity); pointer-events:none; }
 .end h2 { font-size:clamp(3.4rem,6.4vw,6.5rem); max-width:9ch; line-height:1; }
 .end p { font:italic clamp(1rem,2vw,1.5rem)/1.55 var(--font-display); max-width:21rem; margin-top:1.5rem; }
-.threshold { position:relative; background:var(--obs-paper); padding:5rem var(--obs-gutter) 4rem; }
-.thresholdTop { display:flex; gap:2rem; justify-content:space-between; border-top:1px solid #173f444b; padding-top:1rem; font:.6rem/1.7 var(--font-mono); text-transform:uppercase; letter-spacing:.1em; }
-.thresholdBody { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding-block:4rem; }
-.threshold h2 { font-size:clamp(3rem,5.8vw,6rem); line-height:1.05; max-width:10ch; }
-.threshold h2 em { color:var(--obs-rust); font-weight:350; }
-.thresholdBody > div > p { font-size:.94rem; line-height:1.9; max-width:26rem; margin-top:1.6rem; }
 .textLink { display:inline-flex; align-items:center; justify-content:space-between; gap:2rem; min-height:44px; text-decoration:none; border-bottom:1px solid currentColor; padding-block:.7rem; margin-top:1.3rem; font-size:.8rem; }
 .textLink:hover { color:var(--obs-rust); }
-.editionPlate { position:relative; border:1px solid #173f4445; padding:1rem; rotate:-3deg; box-shadow:8px 18px 0 #173f4409; background:#eeebdf; }
-.editionPlate svg { width:100%; }
-.editionPlate p { display:flex; justify-content:space-between; gap:1rem; border-top:1px solid #173f4445; padding-top:.8rem; font:.55rem/1.5 var(--font-mono); text-transform:uppercase; letter-spacing:.07em; }
-.mechanism { border-top:1px solid #173f444b; padding-block:1.3rem; }
-.mechanism summary { cursor:pointer; min-height:44px; display:flex; align-items:center; justify-content:space-between; font-size:.82rem; }
-.mechanism summary::after { content:"+"; font:1.7rem var(--font-display); }
-.mechanism[open] summary::after { content:"−"; }
-.mechanism > div { display:grid; grid-template-columns:1fr 1fr; gap:4rem; padding-block:1.5rem 2rem; font-size:.84rem; line-height:1.9; }
-.equation { font:italic clamp(1.7rem,3vw,2.8rem)/1.6 var(--font-display); color:var(--obs-rust); }
-.mechanism p + p { margin-top:1rem; }
 .publication { background:#203536; color:#e8e5d8; padding:4rem var(--obs-gutter) 5rem; position:relative; overflow:hidden; }
-.anchor { position:absolute; top:0; }
 .publicationTop { display:flex; justify-content:space-between; font:.6rem/1.7 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; padding-bottom:3rem; border-top:1px solid #e8e5d849; padding-top:1rem; }
-.publication > a { text-decoration:none; display:grid; grid-template-columns:1.4fr .6fr; gap:3rem; align-items:end; }
+.publicationBody { display:grid; grid-template-columns:1.2fr .8fr; gap:4rem; align-items:end; }
+.publicationBody > div > p { max-width:20rem; font-size:.88rem; line-height:1.8; color:#c4cebc; margin-top:1.6rem; }
+.entries { list-style:none; margin:0; padding:0; border-top:1px solid #e8e5d849; }
+.entries li { border-bottom:1px solid #e8e5d849; }
+.entries a { display:grid; gap:.3rem; min-height:44px; padding-block:1.2rem; text-decoration:none; }
+.entries a:hover strong { color:#c2a879; }
+.entries a:focus-visible, .publication .textLink:focus-visible { outline:2px solid #c2a879; outline-offset:4px; }
+.entries strong { font:400 1.5rem/1.25 var(--font-fraunces), Georgia, serif; letter-spacing:-.03em; }
+.entries span { font:.6rem/1.7 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:#c4cebc; }
 .publication h2 { font-size:clamp(3.8rem,8.5vw,8.5rem); line-height:.97; max-width:12ch; }
 .publication h2 em { font-weight:350; color:#c2a879; }
-.publication a > div > p { max-width:18rem; font-size:.85rem; line-height:1.8; color:#c4cebc; }
 .publication .textLink { color:#e8e5d8; }
 @media(max-width:760px) {
  .story { height:230svh; min-height:1350px; }
@@ -126,16 +116,9 @@
  .end { top:17%; display:block; }
  .end h2 { font-size:3.5rem; }
  .end p { font-size:1.1rem; max-width:17rem; margin-top:1.5rem; }
- .threshold { padding-top:2.5rem; }
- .thresholdTop { font-size:.48rem; gap:1rem; }
- .thresholdBody { grid-template-columns:1fr; gap:3rem; padding-block:2.5rem; }
- .threshold h2 { font-size:3.1rem; }
- .thresholdBody > div > p { font-size:.86rem; }
- .editionPlate { width:94%; justify-self:center; }
- .mechanism > div { grid-template-columns:1fr; gap:1.5rem; }
  .publication { padding-block:2.5rem 3rem; }
  .publicationTop { font-size:.47rem; }
- .publication > a { grid-template-columns:1fr; gap:2rem; }
+ .publicationBody { grid-template-columns:1fr; gap:2.5rem; }
  .publication h2 { font-size:clamp(3.4rem,13vw,5rem); }
 }
 @media(max-height:620px) {
@@ -157,9 +140,7 @@
 @media(prefers-reduced-motion:reduce) { .canvas { transition:none; } }
 :global(html[data-studio-theme="night"]) .page { --obs-paper:#122126; --obs-ink:#d8e2dc; --paper-sunk:#192e34; --ink-2:#bdcec7; --ink-3:#9fb7b4; --accent:#d4a880; --rule:#b5d1ca30; --rule-strong:#b5d1ca60; color-scheme:dark; }
 :global(html[data-studio-theme="night"]) .paperVeil { background:linear-gradient(90deg,#122126fa,#122126e8 24%,transparent 75%),linear-gradient(#122126,transparent 22%); }
-:global(html[data-studio-theme="night"]) .editionPlate { background:#24363b; }
-:global(html[data-studio-theme="night"]) .editionPlate svg { filter:invert(.86) hue-rotate(140deg); }
-:global(html[data-studio-theme="night"]) .fallback { background:#122126; }
+:global(html[data-studio-theme="night"]):global(html[data-studio-theme="night"]) .fallback { background:#122126; }
 :global(html[data-studio-theme="night"]) .fallback svg { filter:invert(.86) hue-rotate(140deg); }
 @media(max-width:48rem) { .nav { flex-wrap:wrap; } .nav>.sceneControls { margin-left:auto; } }
 

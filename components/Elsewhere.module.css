@@ -26,5 +26,6 @@
 @media(max-width:26rem) { .header { grid-template-columns:1fr; } .compass { display:none; } }
 @media(prefers-reduced-motion:no-preference) { .route { transition:background-color 180ms ease; } .route:hover { background:#17383d08; } }
 :global(html[data-studio-theme="night"]) .section { --paper:#122126; --ink:#d8e2dc; --muted:#b4c8c4; --rule:#b5d1ca33; }
-:global(html[data-studio-theme="night"]) .contact { background:#223b43; }
+:global(html[data-studio-theme="night"]) .contact { background:#223b43; color:#e8e5d8; }
 :global(html[data-studio-theme="night"]) .compass .needle { fill:#d8e2dc18; }
+:global(html[data-studio-theme="night"]) .number { color:#e4967c; }

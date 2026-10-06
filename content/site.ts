@@ -51,7 +51,8 @@ export const site = {
 
   nav: [
     { label: "Work", href: "#work" },
-    { label: "Writing", href: "/blog" },
+    { label: "Sea studio", href: "#sea-studio" },
+    { label: "Notebook", href: "/blog" },
     { label: "Elsewhere", href: "#elsewhere" },
   ],
 } as const;
@@ -63,12 +64,6 @@ export const destinations: Destination[] = [
     blurb: "Experience, skills, and the stories behind the projects.",
     icon: "resume",
     external: true,
-  },
-  {
-    label: "Writing",
-    href: site.links.blog,
-    blurb: "Notes on building things, in longer form.",
-    icon: "writing",
   },
   {
     label: "GitHub",

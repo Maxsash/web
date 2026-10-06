@@ -4,6 +4,32 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Structure pass and sea studio — 6 October 2026
+
+Uncommitted. Local checks on the changed tree (dev server for page captures,
+a temporary production server on 127.0.0.1:3011 for suites, since stopped):
+
+- `tsc --noEmit`, `pnpm lint` and `pnpm build` pass.
+- Node tests: **25 pass** (v1 digest alarm unchanged; 6 new for v2 round-trip,
+  independent effect of each setting, steepness at all eight extreme corners,
+  recipe on the plate, `version` handling, `download=1`, unversioned = v1).
+- `tools/check-seo.mjs`: 20 crawler/page cases pass.
+- `tools/check-creative-v2.mjs`: **125 browser records, 0 failures, 0 runtime
+  exceptions**, including new assertions: Notebook is linked exactly twice and not
+  under Elsewhere, exactly one footer outside `<main>`, four labelled sliders,
+  moving a slider changes both plate and seed, presets, and Sail/Print/Save links.
+- axe-core 4.10.2 (WCAG 2.0–2.2 A/AA + best-practice) on `/` (day, night, 390 px),
+  `/blog`, both essays and `/plate`: no violations after fixes (found and fixed a
+  nested complementary landmark in essays and two night contrast failures).
+- Readability extraction of essays, and PDF render of `/plate` (one landscape page,
+  controls hidden). Squall/Glass seas rendered in the real WebGL2 hero; ship holds.
+- Visual review: desktop and 390 px studio, notebook, Elsewhere, blog pages.
+
+Limits: headless Chrome on a Mac only. Not tested: touch feel of sliders, the
+sticky mobile drawing, real paper printing, Safari print, VoiceOver/NVDA, or Reader
+mode in an actual browser. Cross-origin clipboard may refuse "Copy link"; it then
+shows nothing rather than claiming success.
+
 ## Current refinement — responsive long mobile opening
 
 The user reported that Sea → Structure held still for too long and then rushed.

@@ -42,9 +42,10 @@ export default async function AtlasArticle({ params }: Props) {
   return (
     <main id="atlas-content" className={styles.article}>
       <div className={styles.articleTop}>
-        <Link prefetch={false} href="/blog">← All observations</Link>
+        <Link prefetch={false} href="/blog">← Back to the notebook</Link>
         <span>Field note {post.number} / Sample essay</span>
       </div>
+      <article>
       <header className={styles.articleHead}>
         <div>
           <p className={styles.overline}>{post.topic}</p>
@@ -56,7 +57,7 @@ export default async function AtlasArticle({ params }: Props) {
         <div className={styles.articleDeck}>
           <p>{post.summary}</p>
           <span className={styles.sampleLabel}>
-            {date} · Sample essay · {post.minutes} min read
+            <time dateTime={post.date}>{date}</time> · Sample essay · {post.minutes} min read
           </span>
         </div>
       </header>
@@ -69,18 +70,18 @@ export default async function AtlasArticle({ params }: Props) {
           {waves ? <OceanPlate /> : <MarkPlate detail />}
         </div>
       </figure>
-      <article className={styles.articleBody}>
+      <div className={styles.articleBody}>
         <p className={styles.opening}>{post.opening}</p>
         {post.sections.map((section, index) => (
           <section className={styles.readingSection} key={section.title}>
-            <span className={styles.sectionNumber}>0{index + 1}</span>
+            <span className={styles.sectionNumber} aria-hidden="true">0{index + 1}</span>
             <div className={styles.readingCopy}>
               <h2>{section.title}</h2>
               {section.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            <aside className={styles.marginNote}>{section.marginNote}</aside>
+            <p className={styles.marginNote}>{section.marginNote}</p>
             {waves && index === 1 ? (
               <figure className={styles.sectionPlate}>
                 <div className={styles.equation}>
@@ -102,6 +103,7 @@ export default async function AtlasArticle({ params }: Props) {
             {other.title} ↗
           </Link>
         </nav>
+      </div>
       </article>
     </main>
   );

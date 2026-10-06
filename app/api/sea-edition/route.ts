@@ -1,4 +1,4 @@
-import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed } from "@/lib/sea-edition";
+import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed, parseSeaVersion } from "@/lib/sea-edition";
 
 /** Authored deterministic data only; this endpoint never fetches an upstream feed. */
 export function GET(request: Request) {
@@ -11,12 +11,14 @@ export function GET(request: Request) {
       headers: { "Cache-Control": "no-store" },
     });
   }
-  const version = url.searchParams.get("version");
-  if (version !== null && version !== "1") {
-    return Response.json({ error: "This endpoint supports sea model version 1." }, { status: 400 });
+  // An unversioned request is always version 1, so old links keep their meaning.
+  const requested = url.searchParams.get("version");
+  const version = requested === null ? "1" : parseSeaVersion(requested);
+  if (version === null) {
+    return Response.json({ error: "This endpoint supports sea model versions 1 and 2." }, { status: 400 });
   }
 
-  const etag = `"sea-v1-${seed}"`;
+  const etag = `"sea-v${version}-${seed}"`;
   const headers = {
     "Cache-Control": "public, max-age=3600, s-maxage=86400",
     ETag: etag,
@@ -25,5 +27,5 @@ export function GET(request: Request) {
   if (request.headers.get("if-none-match") === etag) {
     return new Response(null, { status: 304, headers });
   }
-  return Response.json(createSeaEdition(seed), { headers });
+  return Response.json(createSeaEdition(seed, version), { headers });
 }

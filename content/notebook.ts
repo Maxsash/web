@@ -56,7 +56,7 @@ export const notebook: NotebookPost[] = [
           "As you scroll, the camera rises and the shaded surface becomes a drawing. The grid and contours are evaluated on the same moving geometry. There is no separate animation trying to keep up with the first one.",
           "An edition fixes the six wave coefficients with a repeatable seed. The printed plate samples them at time zero. It is the same mathematical surface held still and projected onto paper. The title, the navigation, and this text remain ordinary readable HTML around it.",
         ],
-        marginNote: "Edition 5ea5cafe / Authored study / Frozen at t = 0",
+        marginNote: "Edition 70806d5e / Authored study / Frozen at t = 0",
       },
     ],
     closing:

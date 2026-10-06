@@ -72,3 +72,11 @@ shows `308` and `location: https://www.maxsash.com/`.
 at the DNS host (Vercel DNS if nameservers move there, otherwise the registrar's
 DNS panel); verify; submit `https://www.maxsash.com/sitemap.xml`; use URL
 Inspection on `https://www.maxsash.com/` and request indexing.
+
+## Sea seeds and the print page — 6 October 2026
+
+`/plate` is a print view for one sea and is `noindex, nofollow`; it is not in the
+sitemap. Seed variants (`/?seed=…&version=2`) still canonicalise to `/`. A seed
+with no `version` means version 1, so earlier links keep their meaning; the
+homepage without a seed now shows the version 2 default (`70806d5e`). The shared
+social banner still shows the earlier version 1 sea.

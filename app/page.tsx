@@ -10,7 +10,9 @@ import { WaveSoundControl } from "@/components/shore/WaveSound";
 import ShoreFooter from "@/components/shore/ShoreFooter";
 import OceanScene from "@/components/observatory/OceanScene";
 import OceanPlate from "@/components/atlas/OceanPlate";
-import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed } from "@/lib/sea-edition";
+import SeaStudio from "@/components/studio/SeaStudio";
+import { notebook } from "@/content/notebook";
+import { createSeaEdition, DEFAULT_SEA_SEED_V2, normaliseSeaSeed, parseSeaVersion, DEFAULT_SEA_SEED } from "@/lib/sea-edition";
 import styles from "@/components/observatory/Observatory.module.css";
 
 export const metadata: Metadata = {
@@ -19,16 +21,30 @@ export const metadata: Metadata = {
   ...sharingMetadata("Maxsash Studio — Sea. Ship. Math.", site.description, "/"),
 };
 
-export default async function Home({searchParams}: {searchParams:Promise<{seed?:string|string[]}>}) {
-  const query=await searchParams;
-  const seed=typeof query.seed==="string"?normaliseSeaSeed(query.seed):query.seed===undefined?DEFAULT_SEA_SEED:null;
-  if(!seed)notFound();
-  const edition=createSeaEdition(seed);
-  const nextSeed=seed===DEFAULT_SEA_SEED?"27c4b901":DEFAULT_SEA_SEED;
+type Query = { seed?: string | string[]; version?: string | string[] };
+
+/** No seed is the studio's own sea (version 2). A seed with no version is a version 1 link, as it always was. */
+function resolveSea(query: Query) {
+  if (query.seed === undefined) {
+    if (query.version === undefined || query.version === "2") return { seed: DEFAULT_SEA_SEED_V2, version: "2" as const };
+    return query.version === "1" ? { seed: DEFAULT_SEA_SEED, version: "1" as const } : null;
+  }
+  if (typeof query.seed !== "string") return null;
+  const seed = normaliseSeaSeed(query.seed);
+  const version = query.version === undefined ? "1" : typeof query.version === "string" ? parseSeaVersion(query.version) : null;
+  return seed && version ? { seed, version } : null;
+}
+
+export default async function Home({searchParams}: {searchParams:Promise<Query>}) {
+  const sea=resolveSea(await searchParams);
+  if(!sea)notFound();
+  const {seed,version}=sea;
+  const edition=createSeaEdition(seed,version);
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(studioStructuredData).replace(/</g, "\\u003c") }} />
       <a className={styles.skip} href="#work">Skip to the work</a>
+      <main id="main">
       <section className={styles.story} data-observatory aria-label="From open water to its mathematical construction">
         <div className={styles.stage}>
           <div className={styles.fallback} aria-hidden="true"><OceanPlate edition={edition} /></div>
@@ -48,37 +64,35 @@ export default async function Home({searchParams}: {searchParams:Promise<{seed?:
           <div className={styles.sceneMeta} aria-hidden="true"><span>A surface in motion.</span><span>A structure underneath.</span><span className={styles.edition}>Authored sea / {edition.seed}</span></div>
           <div className={styles.middle}>
             <p className={styles.eyebrow}>02 / Beneath the impression</p>
-            <h2>Wonder has<br /><em>a structure.</em></h2>
+            <h2>Wonder has <br /><em>a structure.</em></h2>
             <p>The light gives way to lines. The same crest, the same ship, the same sea—seen through its mathematics.</p>
           </div>
           <div className={styles.technical} aria-hidden="true"><p><b>01</b> / Six directional waves</p><p><b>02</b> / A hull on the same surface</p><p><b>03</b> / A drawing of the motion</p></div>
-          <div className={styles.end}><h2>Look closer.<br /><em>Keep going.</em></h2><p>Every finished thing has a drawing underneath. This is where I keep mine.</p></div>
+          <div className={styles.end}><h2>Look closer. <br /><em>Keep going.</em></h2><p>Every finished thing has a drawing underneath. This is where I keep mine.</p></div>
           <div className={styles.chapterRail}><a href="#work">↓ <span>From a surface to a structure</span><b>Keep exploring</b></a></div>
         </div>
       </section>
 
       <Work />
 
-      <section id="inside" className={styles.threshold}>
-        <div className={styles.thresholdTop}><span>01 / An edition of the sea</span><span>Authored study · {edition.seed.toUpperCase()}</span></div>
-        <div className={styles.thresholdBody}>
-          <div><h2>Even the sea<br />can leave<br /><em>a paper trail.</em></h2><p>The surface you just crossed begins with six waves and a seed. Its drawing keeps that identity: a small piece of this world, resolved into ink.</p><a className={styles.textLink} href={`/api/sea-edition/print?seed=${seed}&version=1`} target="_blank" rel="noopener noreferrer">Keep this field plate <span aria-hidden="true">↗</span></a></div>
-          <figure className={styles.editionPlate}><OceanPlate edition={edition} /><figcaption><p><span>Field plate / {edition.seed}</span><span>Six waves · one sea</span></p></figcaption></figure>
-        </div>
-        <details className={styles.mechanism}>
-          <summary>Inside the sea</summary>
-          <div><div><p className={styles.equation}>h = ∑ Aᵢ sin(kᵢ · x − ωᵢt + φᵢ)</p><p>One height field supplies the surface, its slope, the ship’s attitude, and this engraved plate. Scrolling changes the way it is seen.</p></div><div><p>The scene is an authored mathematical study. Its lighting and wake are visual approximations; it is not a real ocean observation or a fluid simulation.</p><p><a href={`/api/sea-edition?seed=${seed}&version=1`} target="_blank" rel="noopener noreferrer">Read the edition’s six waves ↗</a></p><Link prefetch={false} className={styles.textLink} href={`/?seed=${nextSeed}`}>Visit another edition ↗</Link></div></div>
-        </details>
-      </section>
+      <SeaStudio seed={seed} version={version} />
 
-      <section id="writing" className={styles.publication}>
-        <span id="the-notebook" className={styles.anchor} aria-hidden="true" />
-        <div className={styles.publicationTop}><span>02 / The navigator’s notebook</span><span>Observations & constructions</span></div>
-        <Link prefetch={false} href="/blog"><h2>For the<br /><em>curious mind.</em></h2><div><p>The drawings. The small discoveries. The arithmetic beneath the surface.</p><span className={styles.textLink}>Open the notebook <span aria-hidden="true">↗</span></span></div></Link>
+      <section id="notebook" className={styles.publication} aria-labelledby="notebook-title">
+        <div className={styles.publicationTop}><span>The navigator’s notebook</span><span>Observations & constructions</span></div>
+        <div className={styles.publicationBody}>
+          <div>
+            <h2 id="notebook-title">For the <br /><em>curious mind.</em></h2>
+            <p>The drawings. The small discoveries. The arithmetic beneath the surface.</p>
+            <Link prefetch={false} className={styles.textLink} href="/blog">Open the notebook <span aria-hidden="true">↗</span></Link>
+          </div>
+          <ul className={styles.entries} aria-label="From the notebook">
+            {notebook.map(post=><li key={post.slug}><Link prefetch={false} href={`/blog/${post.slug}`}><span>Field note {post.number} · {post.topic}</span><strong>{post.title}</strong><span>Sample essay · {post.minutes} min read</span></Link></li>)}
+          </ul>
+        </div>
       </section>
       <Elsewhere />
-      <ShoreFooter />
-
-    </main>
+      </main>
+      <ShoreFooter seaModel={edition.version} />
+    </div>
   );
 }

@@ -16,9 +16,8 @@ complete. The rejected sliders and voyage have been removed.
   chart" framing and the profile-link fallback.
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and
   related brand assets for the studio's new pages.
-- [ ] **Search Console and redirect.** User-side: verify `www.maxsash.com`,
-  submit `/sitemap.xml`, make apex-to-www redirect permanent (see
-  [search and sharing](seo-and-sharing.md)).
+- [ ] **Search Console.** Property verified, indexing requested, sitemap submitted;
+  waiting for it to leave "Couldn't fetch". Redirect reported done (308).
 - [ ] **Accessibility review.** Audit semantics, labels, contrast, zoom and text
   reflow, reduced motion, screen-reader output, and common automated checks.
 - [ ] **Sea studio review.** Review the new structure and studio on `/`; try
@@ -26,5 +25,4 @@ complete. The rejected sliders and voyage have been removed.
   Version 2 is new; keep version 1 stable.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and
   reads slightly brown; consider native night colours in the SVG if it bothers.
-- [ ] **Social banner.** The shared banner still shows the version 1 default sea.
-  Regenerate it from the new default if the look matters.
+- [x] **Social banner.** Still shows the version 1 sea; the user says it is fine as is.

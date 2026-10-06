@@ -4,7 +4,7 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## Structure pass and sea studio — 6 October 2026 (uncommitted)
+## Structure pass and sea studio — 6 October 2026 (committed, `a5381a5`)
 
 Single Notebook entry point, Elsewhere limited to external places, named section
 kickers, footer outside `<main>`, and a seed-driven sea studio with print/save/

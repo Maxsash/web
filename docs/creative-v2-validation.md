@@ -6,7 +6,7 @@ Physical-device and field-performance acceptance remain separate.
 
 ## Structure pass and sea studio — 6 October 2026
 
-Uncommitted. Local checks on the changed tree (dev server for page captures,
+Committed as `a5381a5`. Local checks on the changed tree (dev server for page captures,
 a temporary production server on 127.0.0.1:3011 for suites, since stopped):
 
 - `tsc --noEmit`, `pnpm lint` and `pnpm build` pass.

@@ -12,7 +12,7 @@ Start with [the handoff](creative-v2-handoff.md), then the
 
 ## Structure pass and sea studio — 6 October 2026
 
-**Uncommitted, awaiting the user's review on `/`.** The user flagged repeated
+**Committed by the user as `a5381a5` after review.** The user flagged repeated
 Writing callouts (header, "For the curious mind", Elsewhere), an unclear seed/print
 story, and two seed options that looked identical. Decisions:
 
@@ -49,9 +49,8 @@ story, and two seed options that looked identical. Decisions:
 - Fixed while auditing (night theme): Elsewhere contact text was nearly invisible
   (contrast 1.39) and day-rust text was too dim on dark paper.
 
-Next gate: the user reviews the new structure and studio on `/`. Not yet done:
-physical-device check of the sticky mobile drawing and slider feel, an actual
-print on paper, and a screen-reader pass. Commit only once approved.
+Remaining after commit: physical-device check of the sticky mobile drawing and slider feel, an actual
+print on paper, and a screen-reader pass.
 
 ## Status update — 6 October 2026
 
@@ -67,9 +66,10 @@ Open items from this review:
 - **GitHub activity look — not accepted.** The user is unhappy with how the
   workbench's GitHub activity currently looks. Redesign it later (see
   [follow-ups](follow-ups.md)); data fetching is unchanged and not at fault.
-- Search Console, sitemap submission and apex-to-www redirect are user-side
-  hosting tasks; step-by-step guide in [search and sharing](seo-and-sharing.md).
-  Not yet performed or verified.
+- Search Console and sitemap submission are user-side; the user requested
+  indexing and submitted the sitemap (Google showed "Couldn't fetch" on first
+  read; waiting). The user reports making the apex-to-www redirect permanent
+  (308); not re-verified here. Guide: [search and sharing](seo-and-sharing.md).
 - Real project/essay content waits until dev work is finished. Remaining dev
   work (notebook depth, edition backend, orientation, C) comes first.
 - New: social content (Instagram, LinkedIn, banners) for the studio's pages.

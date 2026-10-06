@@ -10,6 +10,37 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Keyboard and accessibility pass — 6 October 2026
+
+**Uncommitted, awaiting review.** Real key events (Tab, Shift+Tab, Enter, Space,
+arrows, End) in headless Chrome, plus the browser's accessibility tree, found and
+fixed:
+
+- **Pinned phone drawing covered focus.** Arriving with Shift+Tab put sliders,
+  buttons and links under the sticky plate (WCAG 2.2 *Focus Not Obscured*). Studio
+  controls now carry a scroll margin sized to the drawing.
+- **Visible label not in the accessible name** (WCAG *Label in Name*): "Play waves"
+  was named "Play wave sound", and the theme button was named "Switch to night sea"
+  while showing "Day sea". Wave sound, shoreline, hero and theme buttons no longer
+  override their names; their visible text is the name. Buttons whose text changes
+  no longer also use `aria-pressed` (the label and the state said the same thing
+  twice). The theme button still shows the current sea, and its name adds the
+  action: "Night sea: switch to day".
+- **Tab order:** the hero's "Still the sea" button used to come before the site
+  navigation; it now follows it.
+- **Chatter:** slider read-outs (`<output>`) were each a live region; they are
+  silent now, the sliders already announce their value.
+- **Focus ring contrast:** hero rings follow the text colour (they flip with the
+  sky/paper); the dark contact panel, the notebook panel and the shoreline (day and
+  night) use rings that hold against their own backgrounds.
+- **Meaningless landmark name:** the Elsewhere list was labelled "Choose a heading";
+  it is now "Set a course". Links that open a new tab say so to screen readers;
+  the chapter arrow and decorative arrows are hidden from them.
+- Forced-colours (high contrast) emulation reviewed: text and controls stay visible.
+
+Not covered, and not claimed: a real screen reader (VoiceOver, NVDA, TalkBack), the
+phone's own keyboard/switch control, speech input, and Reader mode in a real browser.
+
 ## GitHub activity redesign — 6 October 2026
 
 **Uncommitted, awaiting review.** Supersedes the "three public events" widget in

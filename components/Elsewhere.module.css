@@ -21,7 +21,8 @@
 .contact h3 { font-size:clamp(2.5rem,4.5vw,4.5rem); line-height:1; font-weight:400; letter-spacing:-.04em; margin-bottom:1.5rem; }
 .contact p:last-child { max-width:25rem; line-height:1.7; color:#c4cec4; }
 .email { display:flex; align-items:center; gap:1rem; min-height:44px; text-underline-offset:.4em; font-size:clamp(.9rem,1.4vw,1.2rem); overflow-wrap:anywhere; }
-.route:focus-visible,.email:focus-visible { outline:2px solid #a24732; outline-offset:5px; }
+.route:focus-visible { outline:2px solid #a24732; outline-offset:5px; }
+.email:focus-visible { outline:2px solid #e8d3a8; outline-offset:5px; }
 @media(max-width:48rem) { .header { grid-template-columns:1fr 6rem; gap:1rem; } .header h2 { font-size:clamp(3.5rem,8vw,6rem); } .compass { align-self:start; margin-top:3rem; } .route { grid-template-columns:1.5rem minmax(0,1fr) 1.5rem; gap:1rem; } .destination { display:none; } .contact { flex-direction:column; align-items:flex-start; gap:1.5rem; } }
 @media(max-width:26rem) { .header { grid-template-columns:1fr; } .compass { display:none; } }
 @media(prefers-reduced-motion:no-preference) { .route { transition:background-color 180ms ease; } .route:hover { background:#17383d08; } }
@@ -29,3 +30,4 @@
 :global(html[data-studio-theme="night"]) .contact { background:#223b43; color:#e8e5d8; }
 :global(html[data-studio-theme="night"]) .compass .needle { fill:#d8e2dc18; }
 :global(html[data-studio-theme="night"]) .number { color:#e4967c; }
+:global(html[data-studio-theme="night"]) .route:focus-visible { outline-color:#e4967c; }

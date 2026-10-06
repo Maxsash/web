@@ -10,10 +10,10 @@ export default function Elsewhere() {
       <svg className={styles.compass} viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="92"/><circle cx="120" cy="120" r="74" strokeDasharray="1 8"/><path d="M120 12v216M12 120h216M54 54l132 132M54 186 186 54"/><path className={styles.needle} d="m120 38 18 82-18 82-18-82Z"/><circle cx="120" cy="120" r="5"/></svg>
     </header>
     <section className={styles.routes} aria-labelledby="routes-title">
-      <div className={styles.routeHead}><h3 id="routes-title">Choose a heading</h3><span>{String(routes.length).padStart(2,"0")} / Destinations</span></div>
+      <div className={styles.routeHead}><h3 id="routes-title">Set a course</h3><span>{String(routes.length).padStart(2,"0")} / Destinations</span></div>
       <ul>{routes.map((place,index)=><li key={place.label}><a className={styles.route} href={place.href} {...(place.external?{target:"_blank",rel:"noopener noreferrer"}:{})}>
         <span className={styles.number}>{String(index+1).padStart(2,"0")}</span>
-        <span className={styles.routeCopy}><span className={styles.routeTitle}>{place.label}</span><span className={styles.blurb}>{place.blurb}</span></span>
+        <span className={styles.routeCopy}><span className={styles.routeTitle}>{place.label}{place.external?<span className="visually-hidden"> (opens in a new tab)</span>:null}</span><span className={styles.blurb}>{place.blurb}</span></span>
         <span className={styles.destination}>{place.label==="Portfolio"?"Experience & projects":"Code & repositories"}</span>
         <Icon name="arrow" size={24}/>
       </a></li>)}</ul>

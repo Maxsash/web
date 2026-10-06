@@ -48,7 +48,6 @@ export default async function Home({searchParams}: {searchParams:Promise<Query>}
       <section className={styles.story} data-observatory aria-label="From open water to its mathematical construction">
         <div className={styles.stage}>
           <div className={styles.fallback} aria-hidden="true"><OceanPlate edition={edition} /></div>
-          <OceanScene key={edition.seed} edition={edition} />
           <div className={styles.shade} />
           <div className={styles.paperVeil} />
           <header className={styles.nav}>
@@ -56,6 +55,7 @@ export default async function Home({searchParams}: {searchParams:Promise<Query>}
             <nav aria-label="Studio">{site.nav.map(item=>item.href.startsWith("#")?<a key={item.href} href={item.href}>{item.label}</a>:<Link prefetch={false} key={item.href} href={item.href}>{item.label}</Link>)}</nav>
             <div className={styles.sceneControls}><WaveSoundControl /></div>
           </header>
+          <OceanScene key={edition.seed} edition={edition} />
           <div className={styles.intro}>
             <p className={styles.eyebrow}>A place for things worth making</p>
             <h1><span>Sea.</span><span>Ship.</span><span><em>Math.</em></span></h1>
@@ -69,7 +69,7 @@ export default async function Home({searchParams}: {searchParams:Promise<Query>}
           </div>
           <div className={styles.technical} aria-hidden="true"><p><b>01</b> / Six directional waves</p><p><b>02</b> / A hull on the same surface</p><p><b>03</b> / A drawing of the motion</p></div>
           <div className={styles.end}><h2>Look closer. <br /><em>Keep going.</em></h2><p>Every finished thing has a drawing underneath. This is where I keep mine.</p></div>
-          <div className={styles.chapterRail}><a href="#work">↓ <span>From a surface to a structure</span><b>Keep exploring</b></a></div>
+          <div className={styles.chapterRail}><a href="#work"><span aria-hidden="true">↓</span> <span>From a surface to a structure</span><b>Keep exploring</b></a></div>
         </div>
       </section>
 

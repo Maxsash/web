@@ -36,3 +36,5 @@
 :global(html[data-studio-theme="night"]) .tools>button { background:#282e2b66; border-color:#e5dcc655; }
 :global(html[data-studio-theme="night"]) .colophon { border-color:#e5dcc644; }
 @media(max-width:48rem) { .folio { grid-template-columns:1fr; } .inner { padding-top:9rem; } .tools { justify-content:flex-start; gap:.4rem; margin-bottom:2rem; } .tools>button { font-size:.55rem; padding-inline:.6rem; } .activity { padding:1.1rem 1rem .8rem; } .hint { display:none; } .colophon { font-size:.55rem; } }
+.shore :focus-visible { outline:2px solid #243d3c; outline-offset:3px; }
+:global(html[data-studio-theme="night"]) .shore :focus-visible { outline-color:#f4ead2; }

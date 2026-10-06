@@ -6,7 +6,7 @@ Creative work follows [the current plan](creative-v2-plan.md).
 See [actual validation](creative-v2-validation.md) before treating a gate as
 complete. The rejected sliders and voyage have been removed.
 
-- [ ] **Keyboard-friendly pass.** Check visible focus states, logical tab order,
+- [x] **Keyboard-friendly pass.** Done 6 October (automated, headless Chrome); see roadmap. Original brief: Check visible focus states, logical tab order,
   skip navigation, and that every interactive element works without a pointer.
 - [x] **Shoreline review.** Accepted 6 October 2026; user reports it works on
   physical devices.
@@ -16,7 +16,7 @@ complete. The rejected sliders and voyage have been removed.
   related brand assets for the studio's new pages.
 - [ ] **Search Console.** Property verified, indexing requested, sitemap submitted;
   waiting for it to leave "Couldn't fetch". Redirect reported done (308).
-- [ ] **Accessibility review.** Audit semantics, labels, contrast, zoom and text
+- [ ] **Accessibility review.** Automated and keyboard parts done; still needs a real screen reader (VoiceOver on Mac and iPhone, ideally NVDA), and Reader mode in Safari. Original brief: Audit semantics, labels, contrast, zoom and text
   reflow, reduced motion, screen-reader output, and common automated checks.
 - [ ] **Sea studio review.** Review the new structure and studio on `/`; try
   slider feel, the pinned mobile drawing and a real print on a phone and laptop.

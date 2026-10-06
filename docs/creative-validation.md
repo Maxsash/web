@@ -4,7 +4,15 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## GitHub commit log — 6 October 2026 (uncommitted)
+## Keyboard and accessibility pass — 6 October 2026 (uncommitted)
+
+Focus obscured by the pinned phone drawing, label-in-name mismatches, tab order,
+live-region chatter and focus-ring contrast fixed; new `tools/check-keyboard.mjs`
+(20/20), axe clean in day and night on four page types, 126 browser records. No
+real screen-reader or physical keyboard test yet. Details:
+[current validation](creative-v2-validation.md).
+
+## GitHub commit log — 6 October 2026 (committed)
 
 The shoreline's GitHub card is redesigned as this site's own commit log (three
 latest commits, no counts or activity chart). 126 browser records, 26 Node tests, 20 SEO cases, axe

@@ -4,6 +4,18 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Random sea per visit — 6 October 2026
+
+Uncommitted. Production build and temporary server on 127.0.0.1:3011 (stopped):
+build/types/lint pass; **26 Node tests** (new: 400 picked seas are valid, ≥380
+distinct, calm and rough both occur, steepness < 3, deterministic given the same
+randomness); 20 SEO cases; **125 browser records, 0 failures**. Three requests to
+`/` returned three different editions with `Cache-Control: private, no-store`.
+The GPU/CPU parity check now covers two editions (v1 default and v2 squall,
+384 samples), maximum error 4.2e-5 against a 2e-4 tolerance. Limits: visual
+variety was judged from earlier renders of the four starting points, not from every
+possible seed; no physical-device check.
+
 ## Structure pass and sea studio — 6 October 2026
 
 Committed as `a5381a5`. Local checks on the changed tree (dev server for page captures,

@@ -10,6 +10,21 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## A new sea every visit — 6 October 2026
+
+**Uncommitted, awaiting review.** The user asked for a random sea on each visit.
+They considered real device/location/weather signals and declined them: **no
+device, location, IP or weather data is read or used** (documented so it is not
+re-proposed without being asked). Choice made: *considered* random, not fully
+random. `pickVisitSea` picks one of four starting points (Home water, Trade wind,
+Glass, Squall; weighted toward the calmer ones), nudges swell, heading and
+character, and picks the variation freely. Fully random settings reach legal but
+unattractive corners. `/` with no seed is now a fresh version 2 sea per request
+(production responds `private, no-store`, so no CDN caches one); `/?seed=…` links
+stay fixed and shareable, and the studio opens on the visit's sea. Home water
+(`70806d5e`) remains the studio's reset and the fixed sea in the essays. Social
+cards are unaffected (static image).
+
 ## Structure pass and sea studio — 6 October 2026
 
 **Committed by the user as `a5381a5` after review.** The user flagged repeated

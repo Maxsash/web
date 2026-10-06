@@ -4,6 +4,12 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
+## Random sea per visit — 6 October 2026 (uncommitted)
+
+A fresh, curated-random version 2 sea on each visit to `/`; no visitor data used.
+26 Node tests, 125 browser records, 20 SEO cases, build/types/lint pass, and
+GPU/CPU parity now covers a v2 sea. Details: [current validation](creative-v2-validation.md).
+
 ## Structure pass and sea studio — 6 October 2026 (committed, `a5381a5`)
 
 Single Notebook entry point, Elsewhere limited to external places, named section

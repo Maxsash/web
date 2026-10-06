@@ -173,12 +173,14 @@ results.push({name:"sea-studio-controls-and-keepsakes",...studio,pass:studio.sli
    results.push({name:"context-loss-releases-engine",...released,pass:released.buffers===3&&released.arrays===3&&released.programs===3});
    const lostBefore=await frames();await delay(350);
    results.push({name:"context-loss-stops-draws",pass:(await frames())===lostBefore});
-   const edition=createSeaEdition();
+   // Version 1's default and version 2's roughest preset: the shader must agree with the CPU for both.
    const coordinates=Array.from({length:64},(_,i)=>[-19+i*.59,13-i*.37]),times=[0,1.25,97.4];
-   const gpuSamples=await evaluate("("+probeSeaGPU.toString()+")("+JSON.stringify({fieldGLSL,edition,coordinates,times})+")");
    let maximumError=0;
-   times.forEach((t,j)=>coordinates.forEach(([x,z],i)=>{const s=sampleSea(edition,x,z,t);[s.height,s.dx,s.dz].forEach((v,k)=>maximumError=Math.max(maximumError,Math.abs(v-gpuSamples[j][i*3+k])));}));
-   results.push({name:"gpu-cpu-field-parity",samples:192,maximumError,tolerance:.0002,pass:maximumError<.0002});
+   for(const edition of [createSeaEdition(),createSeaEdition("f532e107","2")]){
+     const gpuSamples=await evaluate("("+probeSeaGPU.toString()+")("+JSON.stringify({fieldGLSL,edition,coordinates,times})+")");
+     times.forEach((t,j)=>coordinates.forEach(([x,z],i)=>{const s=sampleSea(edition,x,z,t);[s.height,s.dx,s.dz].forEach((v,k)=>maximumError=Math.max(maximumError,Math.abs(v-gpuSamples[j][i*3+k])));}));
+   }
+   results.push({name:"gpu-cpu-field-parity",samples:384,editions:["v1 5ea5cafe","v2 f532e107"],maximumError,tolerance:.0002,pass:maximumError<.0002});
    await call("Emulation.setDeviceMetricsOverride",{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
    await load("/");await delay(400);
    console.log("Measuring 30 seconds of desktop frame delivery; this does not qualify phone performance.");

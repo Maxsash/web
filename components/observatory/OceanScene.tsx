@@ -187,7 +187,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   return (
     <>
       <canvas ref={canvasRef} className={styles.canvas} data-ocean aria-hidden="true" />
-      <button className={styles.pause} type="button" disabled={!ready} aria-pressed={paused} onClick={()=>setPaused(pauseRef.current?.()??false)}>
+      <button className={styles.pause} type="button" data-hero-pause disabled={!ready} onClick={()=>setPaused(pauseRef.current?.()??false)}>
         <span aria-hidden="true">{paused?"▷":"Ⅱ"}</span> {paused?"Resume the sea":"Still the sea"}
       </button>
       <div className={styles.stageControls} data-stage-controls>

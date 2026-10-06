@@ -4,6 +4,22 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Keyboard and accessibility pass — 6 October 2026
+
+Uncommitted. New permanent check: `node tools/check-keyboard.mjs [local url]` sends
+real key events and passes **20/20**: Tab and Shift+Tab sweeps of home (desktop and
+phone), notebook, essay and print page (each stop has a visible focus indicator, is
+on screen, is not covered, is ≥ 24 px); hero tab order; skip link; arrow/End on
+sliders; Enter/Space on presets; typing and invalid seeds; disclosure; theme and
+shoreline toggles; focus ring colour. Before the fixes the phone Shift+Tab sweep
+reported seven covered stops. Also on a production build: types/lint/build, 26
+Node tests, 20 SEO cases, **126 browser records, 0 failures**, and axe-core (WCAG
+2.x A/AA + best-practice) with no violations on `/`, `/blog`, an essay and `/plate`
+in both day and night. One keyboard-check run errored (a Node exception whose output
+was not captured); four later runs passed, cause unknown, likely a headless-Chrome
+startup race. Limits: headless Chrome on a Mac only; automated checks find a
+minority of accessibility problems; no screen reader or physical-device keyboard.
+
 ## GitHub commit log — 6 October 2026
 
 Uncommitted. Production build + temporary server on 127.0.0.1:3011 (stopped):

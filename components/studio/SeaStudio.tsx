@@ -76,7 +76,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
               const id = `${fieldId}-${key}`;
               const reading = key === "variation" ? `No. ${settings.variation + 1} of 256` : describeSea(settings)[key];
               return <div className={styles.setting} key={key}>
-                <div className={styles.settingHead}><label htmlFor={id}>{label}</label><output htmlFor={id}>{reading}</output></div>
+                <div className={styles.settingHead}><label htmlFor={id}>{label}</label><output htmlFor={id} aria-live="off">{reading}</output></div>
                 <input id={id} type="range" min={0} max={255} step={1} value={settings[key]} aria-valuetext={reading} aria-describedby={`${id}-hint`} onChange={event => update(key, Number(event.target.value))} />
                 <div className={styles.ends} aria-hidden="true"><span>{low}</span><span>{high}</span></div>
                 <p id={`${id}-hint`} className={styles.hint}>{hint}</p>
@@ -113,7 +113,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
         <div className={styles.keep}>
           <h3>Keep it</h3>
           <div className={styles.actions}>
-            <a className={styles.primary} href={`/plate?${query}&print=1`} target="_blank" rel="noopener noreferrer">Print this plate <span aria-hidden="true">↗</span></a>
+            <a className={styles.primary} href={`/plate?${query}&print=1`} target="_blank" rel="noopener noreferrer">Print this plate <span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a>
             <a href={`/api/sea-edition/print?${query}&download=1`} download>Save as SVG</a>
             {sailing
               ? <span className={styles.sailing}>You are sailing this sea</span>
@@ -137,7 +137,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
           </div>
           <div>
             <p>The scene is an authored mathematical study. Its lighting and wake are visual approximations; it is not a real ocean observation or a fluid simulation.</p>
-            <p><a href={`/api/sea-edition?${query}`} target="_blank" rel="noopener noreferrer">Read this sea’s six waves ↗</a></p>
+            <p><a href={`/api/sea-edition?${query}`} target="_blank" rel="noopener noreferrer">Read this sea’s six waves <span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a></p>
           </div>
         </div>
       </details>

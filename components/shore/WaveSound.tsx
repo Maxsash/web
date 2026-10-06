@@ -11,7 +11,7 @@ const subscribe = (listener: () => void) => { listeners.add(listener); return ()
 
 export function WaveSoundControl() {
   const current = useSyncExternalStore(subscribe, () => status, () => "ready" as Status);
-  return <button type="button" data-wave-sound aria-pressed={current === "on"} aria-label={current === "on" ? "Mute wave sound" : "Play wave sound"} onClick={() => toggle?.()}>
+  return <button type="button" data-wave-sound onClick={() => toggle?.()}>
     {current === "on" ? "Mute waves" : current === "unavailable" ? "Retry wave sound" : "Play waves"}
   </button>;
 }

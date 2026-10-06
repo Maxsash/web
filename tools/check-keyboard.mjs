@@ -135,5 +135,6 @@ try {
   process.exitCode = failed.length ? 1 : 0;
 } finally {
   child.kill();
-  rmSync(profile, { recursive: true, force: true });
+  await new Promise(resolve => child.once("exit", resolve));
+  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 }

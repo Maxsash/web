@@ -10,6 +10,46 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Security audit, hardening and Node 24 — 6 October 2026
+
+**Uncommitted, awaiting review.** Audit findings and actions:
+
+- **Next.js 16.2.9 had known vulnerabilities, three critical** (remote code execution
+  in the image optimisation API, `next/og` and Windows-hosted servers; plus several
+  high: middleware bypass, server-action DoS/SSRF, rewrite SSRF). The site uses none
+  of server actions, middleware, rewrites or `next/og`, and uses `next/image` only on
+  two local files, so practical exposure was low, but it is upgraded to **16.3.8**
+  (patched). Four transitive build-tool advisories (browserslist, source-map-js,
+  baseline-browser-mapping) are pinned past their fixes with pnpm overrides.
+  `pnpm audit --prod`: **no known vulnerabilities**. Development-only tooling (the
+  eslint chain) still reports advisories; it is never shipped.
+- **Node 24 (Active LTS, "Krypton") is now the target.** `engines.node` is `24.x`
+  (Vercel reads this), `.nvmrc` says 24, `@types/node` is 24. The whole suite was
+  run on 24.21.0. The development machine previously ran 22.23.1 (maintenance LTS).
+  **Action for the user:** confirm Vercel → Project Settings → Node.js Version is 24.x
+  (the `engines` field should select it) and watch the next deployment.
+- **Headers:** `X-Powered-By` removed; production CSP (`default-src 'self'`, no
+  `unsafe-eval`, `object-src 'none'`, `frame-ancestors 'none'`, `base-uri` and
+  `form-action` self; scripts keep `'unsafe-inline'` because Next inlines its
+  bootstrap and a per-request nonce would make every static page dynamic), nosniff,
+  `X-Frame-Options: DENY`, strict referrer policy, `Cross-Origin-Opener-Policy:
+  same-origin`, and a Permissions-Policy that disables camera, microphone,
+  geolocation, payment, USB, serial, Bluetooth and HID. API routes keep their own
+  headers. HSTS is already sent by the host.
+- **Disclosure:** `/.well-known/security.txt` (expires 6 October 2027; renew it) and
+  `SECURITY.md`.
+- **Checked, nothing found:** no `.env` or key files tracked; no secret patterns in
+  the tree or history; no browser source maps shipped; no client calls to third
+  parties (the GitHub request is server-side); every `dangerouslySetInnerHTML` is
+  escaped JSON-LD or a plate built from validated numbers.
+- **Open, for the user:** (1) every commit's author email is the personal Gmail
+  address, public in the repository history. Future commits can use GitHub's
+  `…@users.noreply.github.com` address; removing it from history means rewriting and
+  force-pushing, which needs explicit approval. (2) Rate limits for `/api/sea-edition*`
+  and `/plate` need a Vercel Firewall rule (a cache miss costs about 6 ms CPU and a
+  228 KB response, responses are cacheable). (3) The commit log card publishes
+  commit messages by design.
+
 ## Keyboard and accessibility pass — 6 October 2026
 
 **Uncommitted, awaiting review.** Real key events (Tab, Shift+Tab, Enter, Space,

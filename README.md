@@ -3,7 +3,10 @@
 The front door for everything built under the Maxsash Studio name, plus links out
 to the personal site, résumé and writing.
 
+Requires Node 24 (see `.nvmrc`) and pnpm.
+
 ```bash
+nvm use
 pnpm install
 pnpm dev        # http://localhost:3000
 pnpm build

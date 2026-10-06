@@ -4,6 +4,19 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## Security, Node 24 and Next 16.3.8 — 6 October 2026
+
+Uncommitted. On Node 24.21.0 with Next 16.3.8, a production build and a temporary
+server on 127.0.0.1:3011 (stopped): types/lint/build pass; **26 Node tests**; 20 SEO
+cases; **20/20 keyboard checks**; **126 browser records, 0 failures**; and the new
+`node tools/check-headers.mjs` (22 checks: CSP and hardening headers on five pages,
+no `X-Powered-By`, API headers intact, `security.txt` valid, **no CSP violations while
+loading five pages, with WebGL2 working**). `pnpm audit --prod`: none. Earlier
+"one keyboard run crashed" is explained and fixed: removing Chrome's temporary
+profile raced with Chrome exiting (`ENOTEMPTY`); both tools now wait for exit and
+retry. Limits: not tested on Vercel's runtime itself; CSP is production-only so the
+dev server is unchanged.
+
 ## Keyboard and accessibility pass — 6 October 2026
 
 Uncommitted. New permanent check: `node tools/check-keyboard.mjs [local url]` sends

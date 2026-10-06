@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createSeaEdition, normaliseSeaSeed, sampleSea, renderSeaPlate, seedFromSettings, settingsFromSeed, describeSea, parseSeaVersion } from "../lib/sea-edition.ts";
+import { createSeaEdition, normaliseSeaSeed, sampleSea, renderSeaPlate, seedFromSettings, settingsFromSeed, describeSea, parseSeaVersion, pickVisitSea, HOME_WATER, DEFAULT_SEA_SEED_V2 } from "../lib/sea-edition.ts";
 import { createHash } from "node:crypto";
 
 test("v1 editions are canonical, reproducible, and reject malformed input",()=>{
@@ -92,4 +92,24 @@ test("version 2 plates print the recipe; version 1 plates are unchanged",()=>{
   const words=describeSea(edition.settings);
   assert.equal(words.sentence,"Glassy · long and rolling · running ahead");
   assert.equal(describeSea({swell:255,heading:255,character:255,variation:0}).sentence,"Storm-high · short and cross-running · running hard right");
+});
+
+test("each visit gets a considered, varied version 2 sea",()=>{
+  assert.equal(seedFromSettings(HOME_WATER),DEFAULT_SEA_SEED_V2,"home water is the studio's own sea");
+  // A small deterministic generator keeps this reproducible.
+  let state=12345;const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296;};
+  const seeds=new Set(),swells=[];
+  for(let i=0;i<400;i++){
+    const seed=pickVisitSea(random);
+    assert.ok(normaliseSeaSeed(seed),`a valid seed: ${seed}`);
+    seeds.add(seed);
+    const edition=createSeaEdition(seed,"2");
+    swells.push(edition.settings.swell);
+    const slope=edition.waves.reduce((sum,w)=>sum+w.amplitude*2*Math.PI/w.wavelength,0);
+    assert.ok(slope<3,`${seed} steepness ${slope}`);
+  }
+  assert.ok(seeds.size>380,"visits must almost never repeat a sea");
+  assert.ok(Math.min(...swells)<80&&Math.max(...swells)>200,"calm and rough seas both occur");
+  assert.equal(pickVisitSea(()=>0),pickVisitSea(()=>0),"given the same randomness, the same sea");
+  assert.match(pickVisitSea(),/^[0-9a-f]{8}$/);
 });

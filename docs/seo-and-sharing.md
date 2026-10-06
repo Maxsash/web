@@ -80,3 +80,8 @@ sitemap. Seed variants (`/?seed=…&version=2`) still canonicalise to `/`. A see
 with no `version` means version 1, so earlier links keep their meaning; the
 homepage without a seed now shows the version 2 default (`70806d5e`). The shared
 social banner still shows the earlier version 1 sea.
+
+Since 6 October the homepage without a seed shows a different version 2 sea on
+every request (`private, no-store`). Crawlers therefore see varying hero artwork
+and plate text but identical headings, copy, canonical and structured data; the
+shared social image is a fixed static file.

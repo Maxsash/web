@@ -3,7 +3,7 @@
 import { useDeferredValue, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  createSeaEdition, DEFAULT_SEA_SEED_V2, describeSea, normaliseSeaSeed, renderSeaPlate,
+  createSeaEdition, DEFAULT_SEA_SEED_V2, describeSea, HOME_WATER, SEA_PRESETS, normaliseSeaSeed, renderSeaPlate,
   seedFromSettings, settingsFromSeed, type SeaSettings,
 } from "@/lib/sea-edition";
 import styles from "./SeaStudio.module.css";
@@ -17,11 +17,6 @@ const controls: Control[] = [
   { key: "variation", label: "Variation", hint: "Another arrangement of crests in the same kind of sea.", low: "A", high: "Z" },
 ];
 
-const presets: { name: string; settings: SeaSettings }[] = [
-  { name: "Glass", settings: { swell: 30, heading: 128, character: 20, variation: 7 } },
-  { name: "Trade wind", settings: { swell: 140, heading: 200, character: 110, variation: 7 } },
-  { name: "Squall", settings: { swell: 245, heading: 50, character: 225, variation: 7 } },
-];
 
 const randomByte = () => {
   const bytes = new Uint8Array(1);
@@ -69,8 +64,8 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
           <fieldset>
             <legend>Start from</legend>
             <div className={styles.chips}>
-              {presets.map(preset => <button type="button" key={preset.name} onClick={() => apply(preset.settings)}>{preset.name}</button>)}
-              <button type="button" onClick={() => apply(settingsFromSeed(DEFAULT_SEA_SEED_V2))}>Home water</button>
+              {SEA_PRESETS.map(preset => <button type="button" key={preset.name} onClick={() => apply(preset.settings)}>{preset.name}</button>)}
+              <button type="button" onClick={() => apply(HOME_WATER)}>Home water</button>
               <button type="button" className={styles.dice} onClick={() => apply({ swell: randomByte(), heading: randomByte(), character: randomByte(), variation: randomByte() })}>Roll the dice</button>
             </div>
           </fieldset>

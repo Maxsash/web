@@ -12,7 +12,7 @@ import OceanScene from "@/components/observatory/OceanScene";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import SeaStudio from "@/components/studio/SeaStudio";
 import { notebook } from "@/content/notebook";
-import { createSeaEdition, DEFAULT_SEA_SEED_V2, normaliseSeaSeed, parseSeaVersion, DEFAULT_SEA_SEED } from "@/lib/sea-edition";
+import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed, parseSeaVersion, pickVisitSea } from "@/lib/sea-edition";
 import styles from "@/components/observatory/Observatory.module.css";
 
 export const metadata: Metadata = {
@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 
 type Query = { seed?: string | string[]; version?: string | string[] };
 
-/** No seed is the studio's own sea (version 2). A seed with no version is a version 1 link, as it always was. */
+/** No seed means a fresh sea for this visit (version 2). A seed with no version is a version 1 link, as it always was. */
 function resolveSea(query: Query) {
   if (query.seed === undefined) {
-    if (query.version === undefined || query.version === "2") return { seed: DEFAULT_SEA_SEED_V2, version: "2" as const };
+    if (query.version === undefined || query.version === "2") return { seed: pickVisitSea(), version: "2" as const };
     return query.version === "1" ? { seed: DEFAULT_SEA_SEED, version: "1" as const } : null;
   }
   if (typeof query.seed !== "string") return null;

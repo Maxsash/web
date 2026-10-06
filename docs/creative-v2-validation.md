@@ -4,6 +4,18 @@ Updated: 5 October 2026. The user **approved the foundation**, requested its
 promotion to `/` and `/blog`, and explicitly authorized commit and push.
 Physical-device and field-performance acceptance remain separate.
 
+## GitHub commit log — 6 October 2026
+
+Uncommitted. Production build + temporary server on 127.0.0.1:3011 (stopped):
+types/lint/build pass; 26 Node tests; 20 SEO cases; **126 browser records, 0
+failures** (new: 1–3 log entries each ≥44 px tall with no commit counts, or an
+honest fallback; every link is to github.com and the repository link is present).
+axe-core: no violations on `/` in day and night. Fallback path exercised by
+temporarily pointing at a missing repository (shows "The log is unavailable right
+now" plus a repository link), then restored. Follow-up the same day removed the 14-day strip and count; checks above were rerun
+after it. Limits: desktop and 390 px headless captures only; real-device
+look and GitHub rate limiting under production traffic are unverified.
+
 ## Random sea per visit — 6 October 2026
 
 Uncommitted. Production build and temporary server on 127.0.0.1:3011 (stopped):

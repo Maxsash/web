@@ -41,11 +41,15 @@ export const site = {
 
   url: "https://www.maxsash.com",
 
+  /** This site's own public repository, whose commit log the shoreline shows. */
+  repo: "maxsash/web",
+
   /* The portfolio carries professional background and project case studies. */
   links: {
     portfolio: "https://ctrl-alt-yash.github.io/portfolio/",
     blog: "/blog",
     github: "https://github.com/ctrl-alt-yash",
+    repo: "https://github.com/maxsash/web",
     email: "mailto:yash@maxsash.com",
   },
 

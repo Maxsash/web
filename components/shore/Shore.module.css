@@ -9,21 +9,30 @@
 .folio h2 { font-size:clamp(3.3rem,6vw,6rem); line-height:.95; margin-bottom:1.3rem; }
 .description { line-height:1.7; font-size:1rem; }
 .hint { max-width:23rem; margin-top:1.5rem; opacity:.8; }
-.activity { align-self:center; padding:1.5rem; background:#f4e6c880; border:1px solid #745b3433; box-shadow:0 1px 0 #fff5d580 inset; }
-.activityHead { display:flex; flex-wrap:wrap; align-items:baseline; gap:.8rem; justify-content:space-between; margin-bottom:1rem; }
-.activityHead h3 { font-size:1.2rem; }
-.activityHead>a { font:.65rem/1.6 var(--font-mono); }
-.events { list-style:none; padding:0; margin:0; }
-.events li+li { border-top:1px solid #4a514b33; }
-.events a { display:grid; gap:.2rem; padding:.65rem 0; min-height:44px; text-decoration:none; }
-.events span,.events time { font:.6rem/1.6 var(--font-mono); }
-.events strong { font-weight:500; font-size:.9rem; overflow-wrap:anywhere; }
-.events time { opacity:.7; }
+.activity { align-self:center; padding:1.6rem 1.6rem 1.2rem; background:#f6ead0b3; border:1px solid #745b3440; border-radius:2px; box-shadow:0 1px 0 #fff5d580 inset, 6px 10px 0 #745b3412; background-image:repeating-linear-gradient(transparent 0 2.1rem,#745b3410 2.1rem calc(2.1rem + 1px)); }
+.activityHead { display:flex; flex-wrap:wrap; align-items:flex-start; gap:.4rem 1rem; justify-content:space-between; margin-bottom:1.2rem; }
+.activityHead h3 { font-size:1.35rem; }
+.activityHead p { font-size:.8rem; opacity:.75; margin-top:.2rem; }
+.activityHead>a { font:.62rem/1.6 var(--font-mono); }
+.log, .log ul { list-style:none; padding:0; margin:0; }
+.logDay { font:.58rem/1.7 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; color:#8a4a30; margin:.9rem 0 .1rem; }
+.log li li+li { border-top:1px dotted #4a514b44; }
+.log a { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:baseline; gap:.2rem .7rem; min-height:44px; padding-block:.5rem; text-decoration:none; }
+.log a:hover .message { text-decoration:underline; text-underline-offset:.2em; }
+.log a:focus-visible { outline:2px solid #8a4a30; outline-offset:2px; }
+.tag { font:.55rem/1.6 var(--font-mono); text-transform:uppercase; letter-spacing:.06em; padding:.05rem .45rem; border:1px solid #243d3c88; border-radius:99px; }
+.log a > .message:first-child { grid-column:1 / 3; }
+.message { font-size:.88rem; line-height:1.45; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.log code { font:.58rem/1.6 var(--font-mono); opacity:.65; }
 .activityNote { margin-top:.8rem; opacity:.8; letter-spacing:0; }
+.activityNote a { text-underline-offset:.2em; }
 .colophon { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem 1.5rem; border-top:1px solid #4a514b44; margin-top:3rem; padding-top:1rem; }
 .colophon a,.activityHead a { display:inline-flex; align-items:center; min-height:44px; }
 :global(html[data-studio-theme="night"]) .shore { color:#e5dcc6; background:linear-gradient(#122126 0%,#5d6455 12%,#6c6455 20%); }
-:global(html[data-studio-theme="night"]) .activity { background:#282e2b99; border-color:#e5dcc644; }
+:global(html[data-studio-theme="night"]) .activity { background-color:#282e2bcc; border-color:#e5dcc644; box-shadow:6px 10px 0 #0000001f; background-image:repeating-linear-gradient(transparent 0 2.1rem,#e5dcc60f 2.1rem calc(2.1rem + 1px)); }
+:global(html[data-studio-theme="night"]) .logDay { color:#e8a98d; }
+:global(html[data-studio-theme="night"]) :global(html[data-studio-theme="night"]) :global(html[data-studio-theme="night"]) :global(html[data-studio-theme="night"]) .tag { border-color:#e5dcc688; }
+:global(html[data-studio-theme="night"]) .log a:focus-visible { outline-color:#e8a98d; }
 :global(html[data-studio-theme="night"]) .tools>button { background:#282e2b66; border-color:#e5dcc655; }
 :global(html[data-studio-theme="night"]) .colophon { border-color:#e5dcc644; }
-@media(max-width:48rem) { .folio { grid-template-columns:1fr; } .inner { padding-top:9rem; } .tools { justify-content:flex-start; gap:.4rem; margin-bottom:2rem; } .tools>button { font-size:.55rem; padding-inline:.6rem; } .activity { padding:1rem; } .hint { display:none; } .colophon { font-size:.55rem; } }
+@media(max-width:48rem) { .folio { grid-template-columns:1fr; } .inner { padding-top:9rem; } .tools { justify-content:flex-start; gap:.4rem; margin-bottom:2rem; } .tools>button { font-size:.55rem; padding-inline:.6rem; } .activity { padding:1.1rem 1rem .8rem; } .hint { display:none; } .colophon { font-size:.55rem; } }

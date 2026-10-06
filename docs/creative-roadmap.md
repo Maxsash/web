@@ -10,6 +10,24 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## GitHub activity redesign — 6 October 2026
+
+**Uncommitted, awaiting review.** Supersedes the "three public events" widget in
+the shoreline notes below (the user disliked its look). Why the data changed: GitHub's
+public-events feed no longer includes commit messages or counts, so the old card
+showed "Pushed code · Maxsash/web" three times. The footer now shows **this site's
+own commit log** (`maxsash/web`, public): the three newest commits, grouped by
+day, with a type tag (feat/fix/docs…), message and short SHA linking to the commit.
+**Deliberately no counts or activity chart** (user feedback: a first version with a
+14-day strip and "24 commits in the last 14 days" would read as neglect once the
+site is stable). Styled as a ruled
+log page on the sand; day and night. Fetched server-side, cached hourly, 2.5 s
+timeout; any failure, or an empty list, falls back to a plain link to the
+repository. Optional: set a server-only `GITHUB_TOKEN` in hosting to lift GitHub's
+60-requests-an-hour limit for shared hosting addresses (not required, not set).
+If the repository ever goes private the card shows the fallback. Not a live feed;
+dates are UTC and it is not a contributions chart.
+
 ## A new sea every visit — 6 October 2026
 
 **Uncommitted, awaiting review.** The user asked for a random sea on each visit.

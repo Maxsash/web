@@ -4,7 +4,14 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
-## Random sea per visit — 6 October 2026 (uncommitted)
+## GitHub commit log — 6 October 2026 (uncommitted)
+
+The shoreline's GitHub card is redesigned as this site's own commit log (three
+latest commits, no counts or activity chart). 126 browser records, 26 Node tests, 20 SEO cases, axe
+(day/night), build/types/lint pass; fallback exercised. Details:
+[current validation](creative-v2-validation.md); decision: [roadmap](creative-roadmap.md).
+
+## Random sea per visit — 6 October 2026 (committed)
 
 A fresh, curated-random version 2 sea on each visit to `/`; no visitor data used.
 26 Node tests, 125 browser records, 20 SEO cases, build/types/lint pass, and

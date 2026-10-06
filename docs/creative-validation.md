@@ -4,6 +4,14 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
+## User acceptance — 6 October 2026
+
+User accepted the shoreline, reports physical-device behaviour is fine, and
+confirmed the homepage WhatsApp preview. These are user reports; no new
+automated checks were run this turn. GitHub activity visual design is not
+accepted and is tracked in [follow-ups](follow-ups.md). The "uncommitted"
+shoreline wording below is historical (landed in `1511d7c`).
+
 ## Daytime sharing banner — 5 October 2026
 
 User requested replacing the old WhatsApp banner with the daytime Living Atlas

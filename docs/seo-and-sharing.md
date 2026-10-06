@@ -54,3 +54,21 @@ Clear crawlable server-rendered content, accurate entity information, canonical 
 No speculative ranking promises or AI-specific schema were added. An llms.txt file is not part of this checkpoint. The main content already renders on the server; the GPU sea is decorative, not the sole source of project facts.
 
 After deployment: check fresh WhatsApp shares of the homepage and both essay URLs; verify Search Console ownership and submit the sitemap; inspect canonical/indexing status. Hosting should use a permanent apex-to-www redirect if configurable (current live redirect is 307; hosting configuration was not changed). Replace sample writing with approved original essays before enabling notebook indexing and adding those URLs to the sitemap. Original case studies and authored explanations are the next content work; do not invent them.
+
+## User-side setup guide — 6 October 2026
+
+Live state read on 6 October (read-only): hosting is Vercel; `maxsash.com`
+returns a **307** to `https://www.maxsash.com/`; the registrar's nameservers are
+`solar/lunar.dns-parking.com`; `www` is a CNAME to Vercel; `/sitemap.xml` is live.
+The user confirmed the homepage WhatsApp preview shows the new banner. Nothing
+below has been performed yet.
+
+**Permanent redirect (307 → 308):** Vercel dashboard → project → Settings →
+Domains. Find `maxsash.com`, Edit, set "Redirect to" `www.maxsash.com` with
+status **308 Permanent Redirect**, Save. Verify: `curl -sI https://maxsash.com`
+shows `308` and `location: https://www.maxsash.com/`.
+
+**Search Console:** use a *Domain* property for `maxsash.com`; add the TXT record
+at the DNS host (Vercel DNS if nameservers move there, otherwise the registrar's
+DNS panel); verify; submit `https://www.maxsash.com/sitemap.xml`; use URL
+Inspection on `https://www.maxsash.com/` and request indexing.

@@ -10,6 +10,27 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Status update — 6 October 2026
+
+User accepted the day/night sea and shoreline footer ("good to go") and reports
+the staged mobile sea, shoreline and revised opening curve work fine on physical
+devices; this is the user's report, not a measured trace. The earlier
+"uncommitted / awaiting visual selection" wording below is historical: that work
+landed in `1511d7c` and later commits. The user also confirmed the homepage
+WhatsApp share preview works with the new banner.
+
+Open items from this review:
+
+- **GitHub activity look — not accepted.** The user is unhappy with how the
+  workbench's GitHub activity currently looks. Redesign it later (see
+  [follow-ups](follow-ups.md)); data fetching is unchanged and not at fault.
+- Search Console, sitemap submission and apex-to-www redirect are user-side
+  hosting tasks; step-by-step guide in [search and sharing](seo-and-sharing.md).
+  Not yet performed or verified.
+- Real project/essay content waits until dev work is finished. Remaining dev
+  work (notebook depth, edition backend, orientation, C) comes first.
+- New: social content (Instagram, LinkedIn, banners) for the studio's pages.
+
 ## Daytime sharing banner — 5 October 2026
 
 User requested replacing the old WhatsApp banner with the daytime Living Atlas

@@ -10,6 +10,49 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Structure pass and sea studio — 6 October 2026
+
+**Uncommitted, awaiting the user's review on `/`.** The user flagged repeated
+Writing callouts (header, "For the curious mind", Elsewhere), an unclear seed/print
+story, and two seed options that looked identical. Decisions:
+
+- **One name, two entry points.** The publication is the **Notebook** everywhere
+  (it was Writing / notebook / publication). It appears once in the header nav and
+  once as a homepage section that now lists the two sample essays. It is removed
+  from Elsewhere, which is now only places that leave the site (Portfolio, GitHub)
+  plus email. Dead `#writing` / `#the-notebook` anchors are gone.
+- **Order and numbering.** Hero → Work → Sea studio → Notebook → Elsewhere →
+  shoreline. Section-level kickers are named, not numbered (the duplicate "02"
+  labels are gone); numbers remain only inside lists (projects, destinations).
+  Header nav: Work · Sea studio · Notebook · Elsewhere (the blog header matches
+  and marks the current page).
+- **Landmarks and reading.** Skip link, one `<main id="main">`, and the shore
+  `<footer>` is now outside `<main>` so it is the page's contentinfo landmark.
+  Notebook headings no longer sit inside a whole-section link. Headings that use
+  `<br />` now have a real space so they read "Wonder has a structure", not
+  "Wonder hasa structure". Essays are one `<article>` (header, cover, body) with a
+  `<time>`; margin notes are paragraphs (nested `<aside>` landmarks removed).
+  Mozilla Readability extracts the essay headings and body.
+- **Sea studio replaces "An edition of the sea".** Four settings — Swell, Heading,
+  Character, Variation — are the seed: eight hex characters = four bytes. Sliders,
+  presets (Glass, Trade wind, Squall, Home water), a dice roll and a typed seed all
+  edit the same recipe. A live drawing redraws using the very function that prints.
+  "Keep it": **Print this plate** (opens `/plate`, a print-ready page that offers the
+  dialog), **Save as SVG**, **Sail this sea** (loads it into the hero above) and
+  **Copy link**. On phones the drawing stays pinned while the settings move.
+- **Why the old seeds looked the same:** version 1 only jittered amplitude ±10%,
+  direction ±13° and phase around fixed wavelengths. Version 2 (new, opt-in) lets
+  settings change height, heading, long-versus-short balance and wavelength.
+  **Version 1 is untouched**: its digest test passes, an unversioned seed or API
+  request still means version 1, and `?seed=27c4b901` still works. Version 2 links
+  carry `&version=2`. The homepage with no seed now uses v2 `70806d5e`.
+- Fixed while auditing (night theme): Elsewhere contact text was nearly invisible
+  (contrast 1.39) and day-rust text was too dim on dark paper.
+
+Next gate: the user reviews the new structure and studio on `/`. Not yet done:
+physical-device check of the sticky mobile drawing and slider feel, an actual
+print on paper, and a screen-reader pass. Commit only once approved.
+
 ## Status update — 6 October 2026
 
 User accepted the day/night sea and shoreline footer ("good to go") and reports

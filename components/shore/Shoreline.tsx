@@ -9,7 +9,7 @@ import styles from "./Shore.module.css";
 
 type Step={x:number;y:number;angle:number;born:number;side:number};
 
-export default function Shoreline({children,version,commit}:{children:ReactNode;version:string;commit:string|null}) {
+export default function Shoreline({children,version,commit,seaModel}:{children:ReactNode;version:string;commit:string|null;seaModel:string}) {
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const pauseRef=useRef<(()=>boolean)|null>(null);
   const [paused,setPaused]=useState(false);
@@ -74,8 +74,8 @@ export default function Shoreline({children,version,commit}:{children:ReactNode;
     <WaveSoundController />
     <canvas className={styles.canvas} ref={canvasRef} aria-hidden="true" />
     <div className={styles.inner}><div className={styles.tools}><ThemeControl /><button type="button" data-shore-pause aria-pressed={paused} onClick={()=>setPaused(pauseRef.current?.()??false)}>{paused?"Resume shoreline":"Pause shoreline"}</button><WaveSoundControl /></div>
-      <div className={styles.folio}><div><p className={styles.overline}>Landfall / Maxsash Studio</p><h2 id="shore-title">Back to<br /><em>the shore.</em></h2><p className={styles.description}>A little sand, a little salt.<br />The work keeps finding its way here.</p><p className={styles.hint}>Move across the sand. The tide takes the tracks back.</p></div><section className={styles.activity} aria-labelledby="activity-title"><div className={styles.activityHead}><h3 id="activity-title">From the workbench</h3><a href={site.links.github}>Github ↗</a></div>{children}</section></div>
-      <div className={styles.colophon}><Link href="/">Maxsash Studio ↗</Link><span>Release v{version}{commit?` · ${commit}`:""}</span><span>Sea model v1 · WebGL2</span><span>© {new Date().getFullYear()} Yash</span></div>
+      <div className={styles.folio}><div><p className={styles.overline}>Landfall / Maxsash Studio</p><h2 id="shore-title">Back to <br /><em>the shore.</em></h2><p className={styles.description}>A little sand, a little salt.<br />The work keeps finding its way here.</p><p className={styles.hint}>Move across the sand. The tide takes the tracks back.</p></div><section className={styles.activity} aria-labelledby="activity-title"><div className={styles.activityHead}><h3 id="activity-title">From the workbench</h3><a href={site.links.github}>Github ↗</a></div>{children}</section></div>
+      <div className={styles.colophon}><Link href="/">Maxsash Studio ↗</Link><span>Release v{version}{commit?` · ${commit}`:""}</span><span>Sea model v{seaModel} · WebGL2</span><span>© {new Date().getFullYear()} Yash</span></div>
     </div>
   </footer>;
 }

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createSeaEdition, normaliseSeaSeed, sampleSea, renderSeaPlate } from "../lib/sea-edition.ts";
+import { createSeaEdition, normaliseSeaSeed, sampleSea, renderSeaPlate, seedFromSettings, settingsFromSeed, describeSea, parseSeaVersion } from "../lib/sea-edition.ts";
 import { createHash } from "node:crypto";
 
 test("v1 editions are canonical, reproducible, and reject malformed input",()=>{
@@ -43,4 +43,53 @@ test("the engraving is a stable t=0 artifact with no active content",()=>{
   // This fixed digest is an intentional version-contract alarm, not a visual assertion.
   const digest=createHash("sha256").update(JSON.stringify(edition)).digest("hex");
   assert.equal(digest,"8ff7cd9c669cae591e6ae7c3ddca9c7ffff876420088dd242603b9478752ac64");
+});
+
+test("version 2 reads the seed as four settings and round-trips them",()=>{
+  const settings={swell:30,heading:200,character:110,variation:7};
+  const seed=seedFromSettings(settings);
+  assert.equal(seed,"1ec86e07");
+  assert.deepEqual(settingsFromSeed(seed),settings);
+  assert.equal(seedFromSettings({swell:-5,heading:300,character:127.6,variation:0}),"00ff8000");
+  const edition=createSeaEdition(seed,"2");
+  assert.equal(edition.version,"2");
+  assert.deepEqual(edition.settings,settings);
+  assert.deepEqual(edition,createSeaEdition(seed.toUpperCase(),"2"));
+  assert.equal(createSeaEdition(seed).version,"1","an omitted version is always version 1");
+  assert.equal(parseSeaVersion("2"),"2");
+  for(const bad of [null,undefined,"","0","3","v2"])assert.equal(parseSeaVersion(bad),null);
+  assert.throws(()=>createSeaEdition("nope","2"),RangeError);
+});
+test("version 2 settings visibly and independently change the sea",()=>{
+  const base={swell:128,heading:128,character:128,variation:5};
+  const make=(patch)=>createSeaEdition(seedFromSettings({...base,...patch}),"2");
+  const total=edition=>edition.waves.reduce((sum,w)=>sum+w.amplitude,0);
+  assert.ok(total(make({swell:255}))>total(make({swell:0}))*2,"swell controls height");
+  const mean=edition=>edition.waves.reduce((sum,w)=>sum+w.direction,0)/6;
+  assert.ok(mean(make({heading:255}))-mean(make({heading:0}))>1.2,"heading turns the whole sea");
+  const wavelength=edition=>edition.waves[0].wavelength;
+  assert.ok(wavelength(make({character:0}))>wavelength(make({character:255}))*1.4,"character shortens the waves");
+  // The fine arrangement moves only with the variation byte.
+  const a=make({variation:1}),b=make({variation:2});
+  assert.notDeepEqual(a.waves.map(w=>w.phase),b.waves.map(w=>w.phase));
+  const c=make({swell:200}),d=make({swell:100});
+  assert.deepEqual(c.waves.map(w=>w.phase),d.waves.map(w=>w.phase),"moving swell must not reshuffle crests");
+  // Every reachable corner stays finite and not unreasonably steep.
+  for(const swell of [0,255])for(const heading of [0,255])for(const character of [0,255]){
+    const edition=make({swell,heading,character});
+    const slope=edition.waves.reduce((sum,w)=>sum+w.amplitude*2*Math.PI/w.wavelength,0);
+    assert.ok(slope<3,`corner ${swell}/${heading}/${character} steepness ${slope}`);
+    for(const w of edition.waves){for(const v of Object.values(w))assert.ok(Number.isFinite(v));assert.ok(w.wavelength>=.45);}
+  }
+});
+test("version 2 plates print the recipe; version 1 plates are unchanged",()=>{
+  const edition=createSeaEdition("1e801407","2");
+  const plate=renderSeaPlate(edition);
+  assert.ok(plate.includes("SWELL 30 · HEADING 128 · CHARACTER 20 · VARIATION 7"));
+  assert.ok(plate.includes("MODEL V2"));
+  assert.doesNotMatch(plate,/<script|<foreignObject|NaN|Infinity/);
+  assert.ok(renderSeaPlate(createSeaEdition()).includes("SEA / SHIP / MATH"));
+  const words=describeSea(edition.settings);
+  assert.equal(words.sentence,"Glassy · long and rolling · running ahead");
+  assert.equal(describeSea({swell:255,heading:255,character:255,variation:0}).sentence,"Storm-high · short and cross-running · running hard right");
 });

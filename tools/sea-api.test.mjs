@@ -130,7 +130,7 @@ test("both routes reject malformed and repeated seeds without reflecting executa
 
 test("both routes reject unsupported model versions", async () => {
   for (const route of [JSON_PATH, SVG_PATH]) {
-    for (const version of ["", "0", "2", "future"]) {
+    for (const version of ["", "0", "3", "future"]) {
       const { response } = await get(`${route}?seed=${DEFAULT_SEED}&version=${version}`);
       assert.equal(response.status, 400, `${route}: reject model version ${JSON.stringify(version)}`);
     }
@@ -177,4 +177,35 @@ test("authored provenance and safe standalone SVG delivery remain explicit", asy
   assert.match(print.text, /NOT LIVE OBSERVATIONS/);
   assert.doesNotMatch(print.text, /<(?:script|foreignObject|iframe|image|use)\b|\son\w+\s*=|(?:href|src)\s*=|<!DOCTYPE|<!ENTITY/i);
   assert.doesNotMatch(print.text, /NaN|Infinity/);
+});
+
+test("version 2 editions are served by recipe, are distinct, and unversioned stays version 1", async () => {
+  const unversioned = JSON.parse((await ok(`${JSON_PATH}?seed=${DEFAULT_SEED}`)).text);
+  assert.equal(unversioned.version, "1", "an unversioned request must always mean version 1");
+
+  const glass = JSON.parse((await ok(`${JSON_PATH}?seed=1e801407&version=2`)).text);
+  const squall = JSON.parse((await ok(`${JSON_PATH}?seed=fa32fa07&version=2`)).text);
+  assert.equal(glass.version, "2");
+  assert.deepEqual(glass.settings, { swell: 30, heading: 128, character: 20, variation: 7 });
+  assert.equal(squall.waves.length, 6);
+  const height = (edition) => edition.waves.reduce((sum, wave) => sum + wave.amplitude, 0);
+  assert.ok(height(squall) > height(glass) * 1.8, "the swell setting must visibly change wave height");
+
+  const plate = (await ok(`${SVG_PATH}?seed=1e801407&version=2`)).text;
+  assert.match(plate, /SWELL 30 · HEADING 128 · CHARACTER 20 · VARIATION 7/);
+  assert.match(plate, /MODEL V2/);
+  const first = pointLists(plate)[0].trim().split(/\s+/).map((point) => point.split(",").map(Number));
+  for (const index of [0, Math.floor(first.length / 2), first.length - 1]) {
+    const x = -10 + 20 * index / (first.length - 1), z = -9;
+    const h = glass.waves.reduce((sum, wave) => {
+      const k = 2 * Math.PI / wave.wavelength;
+      return sum + wave.amplitude * Math.sin(k * (Math.cos(wave.direction) * x + Math.sin(wave.direction) * z) + wave.phase);
+    }, 0);
+    assert.ok(Math.abs(first[index][1] - (475 + 12 * (x + z) - 62 * h)) <= 0.0051, "v2 plate must match its issued waves");
+  }
+
+  const download = await get(`${SVG_PATH}?seed=1e801407&version=2&download=1`);
+  assert.match(download.response.headers.get("content-disposition") ?? "", /^attachment; filename="sea-1e801407-v2\.svg"$/);
+  const inline = await get(`${SVG_PATH}?seed=1e801407&version=2`);
+  assert.match(inline.response.headers.get("content-disposition") ?? "", /^inline;/);
 });

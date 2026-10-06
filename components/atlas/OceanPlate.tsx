@@ -1,8 +1,8 @@
-import { createSeaEdition, sampleSea, type SeaEdition } from "@/lib/sea-edition";
+import { createSeaEdition, DEFAULT_SEA_SEED_V2, sampleSea, type SeaEdition } from "@/lib/sea-edition";
 import styles from "./Atlas.module.css";
 
 /** Server-rendered engraving of the shader's actual height field at t=0. */
-export default function OceanPlate({ variant="cover", edition=createSeaEdition() }: { variant?: "cover" | "section"; edition?: SeaEdition }) {
+export default function OceanPlate({ variant="cover", edition=createSeaEdition(DEFAULT_SEA_SEED_V2,"2") }: { variant?: "cover" | "section"; edition?: SeaEdition }) {
   const rows:string[]=[], columns:string[]=[];
   const point=(x:number,z:number)=>{
     const {height}=sampleSea(edition,x,z,0);

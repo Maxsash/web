@@ -4,6 +4,15 @@ Updated: 5 October 2026. Exact evidence and historical comparisons are in
 [creative-v2-validation.md](creative-v2-validation.md). Current scope and next
 work are in [creative-v2-plan.md](creative-v2-plan.md).
 
+## Structure pass and sea studio — 6 October 2026 (uncommitted)
+
+Single Notebook entry point, Elsewhere limited to external places, named section
+kickers, footer outside `<main>`, and a seed-driven sea studio with print/save/
+sail/copy. 25 Node tests, 125 browser records, 20 SEO cases, build/types/lint and
+axe pass locally. Details and limits: [current validation](creative-v2-validation.md);
+decisions: [roadmap](creative-roadmap.md). Physical-device, paper-print and
+screen-reader checks remain open.
+
 ## User acceptance — 6 October 2026
 
 User accepted the shoreline, reports physical-device behaviour is fine, and

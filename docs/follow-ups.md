@@ -21,3 +21,10 @@ complete. The rejected sliders and voyage have been removed.
   [search and sharing](seo-and-sharing.md)).
 - [ ] **Accessibility review.** Audit semantics, labels, contrast, zoom and text
   reflow, reduced motion, screen-reader output, and common automated checks.
+- [ ] **Sea studio review.** Review the new structure and studio on `/`; try
+  slider feel, the pinned mobile drawing and a real print on a phone and laptop.
+  Version 2 is new; keep version 1 stable.
+- [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and
+  reads slightly brown; consider native night colours in the SVG if it bothers.
+- [ ] **Social banner.** The shared banner still shows the version 1 default sea.
+  Regenerate it from the new default if the look matters.

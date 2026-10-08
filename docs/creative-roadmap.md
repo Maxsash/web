@@ -10,6 +10,16 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Deployment control — 8 October 2026
+
+Every push to `main` used to deploy. Now `main` is the working branch and **never
+deploys**; only the `production` branch does. `production` was created at the live
+commit `e285048`, Vercel's Production Branch Tracking is set to `production` by the user in the dashboard, and `vercel.json`
+sets `git.deploymentEnabled.main` to `false`. Release with
+`git push origin main:production`. Assumption to verify on the first push: that Vercel
+reads `vercel.json` from the pushed commit, so a push to `main` creates no deployment
+at all (a preview would be harmless but unexpected).
+
 ## Commit identity rewrite — 8 October 2026
 
 Every commit used the author's personal email address, public in a public

@@ -12,7 +12,8 @@ const CHROME_PATHS = [
 const CALL_TIMEOUT_MS = 45_000;
 const KEY_CODES = { Tab: 9, Enter: 13, Space: 32, Backspace: 8, End: 35, ArrowRight: 39 };
 
-export const SOFTWARE_GL_FLAGS = ["--use-angle=swiftshader"];
+export const SWIFTSHADER_FLAGS = ["--use-angle=swiftshader"];
+export const NO_GPU_FLAGS = ["--disable-gpu"];
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

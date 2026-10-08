@@ -68,8 +68,10 @@ behind a server-rendered SVG plate, which is also the fallback.
   to 30 Hz and 70% resolution. Hidden or offscreen scenes do not draw.
 - The GPU surface and `sampleSea` must agree; a parity test checks the shader against
   the CPU for a version 1 and a version 2 sea.
-- Context creation failure leaves the SVG plate. Context loss also falls back until
-  reload; there is no restoration path.
+- The context is requested with `failIfMajorPerformanceCaveat`, so a browser that can
+  only render in software (hardware acceleration off, no GPU, a blocklisted driver) gets
+  the SVG plate instead of a janky scene. Context creation failure and context loss also
+  fall back to the plate; there is no restoration path.
 
 ### Scroll and the mobile stages
 

@@ -6,7 +6,7 @@
  * 24 px; then drives the main controls with Enter, Space and the arrow keys.
  * This is not a screen-reader test and does not replace one.
  */
-import { SOFTWARE_GL_FLAGS, delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
+import { SWIFTSHADER_FLAGS, delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
 
 const base = localBaseFromArgs();
 const results = [];
@@ -16,7 +16,7 @@ const record = (name, pass, info) => {
 };
 
 await withBrowser(
-  { name: "keys", flags: SOFTWARE_GL_FLAGS },
+  { name: "keys", flags: SWIFTSHADER_FLAGS },
   async ({ send, evaluate, pressKey }) => {
     await send("Page.enable");
 

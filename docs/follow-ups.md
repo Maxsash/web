@@ -2,6 +2,17 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+- [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
+      owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
+      first-byte time. See [decisions.md](decisions.md).
+- [ ] **Re-run PageSpeed after the next release** to confirm the software-rendering
+      fallback and the contrast fix; expect Accessibility 100 and a much lower blocking time.
+- [ ] **Hero length without WebGL.** The hero is 255svh tall because its text changes with
+      scroll. When the static plate is shown (slow or software-rendered devices) that is a
+      lot of scrolling for little change. Consider a shorter hero when the scene is in
+      fallback.
+- [ ] **Cached home page (decision, leaning no).** Pros and cons are in
+      [decisions.md](decisions.md).
 - [ ] **Accessibility with a real screen reader.** Automated and keyboard checks are done;
       try VoiceOver on Mac and iPhone (ideally NVDA too) and Safari's Reader mode.
 - [ ] **Sea studio on real devices.** Slider feel, the pinned drawing on a phone, and a real

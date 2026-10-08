@@ -1,4 +1,4 @@
-import { SOFTWARE_GL_FLAGS, delay, withBrowser } from "./lib/browser.mjs";
+import { SWIFTSHADER_FLAGS, delay, withBrowser } from "./lib/browser.mjs";
 
 const [baselineUrl, candidateUrl, only] = process.argv.slice(2);
 if (!baselineUrl || !candidateUrl) {
@@ -25,7 +25,7 @@ const toleratedShare = 0.0005;
 const toleratedChannel = 40;
 
 await withBrowser(
-  { name: "compare", flags: [...SOFTWARE_GL_FLAGS, "--hide-scrollbars"] },
+  { name: "compare", flags: [...SWIFTSHADER_FLAGS, "--hide-scrollbars"] },
   async ({ send, evaluate }) => {
     const capture = async (base, path, selector, viewport, theme) => {
       await send("Emulation.setDeviceMetricsOverride", { ...viewport, deviceScaleFactor: 1 });

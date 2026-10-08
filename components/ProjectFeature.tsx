@@ -46,7 +46,9 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
         </dl>
         <div className={styles.links}>
           <a href={project.href}>{`${project.demoLabel} ↗`}</a>
-          <a href={project.caseStudy}>Read the case study ↗</a>
+          <a href={project.caseStudy}>
+            Read the case study<span className="visually-hidden"> of {project.title}</span> ↗
+          </a>
         </div>
       </div>
     </article>

@@ -69,6 +69,40 @@ tab order, slider read-outs are not live regions, focus rings hold their contras
 background, and links that open a new tab say so. Forced-colours emulation was reviewed.
 A real screen reader has not been tried.
 
+## Performance
+
+PageSpeed Insights, 8 October 2026 (lab only, no field data yet): mobile 57, desktop 62;
+LCP 3.3 s mobile and 0.7 s desktop, CLS 0, FCP 1.6 s and 0.4 s. The loss was almost all
+Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
+
+- **Software rendering gets the static plate** (`failIfMajorPerformanceCaveat`). Real
+  visitors without a GPU benefit, and the lab no longer measures software rasterising.
+  Locally, with no GPU, blocking time is 0 ms on desktop and 85 ms on the phone profile.
+- **Cached home page: not done, leaning no.** Today the server picks the random sea, so `/`
+  is `private, no-store` and every visit renders (Lighthouse estimates 510–720 ms on the
+  document request). The alternative is a cacheable page whose browser picks one of the
+  four starting seas. Pros: edge-cached HTML, faster first byte, less server work, and
+  `?seed=` links could stay shareable. Cons: no-JavaScript visitors and crawlers always
+  see the default sea; the plate and "Authored sea" text change after load (or are hidden
+  until chosen); `?seed=` would have to be read on the client; hydration mismatch risk
+  around randomness; a real refactor of the hero, the plate and the studio; and it
+  changes the approved "a fresh sea from the first byte". Revisit only if field data
+  shows a slow first byte.
+- **Where the time goes** (PageSpeed mobile LCP breakdown: first byte 820 ms, element render
+  delay 780 ms). First byte: the home page is rendered per request, and the response header
+  `x-vercel-id: bom1::iad1` shows the edge is in Mumbai but the function runs in **iad1 (US
+  East)**; live timings from India were 0.4–1.8 s. Moving the function region closer to the
+  audience (Vercel project settings, or `regions` in `vercel.json`) is a cheaper lever than
+  caching the page, but it depends on where visitors are, so it is the owner's call. Render
+  delay: with Slow 4G and no server latency, the heading paints at about 0.9 s; the two
+  render-blocking stylesheets and 206 KB of preloaded fonts share the link with the HTML.
+  The font axes (`SOFT`, `WONK`, `opsz`) are all in use, so trimming them is not free.
+- **Forced reflow (168 ms in the report)** is the initial hero layout (about 130 ms at 4×
+  CPU throttle locally). `content-visibility: auto` on the sections below changed it by
+  under 10%, so it is not worth doing.
+- The "sailing" pill used `opacity: 0.65` and failed contrast; it now uses the muted ink
+  colour (5.2:1 day, 7.8:1 night).
+
 ## Security and hosting
 
 - **Next.js 16.3.8** (16.2.9 had critical advisories; the site used none of the affected

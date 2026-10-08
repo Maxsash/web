@@ -16,23 +16,23 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Committed and pushed:** cleanup steps 1–4 (`main` at `23586a7`).
-- **Uncommitted:** cleanup step 5 (documentation). The owner reviews and commits.
-  Suggested message:
+- **Committed:** cleanup steps 1–5 (`main` at `9eace2d`).
+- **Uncommitted:** performance fixes from the PageSpeed report (below). The owner reviews and
+  commits. Suggested message:
 
   ```
-  docs: replace the process log with architecture, decisions and testing
+  perf: show the static plate when WebGL would run in software
 
-  The docs were about 5,000 lines of dated checkpoints, two of them describing code that
-  no longer exists. Replace them with docs/architecture.md (routes, the sea model, the
-  frozen version 1 contract, rendering, footer), docs/decisions.md (what was decided and
-  why), docs/testing.md (the checks, and what has never been checked), a trimmed
-  seo-and-sharing.md and follow-ups.md, and a 78-line README. Delete the creative-v2
-  plan, handoff, brief and validation, the responsive and mark records, the research
-  notes and the roadmap; AGENTS.md points at the new files.
+  Request the WebGL context with failIfMajorPerformanceCaveat so browsers without a GPU
+  (and PageSpeed's lab) get the static field plate instead of a scene that blocks the main
+  thread. Give the two "Read the case study" links their project name for screen readers,
+  and stop dimming the "sailing" pill with opacity (it failed contrast). Add
+  tools/check-software-fallback.mjs and record the report's findings in decisions.md.
 
-  Docs only: no code changed. Every command and number in the new docs was checked
-  against the repository.
+  Verified on Node 24: tsc, lint, format, build, 29 Node tests, 20 SEO, headers, 20
+  keyboard, 12 fallback checks, 126 browser records; 28 of 32 views pixel-identical (the
+  four others differ only by the arrow glyph after the case-study text split). The pill
+  now measures 5.2:1 (day) and 7.8:1 (night).
   ```
 
 - **Node 24** (`nvm use`; the owner's default is 22). Never build or test inside the
@@ -40,11 +40,23 @@ no database, accounts or cookies.
 
 ## Next
 
-1. Owner: review and commit step 5.
-2. Step 6, "fun to read": ideas only, nothing built until the owner approves them
+1. Owner: review and commit the performance fixes.
+2. Step 6 and social content are on hold. Step 6, "fun to read": ideas only, nothing built until the owner approves them
    ([code-cleanup.md](code-cleanup.md)).
 3. Owner-side and content items: [follow-ups.md](follow-ups.md). Social content is blocked
    on the owner's answers; real essays and projects come last.
+
+## Performance report (PageSpeed Insights, 8 October 2026)
+
+Lab only, no field data. Mobile 57, desktop 62; LCP 3.3 s / 0.7 s, CLS 0; the loss is Total
+Blocking Time on a GPU-less lab machine. A local run did not reproduce the huge TBT with
+software GL on this Mac, so the cause is likely, not proven. Done: software rendering now
+falls back to the plate (0 ms blocking desktop, 85 ms phone profile with no GPU); the
+identical-links finding is fixed. Also fixed: the "sailing" pill contrast. Measured: layout is the
+initial hero (about 130 ms at 4× throttle), the first byte is the biggest lever (function
+runs in `iad1`; edge in Mumbai). Still open: the function-region choice and the
+cached-page decision (leaning no); see [follow-ups.md](follow-ups.md) and [decisions.md](decisions.md). The
+home page HTML is 385 KB (137 KB gzipped); 228 KB of it is the studio's drawing.
 
 ## Settled (details in decisions.md)
 
@@ -58,12 +70,9 @@ no database, accounts or cookies.
 
 ## Limits of what was verified
 
-Step 5 changed documents only, so no build or browser check was re-run for it; the
-format check and a search for dangling links were. The code was last verified at step 4
-(29 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 32 of 32 views
-pixel-identical). Checks run in headless Chrome on a Mac; see
-[testing.md](testing.md) for what has never been checked.
+Headless Chrome on a Mac only; see [testing.md](testing.md) for what has never been
+checked. The fallback was tested with `--disable-gpu`, not on a real GPU-less phone.
+`compare-builds` can flag one phone Work image in a single run (lazy-image timing).
 
 Latent risk: several module stylesheets style `h1`–`h3` under `.page`, so equal-specificity
-rules elsewhere can win or lose by CSS bundle order. The pixel comparison shows no section
-depending on it today.
+rules elsewhere can win or lose by CSS bundle order.

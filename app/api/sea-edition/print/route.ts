@@ -1,4 +1,5 @@
-import { createSeaEdition, renderSeaPlate } from "@/lib/sea-edition";
+import { createSeaEdition } from "@/lib/sea/edition";
+import { renderSeaPlate } from "@/lib/sea/plate";
 import { resolveApiSea } from "@/lib/sea/request";
 import { conditionalResponse } from "../conditional";
 

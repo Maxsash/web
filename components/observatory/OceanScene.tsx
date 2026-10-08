@@ -1,7 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { SeaEdition } from "@/lib/sea-edition";
+import type { SeaEdition } from "@/lib/sea/types";
+import { clamp01 } from "./clamp";
+import {
+  FrameGovernor,
+  LOW_QUALITY_RATIO,
+  holdsFrame,
+  qualityLabel,
+  renderRatio,
+  scheduleNextDraw,
+} from "./frame-governor";
+import { layerOpacities } from "./layer-opacity";
+import { chapterFor, revealFor } from "./reveal-mapping";
+import { STAGES, planMove, progressAt, stepStage, type StageMove } from "./stage-director";
+import { beginGesture, swipeDirection, trackGesture, type TouchGesture } from "./touch-stages";
 import styles from "./Observatory.module.css";
 
 export default function OceanScene({ edition }: { edition: SeaEdition }) {
@@ -18,21 +31,13 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const compact = matchMedia("(pointer: coarse)").matches || stage.clientWidth < 760;
     const staged = matchMedia("(pointer: coarse)").matches;
-    const stages = [
-      { label: "Sea", progress: 0 },
-      { label: "Structure", progress: 0.55 },
-      { label: "Drawing", progress: 1 },
-    ];
     const stageControls = stage.querySelector<HTMLElement>("[data-stage-controls]");
     const stageLabel = stageControls?.querySelector<HTMLElement>("[data-stage-label]");
     const previousButton = stageControls?.querySelector<HTMLButtonElement>("[data-stage-previous]");
     const nextButton = stageControls?.querySelector<HTMLButtonElement>("[data-stage-next]");
     let stageIndex = 0,
       stageProgress = 0,
-      stageFrom = 0,
-      stageTarget = 0,
-      stageStarted = 0,
-      stageDuration = 600;
+      stageMove: StageMove | null = null;
     if (staged) scene.dataset.staged = "true";
     const events = new AbortController();
     let engine: Awaited<ReturnType<typeof import("./ocean-engine").createOceanEngine>> | undefined;
@@ -48,13 +53,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       progress = 0,
       width = 1,
       height = 1,
-      ratio = 1,
-      low = false;
+      ratio = 1;
     let pointer: [number, number] = [0, 0],
       target: [number, number] = [0, 0];
-    let slowFrames = 0,
-      sampleFrames = 0,
-      performanceStart = 0;
+    const governor = new FrameGovernor();
     let scrollDirty = true,
       lastScrollY = -1;
     let nextDraw = 0;
@@ -67,43 +69,38 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       classes.flatMap((name) => Array.from(scene.querySelectorAll<HTMLElement>(`.${name}`))),
     );
     const lastOpacity = [-1, -1, -1, -1];
-    const clamp = (n: number) => Math.min(1, Math.max(0, n));
     const updateScroll = () => {
       lastScrollY = window.scrollY;
       scrollDirty = false;
-      progress = staged ? stageProgress : clamp((lastScrollY - start) / distance);
-      const intro = 1 - clamp((progress - 0.06) / 0.24);
-      const middle = clamp((progress - 0.23) / 0.22) * (1 - clamp((progress - 0.68) / 0.2));
-      const end = clamp((progress - 0.75) / 0.2);
-      [intro, middle, end, clamp((progress - 0.17) / 0.3)].forEach((opacity, i) => {
+      progress = staged ? stageProgress : clamp01((lastScrollY - start) / distance);
+      layerOpacities(progress).forEach((opacity, i) => {
         if (opacity === lastOpacity[i]) return;
         lastOpacity[i] = opacity;
         opacityGroups[i].forEach((element) => {
           element.style.opacity = String(opacity);
         });
       });
-      const chapter = progress < 0.33 ? "sea" : progress < 0.8 ? "structure" : "atlas";
+      const chapter = chapterFor(progress);
       if (scene.dataset.chapter !== chapter) scene.dataset.chapter = chapter;
     };
     const render = (now: number) => {
       frame = 0;
       if (disposed) return;
-      if (stageStarted) {
-        const t = media.matches ? 1 : clamp((now - stageStarted) / stageDuration);
-        const eased = stageDuration === 1800 ? t * (2 - t) : t * t * t * (t * (t * 6 - 15) + 10);
-        stageProgress = stageFrom + (stageTarget - stageFrom) * eased;
+      if (stageMove) {
+        const step = progressAt(stageMove, now, media.matches);
+        stageProgress = step.progress;
         scrollDirty = true;
-        if (t === 1) stageStarted = 0;
+        if (step.finished) stageMove = null;
       }
       const active = visible && !document.hidden && !stopped && !media.matches;
       const scrollChanged = scrollDirty || window.scrollY !== lastScrollY;
-      if (engine && active && !scrollChanged && nextDraw > now + 1) {
+      if (engine && active && !scrollChanged && holdsFrame(nextDraw, now)) {
         frame = requestAnimationFrame(render);
         return;
       }
       if (scrollChanged) updateScroll();
       if (!engine || !visible || document.hidden) {
-        if (stageStarted && visible && !document.hidden) frame = requestAnimationFrame(render);
+        if (stageMove && visible && !document.hidden) frame = requestAnimationFrame(render);
         return;
       }
       const interval = lastTime ? (now - lastTime) / 1000 : 0;
@@ -117,48 +114,31 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             pointer[0] + (target[0] - pointer[0]) * damping,
             pointer[1] + (target[1] - pointer[1]) * damping,
           ];
-      const reveal =
-        media.matches && !staged
-          ? progress > 0.45
-            ? 1
-            : 0
-          : staged && progress < 0.55
-            ? clamp((progress / 0.55) * ((0.55 - 0.14) / 0.75))
-            : clamp((progress - 0.14) / 0.75);
       engine.draw(
         elapsed,
-        reveal,
+        revealFor(progress, { reducedMotion: media.matches, staged }),
         pointer,
         document.documentElement.dataset.studioTheme === "night" ? 1 : 0,
       );
-      const drawInterval = 1000 / (low ? 30 : 60);
-      nextDraw = !active
-        ? 0
-        : scrollChanged || !nextDraw || now - nextDraw > drawInterval
-          ? now + drawInterval
-          : nextDraw + drawInterval;
+      nextDraw = scheduleNextDraw(nextDraw, now, { active, scrollChanged, low: governor.low });
       if (!presented) {
         presented = true;
         canvas.dataset.renderer = "webgl2";
         scene.dataset.rendering = "webgl2";
         setReady(true);
       }
-      canvas.dataset.quality = media.matches ? "still" : low ? "low" : compact ? "compact" : "high";
+      canvas.dataset.quality = qualityLabel({
+        reducedMotion: media.matches,
+        low: governor.low,
+        compact,
+      });
       if (active) {
-        if (lastTime - performanceStart > 1600) {
-          if (sampleFrames >= 12 && slowFrames / sampleFrames > 0.3 && !low) {
-            low = true;
-            ratio *= 0.7;
-            engine.resize(width, height, ratio);
-          }
-          performanceStart = now;
-          sampleFrames = 0;
-          slowFrames = 0;
+        if (governor.observe(now, interval)) {
+          ratio *= LOW_QUALITY_RATIO;
+          engine.resize(width, height, ratio);
         }
-        sampleFrames++;
-        if (interval > (low ? 0.058 : 0.029)) slowFrames++;
         frame = requestAnimationFrame(render);
-      } else if (stageStarted) frame = requestAnimationFrame(render);
+      } else if (stageMove) frame = requestAnimationFrame(render);
     };
     const requestFrame = () => {
       if (!frame && !disposed) frame = requestAnimationFrame(render);
@@ -173,33 +153,31 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const updateStageControls = () => {
       scene.dataset.stage = String(stageIndex);
       if (stageLabel)
-        stageLabel.textContent = `${stageIndex + 1} / ${stages.length} · ${stages[stageIndex].label}`;
+        stageLabel.textContent = `${stageIndex + 1} / ${STAGES.length} · ${STAGES[stageIndex].label}`;
       if (previousButton) previousButton.disabled = stageIndex === 0;
       if (nextButton)
-        nextButton.textContent = stageIndex === stages.length - 1 ? "View work ↓" : "Next ↑";
+        nextButton.textContent = stageIndex === STAGES.length - 1 ? "View work ↓" : "Next ↑";
     };
     stageRef.current = (direction) => {
       if (!staged) return;
-      if (direction > 0 && stageIndex === stages.length - 1) {
+      if (direction > 0 && stageIndex === STAGES.length - 1) {
         document
           .getElementById("work")
           ?.scrollIntoView({ behavior: media.matches ? "instant" : "smooth" });
         return;
       }
       const previousIndex = stageIndex;
-      stageIndex = Math.max(0, Math.min(stages.length - 1, stageIndex + direction));
-      stageDuration = previousIndex === 0 && stageIndex === 1 ? 1800 : 600;
-      stageFrom = stageProgress;
-      stageTarget = stages[stageIndex].progress;
-      stageStarted = media.matches ? 0 : performance.now();
-      if (media.matches) stageProgress = stageTarget;
+      stageIndex = stepStage(stageIndex, direction);
+      const move = planMove(previousIndex, stageIndex, stageProgress, performance.now());
+      stageMove = media.matches ? null : move;
+      if (media.matches) stageProgress = move.target;
       scrollDirty = true;
       updateStageControls();
       requestFrame();
     };
     if (staged) {
       updateStageControls();
-      let touch: { x: number; y: number; dx: number; dy: number; consumed: boolean } | null = null;
+      let touch: TouchGesture | null = null;
       scene.addEventListener(
         "touchstart",
         (event) => {
@@ -213,7 +191,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             return;
           }
           const point = event.touches[0];
-          touch = { x: point.clientX, y: point.clientY, dx: 0, dy: 0, consumed: false };
+          touch = beginGesture(point.clientX, point.clientY);
         },
         { passive: true, signal: events.signal },
       );
@@ -224,17 +202,14 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             touch = null;
             return;
           }
-          touch.dx = event.touches[0].clientX - touch.x;
-          touch.dy = event.touches[0].clientY - touch.y;
-          if (Math.abs(touch.dy) <= Math.abs(touch.dx) || Math.abs(touch.dy) < 4) return;
-          if (
-            (touch.dy < 0 && stageIndex < stages.length - 1) ||
-            (touch.dy > 0 && stageIndex > 0)
-          ) {
-            if (event.cancelable) {
-              event.preventDefault();
-              touch.consumed = true;
-            }
+          const { clientX, clientY } = event.touches[0];
+          const wantsStage = trackGesture(touch, clientX, clientY, {
+            index: stageIndex,
+            count: STAGES.length,
+          });
+          if (wantsStage && event.cancelable) {
+            event.preventDefault();
+            touch.consumed = true;
           }
         },
         { passive: false, signal: events.signal },
@@ -242,12 +217,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       scene.addEventListener(
         "touchend",
         () => {
-          if (
-            touch?.consumed &&
-            Math.abs(touch.dy) >= 35 &&
-            Math.abs(touch.dy) > Math.abs(touch.dx) * 1.25
-          )
-            stageRef.current?.(touch.dy < 0 ? 1 : -1);
+          const direction = touch ? swipeDirection(touch) : 0;
+          if (direction) stageRef.current?.(direction);
           touch = null;
         },
         { passive: true, signal: events.signal },
@@ -266,13 +237,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       width = stage.clientWidth;
       height = stage.clientHeight;
       distance = Math.max(1, scene.offsetHeight - height);
-      const pixelCap = compact ? 360000 : 1500000;
-      ratio =
-        Math.min(
-          devicePixelRatio || 1,
-          compact ? 1 : 1.25,
-          Math.sqrt(pixelCap / (width * height)),
-        ) * (low ? 0.7 : 1);
+      ratio = renderRatio({ devicePixelRatio, compact, width, height, low: governor.low });
       engine?.resize(width, height, ratio);
       scrollDirty = true;
       requestFrame();

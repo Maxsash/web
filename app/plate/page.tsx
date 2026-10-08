@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  createSeaEdition,
-  DEFAULT_SEA_SEED_V2,
-  describeSea,
-  renderSeaPlate,
-} from "@/lib/sea-edition";
+import { describeSea } from "@/lib/sea/describe";
+import { createSeaEdition } from "@/lib/sea/edition";
+import { renderSeaPlate } from "@/lib/sea/plate";
+import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 import { resolvePageSea, type PageSeaQuery, type SeaParam } from "@/lib/sea/request";
 import PrintButton from "./PrintButton";
 import styles from "./Plate.module.css";

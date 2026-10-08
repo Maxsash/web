@@ -44,6 +44,7 @@
 }
 .skip:focus-visible {
   translate: 0 0;
+  outline: 2px solid var(--obs-ink);
 }
 .story {
   --intro-opacity: 1;
@@ -146,8 +147,17 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(4, 25, 31, 0.56), transparent 64%);
+  background:
+    linear-gradient(180deg, rgba(4, 25, 31, 0.62), transparent 19%),
+    linear-gradient(90deg, rgba(4, 25, 31, 0.56), transparent 64%);
   opacity: var(--intro-opacity);
+}
+@media (max-width: 760px) {
+  .shade {
+    background:
+      linear-gradient(180deg, rgba(4, 25, 31, 0.62), transparent 25%),
+      linear-gradient(90deg, rgba(4, 25, 31, 0.5), transparent 85%);
+  }
 }
 .paperVeil {
   position: absolute;
@@ -667,19 +677,6 @@
   }
 }
 
-.shade {
-  background:
-    linear-gradient(180deg, rgba(4, 25, 31, 0.62), transparent 19%),
-    linear-gradient(90deg, rgba(4, 25, 31, 0.56), transparent 64%);
-}
-@media (max-width: 760px) {
-  .shade {
-    background:
-      linear-gradient(180deg, rgba(4, 25, 31, 0.62), transparent 25%),
-      linear-gradient(90deg, rgba(4, 25, 31, 0.5), transparent 85%);
-  }
-}
-
 .sceneControls {
   display: flex;
   gap: 0.5rem;
@@ -708,7 +705,4 @@
 .sceneControls :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
-}
-.skip:focus-visible {
-  outline: 2px solid var(--obs-ink);
 }

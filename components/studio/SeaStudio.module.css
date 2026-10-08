@@ -70,6 +70,8 @@
 .controls {
   grid-column: 1;
   grid-row: 1 / span 2;
+  display: grid;
+  gap: 1.8rem;
 }
 .result {
   grid-column: 2;
@@ -89,12 +91,7 @@
   letter-spacing: 0.1em;
   color: var(--ink-3);
   font-weight: 400;
-  letter-spacing: 0.1em;
   margin-bottom: 0.8rem;
-}
-.controls {
-  display: grid;
-  gap: 1.8rem;
 }
 .controls fieldset {
   border: 0;

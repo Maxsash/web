@@ -7,30 +7,16 @@ longer true), suggest a commit message, and do not commit.
 | Step | What                                               | Status                         |
 | ---- | -------------------------------------------------- | ------------------------------ |
 | 1    | Prettier                                           | done, committed locally        |
-| 2    | Delete dead code, generators, comments             | done, uncommitted              |
-| 3    | Remove repetition                                  | next                           |
-| 4    | Split by responsibility                            | after 3                        |
+| 2    | Delete dead code, generators, comments             | done, committed                |
+| 3    | Remove repetition                                  | done, uncommitted              |
+| 4    | Split by responsibility                            | next                           |
 | 5    | Cut the docs, rewrite the README                   | after 4                        |
 | 6    | Make it fun to read (needs the owner's approval)   | last                           |
 
-## Step 3 — remove repetition
-
-1. **Sea requests:** one `lib/sea/request.ts` with shared seed and version parsing, and
-   two small policies. Page and print page: no seed → a fresh (or default) version 2 sea,
-   a seed without version → version 1. API: unversioned is always version 1, repeated
-   `seed` rejected. Replaces copies in `app/page.tsx`, `app/plate/page.tsx`, both routes.
-2. **Browser tools:** `tools/lib/browser.mjs` (launch, CDP client, key helpers, local-only
-   guard, cleanup that waits for Chrome to exit before deleting the profile) used by every
-   `check-*` tool and `compare-builds`.
-3. **Work:** move its copy and facts from JSX into `content/projects.ts`; one
-   `ProjectFeature` component; rewrite `Work.module.css` (duplicate `.plate`, `.secondary`).
-4. One `formatIndex(n)` for the `01`, `02` labels.
-5. Merge duplicate CSS selectors (`Observatory`: `.skip:focus-visible`, `.shade`;
-   `SeaStudio`: `.controls`); un-export types used in one file.
-
 ## Step 4 — split by responsibility
 
-Keep the approved mobile and desktop sea behaviour exactly: extract pure helpers, leave
+`lib/sea/request.ts` and `tools/lib/browser.mjs` already exist (step 3); the rest of
+`lib/sea/` moves in beside the first. Keep the approved mobile and desktop sea behaviour exactly: extract pure helpers, leave
 the frame loop's structure and numbers alone, and test the extracted code.
 
 - `lib/sea-edition.ts` → `lib/sea/` (`types`, `seed`, `random`, `edition-v1` frozen,

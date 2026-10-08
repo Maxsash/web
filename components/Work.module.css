@@ -7,10 +7,13 @@
   color: var(--ink);
   padding: 1.5rem clamp(1.25rem, 6vw, 7rem) 3rem;
 }
-.links a {
+.links a,
+.footer a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+.links a {
   text-underline-offset: 0.3em;
 }
 .header {
@@ -51,10 +54,21 @@
   align-items: center;
   border-bottom: 1px solid var(--rule);
 }
+.plate,
+.plainPlate {
+  margin: 0;
+  min-width: 0;
+}
 .plate {
   background: #d9dfd6;
   padding: clamp(1rem, 2.5vw, 2rem);
-  min-width: 0;
+}
+.plate img,
+.plainPlate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: 1.5rem;
 }
 .plateHead {
   display: flex;
@@ -117,7 +131,7 @@
 }
 .secondary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: clamp(2rem, 7vw, 7rem);
   align-items: center;
   padding-block: 4rem;
@@ -152,33 +166,6 @@
   }
   .links a:hover {
     color: #865136;
-  }
-}
-.plate {
-  margin: 0;
-}
-.plate img,
-.weddingPlate img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-block: 1.5rem;
-}
-.weddingPlate {
-  margin: 0;
-  min-width: 0;
-}
-.secondary {
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-}
-.footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-@media (max-width: 48rem) {
-  .secondary {
-    grid-template-columns: 1fr;
   }
 }
 :global(html[data-studio-theme="night"]) .section {

@@ -1,5 +1,6 @@
 import ArrowIcon from "@/components/ArrowIcon";
 import { destinations, site } from "@/content/site";
+import { formatIndex } from "@/lib/format";
 import styles from "./Elsewhere.module.css";
 
 export default function Elsewhere() {
@@ -28,7 +29,7 @@ export default function Elsewhere() {
       <section className={styles.routes} aria-labelledby="routes-title">
         <div className={styles.routeHead}>
           <h3 id="routes-title">Set a course</h3>
-          <span>{String(destinations.length).padStart(2, "0")} / Destinations</span>
+          <span>{formatIndex(destinations.length)} / Destinations</span>
         </div>
         <ul>
           {destinations.map((place, index) => (
@@ -39,7 +40,7 @@ export default function Elsewhere() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
+                <span className={styles.number}>{formatIndex(index + 1)}</span>
                 <span className={styles.routeCopy}>
                   <span className={styles.routeTitle}>
                     {place.label}

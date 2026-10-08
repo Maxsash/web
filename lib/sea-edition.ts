@@ -1,5 +1,5 @@
 // Metres and seconds; x and z are horizontal, y is up, directions are radians from +x toward +z.
-export type SeaWave = {
+type SeaWave = {
   amplitude: number;
   wavelength: number;
   direction: number;
@@ -23,7 +23,7 @@ export type SeaEdition = {
   settings?: SeaSettings;
 };
 
-export type SeaSample = { height: number; dx: number; dz: number };
+type SeaSample = { height: number; dx: number; dz: number };
 
 export const DEFAULT_SEA_SEED = "5ea5cafe";
 export const SEA_GRAVITY = 9.81;

@@ -18,11 +18,12 @@ SEA_TEST_BASE=http://localhost:3012 node --test tools/*.test.mjs
 node tools/check-seo.mjs http://127.0.0.1:3012
 node tools/check-headers.mjs http://localhost:3012
 node tools/check-keyboard.mjs http://localhost:3012
+node tools/check-software-fallback.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result: 29 Node tests, 20 SEO cases, header checks, 20 keyboard checks, 126
-browser records, no failures.
+Last full result: 29 Node tests, 20 SEO cases, header checks, 20 keyboard checks, 12
+software-fallback checks, 126 browser records, no failures.
 
 ## What each check covers
 
@@ -32,6 +33,7 @@ browser records, no failures.
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
+| `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
 | `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
 | `compare-builds.mjs`        | Pixel comparison of two builds over 32 views (8 pages, desktop and phone, day and night). The way to prove a refactor changed nothing. |
 | `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |
@@ -39,7 +41,9 @@ browser records, no failures.
 `check-creative-v2.mjs` also takes `--quick` (a small screenshot subset), `--diagnose`
 (read-only desktop cadence; may target `www.maxsash.com`), and `--scroll` or
 `--native-scroll` to measure the sea reveal. Reports and screenshots go to ignored
-`tools/.out/`. Every browser tool creates its own Chrome profile and removes it on exit
+`tools/.out/`. `--use-angle=swiftshader` is an explicit software backend that Chrome still accepts as
+WebGL, so the other tools keep it for steadier rendering; only `--disable-gpu` triggers the
+fallback. Every browser tool creates its own Chrome profile and removes it on exit
 (`tools/lib/browser.mjs`).
 
 For a refactor, build the previous commit on another port and run

@@ -263,8 +263,8 @@
   background: var(--obs-rust);
   border-color: var(--obs-rust);
 }
-.sailing {
-  opacity: 0.65;
+.actions .sailing {
+  color: var(--ink-3);
   border-style: dotted !important;
   cursor: default !important;
 }

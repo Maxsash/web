@@ -3,7 +3,7 @@
  * Asserts the response headers, then loads the main pages in isolated headless
  * Chrome and fails on any Content-Security-Policy violation.
  */
-import { SOFTWARE_GL_FLAGS, delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
+import { SWIFTSHADER_FLAGS, delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
 
 const base = localBaseFromArgs();
 const pages = [
@@ -53,7 +53,7 @@ check(
     Date.parse(text.match(/^Expires: (.+)$/m)?.[1] ?? "") > Date.now(),
 );
 
-await withBrowser({ name: "csp", flags: SOFTWARE_GL_FLAGS }, async ({ send, evaluate }) => {
+await withBrowser({ name: "csp", flags: SWIFTSHADER_FLAGS }, async ({ send, evaluate }) => {
   await send("Page.enable");
   await send("Page.addScriptToEvaluateOnNewDocument", {
     source:

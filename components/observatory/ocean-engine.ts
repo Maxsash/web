@@ -21,8 +21,9 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     antialias: false,
     depth: true,
     powerPreference: "low-power",
+    failIfMajorPerformanceCaveat: true,
   });
-  if (!gl) throw new Error("WebGL2 is unavailable");
+  if (!gl) throw new Error("Hardware-accelerated WebGL2 is unavailable");
   const resources = new GlResources(gl);
   let sea: WebGLProgram, sky: WebGLProgram, boat: WebGLProgram;
   try {

@@ -1,0 +1,59 @@
+# Testing
+
+What exists, how to run it, and what has never been checked. Rules: never build or test
+inside the project folder (a dev server may be running there) and stop only servers you
+started.
+
+## Run everything
+
+Use Node 24 and a production build in a scratch copy:
+
+```bash
+rsync -a --exclude node_modules --exclude .next --exclude .git --exclude tools/.out ./ $SCRATCH/wt/
+cd $SCRATCH/wt && pnpm install --frozen-lockfile && pnpm build
+(pnpm exec next start -p 3012 &)
+
+pnpm exec tsc --noEmit && pnpm lint && pnpm format:check
+SEA_TEST_BASE=http://localhost:3012 node --test tools/*.test.mjs
+node tools/check-seo.mjs http://127.0.0.1:3012
+node tools/check-headers.mjs http://localhost:3012
+node tools/check-keyboard.mjs http://localhost:3012
+node tools/check-creative-v2.mjs http://localhost:3012
+```
+
+Last full result: 29 Node tests, 20 SEO cases, header checks, 20 keyboard checks, 126
+browser records, no failures.
+
+## What each check covers
+
+| Check                       | Covers                                                                                                   |
+| --------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `tools/*.test.mjs`          | Sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
+| `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
+| `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
+| `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
+| `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
+| `compare-builds.mjs`        | Pixel comparison of two builds over 32 views (8 pages, desktop and phone, day and night). The way to prove a refactor changed nothing. |
+| `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |
+
+`check-creative-v2.mjs` also takes `--quick` (a small screenshot subset), `--diagnose`
+(read-only desktop cadence; may target `www.maxsash.com`), and `--scroll` or
+`--native-scroll` to measure the sea reveal. Reports and screenshots go to ignored
+`tools/.out/`. Every browser tool creates its own Chrome profile and removes it on exit
+(`tools/lib/browser.mjs`).
+
+For a refactor, build the previous commit on another port and run
+`node tools/compare-builds.mjs <old url> <new url>`. The phone Work image can be flagged
+in a single run, even when a build is compared with itself (lazy-image timing); repeat the
+run. Servers that just started also have a cold image cache.
+
+## Never checked
+
+Everything above runs in headless Chrome on a Mac. Not covered, so do not claim it:
+
+- a real screen reader (VoiceOver on Mac and iPhone, NVDA, TalkBack) and Reader mode;
+- physical phones beyond the owner's own report that the staged mobile sea is smooth on
+  an iPhone, and battery, thermal or GPU qualification;
+- field Web Vitals and the Vercel runtime (headers and the sea API are tested locally);
+- a printed plate on paper, and the real WhatsApp app's preview;
+- Search Console, indexing and AI citation outcomes.

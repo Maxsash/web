@@ -1,6 +1,6 @@
 # Handoff — start here
 
-Updated 8 October 2026. Rewrite (don't append to) the sections below after every step.
+Updated 9 October 2026. Rewrite (don't append to) the sections below after every step.
 Read order: `AGENTS.md` → this file → [architecture.md](architecture.md) →
 [decisions.md](decisions.md). Checks and their limits: [testing.md](testing.md). Open
 items: [follow-ups.md](follow-ups.md). Cleanup plan: [code-cleanup.md](code-cleanup.md).
@@ -18,7 +18,17 @@ no database, accounts or cookies.
   `git push origin main:production`.
 - **Released:** everything up to the notebook work is committed and live. `main` and
   `production` are both at `495f879` (pushed 8 October 14:35 IST). Uncommitted now: the published
-  WebGL-flag post and the docs. Suggested message: `docs: publish the WebGL-flag post`.
+  WebGL-flag post, the notebook ordering below and the docs. Suggested message: `docs: publish the
+  WebGL-flag post` (ordering as its own `feat: list the notebook newest first`, body: why and what
+  was verified).
+- **Notebook order:** newest first on `/blog` and the home list. Numbers follow writing order: the
+  integral note is 001, the wave study 002, written posts 003 onward (`content/notebook.ts` is in
+  number order; `app/blog/page.tsx` reverses it). Light/dark features alternate by display position.
+- **Flag-post plate:** the WebGL-flag post has its own drawing (`FlagPlate`): the engraved sea
+  stormy on the left (waves 2.6× taller) and flat on the right, dropping away at the dashed "flag" line. `PostPlate` picks it
+  by slug; other posts keep the seeded `OceanPlate`; both draw through `surface.ts`. Verified: `tsc`,
+  `lint`, `format:check` (Node 22), and the lines rendered in a standalone SVG screenshot. The
+  labels and the real page were not rendered and nothing was built.
 
 - **The posts:** three in `content/posts/`. The WebGL-flag post is **published** (dated
   2026-10-09, no editor notes, eight reference links: spec, MDN, SwiftShader, Chromium 154 source

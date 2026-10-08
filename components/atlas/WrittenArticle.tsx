@@ -3,7 +3,7 @@ import { structurePost } from "@/lib/post-structure";
 import { createSeaEdition } from "@/lib/sea/edition";
 import { seaSeedForName } from "@/lib/sea/presets";
 import { ArticleCover, ArticleHead, ArticleTop, NextArticle, ReadingSection } from "./ArticleParts";
-import OceanPlate from "./OceanPlate";
+import PostPlate from "./PostPlate";
 import Prose, { InlineText } from "./Prose";
 import styles from "./Atlas.module.css";
 
@@ -17,7 +17,7 @@ export default function WrittenArticle({ post }: { post: WrittenPost }) {
       <article>
         <ArticleHead {...post} status={status} />
         <ArticleCover number={post.number} caption={post.caption}>
-          <OceanPlate edition={createSeaEdition(seaSeedForName(post.slug), "2")} />
+          <PostPlate slug={post.slug} edition={createSeaEdition(seaSeedForName(post.slug), "2")} />
         </ArticleCover>
         <div className={styles.articleBody}>
           {opening?.type === "paragraph" ? (

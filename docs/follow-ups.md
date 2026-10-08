@@ -2,7 +2,7 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
-- [ ] **Edit and publish the three drafts** in `content/posts/` (each ends with "Notes for the
+- [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
       must respect reduced motion, keep sound opt-in, and cost nothing in accessibility):
@@ -18,8 +18,9 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
       owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
       first-byte time. See [decisions.md](decisions.md).
-- [ ] **Re-run PageSpeed after the next release** to confirm the software-rendering
-      fallback and the contrast fix; expect Accessibility 100 and a much lower blocking time.
+- [ ] **PageSpeed after the release** (8 October 14:41 IST): desktop 99, mobile 92, accessibility
+      100. The remaining mobile loss is Largest Contentful Paint (3.2 s); see the function-region
+      item above. Re-run after any change to the hero or the region.
 - [ ] **Hero length without WebGL.** The hero is 255svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in

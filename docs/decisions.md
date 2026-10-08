@@ -91,6 +91,7 @@ Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
 - **Software rendering gets the static plate** (`failIfMajorPerformanceCaveat`). Real
   visitors without a GPU benefit, and the lab no longer measures software rasterising.
   Locally, with no GPU, blocking time is 0 ms on desktop and 85 ms on the phone profile.
+  After release (8 October 14:41 IST, one run): desktop 99, mobile 92, TBT 20 ms and 100 ms.
 - **Cached home page: not done, leaning no.** Today the server picks the random sea, so `/`
   is `private, no-store` and every visit renders (Lighthouse estimates 510–720 ms on the
   document request). The alternative is a cacheable page whose browser picks one of the

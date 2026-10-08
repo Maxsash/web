@@ -10,6 +10,17 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Commit identity rewrite — 8 October 2026
+
+Every commit used the author's personal email address, public in a public
+repository. History was rewritten with `git filter-repo --mailmap`: all 55 commits
+now carry the display name `maxsash` and GitHub's noreply address, with file contents
+byte-identical (compared by tree hash). Every hash changed, and hashes cited in these
+docs were remapped from the rewrite's commit map. A bundle backup of the old history
+is kept outside the repository. The old commits remain reachable by their old hashes on
+GitHub until it garbage-collects them, and anyone who already cloned has the old
+address; the user accepted that residual exposure.
+
 ## Security audit, hardening and Node 24 — 6 October 2026
 
 **Uncommitted, awaiting review.** Audit findings and actions:
@@ -116,7 +127,7 @@ cards are unaffected (static image).
 
 ## Structure pass and sea studio — 6 October 2026
 
-**Committed by the user as `a5381a5` after review.** The user flagged repeated
+**Committed by the user as `223c7cd` after review.** The user flagged repeated
 Writing callouts (header, "For the curious mind", Elsewhere), an unclear seed/print
 story, and two seed options that looked identical. Decisions:
 
@@ -162,7 +173,7 @@ User accepted the day/night sea and shoreline footer ("good to go") and reports
 the staged mobile sea, shoreline and revised opening curve work fine on physical
 devices; this is the user's report, not a measured trace. The earlier
 "uncommitted / awaiting visual selection" wording below is historical: that work
-landed in `1511d7c` and later commits. The user also confirmed the homepage
+landed in `a8587eb` and later commits. The user also confirmed the homepage
 WhatsApp share preview works with the new banner.
 
 Open items from this review:
@@ -309,7 +320,7 @@ does not change hosting or deploy new revisions.
 - On 5 October the user **approved Living Atlas A/B as the foundation** and
   requested **actual homepage/blog integration, current documentation and a
   commit**. No further creative approval is needed to complete that checkpoint.
-- The original plan foundation is commit `012e164`. The new foundation's final
+- The original plan foundation is commit `0feaacc`. The new foundation's final
   commit record is maintained in [the handoff](creative-v2-handoff.md); do not
   invent a hash before it exists.
 - [Reference research](research/creative-references-v2.md),
@@ -383,7 +394,7 @@ current validation. This clarification supersedes idle-only smoothness checks.
 ## Current release state and next gate
 
 5 October: all repo dev/preview servers stopped at user request (ports
-3000/3001/3002/3004/3005 verified closed). Local `740b738` matches the tracking
+3000/3001/3002/3004/3005 verified closed). Local `fa15491` matches the tracking
 reference; live Writing goes directly to `/blog` and phone viewport uses the
 compact renderer. Fresh live browser-gesture diagnostics reach the drawing with
 16.7 ms draw p95 and no observed long tasks; style work is 14.1/18.8 ms across

@@ -227,8 +227,8 @@ examples. CSS for B stays scoped; do not force its ink/paper tokens onto A.
 
 ### Checkpoint 0 — approved foundation promotion and commit
 
-**Status:** completed on 5 October in `6adbb9a`, with the accepted checkpoint
-recorded in `5eddf76`. Public-route QA evidence is in the validation document.
+**Status:** completed on 5 October in `a91fd80`, with the accepted checkpoint
+recorded in `016a770`. Public-route QA evidence is in the validation document.
 
 Tasks in this checkpoint:
 

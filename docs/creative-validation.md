@@ -25,7 +25,7 @@ A fresh, curated-random version 2 sea on each visit to `/`; no visitor data used
 26 Node tests, 125 browser records, 20 SEO cases, build/types/lint pass, and
 GPU/CPU parity now covers a v2 sea. Details: [current validation](creative-v2-validation.md).
 
-## Structure pass and sea studio — 6 October 2026 (committed, `a5381a5`)
+## Structure pass and sea studio — 6 October 2026 (committed, `223c7cd`)
 
 Single Notebook entry point, Elsewhere limited to external places, named section
 kickers, footer outside `<main>`, and a seed-driven sea studio with print/save/
@@ -40,7 +40,7 @@ User accepted the shoreline, reports physical-device behaviour is fine, and
 confirmed the homepage WhatsApp preview. These are user reports; no new
 automated checks were run this turn. GitHub activity visual design is not
 accepted and is tracked in [follow-ups](follow-ups.md). The "uncommitted"
-shoreline wording below is historical (landed in `1511d7c`).
+shoreline wording below is historical (landed in `a8587eb`).
 
 ## Daytime sharing banner — 5 October 2026
 
@@ -92,7 +92,7 @@ is smooth on iPhone Air Safari; broader physical qualification remains separate.
 
 ## Original comparison baseline
 
-Before creative experiments, the working tree was clean at `d10c21a`.
+Before creative experiments, the working tree was clean at `2d5452a`.
 `tools/measure-routes.mjs` inventoried the production homepage:
 
 | Asset | Bytes |

@@ -5,9 +5,9 @@ requested promotion to the actual homepage/blog, updated documentation and a
 commit.** Do not ask for that approval again. This is foundation promotion, not
 a claim that the entire creative roadmap or release qualification is complete.
 
-**Foundation commit:** `6adbb9a` — `feat: promote Living Atlas homepage and notebook`
+**Foundation commit:** `a91fd80` — `feat: promote Living Atlas homepage and notebook`
 (5 October 2026). The user also explicitly requested push to `origin/main` and wants
-to deploy the domain themselves for real feedback. Original plan: `012e164`.
+to deploy the domain themselves for real feedback. Original plan: `0feaacc`.
 
 ## Active exploration — day/night sea and shoreline
 
@@ -185,8 +185,8 @@ validation; rerun checks justified by the actual changes.
 
 ## Immediate and subsequent tasks
 
-**Foundation checkpoint is complete:** `6adbb9a`, followed by documentation
-checkpoint `5eddf76`; both were present locally and `main` matched the local
+**Foundation checkpoint is complete:** `a91fd80`, followed by documentation
+checkpoint `016a770`; both were present locally and `main` matched the local
 `origin/main` tracking reference at the start of the continuation. No remote
 fetch or deployment is implied by that comparison.
 
@@ -198,9 +198,9 @@ Changed `OceanScene.tsx`, the browser harness and checkpoint docs. Commit
 subject: `fix: dispose ocean engine on context loss`. Preview is running on
 `http://localhost:3002`; existing 3000/3001 servers were left intact.
 The fallback-on-loss policy remains; automatic restoration is not introduced.
-This checkpoint is committed as `86f1589`.
+This checkpoint is committed as `d54ed06`.
 
-**Completed feedback checkpoint (`df871c3`):** user reported Writing's extra click and lag on
+**Completed feedback checkpoint (`0da9204`):** user reported Writing's extra click and lag on
 production `maxsash.com`: iPhone Air/Safari and MacBook Pro/Chrome, despite smooth
 localhost. Writing now opens `/blog` directly. Smaller compact mesh/pixel budget,
 precomputed shader constants, bounded draw cadence, reachable slow-frame
@@ -228,7 +228,7 @@ reproduce visible stutter. Commit subject:
 `fix: synchronize sea reveal with scroll frames`. Final preview is now
 `http://localhost:3005`; read current validation for exact commands/reports.
 
-**Updated release checkpoint:** `740b738` matches local `origin/main`; Writing
+**Updated release checkpoint:** `fa15491` matches local `origin/main`; Writing
 and compact rendering are observable live. Fresh production native-scroll
 diagnostics show 16.7 ms draw p95, zero observed long tasks and 14.1/18.8 ms
 style totals for desktop/phone viewport. All repo servers stopped. Only active

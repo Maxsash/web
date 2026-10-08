@@ -4,9 +4,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Creative iteration workflow
 
-Read `docs/creative-roadmap.md` and `docs/creative-validation.md` before creative
-changes. Keep their tasks, decisions, routes, and actual validation evidence
-current at every logical checkpoint. The confirmed direction is A for the main
+Read `docs/decisions.md` and `docs/architecture.md` before creative changes, and keep
+them, `docs/testing.md` and the routes they describe current at every logical
+checkpoint. The confirmed direction is A for the main
 website, B for the blog, and C as an optional Easter egg. Make creative changes
 directly in the main site. Do not create sample routes or a separate review gallery.
 Do not claim unperformed checks.
@@ -18,8 +18,8 @@ important that exists only in the conversation or in memory is lost.
 
 - `docs/handoff.md` is the start-here file. After **every step**, before reporting back,
   rewrite it: current state, what is next, open items, new decisions and facts, and what
-  was and was not verified. Update `docs/code-cleanup.md` and `docs/creative-roadmap.md`
-  when they are affected.
+  was and was not verified. Update `docs/code-cleanup.md`, `docs/decisions.md`,
+  `docs/architecture.md` and `docs/testing.md` when they are affected.
 - Keep documents small. Delete what is no longer true or no longer useful instead of
   appending to it; the handoff stays under about 100 lines.
 

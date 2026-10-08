@@ -10,6 +10,7 @@ nvm use
 pnpm install
 pnpm dev        # http://localhost:3000
 pnpm build
+pnpm format     # Prettier; `pnpm format:check` verifies without writing
 ```
 
 ## Releasing

@@ -10,6 +10,19 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Code cleanup, step 1: Prettier — 8 October 2026
+
+The code read as minified (lines of 250–650 characters, one 200-line effect on a
+single line). Prettier (`printWidth` 100) now formats everything except `docs/`,
+`public/`, the lockfile and build output; `pnpm format` and `pnpm format:check`
+exist. Proof it changed nothing: a clean production build of the parent commit and of
+the formatted commit were compared byte by byte. 31 of 34 shipped files are
+identical; the other three differ by 2–3 bytes (a space after commas inside two CSS
+`clamp()` values, and one explicit `{" "}` at a JSX line break), with identical
+rendering. The full suite also passes (26 Node tests, 20 SEO, header checks, 20
+keyboard, 126 browser records). Remaining plan: remove dead code and comments,
+de-duplicate, split the long components by responsibility, then trim the docs.
+
 ## Deployment control — 8 October 2026
 
 Every push to `main` used to deploy. Now `main` is the working branch and **never

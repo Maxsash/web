@@ -6,7 +6,6 @@ import {
 } from "@/lib/sea-edition";
 import styles from "./Atlas.module.css";
 
-/** Server-rendered engraving of the shader's actual height field at t=0. */
 export default function OceanPlate({
   variant = "cover",
   edition = createSeaEdition(DEFAULT_SEA_SEED_V2, "2"),
@@ -20,7 +19,6 @@ export default function OceanPlate({
     const { height } = sampleSea(edition, x, z, 0);
     return `${(400 + 19 * (x - z)).toFixed(1)},${(255 + 8.3 * (x + z) - height * 39).toFixed(1)}`;
   };
-  // Illustration density, independent of the live mesh. Keep inline HTML/RSC bounded.
   for (let row = 0; row <= 34; row++) {
     const z = -8 + (16 * row) / 34;
     rows.push(Array.from({ length: 81 }, (_, i) => point(-10 + (20 * i) / 80, z)).join(" "));

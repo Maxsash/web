@@ -132,7 +132,6 @@ function boatMesh() {
     triangle(rows[i][0], rows[i][8], rows[i + 1][0], deck);
     triangle(rows[i + 1][0], rows[i][8], rows[i + 1][8], deck);
   }
-  // A curved mast and two ruled sail surfaces; no model or texture download.
   for (let i = 0; i < 24; i++)
     for (let j = 0; j < 6; j++) {
       const mast = (u: number, v: number): V3 => [
@@ -167,7 +166,6 @@ function boatMesh() {
   return new Float32Array(output);
 }
 
-/** Three draws, no textures/FBOs/post-processing; dispose all owned GPU objects. */
 export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition, compact = false) {
   const gl = canvas.getContext("webgl2", {
     alpha: false,
@@ -283,7 +281,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     resize(width: number, height: number, ratio: number) {
       const nextWidth = Math.max(1, Math.round(width * ratio)),
         nextHeight = Math.max(1, Math.round(height * ratio));
-      // Assigning either dimension clears/reallocates the drawing buffer, even if unchanged.
+      // Assigning either dimension reallocates the drawing buffer, even when unchanged.
       if (canvas.width !== nextWidth) canvas.width = nextWidth;
       if (canvas.height !== nextHeight) canvas.height = nextHeight;
       aspect = width / height;

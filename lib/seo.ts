@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { site, projects } from "@/content/site";
 
-// One production origin for canonical URLs, cards, structured data and discovery.
 export const siteOrigin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url).origin;
 export const absoluteUrl = (path: string) => new URL(path, `${siteOrigin}/`).href;
-export const socialImage = {
+const socialImage = {
   url: absoluteUrl("/images/living-atlas-day-v1.jpg"),
   width: 1200,
   height: 630,

@@ -60,7 +60,6 @@ test("the engraving is a stable t=0 artifact with no active content", () => {
   assert.ok(plate.includes("NOT LIVE OBSERVATIONS"));
   assert.ok(plate.includes(edition.seed));
   assert.doesNotMatch(plate, /<script|<foreignObject|NaN|Infinity|https?:\/\/(?!www.w3.org)/);
-  // This fixed digest is an intentional version-contract alarm, not a visual assertion.
   const digest = createHash("sha256").update(JSON.stringify(edition)).digest("hex");
   assert.equal(digest, "8ff7cd9c669cae591e6ae7c3ddca9c7ffff876420088dd242603b9478752ac64");
 });
@@ -98,7 +97,6 @@ test("version 2 settings visibly and independently change the sea", () => {
     wavelength(make({ character: 0 })) > wavelength(make({ character: 255 })) * 1.4,
     "character shortens the waves",
   );
-  // The fine arrangement moves only with the variation byte.
   const a = make({ variation: 1 }),
     b = make({ variation: 2 });
   assert.notDeepEqual(
@@ -112,7 +110,6 @@ test("version 2 settings visibly and independently change the sea", () => {
     d.waves.map((w) => w.phase),
     "moving swell must not reshuffle crests",
   );
-  // Every reachable corner stays finite and not unreasonably steep.
   for (const swell of [0, 255])
     for (const heading of [0, 255])
       for (const character of [0, 255]) {
@@ -149,7 +146,6 @@ test("each visit gets a considered, varied version 2 sea", () => {
     DEFAULT_SEA_SEED_V2,
     "home water is the studio's own sea",
   );
-  // A small deterministic generator keeps this reproducible.
   let state = 12345;
   const random = () => {
     state = (Math.imul(state, 1664525) + 1013904223) >>> 0;

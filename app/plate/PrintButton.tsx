@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 
-/** Prints the plate. With `auto`, opens the print dialog once the page has settled. */
 export default function PrintButton({ auto }: { auto: boolean }) {
   useEffect(() => {
     if (!auto) return;

@@ -2,8 +2,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 
-// Exercise the real HTTP boundary against a running local production preview.
-// Example: SEA_TEST_BASE=http://localhost:3001 node --test tools/sea-api.test.mjs
 const base = new URL(process.env.SEA_TEST_BASE ?? "http://localhost:3001");
 assert.ok(
   ["http:", "https:"].includes(base.protocol) &&
@@ -80,7 +78,6 @@ test("print output is canonical and deterministic while another edition changes 
   const uppercase = await ok(`${SVG_PATH}?seed=${DEFAULT_SEED.toUpperCase()}&version=1`);
   const other = await ok(`${SVG_PATH}?seed=${OTHER_SEED}&version=1`);
 
-  // Hash comparison keeps a failure from dumping a large vector plate into logs.
   for (const result of [repeated, canonical, uppercase]) {
     assert.equal(
       digest(result.text),
@@ -97,8 +94,6 @@ test("print output is canonical and deterministic while another edition changes 
 });
 
 test("the printable back edge is derived from the coefficients served for that edition", async () => {
-  // Verify the HTTP products against each other without importing their shared
-  // generator. This catches an API/print seed, time, coefficient or formula split.
   for (const seed of [DEFAULT_SEED, OTHER_SEED, "00000000"]) {
     const edition = JSON.parse((await ok(`${JSON_PATH}?seed=${seed}`)).text);
     const svg = (await ok(`${SVG_PATH}?seed=${seed}`)).text;
@@ -110,8 +105,6 @@ test("the printable back edge is derived from the coefficients served for that e
       .map((point) => point.split(",").map(Number));
     assert.ok(points.length >= 5);
 
-    // Version 1 plate: x=-10..10, back edge z=-9, isometric projection
-    // X=640+28(x-z), Y=475+12(x+z)-62h, frozen at scene time t=0.
     for (const index of [
       0,
       Math.floor(points.length / 4),

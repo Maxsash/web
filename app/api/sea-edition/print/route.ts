@@ -6,7 +6,6 @@ import {
   renderSeaPlate,
 } from "@/lib/sea-edition";
 
-/** A vector plate generated from the very same edition coefficients as the scene. */
 export function GET(request: Request) {
   const url = new URL(request.url);
   const seeds = url.searchParams.getAll("seed");
@@ -17,7 +16,6 @@ export function GET(request: Request) {
       headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  // An unversioned request is always version 1, so old links keep their meaning.
   const requested = url.searchParams.get("version");
   const version = requested === null ? "1" : parseSeaVersion(requested);
   if (version === null) {

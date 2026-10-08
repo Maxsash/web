@@ -26,10 +26,8 @@ type Props = {
   }>;
 };
 
-/** The printable view of one sea. The same plate the sea studio previews. */
 export default async function PlatePage({ searchParams }: Props) {
   const query = await searchParams;
-  // With no seed, show the studio's own sea; a seed with no version is version 1, as everywhere.
   const seed =
     query.seed === undefined
       ? DEFAULT_SEA_SEED_V2

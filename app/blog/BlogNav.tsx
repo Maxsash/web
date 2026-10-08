@@ -10,7 +10,6 @@ const items = [
   { label: "Elsewhere", href: "/#elsewhere" },
 ];
 
-/** The same four places as the studio's own navigation, with the current one marked. */
 export default function BlogNav() {
   const pathname = usePathname();
   return (

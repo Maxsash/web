@@ -1,9 +1,8 @@
-import Icon from "@/components/Icon";
+import ArrowIcon from "@/components/ArrowIcon";
 import { destinations, site } from "@/content/site";
 import styles from "./Elsewhere.module.css";
 
 export default function Elsewhere() {
-  const routes = destinations.filter((place) => place.icon !== "mail");
   return (
     <section id="elsewhere" className={styles.section} aria-labelledby="elsewhere-heading">
       <header className={styles.header}>
@@ -29,30 +28,27 @@ export default function Elsewhere() {
       <section className={styles.routes} aria-labelledby="routes-title">
         <div className={styles.routeHead}>
           <h3 id="routes-title">Set a course</h3>
-          <span>{String(routes.length).padStart(2, "0")} / Destinations</span>
+          <span>{String(destinations.length).padStart(2, "0")} / Destinations</span>
         </div>
         <ul>
-          {routes.map((place, index) => (
+          {destinations.map((place, index) => (
             <li key={place.label}>
               <a
                 className={styles.route}
                 href={place.href}
-                {...(place.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.routeCopy}>
                   <span className={styles.routeTitle}>
                     {place.label}
-                    {place.external ? (
-                      <span className="visually-hidden"> (opens in a new tab)</span>
-                    ) : null}
+                    <span className="visually-hidden"> (opens in a new tab)</span>
                   </span>
                   <span className={styles.blurb}>{place.blurb}</span>
                 </span>
-                <span className={styles.destination}>
-                  {place.label === "Portfolio" ? "Experience & projects" : "Code & repositories"}
-                </span>
-                <Icon name="arrow" size={24} />
+                <span className={styles.destination}>{place.scope}</span>
+                <ArrowIcon size={24} />
               </a>
             </li>
           ))}

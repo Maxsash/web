@@ -1,5 +1,12 @@
 # The Maxsash Studio mark
 
+> **Note (8 October 2026):** the generator scripts this record describes
+> (`tools/build-logo.mjs`, `outline.mjs`, `geom.mjs`, `render-logo.mjs`,
+> `preview-logo.mjs`, `scan.py`, `build-waves.mjs`) were removed. The mark itself
+> remains in `components/Mark.tsx`, `app/icon.svg` and `public/mark.svg`; the scripts
+> are recoverable from git history.
+
+
 An integral sign rigged as the mast of a sailboat: mathematics and the sea, the
 two things the studio is named around. The integral's stem is the mast and
 forestay, its lower hook the stern, with a sail hung off the stem and a hull

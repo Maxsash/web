@@ -10,6 +10,29 @@ Start with [the handoff](creative-v2-handoff.md), then the
 [current validation](creative-v2-validation.md). The
 [brief](creative-v2-brief.md) preserves the creative standard.
 
+## Code cleanup, step 2: dead code and comments — 8 October 2026
+
+**Uncommitted, awaiting review.** Removed: the brand-mark and wave generators and their
+geometry tests (`tools/build-logo`, `build-waves`, `build-cover*`, `geom`, `outline`,
+`preview-logo`, `render-logo`, `scan.py`, `geometry.test`), the unused legacy wave data
+(`components/wave-paths.ts`), two unreferenced social cards, the icon set (only the
+arrow was ever drawn; now `ArrowIcon`), dead content fields (`intro`, `links.blog`,
+project `tags`/`repo`/`status`, destination `icon`/`external`), three unused CSS
+classes, and about 40 unused design tokens plus unused `.shell`/`.eyebrow`/`.skip` rules
+from `app/globals.css` (leftovers of the retired wave-band design). Comments: all
+removed except eight that give a reason the code cannot (sample-sea invariants, a
+security note, the WebGL buffer gotcha, the scroll-margin magic number and similar).
+`AGENTS.md` now states the conventions: no needless comments, no repetition, one
+responsibility per module, delete dead code, never commit unless told.
+Verified in an isolated copy: types, lint, `pnpm format:check`, build, **16 Node tests**
+(10 geometry tests went with their generator), 20 SEO, header checks, 20 keyboard, **126
+browser records**. A pixel comparison against the previous build over 32 views
+(8 pages, desktop and phone, day and night) matched exactly except an 18-pixel glyph
+on the phone blog index and the Work screenshot image, which did not load in the old
+baseline's phone capture but loads in the new build. Still to do: remove the repeated
+code (sea request parsing, CDP test setup, Work content duplicated in JSX), split the
+long components by responsibility, merge duplicated CSS rules, trim the process docs.
+
 ## Code cleanup, step 1: Prettier — 8 October 2026
 
 The code read as minified (lines of 250–650 characters, one 200-line effect on a

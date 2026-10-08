@@ -335,7 +335,6 @@
   .result {
     display: contents;
   }
-  /* The drawing stays in view while the settings move beneath it. */
   .plate {
     order: -1;
     position: sticky;
@@ -351,8 +350,8 @@
   .plateFrame svg {
     max-height: 32svh;
   }
-  /* Keep a focused control clear of the pinned drawing, also when arriving with Shift+Tab. */
   .studio :is(button, a, input, summary) {
+    /* Keeps a focused control clear of the pinned drawing, including on Shift+Tab. */
     scroll-margin-top: calc(32svh + 9rem);
   }
   .plate figcaption {
@@ -405,7 +404,6 @@
     position: static;
   }
 }
-/* The day rust is too dim on the night paper; lift it for this section. */
 :global(html[data-studio-theme="night"]) .studio {
   --obs-rust: #e4967c;
 }

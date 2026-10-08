@@ -31,7 +31,7 @@ async function load(): Promise<ApiCommit[]> {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
-  // Optional: a server-only token lifts GitHub's 60-requests-an-hour limit for shared hosting addresses.
+  // Optional server-only token: lifts GitHub's 60 requests an hour limit on shared hosting addresses.
   if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   const response = await fetch(
     `https://api.github.com/repos/${site.repo}/commits?per_page=${SHOWN}`,
@@ -51,10 +51,6 @@ async function load(): Promise<ApiCommit[]> {
   );
 }
 
-/**
- * The studio's own commit log: the latest few commits, whenever they were made.
- * Deliberately no counts or activity chart, so a quiet stretch never reads as neglect.
- */
 export default async function GitHubActivity() {
   let commits: ApiCommit[];
   try {

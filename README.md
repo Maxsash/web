@@ -3,6 +3,8 @@
 The front door for everything built under the Maxsash Studio name, plus links out
 to the personal site, résumé and writing.
 
+Working on this repository? Read [AGENTS.md](AGENTS.md) and [docs/handoff.md](docs/handoff.md) first.
+
 Requires Node 24 (see `.nvmrc`) and pnpm.
 
 ```bash
@@ -57,40 +59,6 @@ omitted. There are no tokens, private GitHub data or browser polling.
 Review evidence and remaining physical Safari checks are in
 [`docs/creative-v2-validation.md`](docs/creative-v2-validation.md). Creative changes
 stay in the main site uncommitted until selected; no sample gallery is used.
-
-## Generated artwork
-
-The brand mark and legacy vector wave artwork are computed rather than drawn.
-Their generated files are committed, so a normal build does not need to run
-these tools. The Living Atlas ocean instead uses `lib/sea-edition.ts` and the
-procedural renderer; the legacy wave generator is not its geometry source.
-
-| Command                      | Writes                                                   | Why it is generated                                                                                                                                                                                                                            |
-| ---------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node tools/build-logo.mjs`  | `components/Mark.tsx`, `app/icon.svg`, `public/mark.svg` | The mark's integral is one spine with exact 180° rotational symmetry, and the sail's luff and the hull's stern both ride a single offset of it, so the white channel beside the mast is a constant width. Hand-drawn, none of that stays true. |
-| `node tools/build-waves.mjs` | `components/wave-paths.ts`                               | Each wave band is a Gerstner surface whose component wavelengths all divide the tile exactly, so scrolling the strip by one tile loops with no seam and no drift.                                                                              |
-
-Re-run `build-logo.mjs` after changing a dial at the top of that file; it checks
-the leech, tangent terminals, head daylight, channel width and branch opening.
-The sail foot and deck share a gently curved normal offset; the mark is three
-filled outlines with real fillets. Re-run
-`build-waves.mjs` after changing a band, and it will refuse a steepness that
-folds the surface over itself.
-
-`node tools/preview-logo.mjs` writes both grounds at display size and
-120 / 56 / 32 / 16px, enlarged junctions, monochrome stamps and actual favicon
-tiles. `node tools/render-logo.mjs --pixels` renders that proof and 900px
-comparison images using Chrome. `tools/scan.py` compares them by proportion.
-Run `node --test tools/geometry.test.mjs` for the geometry regressions.
-
-[`docs/mark.md`](docs/mark.md) is the design record for the mark: what it
-means, which relationships are enforced and where, how it was measured, and a
-frank list of what is still weak in it.
-
-`node tools/render-logo.mjs --assets` regenerates `app/apple-icon.png`,
-`app/favicon.ico` and both social-card PNGs from the same generated mark and
-waves. It needs Chrome and ImageMagick; use `CHROME_BIN` for a custom browser
-path. `tools/build-cover.mjs` writes the card's page for that step.
 
 ## Design tokens
 
@@ -166,7 +134,7 @@ mathematical Easter egg and physical-device qualification remain separate tasks.
 
 ```bash
 pnpm lint
-node --test tools/geometry.test.mjs tools/sea-edition.test.mjs
+node --test tools/sea-edition.test.mjs
 pnpm build
 pnpm start --hostname localhost --port 3001
 # In another terminal, with that production server running:

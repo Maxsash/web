@@ -1,8 +1,6 @@
 import { SEA_LIGHT_SCREEN } from "./ocean-light.ts";
 
-// The same six coefficients drive the GPU, CPU ship pose and server print.
 export const fieldGLSL = `
-// Edition constants are prepared once on the CPU, not recomputed per fragment.
 uniform vec4 uWaveVectors[6];
 uniform float uAmplitudes[6];
 uniform float uTime;
@@ -62,7 +60,6 @@ void main() {
   float glint=pow(max(dot(reflect(-light,n),view),0.),110.);
   float broad=pow(max(dot(reflect(-light,n),view),0.),18.);
   color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);
-  // A soft contact shadow and restrained V wake anchor the vessel spatially.
   vec2 ship=vWorld.xz-vec2(4.5,-5.5);
   float shadow=exp(-dot(ship*vec2(.6,1.4),ship*vec2(.6,1.4)))*.34;
   color*=1.-shadow;
@@ -71,7 +68,6 @@ void main() {
   float dist=length(uEye-vWorld);
   float fog=1.-exp(-dist*.007);
   color=mix(color,mix(vec3(.60,.73,.72),vec3(.07,.13,.21),uNight),fog*fog);
-  // Reveal the exact moving geometry, not a separately animated drawing.
   float grid=max(rule(vWorld.x*.4,.007),rule(vWorld.z*.4,.007));
   float contours=rule(exact.x*3.5,.008);
   vec3 paper=mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight);

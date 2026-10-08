@@ -60,7 +60,6 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
   const current = seedFromSettings(settings);
   const shown = useDeferredValue(current);
   const edition = useMemo(() => createSeaEdition(shown, "2"), [shown]);
-  // The same function prints the plate, so the preview is exactly what is kept.
   const plate = useMemo(() => renderSeaPlate(edition), [edition]);
   const words = describeSea(edition.settings!);
   const sailing = version === "2" && seed === current;

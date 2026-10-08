@@ -4,9 +4,6 @@ import { site } from "@/content/site";
 import { siteOrigin, sharingMetadata } from "@/lib/seo";
 import "./globals.css";
 
-/* Fraunces carries the display voice: an old-style face with enough warmth for
-   the nautical half of the brand.  SOFT and WONK are pinned low in globals.css
-   so headings stay precise rather than whimsical. */
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
@@ -20,7 +17,6 @@ const inter = Inter({
   display: "swap",
 });
 
-/* Monospace does the mathematics: labels, counters, coordinates. */
 const jetbrains = JetBrains_Mono({
   variable: "--font-mono-jb",
   subsets: ["latin"],

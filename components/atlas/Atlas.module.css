@@ -89,12 +89,6 @@
 .runningHead nav a:hover {
   color: var(--atlas-red);
 }
-.proof {
-  font: 0.62rem/1.5 var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--atlas-muted);
-}
 .index,
 .article {
   margin-inline: var(--atlas-gutter);
@@ -226,11 +220,6 @@
 }
 .plateRedNotation {
   fill: var(--atlas-red);
-}
-.plateProbe {
-  fill: var(--atlas-paper);
-  stroke: var(--atlas-red);
-  stroke-width: 1.5;
 }
 .featureCopy {
   padding: clamp(1.5rem, 3.2vw, 3.75rem);
@@ -651,9 +640,6 @@
   }
 }
 @media (max-width: 1100px) {
-  .proof {
-    display: none;
-  }
   .mastheadBody {
     grid-template-columns: minmax(0, 1fr) 7.5rem;
   }

@@ -5,7 +5,6 @@ import {
   parseSeaVersion,
 } from "@/lib/sea-edition";
 
-/** Authored deterministic data only; this endpoint never fetches an upstream feed. */
 export function GET(request: Request) {
   const url = new URL(request.url);
   const seeds = url.searchParams.getAll("seed");
@@ -19,7 +18,6 @@ export function GET(request: Request) {
       },
     );
   }
-  // An unversioned request is always version 1, so old links keep their meaning.
   const requested = url.searchParams.get("version");
   const version = requested === null ? "1" : parseSeaVersion(requested);
   if (version === null) {

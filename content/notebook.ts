@@ -2,7 +2,6 @@ export type NotebookPost = {
   slug: string;
   number: string;
   title: string;
-  /** The final words of the title, set in italics on the article cover. */
   titleEmphasis: string;
   summary: string;
   topic: string;
@@ -15,10 +14,8 @@ export type NotebookPost = {
   closing: string;
 };
 
-/** Clearly identified sample writing, based on the actual site's geometry. */
 export const notebook: NotebookPost[] = [
   {
-    // Retain the original URL even though the current model has six components.
     slug: "three-waves-one-sea",
     number: "001",
     title: "The sea is a sum of small things",

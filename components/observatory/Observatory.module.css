@@ -206,12 +206,6 @@
 .story[data-chapter="atlas"] .nav {
   color: var(--obs-ink);
 }
-.proof {
-  font: 0.6rem/1.5 var(--font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.65;
-}
 .intro {
   position: absolute;
   top: 22%;
@@ -499,9 +493,6 @@
   .brand svg {
     width: 1.5rem;
   }
-  .proof {
-    display: none;
-  }
   .intro {
     top: 16%;
   }
@@ -676,7 +667,6 @@
   }
 }
 
-/* Keep small navigation text readable against the brighter day sky. */
 .shade {
   background:
     linear-gradient(180deg, rgba(4, 25, 31, 0.62), transparent 19%),
@@ -711,7 +701,6 @@
   }
 }
 
-/* Focus rings follow the text colour, so they hold against both the sea and the paper veil. */
 .nav :focus-visible,
 .pause:focus-visible,
 .stageControls :focus-visible,

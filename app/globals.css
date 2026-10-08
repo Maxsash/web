@@ -1,135 +1,33 @@
-/* ==========================================================================
-   Maxsash Studio — design tokens
-
-   Two things run through the palette: the sea (a single blue ramp from the
-   shallows to deep water) and mathematics (paper, graphite rule, brass
-   instruments).  Everything on the page is drawn from those, so the boat, the
-   water and the text belong to the same world.
-
-   Light is a bright noon offshore.  Dark is the same water at dusk.
-   ========================================================================== */
-
 :root {
   color-scheme: light;
 
-  /* --- the sea ramp ---------------------------------------------------- */
-  --foam: #e7f5f1;
-  --shallow: #a5dcde;
-  --sea-lit: #4ea5b8;
-  --sea: #1e7392;
-  --sea-deep: #0e4a66;
-  --sea-abyss: #082f44;
-
-  /* --- shore and paper -------------------------------------------------- */
-  --sand-pale: #fbf5e9;
-  --sand: #f2e6cf;
-  --sand-warm: #e5d3b0;
-
-  /* --- boatyard: the warm half, for anything under construction --------- */
-  --teak: #9a5c33;
-  --brass: #9c7220;
-
-  /* --- sky -------------------------------------------------------------- */
-  --sky-high: #d8ecf7;
-  --sky-mid: #edf4f1;
-  --sky-low: #fbefd6;
-
-  /* --- semantic --------------------------------------------------------- */
-  --paper: var(--sand-pale);
-  --paper-sunk: #f5eddd;
-  --paper-edge: var(--sand-warm);
-
+  --paper: #fbf5e9;
   --ink: #0c2e3f;
   --ink-2: #3b5d6e;
   --ink-3: #4f6977;
-
-  --accent: var(--sea);
-  --accent-ink: #ffffff;
-  --accent-soft: #dcedf3;
-
-  /* The hull reads as a dark silhouette on bright water, and as a moonlit one
-     after sunset — so it is a token, not a fixed step on the sea ramp. */
-  --boat: var(--sea-abyss);
+  --accent: #1e7392;
 
   --rule: color-mix(in oklab, var(--ink) 14%, transparent);
   --rule-strong: color-mix(in oklab, var(--ink) 26%, transparent);
   --grid: color-mix(in oklab, var(--ink) 5%, transparent);
   --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
 
-  --shadow-mid: 0 12px 28px -14px color-mix(in oklab, var(--sea-abyss) 40%, transparent);
-
-  /* --- type ------------------------------------------------------------- */
   --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
-
-  --step--2: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
-  --step--1: clamp(0.875rem, 0.85rem + 0.16vw, 0.95rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
-  --step-1: clamp(1.18rem, 1.1rem + 0.42vw, 1.44rem);
-  --step-2: clamp(1.45rem, 1.28rem + 0.85vw, 2.05rem);
-  --step-3: clamp(1.85rem, 1.5rem + 1.7vw, 3rem);
-  --step-4: clamp(2.6rem, 1.9rem + 3.4vw, 4.6rem);
-  --step-5: clamp(3.2rem, 1.9rem + 6.4vw, 7rem);
-
-  /* --- rhythm ----------------------------------------------------------- */
-  --gutter: clamp(1.25rem, 5vw, 4.5rem);
-  --safe-left: env(safe-area-inset-left, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-  --radius: 14px;
-  --radius-lg: 22px;
-
-  /* --- motion ----------------------------------------------------------- */
-  /* Each band scrolls one tile per cycle. The ratios are the parallax: the
-     near swell covers ground about three times faster than the horizon. */
-  --drift-far: 58s;
-  --drift-mid: 34s;
-  --drift-near: 20s;
-  --heave-far: 13s;
-  --heave-mid: 9.5s;
-  --heave-near: 7s;
-  --ship-heave: 8.5s;
-  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
 
-    --foam: #6fa7b2;
-    --shallow: #2e7e93;
-    --sea-lit: #1b5f79;
-    --sea: #12455e;
-    --sea-deep: #0b3046;
-    --sea-abyss: #041a28;
-
-    --sky-high: #101f38;
-    --sky-mid: #3b3357;
-    --sky-low: #b0563f;
-
     --paper: #071d2a;
-    --paper-sunk: #0b2a3a;
-    --paper-edge: #12384c;
-
     --ink: #e9f2f3;
     --ink-2: #a6c2cb;
     --ink-3: #6d8b97;
-
-    --teak: #ce9067;
-    --brass: #d8ab4a;
-
     --accent: #57b2c6;
-    --accent-ink: #04202e;
-    --accent-soft: #10394c;
-    --boat: #b9d8dd;
-
-    --grid: color-mix(in oklab, var(--ink) 5%, transparent);
-    --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
-    --shadow-mid: 0 12px 28px -14px rgb(0 0 0 / 0.6);
   }
 }
-
-/* ---------- reset ---------- */
 
 *,
 *::before,
@@ -148,7 +46,7 @@ html {
 body {
   min-height: 100dvh;
   font-family: var(--font-sans);
-  font-size: var(--step-0);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   line-height: 1.65;
   color: var(--ink);
   background-color: var(--paper);
@@ -201,9 +99,6 @@ a:hover {
   background: color-mix(in oklab, var(--accent) 26%, transparent);
 }
 
-/* Faint graph paper behind the written part of the page: the mathematics half
-   of the brand, kept quiet enough to read as texture rather than decoration.
-   It starts below the hero so it never sits on top of the sky. */
 main {
   position: relative;
   isolation: isolate;
@@ -234,50 +129,12 @@ main::before {
   );
 }
 
-/* ---------- shared layout ---------- */
-
-.shell {
-  width: auto;
-  /* Independent margins also handle a notch on only one landscape edge. */
-  margin-left: max(var(--gutter), var(--safe-left), calc((100% - 76rem) / 2));
-  margin-right: max(var(--gutter), var(--safe-right), calc((100% - 76rem) / 2));
-}
-
-/* Long labels and enlarged text must reflow, including within grid tracks. */
 :where(h1, h2, h3, p, li, a) {
   overflow-wrap: anywhere;
 }
 
 section[id] {
   scroll-margin-block-start: 1rem;
-}
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-/* Keyboard-only shortcut past the hero. */
-.skip {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  z-index: 20;
-  padding: 0.6rem 1rem;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-size: var(--step--1);
-  text-decoration: none;
-  translate: 0 -150%;
-  transition: translate 160ms var(--ease);
-}
-
-.skip:focus-visible {
-  translate: 0 0;
 }
 
 .visually-hidden {

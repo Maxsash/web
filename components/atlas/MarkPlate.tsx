@@ -1,7 +1,6 @@
 import Mark from "@/components/Mark";
 import styles from "./Atlas.module.css";
 
-/** Construction rails are annotations; the three filled master paths are unchanged. */
 export default function MarkPlate({ detail = false }: { detail?: boolean }) {
   return (
     <div className={`${styles.markPlate} ${detail ? styles.markDetail : ""}`}>

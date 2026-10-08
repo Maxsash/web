@@ -1,13 +1,4 @@
-/**
- * The authored sea contract shared by the shader, notebook and printable plate.
- * Coordinates: x/z horizontal, y up. Metres and seconds. Direction is in radians
- * from +x toward +z. This is an authored model, never a live ocean observation.
- *
- * Version 1 coefficients and PRNG must remain stable for reproducible editions.
- * Version 2 reads the seed as four settings (see SeaSettings), so a visitor can
- * shape a sea and the seed is simply its recipe. It must remain stable too; an
- * unversioned request always means version 1.
- */
+// Metres and seconds; x and z are horizontal, y is up, directions are radians from +x toward +z.
 export type SeaWave = {
   amplitude: number;
   wavelength: number;
@@ -17,15 +8,10 @@ export type SeaWave = {
 
 export type SeaVersion = "1" | "2";
 
-/** Version 2 reads the eight-character seed as four bytes, each 0–255. */
 export type SeaSettings = {
-  /** Overall height of the sea. */
   swell: number;
-  /** Which way the sea runs, left to right of the view. */
   heading: number;
-  /** Long and rolling at 0, short and cross-running at 255. */
   character: number;
-  /** Which of 256 fine arrangements of crests this sea uses. */
   variation: number;
 };
 
@@ -34,7 +20,6 @@ export type SeaEdition = {
   seed: string;
   kind: "authored";
   waves: SeaWave[];
-  /** Present on version 2 editions. */
   settings?: SeaSettings;
 };
 
@@ -43,14 +28,12 @@ export type SeaSample = { height: number; dx: number; dz: number };
 export const DEFAULT_SEA_SEED = "5ea5cafe";
 export const SEA_GRAVITY = 9.81;
 
-/** Return a canonical eight-character seed, or null for an invalid input. */
 export function normaliseSeaSeed(input: string): string | null {
   return /^[a-f\d]{8}$/i.test(input) ? input.toLowerCase() : null;
 }
 
 function seededRandom(seed: number) {
   let state = seed >>> 0;
-  // Mulberry32: explicit 32-bit operations also allow the zero seed.
   return () => {
     state = (state + 0x6d2b79f5) >>> 0;
     let value = state;
@@ -60,10 +43,8 @@ function seededRandom(seed: number) {
   };
 }
 
-/** Version 2 starts here. Settings are all mid-range; the variation is arbitrary. */
 export const DEFAULT_SEA_SEED_V2 = "70806d5e";
 
-/** Starting points shared by the studio's buttons and the random visit sea. */
 export const SEA_PRESETS: { name: string; settings: SeaSettings }[] = [
   { name: "Glass", settings: { swell: 30, heading: 128, character: 20, variation: 7 } },
   { name: "Trade wind", settings: { swell: 140, heading: 200, character: 110, variation: 7 } },
@@ -73,12 +54,6 @@ export const HOME_WATER: SeaSettings = { swell: 112, heading: 128, character: 10
 
 const clampByte = (value: number) => Math.min(255, Math.max(0, Math.round(value)));
 
-/**
- * A different sea for every visit, but never an ugly one: choose a considered
- * starting point, nudge each setting, and pick the fine arrangement freely.
- * Fully random settings reach corners (a glassy sea running hard sideways, say)
- * that are legal but rarely the sea we want to meet first.
- */
 export function pickVisitSea(random: () => number = Math.random): string {
   const starts = [
     { settings: HOME_WATER, weight: 3 },
@@ -119,11 +94,6 @@ export function createSeaEdition(seed = DEFAULT_SEA_SEED, version: SeaVersion = 
   return version === "2" ? createSeaEditionV2(seed) : createSeaEditionV1(seed);
 }
 
-/**
- * Version 2. Four bytes shape the whole sea, so two seeds can look unmistakably
- * different, and moving one control never reshuffles the others. The fine
- * arrangement of crests comes only from the variation byte.
- */
 function createSeaEditionV2(seed: string): SeaEdition {
   const settings = settingsFromSeed(seed);
   const canonical = seedFromSettings(settings);
@@ -137,15 +107,12 @@ function createSeaEditionV2(seed: string): SeaEdition {
   const directions = [0.28, -0.62, 0.95, -0.28, 0.7, -0.9];
   const rounded = (value: number) => Number(value.toFixed(8));
 
-  // Height: a calm sea is a third of a rough one.
   const height = 0.55 + 1.0 * swell;
-  // Character moves energy between long and short waves without changing the total.
   const gain = 0.5 + 1.2 * character;
   const weights = amplitudes.map((_, index) => Math.pow(gain, (index - 2.5) / 2.5));
   const energy = amplitudes.reduce((sum, amplitude, index) => sum + amplitude * weights[index], 0);
   const normal = amplitudes.reduce((sum, amplitude) => sum + amplitude, 0) / energy;
   const lengthScale = 1.45 - 0.45 * character;
-  // A calm swell travels as one family; a rough sea crosses itself.
   const spread = 0.35 + 1.0 * character;
   const turn = (heading - 0.5) * 2.0;
 
@@ -163,6 +130,7 @@ function createSeaEditionV2(seed: string): SeaEdition {
   };
 }
 
+// Frozen: changing any coefficient or the generator changes every version 1 edition ever shared.
 function createSeaEditionV1(seed = DEFAULT_SEA_SEED): SeaEdition {
   const canonical = normaliseSeaSeed(seed);
   if (canonical === null)
@@ -187,7 +155,6 @@ function createSeaEditionV1(seed = DEFAULT_SEA_SEED): SeaEdition {
   };
 }
 
-/** Accept only the versions this contract defines. */
 export function parseSeaVersion(input: string | null | undefined): SeaVersion | null {
   return input === "1" || input === "2" ? input : null;
 }
@@ -195,7 +162,6 @@ export function parseSeaVersion(input: string | null | undefined): SeaVersion | 
 const tier = (value: number, names: [string, string, string, string, string]) =>
   names[Math.min(4, Math.floor((value / 256) * 5))];
 
-/** A short plain-language reading of a version 2 sea, for captions and screen readers. */
 export function describeSea(settings: SeaSettings): {
   swell: string;
   heading: string;
@@ -225,7 +191,6 @@ export function describeSea(settings: SeaSettings): {
   };
 }
 
-/** CPU reference. The GLSL implementation must use these identical equations. */
 export function sampleSea(edition: SeaEdition, x: number, z: number, time: number): SeaSample {
   let height = 0;
   let dx = 0;
@@ -244,7 +209,6 @@ export function sampleSea(edition: SeaEdition, x: number, z: number, time: numbe
   return { height, dx, dz };
 }
 
-/** Deterministic vector engraving, sampled at the same t=0 as the first frame. */
 export function renderSeaPlate(edition: SeaEdition): string {
   const rows: string[] = [];
   const columns: string[] = [];
@@ -270,11 +234,10 @@ export function renderSeaPlate(edition: SeaEdition): string {
 
   const cut: string[] = [];
   for (let step = 0; step <= 320; step++) cut.push(point(-10 + (20 * step) / 320, 0));
+  // The seed is validated and every other value is generated geometry, so no untrusted markup reaches this SVG.
   const recipe = edition.settings
     ? `SWELL ${edition.settings.swell} · HEADING ${edition.settings.heading} · CHARACTER ${edition.settings.character} · VARIATION ${edition.settings.variation}`
     : "SEA / SHIP / MATH";
-  // The seed is validated by createSeaEdition, and every other interpolated
-  // value is generated numeric geometry. No untrusted markup enters this SVG.
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1280 960" role="img" aria-labelledby="title desc">
 <title id="title">Sea, resolved — authored edition ${edition.seed}</title>
 <desc id="desc">A mathematical ocean drawn as an engraved isometric field. Six directional waves form the same surface shown in the Observatory. Frozen at scene time zero. This is an authored study, not an ocean observation.</desc>

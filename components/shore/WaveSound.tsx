@@ -34,7 +34,6 @@ export function WaveSoundControl() {
   );
 }
 
-/** One controller for both header and footer controls. Audio unlock stays inside input handlers. */
 export function WaveSoundController() {
   useEffect(() => {
     let audio: AudioContext | null = null,
@@ -100,7 +99,6 @@ export function WaveSoundController() {
       }
     };
     toggle = () => {
-      // Only these controls enable sound. General page interaction never creates audio.
       enabled = status !== "on";
       try {
         localStorage.setItem("studio-wave-sound", enabled ? "on" : "off");

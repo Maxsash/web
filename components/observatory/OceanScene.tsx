@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { SeaEdition } from "@/lib/sea-edition";
 import styles from "./Observatory.module.css";
 
-/** The React boundary handles lifecycle; rendering and scroll never set React state. */
 export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pauseRef = useRef<(() => boolean) | null>(null);
@@ -17,7 +16,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const stage = canvas?.parentElement;
     if (!canvas || !scene || !stage) return;
     const media = matchMedia("(prefers-reduced-motion: reduce)");
-    // Conservative startup budget, including phones in landscape. Not a hardware benchmark.
     const compact = matchMedia("(pointer: coarse)").matches || stage.clientWidth < 760;
     const staged = matchMedia("(pointer: coarse)").matches;
     const stages = [
@@ -77,7 +75,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       const intro = 1 - clamp((progress - 0.06) / 0.24);
       const middle = clamp((progress - 0.23) / 0.22) * (1 - clamp((progress - 0.68) / 0.2));
       const end = clamp((progress - 0.75) / 0.2);
-      // Avoid invalidating inherited properties throughout the SVG/text subtree.
       [intro, middle, end, clamp((progress - 0.17) / 0.3)].forEach((opacity, i) => {
         if (opacity === lastOpacity[i]) return;
         lastOpacity[i] = opacity;
@@ -93,8 +90,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       if (disposed) return;
       if (stageStarted) {
         const t = media.matches ? 1 : clamp((now - stageStarted) / stageDuration);
-        // The long opening responds immediately, then gently decelerates.
-        // Keep the existing smootherstep for every other stage move.
         const eased = stageDuration === 1800 ? t * (2 - t) : t * t * t * (t * (t * 6 - 15) + 10);
         stageProgress = stageFrom + (stageTarget - stageFrom) * eased;
         scrollDirty = true;
@@ -102,14 +97,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       }
       const active = visible && !document.hidden && !stopped && !media.matches;
       const scrollChanged = scrollDirty || window.scrollY !== lastScrollY;
-      // Pace idle animation, never hold back a new scroll sample behind that budget.
-      // Advance a deadline rather than restarting the interval after each draw:
-      // slightly early/variable Safari callbacks must not repeatedly skip a frame.
       if (engine && active && !scrollChanged && nextDraw > now + 1) {
         frame = requestAnimationFrame(render);
         return;
       }
-      // HTML reveal and GPU camera now sample the same scroll position in one frame.
       if (scrollChanged) updateScroll();
       if (!engine || !visible || document.hidden) {
         if (stageStarted && visible && !document.hidden) frame = requestAnimationFrame(render);
@@ -126,8 +117,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             pointer[0] + (target[0] - pointer[0]) * damping,
             pointer[1] + (target[1] - pointer[1]) * damping,
           ];
-      // Mobile opening has no desktop scroll hold: all 1.8 seconds reveal the scene.
-      // Meet the original mapping at Structure so stage 2 → 3 stays unchanged.
       const reveal =
         media.matches && !staged
           ? progress > 0.45
@@ -156,7 +145,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       }
       canvas.dataset.quality = media.matches ? "still" : low ? "low" : compact ? "compact" : "high";
       if (active) {
-        // Adapt to sustained frame delivery, never claim this measures GPU time.
         if (lastTime - performanceStart > 1600) {
           if (sampleFrames >= 12 && slowFrames / sampleFrames > 0.3 && !low) {
             low = true;
@@ -200,7 +188,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       }
       const previousIndex = stageIndex;
       stageIndex = Math.max(0, Math.min(stages.length - 1, stageIndex + direction));
-      // Let the first dimensional reveal unfold; other moves stay responsive.
       stageDuration = previousIndex === 0 && stageIndex === 1 ? 1800 : 600;
       stageFrom = stageProgress;
       stageTarget = stages[stageIndex].progress;
@@ -240,7 +227,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           touch.dx = event.touches[0].clientX - touch.x;
           touch.dy = event.touches[0].clientY - touch.y;
           if (Math.abs(touch.dy) <= Math.abs(touch.dx) || Math.abs(touch.dy) < 4) return;
-          // Only consume vertical gestures that have another scene stage to visit.
           if (
             (touch.dy < 0 && stageIndex < stages.length - 1) ||
             (touch.dy > 0 && stageIndex > 0)

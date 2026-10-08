@@ -29,7 +29,6 @@ export const metadata: Metadata = {
 
 type Query = { seed?: string | string[]; version?: string | string[] };
 
-/** No seed means a fresh sea for this visit (version 2). A seed with no version is a version 1 link, as it always was. */
 function resolveSea(query: Query) {
   if (query.seed === undefined) {
     if (query.version === undefined || query.version === "2")

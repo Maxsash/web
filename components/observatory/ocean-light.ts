@@ -1,4 +1,3 @@
-/** Shared screen anchor for the sky disc and the world-space illumination ray. */
 export const SEA_LIGHT_SCREEN = [0.76, 0.74] as const;
 export const SEA_HALF_FOV = Math.PI / 7;
 type Vector = [number, number, number];

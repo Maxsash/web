@@ -9,10 +9,11 @@ import { dirname, join, relative, resolve } from "node:path";
 import { gzipSync } from "node:zlib";
 
 const root = resolve(".next/server/app");
-const walk = (dir) => readdirSync(dir).flatMap((name) => {
-  const path = join(dir, name);
-  return statSync(path).isDirectory() ? walk(path) : path.endsWith(".html") ? [path] : [];
-});
+const walk = (dir) =>
+  readdirSync(dir).flatMap((name) => {
+    const path = join(dir, name);
+    return statSync(path).isDirectory() ? walk(path) : path.endsWith(".html") ? [path] : [];
+  });
 const size = (data) => ({ raw: data.length, gzip: gzipSync(data).length });
 const report = {};
 for (const path of walk(root)) {
@@ -27,11 +28,23 @@ for (const path of walk(root)) {
     if (tag[0].includes('rel="stylesheet"') && src.endsWith(".css")) assets.css.add(src);
     if (tag[0].includes('as="font"')) assets.fonts.add(src);
   }
-  const measured = Object.fromEntries(Object.entries(assets).map(([kind, urls]) => {
-    const files = [...urls].map((url) => ({ url, ...size(readFileSync(`.next/${url.slice(7)}`)) }));
-    return [kind, { count: files.length, raw: files.reduce((sum, file) => sum + file.raw, 0),
-      gzip: files.reduce((sum, file) => sum + file.gzip, 0), files }];
-  }));
+  const measured = Object.fromEntries(
+    Object.entries(assets).map(([kind, urls]) => {
+      const files = [...urls].map((url) => ({
+        url,
+        ...size(readFileSync(`.next/${url.slice(7)}`)),
+      }));
+      return [
+        kind,
+        {
+          count: files.length,
+          raw: files.reduce((sum, file) => sum + file.raw, 0),
+          gzip: files.reduce((sum, file) => sum + file.gzip, 0),
+          files,
+        },
+      ];
+    }),
+  );
   const name = relative(root, path).replace(/\.html$/, "");
   const route = name === "index" ? "/" : `/${name}`;
   report[route] = { html: size(html), ...measured };
@@ -41,7 +54,16 @@ if (output) {
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, `${JSON.stringify(report, null, 2)}\n`);
 }
-console.table(Object.fromEntries(Object.entries(report).map(([route, values]) => [route, {
-  "HTML gzip": values.html.gzip, "JS gzip": values.js.gzip,
-  "CSS gzip": values.css.gzip, "font raw": values.fonts.raw,
-}])));
+console.table(
+  Object.fromEntries(
+    Object.entries(report).map(([route, values]) => [
+      route,
+      {
+        "HTML gzip": values.html.gzip,
+        "JS gzip": values.js.gzip,
+        "CSS gzip": values.css.gzip,
+        "font raw": values.fonts.raw,
+      },
+    ]),
+  ),
+);

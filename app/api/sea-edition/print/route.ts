@@ -1,4 +1,10 @@
-import { createSeaEdition, DEFAULT_SEA_SEED, normaliseSeaSeed, parseSeaVersion, renderSeaPlate } from "@/lib/sea-edition";
+import {
+  createSeaEdition,
+  DEFAULT_SEA_SEED,
+  normaliseSeaSeed,
+  parseSeaVersion,
+  renderSeaPlate,
+} from "@/lib/sea-edition";
 
 /** A vector plate generated from the very same edition coefficients as the scene. */
 export function GET(request: Request) {

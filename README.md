@@ -64,10 +64,10 @@ Their generated files are committed, so a normal build does not need to run
 these tools. The Living Atlas ocean instead uses `lib/sea-edition.ts` and the
 procedural renderer; the legacy wave generator is not its geometry source.
 
-| Command | Writes | Why it is generated |
-| --- | --- | --- |
-| `node tools/build-logo.mjs` | `components/Mark.tsx`, `app/icon.svg`, `public/mark.svg` | The mark's integral is one spine with exact 180° rotational symmetry, and the sail's luff and the hull's stern both ride a single offset of it, so the white channel beside the mast is a constant width. Hand-drawn, none of that stays true. |
-| `node tools/build-waves.mjs` | `components/wave-paths.ts` | Each wave band is a Gerstner surface whose component wavelengths all divide the tile exactly, so scrolling the strip by one tile loops with no seam and no drift. |
+| Command                      | Writes                                                   | Why it is generated                                                                                                                                                                                                                            |
+| ---------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node tools/build-logo.mjs`  | `components/Mark.tsx`, `app/icon.svg`, `public/mark.svg` | The mark's integral is one spine with exact 180° rotational symmetry, and the sail's luff and the hull's stern both ride a single offset of it, so the white channel beside the mast is a constant width. Hand-drawn, none of that stays true. |
+| `node tools/build-waves.mjs` | `components/wave-paths.ts`                               | Each wave band is a Gerstner surface whose component wavelengths all divide the tile exactly, so scrolling the strip by one tile loops with no seam and no drift.                                                                              |
 
 Re-run `build-logo.mjs` after changing a dial at the top of that file; it checks
 the leech, tangent terminals, head daylight, channel width and branch opening.

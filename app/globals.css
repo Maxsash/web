@@ -13,80 +13,80 @@
   color-scheme: light;
 
   /* --- the sea ramp ---------------------------------------------------- */
-  --foam:        #E7F5F1;
-  --shallow:     #A5DCDE;
-  --sea-lit:     #4EA5B8;
-  --sea:         #1E7392;
-  --sea-deep:    #0E4A66;
-  --sea-abyss:   #082F44;
+  --foam: #e7f5f1;
+  --shallow: #a5dcde;
+  --sea-lit: #4ea5b8;
+  --sea: #1e7392;
+  --sea-deep: #0e4a66;
+  --sea-abyss: #082f44;
 
   /* --- shore and paper -------------------------------------------------- */
-  --sand-pale:   #FBF5E9;
-  --sand:        #F2E6CF;
-  --sand-warm:   #E5D3B0;
+  --sand-pale: #fbf5e9;
+  --sand: #f2e6cf;
+  --sand-warm: #e5d3b0;
 
   /* --- boatyard: the warm half, for anything under construction --------- */
-  --teak:        #9A5C33;
-  --brass:       #9C7220;
+  --teak: #9a5c33;
+  --brass: #9c7220;
 
   /* --- sky -------------------------------------------------------------- */
-  --sky-high:    #D8ECF7;
-  --sky-mid:     #EDF4F1;
-  --sky-low:     #FBEFD6;
+  --sky-high: #d8ecf7;
+  --sky-mid: #edf4f1;
+  --sky-low: #fbefd6;
 
   /* --- semantic --------------------------------------------------------- */
-  --paper:       var(--sand-pale);
-  --paper-sunk:  #F5EDDD;
-  --paper-edge:  var(--sand-warm);
+  --paper: var(--sand-pale);
+  --paper-sunk: #f5eddd;
+  --paper-edge: var(--sand-warm);
 
-  --ink:         #0C2E3F;
-  --ink-2:       #3B5D6E;
-  --ink-3:       #4F6977;
+  --ink: #0c2e3f;
+  --ink-2: #3b5d6e;
+  --ink-3: #4f6977;
 
-  --accent:      var(--sea);
-  --accent-ink:  #FFFFFF;
-  --accent-soft: #DCEDF3;
+  --accent: var(--sea);
+  --accent-ink: #ffffff;
+  --accent-soft: #dcedf3;
 
   /* The hull reads as a dark silhouette on bright water, and as a moonlit one
      after sunset — so it is a token, not a fixed step on the sea ramp. */
-  --boat:        var(--sea-abyss);
+  --boat: var(--sea-abyss);
 
-  --rule:        color-mix(in oklab, var(--ink) 14%, transparent);
+  --rule: color-mix(in oklab, var(--ink) 14%, transparent);
   --rule-strong: color-mix(in oklab, var(--ink) 26%, transparent);
-  --grid:        color-mix(in oklab, var(--ink) 5%, transparent);
-  --grid-major:  color-mix(in oklab, var(--ink) 8%, transparent);
+  --grid: color-mix(in oklab, var(--ink) 5%, transparent);
+  --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
 
-  --shadow-mid:  0 12px 28px -14px color-mix(in oklab, var(--sea-abyss) 40%, transparent);
+  --shadow-mid: 0 12px 28px -14px color-mix(in oklab, var(--sea-abyss) 40%, transparent);
 
   /* --- type ------------------------------------------------------------- */
   --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --font-sans:    var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono:    var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --step--2: clamp(0.72rem, 0.70rem + 0.10vw, 0.78rem);
+  --step--2: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
   --step--1: clamp(0.875rem, 0.85rem + 0.16vw, 0.95rem);
-  --step-0:  clamp(1rem, 0.96rem + 0.20vw, 1.125rem);
-  --step-1:  clamp(1.18rem, 1.10rem + 0.42vw, 1.44rem);
-  --step-2:  clamp(1.45rem, 1.28rem + 0.85vw, 2.05rem);
-  --step-3:  clamp(1.85rem, 1.50rem + 1.70vw, 3rem);
-  --step-4:  clamp(2.6rem, 1.90rem + 3.40vw, 4.6rem);
-  --step-5:  clamp(3.2rem, 1.90rem + 6.40vw, 7rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.18rem, 1.1rem + 0.42vw, 1.44rem);
+  --step-2: clamp(1.45rem, 1.28rem + 0.85vw, 2.05rem);
+  --step-3: clamp(1.85rem, 1.5rem + 1.7vw, 3rem);
+  --step-4: clamp(2.6rem, 1.9rem + 3.4vw, 4.6rem);
+  --step-5: clamp(3.2rem, 1.9rem + 6.4vw, 7rem);
 
   /* --- rhythm ----------------------------------------------------------- */
-  --gutter:   clamp(1.25rem, 5vw, 4.5rem);
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-  --radius:   14px;
+  --radius: 14px;
   --radius-lg: 22px;
 
   /* --- motion ----------------------------------------------------------- */
   /* Each band scrolls one tile per cycle. The ratios are the parallax: the
      near swell covers ground about three times faster than the horizon. */
-  --drift-far:  58s;
-  --drift-mid:  34s;
+  --drift-far: 58s;
+  --drift-mid: 34s;
   --drift-near: 20s;
-  --heave-far:  13s;
-  --heave-mid:  9.5s;
+  --heave-far: 13s;
+  --heave-mid: 9.5s;
   --heave-near: 7s;
   --ship-heave: 8.5s;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -96,34 +96,34 @@
   :root {
     color-scheme: dark;
 
-    --foam:      #6FA7B2;
-    --shallow:   #2E7E93;
-    --sea-lit:   #1B5F79;
-    --sea:       #12455E;
-    --sea-deep:  #0B3046;
-    --sea-abyss: #041A28;
+    --foam: #6fa7b2;
+    --shallow: #2e7e93;
+    --sea-lit: #1b5f79;
+    --sea: #12455e;
+    --sea-deep: #0b3046;
+    --sea-abyss: #041a28;
 
-    --sky-high:  #101F38;
-    --sky-mid:   #3B3357;
-    --sky-low:   #B0563F;
+    --sky-high: #101f38;
+    --sky-mid: #3b3357;
+    --sky-low: #b0563f;
 
-    --paper:      #071D2A;
-    --paper-sunk: #0B2A3A;
-    --paper-edge: #12384C;
+    --paper: #071d2a;
+    --paper-sunk: #0b2a3a;
+    --paper-edge: #12384c;
 
-    --ink:   #E9F2F3;
-    --ink-2: #A6C2CB;
-    --ink-3: #6D8B97;
+    --ink: #e9f2f3;
+    --ink-2: #a6c2cb;
+    --ink-3: #6d8b97;
 
-    --teak:  #CE9067;
-    --brass: #D8AB4A;
+    --teak: #ce9067;
+    --brass: #d8ab4a;
 
-    --accent:      #57B2C6;
-    --accent-ink:  #04202E;
-    --accent-soft: #10394C;
-    --boat:        #B9D8DD;
+    --accent: #57b2c6;
+    --accent-ink: #04202e;
+    --accent-soft: #10394c;
+    --boat: #b9d8dd;
 
-    --grid:       color-mix(in oklab, var(--ink) 5%, transparent);
+    --grid: color-mix(in oklab, var(--ink) 5%, transparent);
     --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
     --shadow-mid: 0 12px 28px -14px rgb(0 0 0 / 0.6);
   }
@@ -162,12 +162,17 @@ svg {
   max-width: 100%;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.06;
   letter-spacing: -0.015em;
-  font-variation-settings: "SOFT" 12, "WONK" 0, "opsz" 96;
+  font-variation-settings:
+    "SOFT" 12,
+    "WONK" 0,
+    "opsz" 96;
   text-wrap: balance;
 }
 
@@ -215,7 +220,11 @@ main::before {
     linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 128px 128px, 128px 128px, 32px 32px, 32px 32px;
+  background-size:
+    128px 128px,
+    128px 128px,
+    32px 32px,
+    32px 32px;
   mask-image: linear-gradient(
     to bottom,
     transparent 0,

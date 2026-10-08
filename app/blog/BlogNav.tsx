@@ -16,7 +16,18 @@ export default function BlogNav() {
   return (
     <nav aria-label="Studio">
       {items.map(({ label, href }) => (
-        <Link prefetch={false} key={href} href={href} aria-current={href === "/blog" && pathname.startsWith("/blog") ? (pathname === "/blog" ? "page" : "true") : undefined}>
+        <Link
+          prefetch={false}
+          key={href}
+          href={href}
+          aria-current={
+            href === "/blog" && pathname.startsWith("/blog")
+              ? pathname === "/blog"
+                ? "page"
+                : "true"
+              : undefined
+          }
+        >
           {label}
         </Link>
       ))}

@@ -29,8 +29,7 @@ export const notebook: NotebookPost[] = [
     date: "2026-10-04",
     minutes: 4,
     diagram: "waves",
-    plateCaption:
-      "The surface of the Living Atlas, sampled at time zero and resolved into ink.",
+    plateCaption: "The surface of the Living Atlas, sampled at time zero and resolved into ink.",
     opening:
       "A sea can look unpredictable without being complicated at every level. Sometimes the interesting part is how a few simple things refuse to agree.",
     sections: [
@@ -59,16 +58,14 @@ export const notebook: NotebookPost[] = [
         marginNote: "Edition 70806d5e / Authored study / Frozen at t = 0",
       },
     ],
-    closing:
-      "The drawing does not explain away the sea. It gives you another way to see it.",
+    closing: "The drawing does not explain away the sea. It gives you another way to see it.",
   },
   {
     slug: "an-integral-under-sail",
     number: "002",
     title: "An integral under sail",
     titleEmphasis: "under sail",
-    summary:
-      "The little drawing where a mathematical spine becomes a ship's mast.",
+    summary: "The little drawing where a mathematical spine becomes a ship's mast.",
     topic: "Geometry & craft",
     date: "2026-10-04",
     minutes: 4,
@@ -84,8 +81,7 @@ export const notebook: NotebookPost[] = [
           "The mark is built from three filled outlines: mast, sail, and hull. The integral spine has exact half-turn symmetry. The boat around it is intentionally asymmetric, so the whole mark does not inherit that symmetry.",
           "The sail and stern follow an offset of the spine. The channel beside the mast is a geometric relationship, not a gap guessed independently for each piece. The engraved plate places the three original outlines against a set of construction guides.",
         ],
-        marginNote:
-          "A half-turn in the spine / A different relationship in the whole vessel",
+        marginNote: "A half-turn in the spine / A different relationship in the whole vessel",
       },
       {
         title: "Fair curves carry the load",

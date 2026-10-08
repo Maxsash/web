@@ -29,7 +29,10 @@ test("a fitted wave stays within tolerance and has forward tangent continuity", 
     const curve = chain[i];
     for (const p of sample((t) => at(curve, t), 80)) {
       assert(p[0] >= previousX - 1e-9, "the curve must not double back between source samples");
-      assert(distToPolyline(p, points) <= 0.25, "the fitted outline must not bulge outside tolerance");
+      assert(
+        distToPolyline(p, points) <= 0.25,
+        "the fitted outline must not bulge outside tolerance",
+      );
       previousX = p[0];
     }
     if (i > 0) {
@@ -37,14 +40,27 @@ test("a fitted wave stays within tolerance and has forward tangent continuity", 
       assert.deepEqual(at(previous, 1), at(curve, 0));
       const into = V.norm(V.sub(at(previous, 1), at(previous, 1 - 1e-5)));
       const out = V.norm(V.sub(at(curve, 1e-5), at(curve, 0)));
-      assert(V.dot(into, out) > 0.999999, "the rendered curve must leave a join in its incoming direction");
+      assert(
+        V.dot(into, out) > 0.999999,
+        "the rendered curve must leave a join in its incoming direction",
+      );
     }
   }
 });
 
 test("unresolvable sparse fitting fails instead of silently exceeding tolerance", () => {
-  assert.throws(() => fitPath([[0, 0], [100, 0]], () => [0, 1], 0.01),
-    /cannot meet tolerance|doubles back/);
+  assert.throws(
+    () =>
+      fitPath(
+        [
+          [0, 0],
+          [100, 0],
+        ],
+        () => [0, 1],
+        0.01,
+      ),
+    /cannot meet tolerance|doubles back/,
+  );
 });
 
 test("reversing ring winding preserves each corner's radius and tangent circle", () => {
@@ -55,9 +71,13 @@ test("reversing ring winding preserves each corner's radius and tangent circle",
     { p: [0, 120], r: 20, name: "nw", centre: [20, 100] },
   ];
   for (const order of [corners, [...corners].reverse()]) {
-    const ring = ringToPath(order.map((c, i) => ({
-      pts: line(c.p, order[(i + 1) % order.length].p), r: c.r, name: c.name,
-    })));
+    const ring = ringToPath(
+      order.map((c, i) => ({
+        pts: line(c.p, order[(i + 1) % order.length].p),
+        r: c.r,
+        name: c.name,
+      })),
+    );
     assert.equal(ring.fillets.length, 4);
     for (const c of corners) {
       const arc = ring.fillets.find((a) => a.name === `${c.name}/shape`);
@@ -72,9 +92,17 @@ test("reversing ring winding preserves each corner's radius and tangent circle",
 });
 
 test("fillet construction is independent of the two edges' sample densities", () => {
-  for (const [aSteps, bSteps] of [[1, 500], [500, 1], [100, 100]]) {
-    const { arc } = filletCorner(line([0, 0], [100, 0], aSteps),
-      line([100, 0], [100, 100], bSteps), 20, "right angle");
+  for (const [aSteps, bSteps] of [
+    [1, 500],
+    [500, 1],
+    [100, 100],
+  ]) {
+    const { arc } = filletCorner(
+      line([0, 0], [100, 0], aSteps),
+      line([100, 0], [100, 100], bSteps),
+      20,
+      "right angle",
+    );
     assert(V.dist(arc.c, [80, 20]) < 1e-9);
     assert(V.dist(arc.from, [80, 0]) < 1e-9);
     assert(V.dist(arc.to, [100, 20]) < 1e-9);
@@ -82,10 +110,48 @@ test("fillet construction is independent of the two edges' sample densities", ()
 });
 
 for (const [name, points] of [
-  ["bow-tie crossing", [[0, 0], [4, 4], [0, 4], [4, 0]]],
-  ["nonadjacent touch", [[0, 0], [4, 0], [4, 4], [2, 0], [0, 4]]],
-  ["collinear overlap", [[0, 0], [4, 0], [4, 4], [1, 4], [1, 0], [3, 0], [3, 2], [0, 2]]],
-  ["adjacent reversal", [[0, 0], [4, 0], [2, 0], [4, 4], [0, 4]]],
+  [
+    "bow-tie crossing",
+    [
+      [0, 0],
+      [4, 4],
+      [0, 4],
+      [4, 0],
+    ],
+  ],
+  [
+    "nonadjacent touch",
+    [
+      [0, 0],
+      [4, 0],
+      [4, 4],
+      [2, 0],
+      [0, 4],
+    ],
+  ],
+  [
+    "collinear overlap",
+    [
+      [0, 0],
+      [4, 0],
+      [4, 4],
+      [1, 4],
+      [1, 0],
+      [3, 0],
+      [3, 2],
+      [0, 2],
+    ],
+  ],
+  [
+    "adjacent reversal",
+    [
+      [0, 0],
+      [4, 0],
+      [2, 0],
+      [4, 4],
+      [0, 4],
+    ],
+  ],
 ]) {
   test(`a closed outline rejects a ${name}`, () => {
     assert.throws(() => assertSimpleOutline(points, name), /cross|touch|overlap|double back/);
@@ -93,8 +159,20 @@ for (const [name, points] of [
 }
 
 test("a simple concave outline permits duplicate joins and a repeated closing point", () => {
-  const points = [[0, 0], [3, 0], [3, 3], [2, 3], [2, 1], [1, 1], [1, 3], [0, 3]];
+  const points = [
+    [0, 0],
+    [3, 0],
+    [3, 3],
+    [2, 3],
+    [2, 1],
+    [1, 1],
+    [1, 3],
+    [0, 3],
+  ];
   assert.deepEqual(assertSimpleOutline([points[0], ...points, points[0]]), points);
-  const circle = sample((t) => [400 * Math.cos(t * Math.PI * 2), 400 * Math.sin(t * Math.PI * 2)], 8000);
+  const circle = sample(
+    (t) => [400 * Math.cos(t * Math.PI * 2), 400 * Math.sin(t * Math.PI * 2)],
+    8000,
+  );
   assert.equal(assertSimpleOutline(circle).length, 8000);
 });

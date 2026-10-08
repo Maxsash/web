@@ -6,14 +6,7 @@
  */
 
 export type IconName =
-  | "arrow"
-  | "compass"
-  | "github"
-  | "globe"
-  | "mail"
-  | "resume"
-  | "sextant"
-  | "writing";
+  "arrow" | "compass" | "github" | "globe" | "mail" | "resume" | "sextant" | "writing";
 
 const STROKED: Record<Exclude<IconName, "github">, React.ReactNode> = {
   // Arrow leaving up and to the right: every outbound link uses this.

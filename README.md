@@ -12,6 +12,18 @@ pnpm dev        # http://localhost:3000
 pnpm build
 ```
 
+## Releasing
+
+`main` is where work happens and never deploys. Only the `production` branch deploys
+to the live site (Vercel → Settings → Environments → Production → Branch Tracking).
+To release what is on `main`:
+
+```bash
+git push origin main:production
+```
+
+`vercel.json` turns off automatic deployments for `main`.
+
 ## What to edit
 
 Site copy and destinations live in [`content/site.ts`](content/site.ts): the

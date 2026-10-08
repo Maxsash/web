@@ -33,11 +33,7 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         <div className={styles.footerTitle}>
           Sea. Ship. <em>Math.</em>
         </div>
-        <p>
-          A notebook for looking closer.
-          <br />
-          Two sample articles, from Maxsash Studio.
-        </p>
+        <p>A notebook for looking closer.</p>
         <Link prefetch={false} href="/">
           Return to the studio <span aria-hidden="true">↗</span>
         </Link>

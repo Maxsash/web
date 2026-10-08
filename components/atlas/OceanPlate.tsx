@@ -1,8 +1,8 @@
 import { createSeaEdition } from "@/lib/sea/edition";
-import { sampleSea } from "@/lib/sea/sample";
 import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 import type { SeaEdition } from "@/lib/sea/types";
 import styles from "./Atlas.module.css";
+import { surfaceLines } from "./surface";
 
 export default function OceanPlate({
   variant = "cover",
@@ -11,21 +11,7 @@ export default function OceanPlate({
   variant?: "cover" | "section";
   edition?: SeaEdition;
 }) {
-  const rows: string[] = [],
-    columns: string[] = [];
-  const point = (x: number, z: number) => {
-    const { height } = sampleSea(edition, x, z, 0);
-    return `${(400 + 19 * (x - z)).toFixed(1)},${(255 + 8.3 * (x + z) - height * 39).toFixed(1)}`;
-  };
-  for (let row = 0; row <= 34; row++) {
-    const z = -8 + (16 * row) / 34;
-    rows.push(Array.from({ length: 81 }, (_, i) => point(-10 + (20 * i) / 80, z)).join(" "));
-  }
-  for (let col = 0; col <= 8; col++) {
-    const x = -10 + (20 * col) / 8;
-    columns.push(Array.from({ length: 61 }, (_, i) => point(x, -8 + (16 * i) / 60)).join(" "));
-  }
-  const section = Array.from({ length: 161 }, (_, i) => point(-10 + (20 * i) / 160, 0)).join(" ");
+  const { rows, columns, section } = surfaceLines(edition);
   return (
     <svg
       className={styles.oceanPlate}

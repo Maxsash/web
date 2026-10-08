@@ -1,4 +1,4 @@
-import Link from "next/link";
+import NotebookLink from "@/components/NotebookLink";
 import { notebook } from "@/content/notebook";
 import styles from "./observatory/Observatory.module.css";
 
@@ -16,20 +16,20 @@ export default function NotebookSection() {
             <em>curious mind.</em>
           </h2>
           <p>The drawings. The small discoveries. The arithmetic beneath the surface.</p>
-          <Link prefetch={false} className={styles.textLink} href="/blog">
+          <NotebookLink className={styles.textLink} href="/blog">
             Open the notebook <span aria-hidden="true">↗</span>
-          </Link>
+          </NotebookLink>
         </div>
         <ul className={styles.entries} aria-label="From the notebook">
           {notebook.map((post) => (
             <li key={post.slug}>
-              <Link prefetch={false} href={`/blog/${post.slug}`}>
+              <NotebookLink href={`/blog/${post.slug}`}>
                 <span>
                   Field note {post.number} · {post.topic}
                 </span>
                 <strong>{post.title}</strong>
                 <span>Sample essay · {post.minutes} min read</span>
-              </Link>
+              </NotebookLink>
             </li>
           ))}
         </ul>

@@ -1,3 +1,4 @@
+import { hashText, seededRandom } from "./random.ts";
 import { clampByte, seedFromSettings } from "./seed.ts";
 import type { SeaSettings } from "./types.ts";
 
@@ -26,3 +27,5 @@ export function pickVisitSea(random: () => number = Math.random): string {
     variation: Math.floor(random() * 256),
   });
 }
+
+export const seaSeedForName = (name: string) => pickVisitSea(seededRandom(hashText(name)));

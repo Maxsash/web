@@ -16,24 +16,37 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Committed:** cleanup steps 1–5 (`main` at `9eace2d`).
-- **Uncommitted:** performance fixes from the PageSpeed report (below). The owner reviews and
-  commits. Suggested message:
+- **Committed:** cleanup steps 1–5 and the performance fixes (`main` at `47e867e`; push it and
+  release with `git push origin main` then `git push origin main:production`; `production`
+  is still at `e285048`).
+- **Uncommitted:** the notebook work. The owner reviews and commits. Suggested message:
 
   ```
-  perf: show the static plate when WebGL would run in software
+  feat: write notebook posts in markdown, with a local editor and a page-turn sound
 
-  Request the WebGL context with failIfMajorPerformanceCaveat so browsers without a GPU
-  (and PageSpeed's lab) get the static field plate instead of a scene that blocks the main
-  thread. Give the two "Read the case study" links their project name for screen readers,
-  and stop dimming the "sailing" pill with opacity (it failed contrast). Add
-  tools/check-software-fallback.mjs and record the report's findings in decisions.md.
+  The notebook renders markdown posts (lib/markdown.ts, content/posts/) with the same
+  header, cover plate, numbered sections, margin notes and closing as the two sample
+  essays, and the same light and dark features on /blog (NoteFeature, ArticleParts).
+  Drafts exist only in development. A local editor at /write (autosave, snippets, a live
+  preview of the real page) is built from .dev.tsx files that Next only treats as routes
+  outside production; a check fails if it, or a draft, is served. Entering the notebook
+  plays a soft synthesised page turn (four variations at random), only after the visitor
+  switched sound on. AGENTS.md
+  adopts Next's managed block so `next dev` stops duplicating it.
 
-  Verified on Node 24: tsc, lint, format, build, 29 Node tests, 20 SEO, headers, 20
-  keyboard, 12 fallback checks, 126 browser records; 28 of 32 views pixel-identical (the
-  four others differ only by the arrow glyph after the case-study text split). The pill
-  now measures 5.2:1 (day) and 7.8:1 (night).
+  Verified on Node 24: tsc, lint, format, build, 49 Node tests, 20 SEO, headers, 20
+  keyboard, 12 fallback and 8 page-turn checks, 126 browser records; 32 of 32 views
+  pixel-identical to the previous build.
   ```
+
+- **The drafts:** three posts in `content/posts/` (WebGL flag, headings that moved, reading
+  PageSpeed). Write them at `/write` (dev only) or edit the `.md` files; read them at `/blog`.
+  Each ends with "Notes for the editor". Drafts never ship (see decisions.md).
+- **Page turn:** the owner chose the "hush" tuning by ear (very soft, low, quiet) and asked for
+  a few variations picked at random; there are four. Hear them with
+  `node tools/render-page-turn.mjs` (`tools/.out/page-turn-1…4.wav`). Notebook ideas for next session
+  are in follow-ups.md. One `check-headers` run crashed once under load (no output captured)
+  and passed in six later runs; cause unknown.
 
 - **Node 24** (`nvm use`; the owner's default is 22). Never build or test inside the
   project folder (it stopped the owner's dev server twice); never `pkill`.

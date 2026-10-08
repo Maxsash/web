@@ -19,7 +19,7 @@ const contentSecurityPolicy = [
 const securityHeaders = [
   ...(production ? [{ key: "Content-Security-Policy", value: contentSecurityPolicy }] : []),
   { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Frame-Options", value: production ? "DENY" : "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   {
@@ -31,6 +31,15 @@ const securityHeaders = [
 
 const config: NextConfig = {
   poweredByHeader: false,
+  pageExtensions: production ? ["ts", "tsx"] : ["ts", "tsx", "dev.ts", "dev.tsx"],
+  outputFileTracingExcludes: {
+    "/*": [
+      "./components/editor/**",
+      "./app/write/**",
+      "./app/api/dev/**",
+      "./content/post-files.ts",
+    ],
+  },
   async headers() {
     return [{ source: "/((?!api/).*)", headers: securityHeaders }];
   },

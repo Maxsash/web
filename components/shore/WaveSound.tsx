@@ -5,6 +5,8 @@ import { useEffect, useSyncExternalStore } from "react";
 type Status = "ready" | "on" | "off" | "unavailable";
 let status: Status = "ready";
 let toggle: (() => void) | null = null;
+let optedIn = false;
+export const soundOptedIn = () => optedIn;
 const listeners = new Set<() => void>();
 const publish = (next: Status) => {
   status = next;
@@ -100,6 +102,7 @@ export function WaveSoundController() {
     };
     toggle = () => {
       enabled = status !== "on";
+      optedIn = enabled;
       try {
         localStorage.setItem("studio-wave-sound", enabled ? "on" : "off");
       } catch {}

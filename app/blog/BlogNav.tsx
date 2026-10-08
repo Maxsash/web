@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import NotebookLink from "@/components/NotebookLink";
 import { usePathname } from "next/navigation";
 
 const items = [
@@ -15,8 +15,7 @@ export default function BlogNav() {
   return (
     <nav aria-label="Studio">
       {items.map(({ label, href }) => (
-        <Link
-          prefetch={false}
+        <NotebookLink
           key={href}
           href={href}
           aria-current={
@@ -28,7 +27,7 @@ export default function BlogNav() {
           }
         >
           {label}
-        </Link>
+        </NotebookLink>
       ))}
     </nav>
   );

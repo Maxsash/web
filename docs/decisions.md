@@ -60,6 +60,19 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **Theme follows the system** until the visitor picks day or night in the
   footer.
 
+## Writing
+
+- **Posts are markdown, drafts are development-only.** A post marked `draft` is visible in
+  `pnpm dev` and cannot ship by accident: the production build has no page and no link for
+  it, and `check-seo` fails if one is served. Publishing is a one-word edit.
+- **The page-turn sound respects the existing sound rule.** It plays only after the visitor has
+  switched sound on (the owner chose this over always-on and a separate toggle), so ordinary
+  clicks stay silent by default.
+- **The editor is a development tool, enforced by the build.** Its routes use `.dev.tsx`
+  extensions that only exist outside production, rather than a runtime `if` that could be
+  forgotten. The save endpoint refuses anything but same-origin JSON from localhost.
+- **Posts are not indexed yet**, like the sample essays, until the owner decides otherwise.
+
 ## Accessibility
 
 Keyboard and automated checks led to: focus never hidden by the pinned phone drawing

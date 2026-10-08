@@ -588,6 +588,85 @@
   color: var(--atlas-muted);
   max-width: 38rem;
 }
+.introCopy {
+  max-width: 42rem;
+  margin: -2rem 0 3rem 18%;
+}
+.readingCopy > :is(pre, ul, ol, h3, .proseTable),
+.readingCopy > :is(pre, ul, ol, .proseTable) + p {
+  margin-top: 1.3rem;
+}
+.readingCopy :is(ul, ol) {
+  font: 400 clamp(1.05rem, 1.4vw, 1.18rem) / 1.85 var(--font-display);
+  max-width: 65ch;
+  padding-left: 1.4rem;
+}
+.readingCopy li + li {
+  margin-top: 0.4rem;
+}
+.readingCopy a {
+  color: var(--atlas-red);
+  text-underline-offset: 0.2em;
+}
+.readingCopy code {
+  font: 0.82em / 1.4 var(--font-mono);
+  background: #e2ddcf;
+  padding: 0.1em 0.35em;
+}
+.readingCopy pre {
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 1rem 1.2rem;
+  background: #e2ddcf;
+  border-left: 3px solid var(--atlas-red);
+  font: 0.78rem / 1.7 var(--font-mono);
+  letter-spacing: 0;
+}
+.readingCopy pre code {
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+.draftNotes {
+  margin: 3rem auto;
+  max-width: 46rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px dashed var(--atlas-red);
+}
+.draftNotes .readingCopy > * + * {
+  margin-top: 0.8rem;
+}
+.draftNotes .readingCopy :is(p, ul, ol) {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.proseTable {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.proseTable table {
+  border-collapse: collapse;
+  min-width: 100%;
+  font: 0.72rem / 1.6 var(--font-mono);
+  letter-spacing: 0;
+}
+.proseTable th,
+.proseTable td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--atlas-rule);
+  text-align: left;
+  vertical-align: top;
+}
+.proseTable th {
+  border-bottom: 2px solid var(--atlas-ink);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.proseTable td code {
+  background: none;
+  padding: 0;
+  font: inherit;
+}
 .closing {
   font: italic 400 clamp(1.7rem, 3vw, 2.5rem)/1.45 var(--font-display);
   letter-spacing: -0.03em;

@@ -3,17 +3,9 @@
  * Asserts the response headers, then loads the main pages in isolated headless
  * Chrome and fails on any Content-Security-Policy violation.
  */
-import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
-import { mkdtempSync, existsSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { SOFTWARE_GL_FLAGS, delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
 
-const base = new URL(process.argv.find((x) => /^https?:/.test(x)) ?? "http://localhost:3000");
-assert.ok(
-  ["localhost", "127.0.0.1", "[::1]"].includes(base.hostname),
-  "Use a local production server",
-);
+const base = localBaseFromArgs();
 const pages = [
   "/",
   "/?seed=f532e107&version=2",
@@ -61,56 +53,7 @@ check(
     Date.parse(text.match(/^Expires: (.+)$/m)?.[1] ?? "") > Date.now(),
 );
 
-const chrome =
-  process.env.CHROME_BIN ||
-  [
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium",
-  ].find(existsSync);
-assert.ok(chrome, "Chrome not found");
-const profile = mkdtempSync(join(tmpdir(), "maxsash-csp-"));
-const child = spawn(
-  chrome,
-  [
-    "--headless=new",
-    "--no-first-run",
-    "--enable-unsafe-swiftshader",
-    "--use-angle=swiftshader",
-    `--user-data-dir=${profile}`,
-    "--remote-debugging-port=0",
-    "about:blank",
-  ],
-  { stdio: "ignore" },
-);
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-try {
-  const portPath = join(profile, "DevToolsActivePort");
-  for (let i = 0; !existsSync(portPath); i++) {
-    if (i > 200) throw new Error("Chrome did not start");
-    await delay(50);
-  }
-  const port = readFileSync(portPath, "utf8").split("\n")[0];
-  const target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find(
-    (p) => p.type === "page",
-  );
-  const socket = new WebSocket(target.webSocketDebuggerUrl);
-  await new Promise((r) => socket.addEventListener("open", r, { once: true }));
-  let id = 0;
-  const pending = new Map();
-  socket.addEventListener("message", (e) => {
-    const m = JSON.parse(e.data);
-    if (m.id && pending.has(m.id)) {
-      pending.get(m.id)(m);
-      pending.delete(m.id);
-    }
-  });
-  const send = (method, params = {}) =>
-    new Promise((r) => {
-      const i = ++id;
-      pending.set(i, r);
-      socket.send(JSON.stringify({ id: i, method, params }));
-    });
+await withBrowser({ name: "csp", flags: SOFTWARE_GL_FLAGS }, async ({ send, evaluate }) => {
   await send("Page.enable");
   await send("Page.addScriptToEvaluateOnNewDocument", {
     source:
@@ -119,23 +62,17 @@ try {
   for (const path of pages) {
     await send("Page.navigate", { url: new URL(path, base).href });
     await delay(3500);
-    const { result } = await send("Runtime.evaluate", {
-      expression:
+    const { v, gl } = JSON.parse(
+      await evaluate(
         "JSON.stringify({v:__violations,gl:!!document.querySelector('canvas')?.getContext('webgl2')})",
-      returnByValue: true,
-    });
-    const { v, gl } = JSON.parse(result.result.value);
+      ),
+    );
     check(
       `${path} loads with no CSP violations`,
       v.length === 0,
       v.slice(0, 3).join(" | ") + (path === "/" ? ` webgl2=${gl}` : ""),
     );
   }
-  socket.close();
-} finally {
-  child.kill();
-  await new Promise((resolve) => child.once("exit", resolve));
-  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
-}
+});
 console.log(failures.length ? `\n${failures.length} failed.` : "\nAll header checks pass.");
 process.exitCode = failures.length ? 1 : 0;

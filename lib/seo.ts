@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { site, projects } from "@/content/site";
+import { projects } from "@/content/projects";
+import { site } from "@/content/site";
 
 export const siteOrigin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url).origin;
 export const absoluteUrl = (path: string) => new URL(path, `${siteOrigin}/`).href;

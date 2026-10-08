@@ -1,4 +1,4 @@
-export type NotebookPost = {
+type NotebookPost = {
   slug: string;
   number: string;
   title: string;

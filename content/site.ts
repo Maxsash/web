@@ -1,17 +1,8 @@
-export type Destination = {
+type Destination = {
   label: string;
   href: string;
   blurb: string;
   scope: string;
-};
-
-export type Project = {
-  slug: string;
-  title: string;
-  summary: string;
-  year: string;
-  href: string;
-  caseStudy: string;
 };
 
 export const site = {
@@ -54,26 +45,5 @@ export const destinations: Destination[] = [
     href: site.links.github,
     blurb: "Code, experiments, and public repositories.",
     scope: "Code & repositories",
-  },
-];
-
-export const projects: Project[] = [
-  {
-    slug: "household-hub",
-    title: "Household Hub",
-    summary:
-      "Rent, tenant records, and household spending in one place. Track payments, plan rent increases, and turn handwritten expense slips into entries you review before saving.",
-    year: "2026",
-    href: "https://tenant-management-2my6.vercel.app/",
-    caseStudy: "https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html",
-  },
-  {
-    slug: "wedding-photo-platform",
-    title: "Wedding Photo Platform",
-    summary:
-      "A wedding told in chapters, photo reels, and albums. An offline photo pipeline removes duplicates and groups faces so guests can find their photographs. The public demo hides faces for privacy.",
-    year: "2026",
-    href: "https://wedding-demo-teal.vercel.app/",
-    caseStudy: "https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html",
   },
 ];

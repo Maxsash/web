@@ -15,21 +15,22 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Unpushed:** two local commits on `main` (`style: format the codebase with Prettier`,
-  `docs: note the formatter and the cleanup plan`).
-- **Uncommitted:** cleanup step 2 (dead code, generators, comments removed), this
-  handoff, `tools/compare-builds.mjs`. The owner reviews and commits. Suggested message:
+- **Pushed:** `main` and `origin/main` match at `e656e20` (cleanup steps 1 and 2).
+- **Uncommitted:** cleanup step 3 (remove repetition). The owner reviews and commits.
+  Suggested message:
 
   ```
-  refactor: remove dead code, generators and comments
+  refactor: remove repetition in sea requests, browser tools and Work
 
-  Delete the brand-mark and wave generators with their tests, unused wave data,
-  unreferenced social cards, the single-icon icon set, dead content fields and about
-  forty unused CSS tokens. Strip comments that restate the code, write the conventions
-  into AGENTS.md, and add a build-comparison tool and the handoff.
+  Parse seed and version once (lib/sea/request.ts) for the home page, the print page
+  and both API routes, and share the conditional-response code between the routes.
+  Move the Chrome launcher, DevTools client and key helpers into tools/lib/browser.mjs
+  for every browser check. Move the Work copy into content/projects.ts behind one
+  ProjectFeature component, add formatIndex, merge duplicate CSS selectors and
+  un-export types used by one file.
 
-  No behaviour change: build, 16 Node tests, 20 keyboard checks, header checks and 126
-  browser records pass; 29 of 32 views are pixel-identical to the previous build.
+  Verified on Node 24: tsc, lint, format, build, 19 Node tests (3 new), 20 SEO, headers,
+  20 keyboard, 126 browser records; 28 of 32 views pixel-identical to the previous build.
   ```
 
 - **Node 24** (`nvm use`; the owner's default is 22). Never build or test inside the
@@ -37,8 +38,8 @@ no database, accounts or cookies.
 
 ## Next
 
-1. Owner: review and commit step 2.
-2. Cleanup steps 3–6: [code-cleanup.md](code-cleanup.md).
+1. Owner: review and commit step 3.
+2. Cleanup steps 4–6: [code-cleanup.md](code-cleanup.md).
 3. Social content for Instagram and LinkedIn: blocked on the owner's answers (brand name,
    handles, tone, first assets). Use only the two real projects; invent nothing.
 4. Real essays and projects come last; the two notebook essays are samples (`noindex`).
@@ -79,7 +80,7 @@ node tools/check-creative-v2.mjs http://localhost:3012
 
 For refactors, build the previous commit on another port and run
 `node tools/compare-builds.mjs <old> <new>` (32 views). Stop only servers you started.
-Last result: 16 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0 failures.
+Last result: 19 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0 failures.
 
 ## Facts not in the code
 
@@ -90,7 +91,10 @@ Last result: 16 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0
 
 ## Limits of what was verified
 
-Headless Chrome on a Mac only: no Vercel runtime, real screen reader or physical-device
-run by the assistant. Three of the 32 compared views differed (an 18-pixel glyph on the
-phone blog index; the phone Work image, which never loaded in the old baseline); not
-fully explained.
+Headless Chrome on a Mac only: no Vercel runtime, real screen reader or physical device.
+Of 32 compared views, four differed: phone essay section numbers (`01` was two text
+nodes, now one). `compare-builds` can also flag the phone Work image even when a build
+meets itself; fresh-browser captures of old and new were identical.
+
+Step 3 edge-case changes: `/plate?version=1` without a seed now shows the default
+version 1 sea; the API's version error is `no-store`, like its seed error.

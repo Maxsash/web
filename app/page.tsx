@@ -12,13 +12,8 @@ import OceanScene from "@/components/observatory/OceanScene";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import SeaStudio from "@/components/studio/SeaStudio";
 import { notebook } from "@/content/notebook";
-import {
-  createSeaEdition,
-  DEFAULT_SEA_SEED,
-  normaliseSeaSeed,
-  parseSeaVersion,
-  pickVisitSea,
-} from "@/lib/sea-edition";
+import { createSeaEdition, pickVisitSea } from "@/lib/sea-edition";
+import { resolvePageSea, type PageSeaQuery } from "@/lib/sea/request";
 import styles from "@/components/observatory/Observatory.module.css";
 
 export const metadata: Metadata = {
@@ -27,27 +22,8 @@ export const metadata: Metadata = {
   ...sharingMetadata("Maxsash Studio — Sea. Ship. Math.", site.description, "/"),
 };
 
-type Query = { seed?: string | string[]; version?: string | string[] };
-
-function resolveSea(query: Query) {
-  if (query.seed === undefined) {
-    if (query.version === undefined || query.version === "2")
-      return { seed: pickVisitSea(), version: "2" as const };
-    return query.version === "1" ? { seed: DEFAULT_SEA_SEED, version: "1" as const } : null;
-  }
-  if (typeof query.seed !== "string") return null;
-  const seed = normaliseSeaSeed(query.seed);
-  const version =
-    query.version === undefined
-      ? "1"
-      : typeof query.version === "string"
-        ? parseSeaVersion(query.version)
-        : null;
-  return seed && version ? { seed, version } : null;
-}
-
-export default async function Home({ searchParams }: { searchParams: Promise<Query> }) {
-  const sea = resolveSea(await searchParams);
+export default async function Home({ searchParams }: { searchParams: Promise<PageSeaQuery> }) {
+  const sea = resolvePageSea(await searchParams, pickVisitSea);
   if (!sea) notFound();
   const { seed, version } = sea;
   const edition = createSeaEdition(seed, version);

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { formatIndex } from "@/lib/format";
 import { sharingMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -82,7 +83,7 @@ export default async function AtlasArticle({ params }: Props) {
           {post.sections.map((section, index) => (
             <section className={styles.readingSection} key={section.title}>
               <span className={styles.sectionNumber} aria-hidden="true">
-                0{index + 1}
+                {formatIndex(index + 1)}
               </span>
               <div className={styles.readingCopy}>
                 <h2>{section.title}</h2>

@@ -5,10 +5,9 @@ import {
   createSeaEdition,
   DEFAULT_SEA_SEED_V2,
   describeSea,
-  normaliseSeaSeed,
-  parseSeaVersion,
   renderSeaPlate,
 } from "@/lib/sea-edition";
+import { resolvePageSea, type PageSeaQuery, type SeaParam } from "@/lib/sea/request";
 import PrintButton from "./PrintButton";
 import styles from "./Plate.module.css";
 
@@ -18,31 +17,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-type Props = {
-  searchParams: Promise<{
-    seed?: string | string[];
-    version?: string | string[];
-    print?: string | string[];
-  }>;
-};
+type Props = { searchParams: Promise<PageSeaQuery & { print?: SeaParam }> };
 
 export default async function PlatePage({ searchParams }: Props) {
   const query = await searchParams;
-  const seed =
-    query.seed === undefined
-      ? DEFAULT_SEA_SEED_V2
-      : typeof query.seed === "string"
-        ? normaliseSeaSeed(query.seed)
-        : null;
-  const version =
-    query.version === undefined
-      ? query.seed === undefined
-        ? "2"
-        : "1"
-      : typeof query.version === "string"
-        ? parseSeaVersion(query.version)
-        : null;
-  if (!seed || !version) notFound();
+  const sea = resolvePageSea(query, () => DEFAULT_SEA_SEED_V2);
+  if (!sea) notFound();
+  const { seed, version } = sea;
   const edition = createSeaEdition(seed, version);
   const words = edition.settings
     ? describeSea(edition.settings).sentence

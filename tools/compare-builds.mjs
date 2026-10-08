@@ -1,7 +1,4 @@
-import { spawn } from "node:child_process";
-import { mkdtempSync, existsSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { SOFTWARE_GL_FLAGS, delay, withBrowser } from "./lib/browser.mjs";
 
 const [baselineUrl, candidateUrl, only] = process.argv.slice(2);
 if (!baselineUrl || !candidateUrl) {
@@ -27,78 +24,26 @@ const themes = ["light", "dark"];
 const toleratedShare = 0.0005;
 const toleratedChannel = 40;
 
-const chromePath =
-  process.env.CHROME_BIN ||
-  [
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium",
-  ].find(existsSync);
-if (!chromePath) throw new Error("Chrome not found");
-
-const profile = mkdtempSync(join(tmpdir(), "maxsash-compare-"));
-const chrome = spawn(
-  chromePath,
-  [
-    "--headless=new",
-    "--no-first-run",
-    "--enable-unsafe-swiftshader",
-    "--use-angle=swiftshader",
-    "--hide-scrollbars",
-    `--user-data-dir=${profile}`,
-    "--remote-debugging-port=0",
-    "about:blank",
-  ],
-  { stdio: "ignore" },
-);
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-try {
-  const portFile = join(profile, "DevToolsActivePort");
-  while (!existsSync(portFile)) await delay(50);
-  const port = readFileSync(portFile, "utf8").split("\n")[0];
-  const target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find(
-    (entry) => entry.type === "page",
-  );
-  const socket = new WebSocket(target.webSocketDebuggerUrl);
-  await new Promise((resolve) => socket.addEventListener("open", resolve, { once: true }));
-
-  let nextId = 0;
-  const pending = new Map();
-  socket.addEventListener("message", (event) => {
-    const message = JSON.parse(event.data);
-    if (message.id && pending.has(message.id)) {
-      pending.get(message.id)(message);
-      pending.delete(message.id);
-    }
-  });
-  const send = (method, params = {}) =>
-    new Promise((resolve) => {
-      const id = ++nextId;
-      pending.set(id, resolve);
-      socket.send(JSON.stringify({ id, method, params }));
-    });
-  const evaluate = async (expression) =>
-    (await send("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true })).result
-      ?.result?.value;
-
-  const capture = async (base, path, selector, viewport, theme) => {
-    await send("Emulation.setDeviceMetricsOverride", { ...viewport, deviceScaleFactor: 1 });
-    await send("Emulation.setEmulatedMedia", {
-      features: [
-        { name: "prefers-reduced-motion", value: "reduce" },
-        { name: "prefers-color-scheme", value: theme },
-      ],
-    });
-    await send("Page.navigate", { url: base + path });
-    await delay(3000);
-    const clip = await evaluate(`(() => {
+await withBrowser(
+  { name: "compare", flags: [...SOFTWARE_GL_FLAGS, "--hide-scrollbars"] },
+  async ({ send, evaluate }) => {
+    const capture = async (base, path, selector, viewport, theme) => {
+      await send("Emulation.setDeviceMetricsOverride", { ...viewport, deviceScaleFactor: 1 });
+      await send("Emulation.setEmulatedMedia", {
+        features: [
+          { name: "prefers-reduced-motion", value: "reduce" },
+          { name: "prefers-color-scheme", value: theme },
+        ],
+      });
+      await send("Page.navigate", { url: base + path });
+      await delay(3000);
+      const clip = await evaluate(`(() => {
       const element = ${JSON.stringify(selector)} && document.querySelector(${JSON.stringify(selector)});
       if (element) element.scrollIntoView();
       const box = element ? element.getBoundingClientRect() : { top: -scrollY, height: document.documentElement.scrollHeight };
       return { x: 0, y: box.top + scrollY, width: innerWidth, height: Math.min(box.height, 2600), scale: 1 };
     })()`);
-    await evaluate(`Promise.all([...document.images].map((image) =>
+      await evaluate(`Promise.all([...document.images].map((image) =>
       image.complete && image.naturalWidth
         ? 1
         : new Promise((resolve) => {
@@ -106,17 +51,17 @@ try {
             image.addEventListener("error", resolve);
             setTimeout(resolve, 4000);
           })))`);
-    await delay(400);
-    const shot = await send("Page.captureScreenshot", {
-      format: "png",
-      captureBeyondViewport: true,
-      clip,
-    });
-    return shot.result.data;
-  };
+      await delay(400);
+      const shot = await send("Page.captureScreenshot", {
+        format: "png",
+        captureBeyondViewport: true,
+        clip,
+      });
+      return shot.data;
+    };
 
-  const compare = (first, second) =>
-    evaluate(`(async () => {
+    const compare = (first, second) =>
+      evaluate(`(async () => {
       const load = (data) => new Promise((resolve) => {
         const image = new Image();
         image.onload = () => resolve(image);
@@ -146,37 +91,33 @@ try {
       return { pixels: pixelsA.length / 4, different, largest, box: different ? [left, top, right, bottom] : null };
     })()`);
 
-  await send("Page.enable");
-  let compared = 0;
-  let mismatched = 0;
-  for (const viewport of viewports) {
-    for (const theme of themes) {
-      for (const [name, path, selector] of pages) {
-        if (only && !name.includes(only)) continue;
-        const baseline = await capture(baselineUrl, path, selector, viewport, theme);
-        const candidate = await capture(candidateUrl, path, selector, viewport, theme);
-        const result = await compare(baseline, candidate);
-        const matches =
-          !result.sizes &&
-          (result.different === 0 ||
-            (result.different / result.pixels < toleratedShare &&
-              result.largest < toleratedChannel));
-        compared++;
-        if (!matches) mismatched++;
-        console.log(
-          matches ? "same " : "DIFF ",
-          `${viewport.name}/${theme}`.padEnd(14),
-          name.padEnd(16),
-          JSON.stringify(result),
-        );
+    await send("Page.enable");
+    let compared = 0;
+    let mismatched = 0;
+    for (const viewport of viewports) {
+      for (const theme of themes) {
+        for (const [name, path, selector] of pages) {
+          if (only && !name.includes(only)) continue;
+          const baseline = await capture(baselineUrl, path, selector, viewport, theme);
+          const candidate = await capture(candidateUrl, path, selector, viewport, theme);
+          const result = await compare(baseline, candidate);
+          const matches =
+            !result.sizes &&
+            (result.different === 0 ||
+              (result.different / result.pixels < toleratedShare &&
+                result.largest < toleratedChannel));
+          compared++;
+          if (!matches) mismatched++;
+          console.log(
+            matches ? "same " : "DIFF ",
+            `${viewport.name}/${theme}`.padEnd(14),
+            name.padEnd(16),
+            JSON.stringify(result),
+          );
+        }
       }
     }
-  }
-  console.log(`\n${compared - mismatched}/${compared} views match`);
-  socket.close();
-  process.exitCode = mismatched ? 1 : 0;
-} finally {
-  chrome.kill();
-  await new Promise((resolve) => chrome.once("exit", resolve));
-  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
-}
+    console.log(`\n${compared - mismatched}/${compared} views match`);
+    process.exitCode = mismatched ? 1 : 0;
+  },
+);

@@ -1,18 +1,17 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { describeSea } from "../lib/sea/describe.ts";
+import { createSeaEdition } from "../lib/sea/edition.ts";
+import { renderSeaPlate } from "../lib/sea/plate.ts";
+import { HOME_WATER, pickVisitSea } from "../lib/sea/presets.ts";
+import { sampleSea } from "../lib/sea/sample.ts";
 import {
-  createSeaEdition,
+  DEFAULT_SEA_SEED_V2,
   normaliseSeaSeed,
-  sampleSea,
-  renderSeaPlate,
+  parseSeaVersion,
   seedFromSettings,
   settingsFromSeed,
-  describeSea,
-  parseSeaVersion,
-  pickVisitSea,
-  HOME_WATER,
-  DEFAULT_SEA_SEED_V2,
-} from "../lib/sea-edition.ts";
+} from "../lib/sea/seed.ts";
 import { createHash } from "node:crypto";
 
 test("v1 editions are canonical, reproducible, and reject malformed input", () => {

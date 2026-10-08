@@ -1,9 +1,5 @@
-import {
-  DEFAULT_SEA_SEED,
-  normaliseSeaSeed,
-  parseSeaVersion,
-  type SeaVersion,
-} from "../sea-edition.ts";
+import { DEFAULT_SEA_SEED, normaliseSeaSeed, parseSeaVersion } from "./seed.ts";
+import type { SeaVersion } from "./types.ts";
 
 export type SeaParam = string | readonly string[] | null | undefined;
 type SeaRequest = { seed: string; version: SeaVersion };

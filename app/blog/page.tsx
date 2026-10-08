@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import MarkPlate from "@/components/atlas/MarkPlate";
-import { createSeaEdition, DEFAULT_SEA_SEED_V2 } from "@/lib/sea-edition";
+import { createSeaEdition } from "@/lib/sea/edition";
+import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 import styles from "@/components/atlas/Atlas.module.css";
 
 export const metadata: Metadata = {

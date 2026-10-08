@@ -15,22 +15,23 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Pushed:** `main` and `origin/main` match at `e656e20` (cleanup steps 1 and 2).
-- **Uncommitted:** cleanup step 3 (remove repetition). The owner reviews and commits.
-  Suggested message:
+- **Committed:** cleanup steps 1–3 (step 3 as `4d5adea`).
+- **Uncommitted:** cleanup step 4 (split by responsibility). The owner reviews and
+  commits. Suggested message:
 
   ```
-  refactor: remove repetition in sea requests, browser tools and Work
+  refactor: split the sea, scene, shore, studio, engine and e2e tool by responsibility
 
-  Parse seed and version once (lib/sea/request.ts) for the home page, the print page
-  and both API routes, and share the conditional-response code between the routes.
-  Move the Chrome launcher, DevTools client and key helpers into tools/lib/browser.mjs
-  for every browser check. Move the Work copy into content/projects.ts behind one
-  ProjectFeature component, add formatIndex, merge duplicate CSS selectors and
-  un-export types used by one file.
+  lib/sea-edition.ts becomes lib/sea/ (frozen v1, v2, seed, presets, sample, plate).
+  OceanScene, Shoreline, SeaStudio, ocean-engine and the home page hand their pure rules
+  and pieces to small modules and keep only lifecycle and markup; check-creative-v2
+  becomes a runner over eleven suites in tools/e2e. Drop two Work heading declarations
+  the page rule always overrode, so the cascade no longer depends on bundle order.
 
-  Verified on Node 24: tsc, lint, format, build, 19 Node tests (3 new), 20 SEO, headers,
-  20 keyboard, 126 browser records; 28 of 32 views pixel-identical to the previous build.
+  No behaviour change: the version 1 digest, ship mesh, matrices and camera are pinned by
+  tests taken from the old code. Verified on Node 24: tsc, lint, format, build, 29 Node
+  tests (13 new), 20 SEO, headers, 20 keyboard, 126 browser records; 32 of 32 views
+  pixel-identical to the previous build.
   ```
 
 - **Node 24** (`nvm use`; the owner's default is 22). Never build or test inside the
@@ -38,8 +39,8 @@ no database, accounts or cookies.
 
 ## Next
 
-1. Owner: review and commit step 3.
-2. Cleanup steps 4–6: [code-cleanup.md](code-cleanup.md).
+1. Owner: review and commit step 4.
+2. Cleanup steps 5–6: [code-cleanup.md](code-cleanup.md).
 3. Social content for Instagram and LinkedIn: blocked on the owner's answers (brand name,
    handles, tone, first assets). Use only the two real projects; invent nothing.
 4. Real essays and projects come last; the two notebook essays are samples (`noindex`).
@@ -80,7 +81,7 @@ node tools/check-creative-v2.mjs http://localhost:3012
 
 For refactors, build the previous commit on another port and run
 `node tools/compare-builds.mjs <old> <new>` (32 views). Stop only servers you started.
-Last result: 19 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0 failures.
+Last result: 29 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0 failures.
 
 ## Facts not in the code
 
@@ -92,9 +93,10 @@ Last result: 19 Node tests, 20 SEO, headers, 20 keyboard, 126 browser records, 0
 ## Limits of what was verified
 
 Headless Chrome on a Mac only: no Vercel runtime, real screen reader or physical device.
-Of 32 compared views, four differed: phone essay section numbers (`01` was two text
-nodes, now one). `compare-builds` can also flag the phone Work image even when a build
-meets itself; fresh-browser captures of old and new were identical.
+`compare-builds` sometimes flags one phone Work image view even when a build meets itself
+(lazy image timing); a re-run is identical.
 
-Step 3 edge-case changes: `/plate?version=1` without a seed now shows the default
-version 1 sea; the API's version error is `no-store`, like its seed error.
+Latent risk: several module stylesheets style `h1`–`h3` under `.page`, so equal-specificity
+rules elsewhere can win or lose by bundle order. Step 4 changed the import order and
+exposed two dead Work declarations (removed). The pixel comparison shows no other
+section depends on it today.

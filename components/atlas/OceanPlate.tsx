@@ -1,9 +1,7 @@
-import {
-  createSeaEdition,
-  DEFAULT_SEA_SEED_V2,
-  sampleSea,
-  type SeaEdition,
-} from "@/lib/sea-edition";
+import { createSeaEdition } from "@/lib/sea/edition";
+import { sampleSea } from "@/lib/sea/sample";
+import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
+import type { SeaEdition } from "@/lib/sea/types";
 import styles from "./Atlas.module.css";
 
 export default function OceanPlate({

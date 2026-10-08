@@ -5,9 +5,14 @@ import Link from "next/link";
 import { WaveSoundControl, WaveSoundController } from "./WaveSound";
 import ThemeControl from "@/components/observatory/ThemeControl";
 import { site } from "@/content/site";
+import { FootTrail } from "./footprints";
+import { shorePalette } from "./palette";
+import { paintSand } from "./sand";
+import { drawSurf, drawWetSand, shorelineAt } from "./tide";
 import styles from "./Shore.module.css";
 
-type Step = { x: number; y: number; angle: number; born: number; side: number };
+const PIXEL_BUDGET = 420000;
+const FRAME_INTERVAL_MS = 32;
 
 export default function Shoreline({
   children,
@@ -40,162 +45,36 @@ export default function Shoreline({
       width = 1,
       height = 1,
       night = false;
-    let steps: Step[] = [],
-      previous: { x: number; y: number } | null = null,
-      side = 1;
+    const trail = new FootTrail();
     const events = new AbortController();
-    const shoreline = (x: number, t = time) =>
-      height *
-      (0.085 +
-        0.01 * Math.sin((x / width) * 7 + t * 0.35) +
-        0.006 * Math.sin((x / width) * 17 - t * 0.21) +
-        0.014 * Math.sin(t * 0.55));
-    const shell = (x: number, y: number, size: number, angle: number) => {
-      grain.save();
-      grain.translate(x, y);
-      grain.rotate(angle);
-      grain.shadowColor = "rgba(38,25,17,.3)";
-      grain.shadowBlur = 3;
-      grain.shadowOffsetY = 2;
-      const tint = grain.createLinearGradient(-size, -size, size, size);
-      tint.addColorStop(0, night ? "#b6a795" : "#f7e9d5");
-      tint.addColorStop(0.55, night ? "#75685b" : "#d9ad88");
-      tint.addColorStop(1, night ? "#c6b299" : "#f9e7c9");
-      grain.fillStyle = tint;
-      grain.beginPath();
-      grain.moveTo(0, size * 0.45);
-      grain.bezierCurveTo(-size * 1.1, size * 0.3, -size, -size * 0.85, 0, -size);
-      grain.bezierCurveTo(size, -size * 0.85, size * 1.1, size * 0.3, 0, size * 0.45);
-      grain.fill();
-      grain.shadowBlur = 0;
-      for (let i = 0; i < 9; i++) {
-        const a = Math.PI * (1.12 + i * 0.095);
-        grain.beginPath();
-        grain.moveTo(0, size * 0.4);
-        grain.quadraticCurveTo(
-          Math.cos(a) * size * 0.6,
-          Math.sin(a) * size * 0.5,
-          Math.cos(a) * size,
-          Math.sin(a) * size,
-        );
-        grain.strokeStyle = i % 2 ? "#fff5d555" : "#73554055";
-        grain.lineWidth = 0.7;
-        grain.stroke();
-      }
-      grain.restore();
-    };
+    const view = () => ({ width, height, time });
     const resize = () => {
       const bounds = canvas.getBoundingClientRect(),
-        ratio = Math.min(1, Math.sqrt(420000 / Math.max(1, bounds.width * bounds.height)));
+        ratio = Math.min(1, Math.sqrt(PIXEL_BUDGET / Math.max(1, bounds.width * bounds.height)));
       width = Math.max(1, Math.round(bounds.width * ratio));
       height = Math.max(1, Math.round(bounds.height * ratio));
       canvas.width = base.width = width;
       canvas.height = base.height = height;
       night = document.documentElement.dataset.studioTheme === "night";
-      const pixels = grain.createImageData(width, height);
-      let seed = 517;
-      for (let i = 0; i < pixels.data.length; i += 4) {
-        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-        const noise = (seed / 4294967296 - 0.5) * 24;
-        const y = Math.floor(i / 4 / width) / height;
-        const shade = 8 * Math.sin(y * 4);
-        pixels.data[i] = (night ? 108 : 225) + noise + shade;
-        pixels.data[i + 1] = (night ? 100 : 206) + noise + shade;
-        pixels.data[i + 2] = (night ? 85 : 166) + noise + shade;
-        pixels.data[i + 3] = 255;
-      }
-      grain.putImageData(pixels, 0, 0);
-      [
-        [0.07, 0.55, 11, 0.3],
-        [0.93, 0.48, 15, -0.4],
-        [0.86, 0.8, 8, 0.7],
-        [0.16, 0.89, 6, -0.5],
-        [0.6, 0.43, 8, 1.2],
-      ].forEach(([x, y, s, a]) =>
-        shell(x * width, y * height, s * Math.max(0.65, width / 1100), a),
-      );
-      grain.strokeStyle = night ? "#e4dbc233" : "#a4865944";
-      grain.lineWidth = 1;
-      grain.beginPath();
-      grain.moveTo(width * 0.89, height * 0.69);
-      grain.bezierCurveTo(
-        width * 0.91,
-        height * 0.72,
-        width * 0.87,
-        height * 0.75,
-        width * 0.91,
-        height * 0.78,
-      );
-      grain.stroke();
+      paintSand(grain, shorePalette(night), width, height);
       canvas.dataset.shorePixels = String(width * height);
-      steps = [];
+      trail.clear();
       draw();
     };
-    const coast = (offset: number) => {
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(width, 0);
-      context.lineTo(width, shoreline(width) + offset);
-      for (let x = width; x >= 0; x -= 8) context.lineTo(x, shoreline(x) + offset);
-      context.lineTo(0, shoreline(0) + offset);
-      context.closePath();
-    };
     const draw = () => {
+      const palette = shorePalette(night);
       context.drawImage(base, 0, 0);
-      coast(height * 0.035);
-      context.fillStyle = night ? "rgba(51,63,63,.5)" : "rgba(121,126,104,.32)";
-      context.fill();
-      steps = steps.filter((step) => time - step.born < 24 && step.y > shoreline(step.x) + 8);
-      for (const step of steps) {
-        context.save();
-        context.translate(step.x, step.y);
-        context.rotate(step.angle);
-        context.globalAlpha = Math.max(0, 1 - (time - step.born) / 24) * 0.33;
-        context.fillStyle = night ? "#282e2b" : "#77603e";
-        context.beginPath();
-        context.ellipse(step.side * 4, 0, 3, 8, 0, 0, Math.PI * 2);
-        context.fill();
-        context.strokeStyle = night ? "#c6bb9a" : "#f6e4bd";
-        context.lineWidth = 1;
-        context.beginPath();
-        context.ellipse(step.side * 4 + 1, 1, 3, 8, 0, 0, Math.PI);
-        context.stroke();
-        context.restore();
-      }
-      const water = context.createLinearGradient(0, 0, 0, height * 0.14);
-      water.addColorStop(0, night ? "#122126" : "#eae7d9");
-      water.addColorStop(0.55, night ? "#283638" : "#dfdecc");
-      water.addColorStop(1, night ? "#647168" : "#c9d2b6");
-      coast(0);
-      context.fillStyle = water;
-      context.fill();
-      for (let j = 0; j < 3; j++) {
-        context.beginPath();
-        for (let x = 0; x <= width + 8; x += 8) {
-          const y = shoreline(x) - j * height * 0.012 - 3 * Math.sin(x * 0.035 + time * 0.7 + j);
-          if (x === 0) context.moveTo(x, y);
-          else context.lineTo(x, y);
-        }
-        context.strokeStyle =
-          j === 0 ? (night ? "#d9e9dc99" : "#f6f5dcdb") : night ? "#b9d5cc22" : "#f4f3d64d";
-        context.lineWidth = j === 0 ? 3 : 1;
-        context.stroke();
-      }
-      context.strokeStyle = night ? "#aac3b955" : "#f6f2d999";
-      context.lineWidth = 0.7;
-      for (let x = 0; x < width; x += 11) {
-        const y = shoreline(x) + 3 * Math.sin(x * 0.05 + time);
-        context.beginPath();
-        context.ellipse(x, y, 3.5, 1.4, 0, 0, Math.PI * 2);
-        context.stroke();
-      }
+      drawWetSand(context, view(), palette);
+      trail.fade(time, (x) => shorelineAt(view(), x));
+      trail.draw(context, time, palette);
+      drawSurf(context, view(), palette);
       canvas.dataset.shoreFrames = String(Number(canvas.dataset.shoreFrames ?? 0) + 1);
-      canvas.dataset.shoreSteps = String(steps.length);
+      canvas.dataset.shoreSteps = String(trail.steps.length);
     };
     const tick = (now: number) => {
       frame = 0;
       if (!visible || document.hidden || stopped || reduced.matches) return;
-      if (now - last >= 32) {
+      if (now - last >= FRAME_INTERVAL_MS) {
         time += last ? Math.min((now - last) / 1000, 0.06) : 0;
         last = now;
         draw();
@@ -240,38 +119,20 @@ export default function Shoreline({
       (event) => {
         if (event.pointerType !== "mouse" || reduced.matches || stopped) return;
         if (event.target instanceof Element && event.target.closest("a,button")) {
-          previous = null;
+          trail.lift();
           return;
         }
         const bounds = canvas.getBoundingClientRect(),
           x = ((event.clientX - bounds.left) / bounds.width) * width,
           y = ((event.clientY - bounds.top) / bounds.height) * height;
-        if (y <= shoreline(x) + height * 0.07) {
-          previous = null;
-          return;
-        }
-        if (!previous) {
-          previous = { x, y };
-          return;
-        }
-        const dx = x - previous.x,
-          dy = y - previous.y;
-        if (Math.hypot(dx, dy) > 14) {
-          side *= -1;
-          steps.push({ x, y, angle: Math.atan2(dy, dx) + Math.PI / 2, born: time, side });
-          steps = steps.slice(-48);
-          previous = { x, y };
-        }
+        if (y <= shorelineAt(view(), x) + height * 0.07) trail.lift();
+        else trail.track(x, y, time);
       },
       { passive: true, signal: events.signal },
     );
-    canvas.parentElement?.addEventListener(
-      "pointerleave",
-      () => {
-        previous = null;
-      },
-      { signal: events.signal },
-    );
+    canvas.parentElement?.addEventListener("pointerleave", () => trail.lift(), {
+      signal: events.signal,
+    });
     resize();
     return () => {
       cancelAnimationFrame(frame);

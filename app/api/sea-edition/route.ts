@@ -1,4 +1,4 @@
-import { createSeaEdition } from "@/lib/sea-edition";
+import { createSeaEdition } from "@/lib/sea/edition";
 import { resolveApiSea } from "@/lib/sea/request";
 import { conditionalResponse } from "./conditional";
 

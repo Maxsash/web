@@ -16,32 +16,21 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Committed:** cleanup steps 1–5 and the performance fixes (`main` at `47e867e`; push it and
-  release with `git push origin main` then `git push origin main:production`; `production`
-  is still at `e285048`).
-- **Uncommitted:** the notebook work. The owner reviews and commits. Suggested message:
+- **Released:** everything up to the notebook work is committed and live. `main` and
+  `production` are both at `495f879` (pushed 8 October 14:35 IST). Uncommitted now: the published
+  WebGL-flag post and the docs. Suggested message: `docs: publish the WebGL-flag post`.
 
-  ```
-  feat: write notebook posts in markdown, with a local editor and a page-turn sound
-
-  The notebook renders markdown posts (lib/markdown.ts, content/posts/) with the same
-  header, cover plate, numbered sections, margin notes and closing as the two sample
-  essays, and the same light and dark features on /blog (NoteFeature, ArticleParts).
-  Drafts exist only in development. A local editor at /write (autosave, snippets, a live
-  preview of the real page) is built from .dev.tsx files that Next only treats as routes
-  outside production; a check fails if it, or a draft, is served. Entering the notebook
-  plays a soft synthesised page turn (four variations at random), only after the visitor
-  switched sound on. AGENTS.md
-  adopts Next's managed block so `next dev` stops duplicating it.
-
-  Verified on Node 24: tsc, lint, format, build, 49 Node tests, 20 SEO, headers, 20
-  keyboard, 12 fallback and 8 page-turn checks, 126 browser records; 32 of 32 views
-  pixel-identical to the previous build.
-  ```
-
-- **The drafts:** three posts in `content/posts/` (WebGL flag, headings that moved, reading
-  PageSpeed). Write them at `/write` (dev only) or edit the `.md` files; read them at `/blog`.
-  Each ends with "Notes for the editor". Drafts never ship (see decisions.md).
+- **The posts:** three in `content/posts/`. The WebGL-flag post is **published** (dated
+  2026-10-09, no editor notes, eight reference links: spec, MDN, SwiftShader, Chromium 154 source
+  at the tag, PageSpeed, TBT); it is not yet released, because the file is uncommitted. The other
+  two (headings that moved, reading PageSpeed) are drafts that end with "Notes for the editor".
+  Write at `/write` (dev only) or edit the `.md` files; read at `/blog`. Drafts never ship
+  (decisions.md). Findings behind the flag post: the strict request fires only when Chrome's own
+  software-WebGL fallback writes `--use-gl=angle --use-angle=swiftshader-webgl` for the GPU
+  process; PageSpeed 62/57 to 99/92 after release (one run each, 09:25 vs 14:41 IST on 8 Oct).
+  Unknown: why `--use-gl` is not forwarded when passed by hand; Safari, Firefox, Linux, Windows
+  untested. Verified in a separate worktree on Node 24: build, `check-seo` (20 cases, 2 drafts
+  kept out), `check-headers`, and the published page renders its links and no editor notes.
 - **Page turn:** the owner chose the "hush" tuning by ear (very soft, low, quiet) and asked for
   a few variations picked at random; there are four. Hear them with
   `node tools/render-page-turn.mjs` (`tools/.out/page-turn-1…4.wav`). Notebook ideas for next session
@@ -53,7 +42,7 @@ no database, accounts or cookies.
 
 ## Next
 
-1. Owner: review and commit the performance fixes.
+1. Owner: commit the post, release it (`git push origin main:production`), then finish the two drafts.
 2. Step 6 and social content are on hold. Step 6, "fun to read": ideas only, nothing built until the owner approves them
    ([code-cleanup.md](code-cleanup.md)).
 3. Owner-side and content items: [follow-ups.md](follow-ups.md). Social content is blocked
@@ -61,7 +50,8 @@ no database, accounts or cookies.
 
 ## Performance report (PageSpeed Insights, 8 October 2026)
 
-Lab only, no field data. Mobile 57, desktop 62; LCP 3.3 s / 0.7 s, CLS 0; the loss is Total
+Lab only, no field data. Before the release (09:25 IST) mobile 57, desktop 62; after it (14:41 IST)
+mobile 92, desktop 99. The first run: LCP 3.3 s / 0.7 s, CLS 0; the loss is Total
 Blocking Time on a GPU-less lab machine. A local run did not reproduce the huge TBT with
 software GL on this Mac, so the cause is likely, not proven. Done: software rendering now
 falls back to the plate (0 ms blocking desktop, 85 ms phone profile with no GPU); the

@@ -14,7 +14,7 @@ deployment or post-push live verification is included; hosting may deploy on pus
 
 ## Daytime banner correction — 5 October 2026
 
-The initial SEO checkpoint (`32f9815`) retained the old banner artwork. The user
+The initial SEO checkpoint (`dfd3134`) retained the old banner artwork. The user
 requested replacement with the daytime site theme and explicitly authorized
 commit/push. Commit subject: `fix: refresh social banner with daytime Living Atlas`.
 

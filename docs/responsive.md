@@ -6,7 +6,7 @@ It changes how the page reflows and how its decorative layers cover the scene.
 The checks here describe the original homepage and its saved 11 September 2026
 proofs. That SVG hero and its old test runner were retired when the user approved
 the Living Atlas homepage on 5 October. To reproduce the historical checks,
-use the original commit `d10c21a`; the old commands below are historical.
+use the original commit `2d5452a`; the old commands below are historical.
 Current production-route validation uses `tools/check-creative-v2.mjs` and is
 recorded in [creative-v2-validation.md](creative-v2-validation.md).
 

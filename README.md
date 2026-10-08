@@ -95,7 +95,7 @@ browser assertions. See [current validation](docs/creative-v2-validation.md) for
 what was actually run and what remains unverified.
 
 [The earlier responsive record](docs/responsive.md) documents the retired vector
-home treatment at commit `d10c21a`. Its saved captures are historical evidence,
+home treatment at commit `2d5452a`. Its saved captures are historical evidence,
 not qualification of the new homepage; the retired wave-coverage harness has
 been removed from the current tree.
 

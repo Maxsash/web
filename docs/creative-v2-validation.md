@@ -59,7 +59,7 @@ possible seed; no physical-device check.
 
 ## Structure pass and sea studio — 6 October 2026
 
-Committed as `a5381a5`. Local checks on the changed tree (dev server for page captures,
+Committed as `223c7cd`. Local checks on the changed tree (dev server for page captures,
 a temporary production server on 127.0.0.1:3011 for suites, since stopped):
 
 - `tsc --noEmit`, `pnpm lint` and `pnpm build` pass.
@@ -476,7 +476,7 @@ no push or deployment. Commit subject: `refactor: soften mobile sea transition p
 ## Previous checkpoint — three mobile stages
 
 The user requested merging Waves and Structure because they looked too similar.
-Started clean at `de12187`, matching `origin/main`. The selected flow is now
+Started clean at `761d219`, matching `origin/main`. The selected flow is now
 **Sea → Structure → Drawing**, at progress **0 / .55 / 1**. The combined middle
 stage shows contours and vessel construction together. Two upward swipes reach
 Drawing; the next gesture scrolls natively into Work. Desktop remains continuous.
@@ -505,7 +505,7 @@ next step is deploying and checking this three-stage flow on that device.
 
 User explicitly requested mobile gesture stages and unchanged continuous
 desktop scrolling. This authorizes the change at `/`; no exploratory sample or
-further selection is required. Started clean at `39d5b42`, matching the local
+further selection is required. Started clean at `6c32058`, matching the local
 tracking reference. No push or deployment in this turn.
 
 `OceanScene.tsx` implements four states: Sea (0), Waves (.42), Structure (.68),
@@ -605,7 +605,7 @@ scroll/compositing trace if stutter persists. Keep Mac gains intact.
 ## Server shutdown and updated production qualification — latest state
 
 5 October: user requested all servers shut down and continuation. Tree was clean
-at `740b738`, with `main` matching the local `origin/main` tracking reference;
+at `fa15491`, with `main` matching the local `origin/main` tracking reference;
 the three fixes have been pushed outside this agent turn. No push or deployment
 was performed here. Live HTML now has Writing → `/blog`, and the production
 diagnostic confirms compact phone rendering plus reduced scroll style cost.
@@ -638,7 +638,7 @@ Build/model checks were not repeated: no application code changed this turn.
 
 User clarified that **scrolling down through the sea reveal** is noticeably
 less smooth at production on MacBook Pro/Chrome and iPhone Air/Safari. This
-supersedes idle-only diagnostics. Started from clean local `df871c3`, two commits
+supersedes idle-only diagnostics. Started from clean local `0da9204`, two commits
 ahead of the tracking reference. Production remains an older revision: the live
 diagnostic still finds Writing → `#writing` and a 740,610-pixel/high-quality phone
 canvas; local compact rendering is 329,160 pixels. Local fixes are not live yet.
@@ -674,14 +674,14 @@ there were no observed long tasks. This shows reduced main-thread style work,
 not a measured phone FPS/GPU improvement or proof production lag is solved.
 Native gestures reached the drawing chapter on both surfaces.
 
-Evidence (ignored): local baseline `creative-local-native-scroll/baseline-df871c3.json`,
+Evidence (ignored): local baseline `creative-local-native-scroll/baseline-0da9204.json`,
 after `creative-local-native-scroll/report.json` at `2026-10-05T11:45:19.043Z`;
 live `creative-production-native-scroll/report.json` at `2026-10-05T11:44:35.728Z`.
 Live native callback/draw p95 was 16.8 ms desktop and 16.7 ms phone viewport,
 with zero observed long tasks; style totals 278.3/212.9 ms. Production stutter
 still was not reproduced in this headless environment. Programmatic reports
 are under `creative-production-scroll/` and the preserved local
-`creative-local-scroll/baseline-df871c3.json`. Live user evidence remains open.
+`creative-local-scroll/baseline-0da9204.json`. Live user evidence remains open.
 
 Build, separate types, lint, script syntax and diff checks passed. Full local
 production regression report at `2026-10-05T11:46:44.605Z` on port 3005 passes
@@ -706,7 +706,7 @@ power settings and warm/cold state. Keep this ahead of new creative features.
 `maxsash.com`, while localhost is smooth. User confirmed **Chrome on Mac,
 Safari on iPhone**. This is reported physical evidence of a problem,
 not a completed qualification. Navigation/performance now precede new creative
-features. Started with clean tree at lifecycle commit `86f1589` (one ahead of
+features. Started with clean tree at lifecycle commit `d54ed06` (one ahead of
 the local tracking reference); no deployment or remote push performed here.
 
 Implemented:
@@ -784,7 +784,7 @@ notebook, backend, sensors and C features remain lower priority.
 
 ## Renderer lifecycle continuation — 5 October
 
-Started from a clean tree at `5eddf76`; `main` matched the local `origin/main`
+Started from a clean tree at `016a770`; `main` matched the local `origin/main`
 tracking reference (no fresh fetch). Foundation promotion was already done.
 Fixed `OceanScene.tsx` to dispose the engine before dropping its reference on
 context loss, and ignore a delayed import rejection after unmount. Context loss

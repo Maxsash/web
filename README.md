@@ -22,6 +22,10 @@ pnpm lint
 pnpm format       # Prettier; `pnpm format:check` verifies without writing
 ```
 
+Writing a notebook post? With `pnpm dev` running, open <http://localhost:3000/write>: a local
+editor with the post's fields, a markdown box with a few insert buttons, autosave, and a live
+preview of the real page. It exists only in development; a production build has no such route.
+
 Optional environment variables: `NEXT_PUBLIC_SITE_URL` (canonical origin),
 `GITHUB_TOKEN` (server-only, raises GitHub's rate limit for the commit-log card),
 `NEXT_PUBLIC_BUILD_SHA` (short commit shown in the footer when the host gives none).

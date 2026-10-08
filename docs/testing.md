@@ -19,21 +19,23 @@ node tools/check-seo.mjs http://127.0.0.1:3012
 node tools/check-headers.mjs http://localhost:3012
 node tools/check-keyboard.mjs http://localhost:3012
 node tools/check-software-fallback.mjs http://localhost:3012
+node tools/check-page-turn.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result: 29 Node tests, 20 SEO cases, header checks, 20 keyboard checks, 12
-software-fallback checks, 126 browser records, no failures.
+Last full result: 49 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, 12
+software-fallback checks, 8 page-turn checks, 126 browser records, no failures.
 
 ## What each check covers
 
 | Check                       | Covers                                                                                                   |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`          | Sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
+| `tools/*.test.mjs`          | Markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
+| `check-page-turn.mjs`       | The page turn: silent by default, plays on entering and moving within the notebook once sound is on, silent on the same page and after muting. The shape (and low hissiness) of the sound is unit-tested; how it sounds is not. |
 | `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
 | `compare-builds.mjs`        | Pixel comparison of two builds over 32 views (8 pages, desktop and phone, day and night). The way to prove a refactor changed nothing. |
 | `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |

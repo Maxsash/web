@@ -8,3 +8,9 @@ export function seededRandom(seed: number) {
     return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+export function hashText(text: string) {
+  let hash = 0x811c9dc5;
+  for (const char of text) hash = Math.imul(hash ^ char.charCodeAt(0), 0x01000193) >>> 0;
+  return hash;
+}

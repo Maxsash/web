@@ -2,6 +2,19 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+- [ ] **Edit and publish the three drafts** in `content/posts/` (each ends with "Notes for the
+      editor": delete it, fill the placeholders, then set `status: published`).
+- [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
+      must respect reduced motion, keep sound opt-in, and cost nothing in accessibility):
+  1. **Draw the plate in:** the engraving's lines draw themselves on first view, like ink.
+  2. **Turn pages with arrows and swipes:** left and right move between field notes, with the
+     page turn when sound is on; the links stay as the accessible route.
+  3. **A visual page turn:** a short curl or slide when entering the notebook, matched to the
+     sound. Most striking, riskiest on iPhone (needs view transitions to behave).
+  4. **Paper feel:** subtle grain, ink bleed on headings, a faint page-edge shadow.
+  5. **Reading ribbon:** a bookmark ribbon that fills as a post is read.
+  6. **Hand-drawn marginalia:** small ink arrows and underlines beside the margin notes.
+  7. **A share card per post:** an Open Graph image made from each post's own sea.
 - [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
       owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
       first-byte time. See [decisions.md](decisions.md).

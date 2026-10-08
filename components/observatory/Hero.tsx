@@ -1,6 +1,7 @@
 import Link from "next/link";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import Mark from "@/components/Mark";
+import NotebookLink from "@/components/NotebookLink";
 import { WaveSoundControl } from "@/components/shore/WaveSound";
 import { site } from "@/content/site";
 import type { SeaEdition } from "@/lib/sea/types";
@@ -32,9 +33,9 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
                   {item.label}
                 </a>
               ) : (
-                <Link prefetch={false} key={item.href} href={item.href}>
+                <NotebookLink key={item.href} href={item.href}>
                   {item.label}
-                </Link>
+                </NotebookLink>
               ),
             )}
           </nav>

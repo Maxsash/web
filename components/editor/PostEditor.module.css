@@ -1,0 +1,141 @@
+.editor {
+  display: grid;
+  grid-template-columns: 16rem minmax(24rem, 34rem) minmax(0, 1fr);
+  height: 100svh;
+  font:
+    0.85rem/1.5 system-ui,
+    sans-serif;
+  background: #f4f2ea;
+  color: #222;
+}
+.sidebar,
+.writing {
+  overflow-y: auto;
+  border-right: 1px solid #cfcbbd;
+}
+.sidebar {
+  padding: 1rem;
+  background: #ebe8dc;
+}
+.banner {
+  margin: 0 0 1rem;
+  padding: 0.35rem 0.5rem;
+  background: #222;
+  color: #f4f2ea;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.sidebar > a {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: inherit;
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar li a {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.4rem;
+  min-height: 44px;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid #cfcbbd;
+}
+.sidebar li a[aria-current="page"] {
+  background: #fff;
+  font-weight: 600;
+}
+.sidebar li span {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+.create {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.writing {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+.writing > header {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.writing [data-state="error"] {
+  color: #a22;
+}
+.writing [data-state="dirty"] {
+  color: #a60;
+}
+.fields {
+  display: grid;
+  gap: 0.5rem;
+}
+.fields label,
+.create label {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.editor input,
+.editor select,
+.editor textarea {
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #b9b5a6;
+  background: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.editor button {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  min-height: 32px;
+  cursor: pointer;
+}
+.toolbar {
+  display: flex;
+  gap: 0.4rem;
+}
+.writing textarea {
+  flex: 1;
+  min-height: 24rem;
+  font:
+    0.8rem/1.65 ui-monospace,
+    "JetBrains Mono",
+    monospace;
+  resize: vertical;
+}
+.preview {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+.empty {
+  grid-column: 2 / -1;
+  padding: 2rem;
+}
+@media (max-width: 70rem) {
+  .editor {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .preview {
+    height: 80svh;
+  }
+}

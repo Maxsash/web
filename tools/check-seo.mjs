@@ -1,6 +1,6 @@
 /** Verify crawler-visible SEO against a running local production server. */
 import assert from "node:assert/strict";
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 
 const base = new URL(process.argv[2] ?? "http://127.0.0.1:3010");
 assert.ok(["localhost", "127.0.0.1"].includes(base.hostname), "Use a local production server");
@@ -70,11 +70,35 @@ const image = await fetch(new URL("/images/living-atlas-day-v1.jpg", base));
 assert.equal(image.status, 200);
 assert.equal(image.headers.get("content-type"), "image/jpeg");
 assert.equal((await fetch(new URL("/blog/not-a-post", base))).status, 404);
+const postsDir = "content/posts";
+const drafts = readdirSync(postsDir).filter(
+  (file) =>
+    file.endsWith(".md") &&
+    !/^status: published$/m.test(readFileSync(`${postsDir}/${file}`, "utf8")),
+);
+for (const [method, path] of [
+  ["GET", "/write"],
+  ["PUT", "/api/dev/posts"],
+  ["POST", "/api/dev/posts"],
+]) {
+  const response = await fetch(new URL(path, base), {
+    method,
+    headers: { "Content-Type": "application/json", Origin: base.origin },
+    body: method === "GET" ? undefined : "{}",
+  });
+  assert.equal(response.status, 404, `${method} ${path} must not exist in production`);
+}
+const blogIndex = await (await fetch(new URL("/blog", base))).text();
+for (const file of drafts) {
+  const slug = file.replace(/^\d+-/, "").replace(/\.md$/, "");
+  assert.equal((await fetch(new URL(`/blog/${slug}`, base))).status, 404, `${slug} must not ship`);
+  assert.ok(!blogIndex.includes(`/blog/${slug}`), `${slug} must not be linked`);
+}
 mkdirSync("tools/.out/seo", { recursive: true });
 writeFileSync(
   "tools/.out/seo/report.json",
   JSON.stringify({ records, robots, sitemap, imageStatus: image.status }, null, 2),
 );
 console.log(
-  `Passed ${records.length} crawler/page cases, discovery files, image response and unknown-article 404.`,
+  `Passed ${records.length} crawler/page cases, discovery files, image response, unknown-article 404 and ${drafts.length} unpublished drafts kept out.`,
 );

@@ -1,10 +1,15 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import NoteFeature from "@/components/atlas/NoteFeature";
+import { formatIndex } from "@/lib/format";
+import { seaSeedForName } from "@/lib/sea/presets";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import MarkPlate from "@/components/atlas/MarkPlate";
+import { writtenPosts } from "@/content/posts";
 import { createSeaEdition } from "@/lib/sea/edition";
 import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 import styles from "@/components/atlas/Atlas.module.css";
+
+const roman = (n: number) => ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][n - 1];
 
 export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
@@ -12,6 +17,8 @@ export const metadata: Metadata = {
 
 export default function AtlasIndex() {
   const edition = createSeaEdition(DEFAULT_SEA_SEED_V2, "2");
+  const posts = writtenPosts();
+  const total = 2 + posts.length;
   return (
     <main id="atlas-content" className={styles.index}>
       <section className={styles.masthead} aria-labelledby="atlas-title">
@@ -43,66 +50,95 @@ export default function AtlasIndex() {
         </div>
       </section>
 
-      <section className={styles.feature} aria-labelledby="first-note">
-        <div className={styles.featurePlate}>
-          <div className={styles.plateTop}>
-            <span>Plate I — The sum of a sea</span>
-            <span>01 / 02</span>
-          </div>
-          <OceanPlate variant="cover" edition={edition} />
-          <p className={styles.plateCaption}>
-            <span>Six waves. One surface.</span>
-            <span>Edition {edition.seed} · t = 0</span>
-          </p>
-        </div>
-        <div className={styles.featureCopy}>
-          <p className={styles.overline}>
+      <NoteFeature
+        variant="light"
+        id="first-note"
+        overline={
+          <>
             <span className={styles.smallCross} aria-hidden="true">
               ✳
             </span>{" "}
             Field note 001 / Waves & motion
-          </p>
-          <h2 id="first-note">
+          </>
+        }
+        headline={
+          <>
             The sea is <br />a sum of <br /> <em>small things.</em>
-          </h2>
-          <p>
-            A crest, a trough, a little disagreement. Follow the simple parts that make a surface
-            feel wonderfully complicated.
-          </p>
-          <Link prefetch={false} className={styles.readLink} href="/blog/three-waves-one-sea">
-            Read the wave study <span aria-hidden="true">↗</span>
-          </Link>
-          <span className={styles.sampleLabel}>Sample essay · 4 min read</span>
-        </div>
-      </section>
+          </>
+        }
+        blurb="A crest, a trough, a little disagreement. Follow the simple parts that make a surface feel wonderfully complicated."
+        href="/blog/three-waves-one-sea"
+        linkLabel="Read the wave study"
+        meta="Sample essay · 4 min read"
+        plateTop={["Plate I — The sum of a sea", `01 / ${formatIndex(total)}`]}
+        plate={<OceanPlate variant="cover" edition={edition} />}
+        plateCaption={["Six waves. One surface.", `Edition ${edition.seed} · t = 0`]}
+      />
 
-      <section className={styles.darkFeature} aria-labelledby="second-note">
-        <div className={styles.darkCopy}>
-          <p className={styles.overline}>Field note 002 / Geometry & craft</p>
+      <NoteFeature
+        variant="dark"
+        id="second-note"
+        overline="Field note 002 / Geometry & craft"
+        decoration={
           <span className={styles.largeIntegral} aria-hidden="true">
             ∫
           </span>
-          <h2 id="second-note">
+        }
+        headline={
+          <>
             A symbol. <br />A vessel. <br />
             <em>One line of thought.</em>
-          </h2>
-          <p>
-            Where an integral becomes a mast, and the space between three shapes does the quiet
-            work.
-          </p>
-          <Link prefetch={false} className={styles.readLink} href="/blog/an-integral-under-sail">
-            Read the construction <span aria-hidden="true">↗</span>
-          </Link>
-          <span className={styles.sampleLabel}>Sample essay · 4 min read</span>
-        </div>
-        <div className={styles.darkPlate}>
-          <MarkPlate />
-          <p className={styles.plateCaption}>
-            <span>Plate II — An integral under sail</span>
-            <span>Three filled outlines</span>
-          </p>
-        </div>
-      </section>
+          </>
+        }
+        blurb="Where an integral becomes a mast, and the space between three shapes does the quiet work."
+        href="/blog/an-integral-under-sail"
+        linkLabel="Read the construction"
+        meta="Sample essay · 4 min read"
+        plate={<MarkPlate />}
+        plateCaption={["Plate II — An integral under sail", "Three filled outlines"]}
+      />
+
+      {posts.map((post, index) => {
+        const edition = createSeaEdition(seaSeedForName(post.slug), "2");
+        const emphasised = post.emphasis && post.title.endsWith(post.emphasis);
+        return (
+          <NoteFeature
+            key={post.slug}
+            variant={index % 2 ? "dark" : "light"}
+            id={`note-${post.slug}`}
+            overline={`Field note ${post.number} / ${post.topic}`}
+            headline={
+              emphasised ? (
+                <>
+                  {post.title.slice(0, -post.emphasis.length)}
+                  <br />
+                  <em>{post.emphasis}.</em>
+                </>
+              ) : (
+                post.title
+              )
+            }
+            blurb={post.summary}
+            href={`/blog/${post.slug}`}
+            linkLabel="Read the note"
+            meta={`${post.draft ? "Draft" : "Note"} · ${post.minutes} min read`}
+            plateTop={
+              index % 2
+                ? undefined
+                : [
+                    `Plate ${roman(index + 3)} — ${post.title}`,
+                    `${post.number.slice(-2)} / ${formatIndex(total)}`,
+                  ]
+            }
+            plate={<OceanPlate variant="cover" edition={edition} />}
+            plateCaption={
+              index % 2
+                ? [`Plate ${roman(index + 3)} — ${post.title}`, `Edition ${edition.seed}`]
+                : [post.topic, `Edition ${edition.seed} · t = 0`]
+            }
+          />
+        );
+      })}
 
       <aside className={styles.editorsNote}>
         <span className={styles.overline}>A note on these pages</span>

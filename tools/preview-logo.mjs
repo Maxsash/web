@@ -12,7 +12,8 @@ const here = (p) => new URL(p, import.meta.url);
 mkdirSync(here(".out"), { recursive: true });
 const o = JSON.parse(readFileSync(here(".out/logo.json"), "utf8"));
 const iconSource = readFileSync(here("../app/icon.svg"), "utf8");
-const icon = (size) => iconSource.replace(/<svg\b/, `<svg width="${size}" height="${size}" aria-hidden="true"`);
+const icon = (size) =>
+  iconSource.replace(/<svg\b/, `<svg width="${size}" height="${size}" aria-hidden="true"`);
 
 const svg = (fill, size, viewBox = `0 0 ${o.box} ${o.box}`) => `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${size}" height="${size}" aria-hidden="true">
@@ -22,16 +23,17 @@ const svg = (fill, size, viewBox = `0 0 ${o.box} ${o.box}`) => `
 const ink = "#0C3D55";
 const paper = "#F7EFDF";
 const sizes = [120, 56, 32, 16];
-const pixelFigure = (source, size, label) => `<figure class="pixel-sample" data-pixels="${size}"><div class="pixel-source">${source}</div><canvas width="${size}" height="${size}" style="width:${size * 8}px;height:${size * 8}px" aria-label="${label} at ${size}px enlarged eight times"></canvas><figcaption>${label} · ${size}px at 8×</figcaption></figure>`;
+const pixelFigure = (source, size, label) =>
+  `<figure class="pixel-sample" data-pixels="${size}"><div class="pixel-source">${source}</div><canvas width="${size}" height="${size}" style="width:${size * 8}px;height:${size * 8}px" aria-label="${label} at ${size}px enlarged eight times"></canvas><figcaption>${label} · ${size}px at 8×</figcaption></figure>`;
 const grounds = [
   { name: "Ink on sand", fill: ink, background: paper },
   { name: "Sand on ink", fill: paper, background: ink },
 ];
 const crop = (x, y, size) => [x, y, size, size].map((n) => +(n * o.box).toFixed(2)).join(" ");
 const details = [
-  { name: "Hook, terminal, and sail head", viewBox: crop(0.30, 0.01, 0.38) },
-  { name: "Lower terminal and stern", viewBox: crop(0.025, 0.70, 0.30) },
-  { name: "Mast, foot, and deck channel", viewBox: crop(0.20, 0.66, 0.25) },
+  { name: "Hook, terminal, and sail head", viewBox: crop(0.3, 0.01, 0.38) },
+  { name: "Lower terminal and stern", viewBox: crop(0.025, 0.7, 0.3) },
+  { name: "Mast, foot, and deck channel", viewBox: crop(0.2, 0.66, 0.25) },
 ];
 
 // Original gets only a display framing change; its paths remain verbatim.
@@ -39,12 +41,20 @@ const original = readFileSync(here("../docs/mark-original.svg"), "utf8")
   .replace(/<!--[\s\S]*?-->/g, "")
   .replace(/<rect\b[^>]*\/>/g, "")
   .replace(/fill="#[^"]*"/g, `fill="${ink}"`)
-  .replace(/<svg[^>]*>/, '<svg class="fit-original" width="260" height="260" xmlns="http://www.w3.org/2000/svg">');
+  .replace(
+    /<svg[^>]*>/,
+    '<svg class="fit-original" width="260" height="260" xmlns="http://www.w3.org/2000/svg">',
+  );
 const baseline = existsSync(here(".out/baseline.svg"))
-  ? readFileSync(here(".out/baseline.svg"), "utf8").replace(/<svg\b/, '<svg width="260" height="260"')
+  ? readFileSync(here(".out/baseline.svg"), "utf8").replace(
+      /<svg\b/,
+      '<svg width="260" height="260"',
+    )
   : null;
 
-writeFileSync(here(".out/preview.html"), `<!doctype html>
+writeFileSync(
+  here(".out/preview.html"),
+  `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Maxsash Studio mark — geometry proof</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#e8e3d8;color:${ink};font-family:system-ui,sans-serif}
@@ -63,11 +73,19 @@ svg{display:block;flex:none}.details{display:grid;grid-template-columns:repeat(3
 @media(max-width:760px){.grounds{grid-template-columns:1fr}.details{grid-template-columns:1fr}.hero svg{width:100%;height:auto}.comparison-row{gap:10px;flex-wrap:wrap}.sizes{gap:22px}}
 </style></head><body>
 <header><h1>Maxsash Studio · mark proof</h1><p>Judge the 32px counter and channel first. The enlarged views expose tangency and corner fairness.</p></header>
-<section class="grounds">${grounds.map(({ name, fill, background }) => `<div class="ground" style="background:${background};color:${fill}">
+<section class="grounds">${grounds
+    .map(
+      ({
+        name,
+        fill,
+        background,
+      }) => `<div class="ground" style="background:${background};color:${fill}">
   <h2>${name}</h2><div class="hero">${svg(fill, 420)}</div><div class="sizes">${sizes.map((s) => `<figure>${svg(fill, s)}<figcaption>${s}px</figcaption></figure>`).join("")}</div>
   <div class="icons"><h2>Actual browser tile</h2>${[32, 16].map((s) => `<figure>${icon(s)}<figcaption>${s}px</figcaption></figure>`).join("")}</div>
   <details class="pixel-proof"><summary>Show 8× pixel proof · mark and actual browser tile</summary><div class="pixel-grid">${[32, 16].map((s) => pixelFigure(svg(fill, s), s, "Mark")).join("")}${[32, 16].map((s) => pixelFigure(icon(s), s, "Browser tile")).join("")}</div></details>
-</div>`).join("")}</section>
+</div>`,
+    )
+    .join("")}</section>
 <section class="details">${details.map(({ name, viewBox }) => `<figure class="detail">${svg(ink, 420, viewBox)}<figcaption>${name}</figcaption></figure>`).join("")}</section>
 <section class="comparison"><h2>Silhouette continuity</h2><div class="comparison-row">
   <figure>${original}<figcaption>Original · fitted to equal height</figcaption></figure>
@@ -98,6 +116,7 @@ for (const s of document.querySelectorAll('.fit-original')) {
   s.setAttribute('viewBox',[x+(w-box)/2,y+(h-box)/2,box,box].join(' '));
 }
 </script>
-</body></html>`);
+</body></html>`,
+);
 
 console.log("wrote tools/.out/preview.html");

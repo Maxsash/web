@@ -87,7 +87,8 @@ export function pickVisitSea(random: () => number = Math.random): string {
     { settings: SEA_PRESETS[2].settings, weight: 2 },
   ];
   let ticket = random() * starts.reduce((sum, start) => sum + start.weight, 0);
-  const start = (starts.find(candidate => (ticket -= candidate.weight) < 0) ?? starts[0]).settings;
+  const start = (starts.find((candidate) => (ticket -= candidate.weight) < 0) ?? starts[0])
+    .settings;
   const nudge = (value: number, range: number) => clampByte(value + (random() * 2 - 1) * range);
   return seedFromSettings({
     swell: nudge(start.swell, 28),
@@ -101,13 +102,14 @@ export const SEA_SETTING_KEYS = ["swell", "heading", "character", "variation"] a
 
 export function settingsFromSeed(seed: string): SeaSettings {
   const canonical = normaliseSeaSeed(seed);
-  if (canonical === null) throw new RangeError("A sea seed must contain eight hexadecimal characters.");
+  if (canonical === null)
+    throw new RangeError("A sea seed must contain eight hexadecimal characters.");
   const byte = (index: number) => Number.parseInt(canonical.slice(index * 2, index * 2 + 2), 16);
   return { swell: byte(0), heading: byte(1), character: byte(2), variation: byte(3) };
 }
 
 export function seedFromSettings(settings: SeaSettings): string {
-  return SEA_SETTING_KEYS.map(key => {
+  return SEA_SETTING_KEYS.map((key) => {
     const value = Math.min(255, Math.max(0, Math.round(settings[key])));
     return value.toString(16).padStart(2, "0");
   }).join("");
@@ -163,7 +165,8 @@ function createSeaEditionV2(seed: string): SeaEdition {
 
 function createSeaEditionV1(seed = DEFAULT_SEA_SEED): SeaEdition {
   const canonical = normaliseSeaSeed(seed);
-  if (canonical === null) throw new RangeError("A sea seed must contain eight hexadecimal characters.");
+  if (canonical === null)
+    throw new RangeError("A sea seed must contain eight hexadecimal characters.");
 
   const random = seededRandom(Number.parseInt(canonical, 16));
   const amplitudes = [0.55, 0.32, 0.16, 0.085, 0.04, 0.02];
@@ -189,14 +192,37 @@ export function parseSeaVersion(input: string | null | undefined): SeaVersion | 
   return input === "1" || input === "2" ? input : null;
 }
 
-const tier = (value: number, names: [string, string, string, string, string]) => names[Math.min(4, Math.floor((value / 256) * 5))];
+const tier = (value: number, names: [string, string, string, string, string]) =>
+  names[Math.min(4, Math.floor((value / 256) * 5))];
 
 /** A short plain-language reading of a version 2 sea, for captions and screen readers. */
-export function describeSea(settings: SeaSettings): { swell: string; heading: string; character: string; sentence: string } {
+export function describeSea(settings: SeaSettings): {
+  swell: string;
+  heading: string;
+  character: string;
+  sentence: string;
+} {
   const swell = tier(settings.swell, ["Glassy", "Gentle", "Moderate", "Heavy", "Storm-high"]);
-  const heading = tier(settings.heading, ["Running hard left", "Running left", "Running ahead", "Running right", "Running hard right"]);
-  const character = tier(settings.character, ["Long and rolling", "Rolling", "Mixed", "Choppy", "Short and cross-running"]);
-  return { swell, heading, character, sentence: `${swell} · ${character.toLowerCase()} · ${heading.toLowerCase()}` };
+  const heading = tier(settings.heading, [
+    "Running hard left",
+    "Running left",
+    "Running ahead",
+    "Running right",
+    "Running hard right",
+  ]);
+  const character = tier(settings.character, [
+    "Long and rolling",
+    "Rolling",
+    "Mixed",
+    "Choppy",
+    "Short and cross-running",
+  ]);
+  return {
+    swell,
+    heading,
+    character,
+    sentence: `${swell} · ${character.toLowerCase()} · ${heading.toLowerCase()}`,
+  };
 }
 
 /** CPU reference. The GLSL implementation must use these identical equations. */

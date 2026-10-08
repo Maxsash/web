@@ -19,8 +19,8 @@
 import { writeFileSync } from "node:fs";
 import { V, fitPath, chainToD, fmt } from "./geom.mjs";
 
-const TILE = 1440;   // design units per tile
-const TILES = 3;     // scrolling by 1/3 of the strip advances exactly one tile
+const TILE = 1440; // design units per tile
+const TILES = 3; // scrolling by 1/3 of the strip advances exactly one tile
 
 /** steepness: how far the crests bunch. Must keep sum(Q*A*k) below 1. */
 const BANDS = [
@@ -75,27 +75,27 @@ const build = (band) => {
   }
 
   const ampTotal = parts.reduce((s, p) => s + p.amp, 0);
-  const base = ampTotal + 10;                 // mean water level inside the viewBox
+  const base = ampTotal + 10; // mean water level inside the viewBox
   const height = Math.round(base + band.depth);
   const span = TILE * TILES;
 
   // theta parametrises the surface; x lags it by the horizontal Gerstner term.
-  const xOf = (t) => t - parts.reduce((s, p) => s + band.steepness * p.amp * Math.sin(p.k * t + p.phase), 0);
+  const xOf = (t) =>
+    t - parts.reduce((s, p) => s + band.steepness * p.amp * Math.sin(p.k * t + p.phase), 0);
   const yOf = (t) => base - parts.reduce((s, p) => s + p.amp * Math.cos(p.k * t + p.phase), 0);
   const x0 = xOf(0);
   const at = (t) => [xOf(t) - x0, yOf(t)];
 
   const STEPS = 2400;
   const pts = Array.from({ length: STEPS + 1 }, (_, i) => at((span * i) / STEPS));
-  const tangents = (i) =>
-    V.norm(V.sub(pts[Math.min(STEPS, i + 1)], pts[Math.max(0, i - 1)]));
+  const tangents = (i) => V.norm(V.sub(pts[Math.min(STEPS, i + 1)], pts[Math.max(0, i - 1)]));
   const chain = fitPath(pts, tangents, 0.6);
 
   // The boat locates a surface height by x. Preserve a single-valued curve
   // through fitting and serialization, not only in the analytic Gerstner sum.
   for (const seg of chain) {
-    const xs=[seg.p0,seg.c1,seg.c2,seg.p3].map(p=>+p[0].toFixed(2));
-    if(xs.some((x,i)=>i>0 && x<xs[i-1]))
+    const xs = [seg.p0, seg.c1, seg.c2, seg.p3].map((p) => +p[0].toFixed(2));
+    if (xs.some((x, i) => i > 0 && x < xs[i - 1]))
       throw new Error(`${band.name}: fitted surface folds backward in x`);
   }
   const body = `M${fmt(pts[0])}${chainToD(chain)}L${span},${height}L0,${height}Z`;
@@ -149,6 +149,9 @@ ${bands
 writeFileSync(new URL("../components/wave-paths.ts", import.meta.url), ts);
 console.log(
   bands
-    .map((b) => `${b.name.padEnd(5)} h=${String(b.height).padStart(3)} segs=${String(b.segments).padStart(3)} seam dy=${b.seamDy} dx=${b.seamDx}`)
+    .map(
+      (b) =>
+        `${b.name.padEnd(5)} h=${String(b.height).padStart(3)} segs=${String(b.segments).padStart(3)} seam dy=${b.seamDy} dx=${b.seamDx}`,
+    )
     .join("\n"),
 );

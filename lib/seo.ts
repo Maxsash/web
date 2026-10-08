@@ -11,10 +11,23 @@ export const socialImage = {
   alt: "Maxsash Studio — Sea. Ship. Math. A sailboat on the sunlit Living Atlas sea.",
 };
 
-export function sharingMetadata(title: string, description: string, path: string, type: "website" | "article" = "website"): Metadata {
+export function sharingMetadata(
+  title: string,
+  description: string,
+  path: string,
+  type: "website" | "article" = "website",
+): Metadata {
   return {
     alternates: { canonical: absoluteUrl(path) },
-    openGraph: { title, description, url: absoluteUrl(path), siteName: site.name, locale: "en_US", type, images: [socialImage] },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl(path),
+      siteName: site.name,
+      locale: "en_US",
+      type,
+      images: [socialImage],
+    },
     twitter: { card: "summary_large_image", title, description, images: [socialImage] },
   };
 }
@@ -22,8 +35,37 @@ export function sharingMetadata(title: string, description: string, path: string
 export const studioStructuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Person", "@id": absoluteUrl("/#yash"), name: site.owner, url: site.links.portfolio, sameAs: [site.links.github, site.links.portfolio] },
-    { "@type": "WebSite", "@id": absoluteUrl("/#website"), name: site.name, url: absoluteUrl("/"), description: site.description, inLanguage: "en", creator: { "@id": absoluteUrl("/#yash") } },
-    { "@type": "ProfilePage", "@id": absoluteUrl("/#page"), url: absoluteUrl("/"), name: site.name, description: site.description, isPartOf: { "@id": absoluteUrl("/#website") }, mainEntity: { "@id": absoluteUrl("/#yash") }, hasPart: projects.map(project => ({ "@type": "CreativeWork", name: project.title, description: project.summary, url: project.caseStudy ?? project.href, creator: { "@id": absoluteUrl("/#yash") } })) },
+    {
+      "@type": "Person",
+      "@id": absoluteUrl("/#yash"),
+      name: site.owner,
+      url: site.links.portfolio,
+      sameAs: [site.links.github, site.links.portfolio],
+    },
+    {
+      "@type": "WebSite",
+      "@id": absoluteUrl("/#website"),
+      name: site.name,
+      url: absoluteUrl("/"),
+      description: site.description,
+      inLanguage: "en",
+      creator: { "@id": absoluteUrl("/#yash") },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": absoluteUrl("/#page"),
+      url: absoluteUrl("/"),
+      name: site.name,
+      description: site.description,
+      isPartOf: { "@id": absoluteUrl("/#website") },
+      mainEntity: { "@id": absoluteUrl("/#yash") },
+      hasPart: projects.map((project) => ({
+        "@type": "CreativeWork",
+        name: project.title,
+        description: project.summary,
+        url: project.caseStudy ?? project.href,
+        creator: { "@id": absoluteUrl("/#yash") },
+      })),
+    },
   ],
 };

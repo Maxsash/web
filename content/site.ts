@@ -88,7 +88,8 @@ export const projects: Project[] = [
   {
     slug: "household-hub",
     title: "Household Hub",
-    summary: "Rent, tenant records, and household spending in one place. Track payments, plan rent increases, and turn handwritten expense slips into entries you review before saving.",
+    summary:
+      "Rent, tenant records, and household spending in one place. Track payments, plan rent increases, and turn handwritten expense slips into entries you review before saving.",
     tags: ["Next.js", "Supabase", "slip scanning"],
     year: "2026",
     href: "https://tenant-management-2my6.vercel.app/",
@@ -98,7 +99,8 @@ export const projects: Project[] = [
   {
     slug: "wedding-photo-platform",
     title: "Wedding Photo Platform",
-    summary: "A wedding told in chapters, photo reels, and albums. An offline photo pipeline removes duplicates and groups faces so guests can find their photographs. The public demo hides faces for privacy.",
+    summary:
+      "A wedding told in chapters, photo reels, and albums. An offline photo pipeline removes duplicates and groups faces so guests can find their photographs. The public demo hides faces for privacy.",
     tags: ["Next.js", "offline ML", "Cloudflare R2"],
     year: "2026",
     href: "https://wedding-demo-teal.vercel.app/",

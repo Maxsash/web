@@ -23,7 +23,7 @@ node tools/check-page-turn.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result (9 October 2026, error pages): 58 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, page turn, 126 browser records, no failures; `compare-builds` 31/32 (the Work-image flake).
+Last full result (9 October 2026, client-first homepage): 58 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, page turn, 132 browser records, no failures. `compare-builds` cannot prove "unchanged" across a change in section heights: a section above that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the text. Compare computed styles and relative boxes instead (done for Work, the studio and the notebook: identical).
 
 ## What each check covers
 
@@ -36,7 +36,7 @@ Last full result (9 October 2026, error pages): 58 Node tests, 20 SEO cases (inc
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
 | `check-page-turn.mjs`       | The page turn: silent by default, plays on entering and moving within the notebook once sound is on, silent on the same page and after muting. The shape (and low hissiness) of the sound is unit-tested; how it sounds is not. |
 | `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
-| `compare-builds.mjs`        | Pixel comparison of two builds over 32 views (8 pages, desktop and phone, day and night). The way to prove a refactor changed nothing. |
+| `compare-builds.mjs`        | Pixel comparison of two builds over 44 views (11 pages and homepage sections, desktop and phone, day and night). The way to prove a refactor changed nothing. |
 | `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |
 
 `check-creative-v2.mjs` also takes `--quick` (a small screenshot subset), `--diagnose`

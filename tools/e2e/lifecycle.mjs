@@ -15,9 +15,9 @@ export async function runLifecycleChecks(ctx) {
   );
   await delay(100);
   results.push({
-    name: "elsewhere-390-text-200",
+    name: "sections-390-text-200",
     pass: await evaluate(
-      "[...document.querySelectorAll('#elsewhere h2,#elsewhere h3,#elsewhere p,#elsewhere a')].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})",
+      "[...document.querySelectorAll(['services','about','contact','elsewhere'].map(id=>`#${id} :is(h2,h3,p,a,dd)`).join())].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})",
     ),
   });
   await evaluate("document.documentElement.style.fontSize=''");

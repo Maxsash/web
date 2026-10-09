@@ -54,9 +54,9 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             </span>
           </h1>
           <p>
-            Software, games, and experiments.
+            Web apps, built end to end.
             <br />
-            Built with curiosity. By Yash.
+            Open to freelance work. By Yash.
           </p>
         </div>
         <div className={styles.sceneMeta} aria-hidden="true">
@@ -94,7 +94,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
           <p>Every finished thing has a drawing underneath. This is where I keep mine.</p>
         </div>
         <div className={styles.chapterRail}>
-          <a href="#work">
+          <a href={`#${site.afterHero.id}`}>
             <span aria-hidden="true">↓</span> <span>From a surface to a structure</span>
             <b>Keep exploring</b>
           </a>

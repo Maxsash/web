@@ -1,8 +1,9 @@
 # Maxsash Studio
 
-The public site of Maxsash Studio, <https://www.maxsash.com>: a WebGL sea that resolves
-into its own mathematics, project spreads, a notebook, a sea studio where visitors build
-and print their own sea, and a shoreline footer. Next.js 16, React 19 and TypeScript.
+The public site of Maxsash Studio, <https://www.maxsash.com>, a one-person studio for web
+products built end to end: a WebGL sea that resolves into its own mathematics, the services,
+project spreads, an about and a contact section, a sea studio where visitors build and print
+their own sea, a notebook, and a shoreline footer. Next.js 16, React 19 and TypeScript.
 No database, accounts or cookies.
 
 Working on this repository? Read [AGENTS.md](AGENTS.md), then
@@ -42,20 +43,22 @@ git push origin main:production
 
 ## Layout
 
-| Path                      | What lives there                                                         |
-| ------------------------- | ------------------------------------------------------------------------ |
-| `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap          |
-| `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing |
-| `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders  |
-| `components/shore/`       | The shoreline footer, wave sound and the commit-log card                 |
-| `components/studio/`      | The sea studio                                                           |
-| `components/atlas/`       | The notebook's scoped styling and plates                                 |
-| `content/`                | Copy and data: `site.ts`, `projects.ts`, `notebook.ts`                   |
-| `tools/`                  | Node tests and browser checks; see [docs/testing.md](docs/testing.md)    |
-| `docs/`                   | Architecture, decisions, testing, SEO, follow-ups and the handoff        |
+| Path                      | What lives there                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------- |
+| `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                   |
+| `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing          |
+| `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders           |
+| `components/shore/`       | The shoreline footer, wave sound and the commit-log card                          |
+| `components/studio/`      | The sea studio                                                                    |
+| `components/atlas/`       | The notebook's scoped styling and plates                                          |
+| `content/`                | Copy and data: `site.ts`, `services.ts`, `projects.ts`, `about.ts`, `notebook.ts` |
+| `tools/`                  | Node tests and browser checks; see [docs/testing.md](docs/testing.md)             |
+| `docs/`                   | Architecture, decisions, testing, SEO, follow-ups and the handoff                 |
 
-To change copy, edit its content file: destinations and links in
-[`content/site.ts`](content/site.ts), projects in
+To change copy, edit its content file: identity, navigation, destinations and links in
+[`content/site.ts`](content/site.ts), the project steps in
+[`content/services.ts`](content/services.ts), the about facts in
+[`content/about.ts`](content/about.ts), projects in
 [`content/projects.ts`](content/projects.ts), essays in
 [`content/notebook.ts`](content/notebook.ts). Keep sample status explicit until real
 content exists. Shared typography and tokens are in

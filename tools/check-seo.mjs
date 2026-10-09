@@ -50,7 +50,10 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
       const json = JSON.parse(
         html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
       );
-      assert.equal(json["@graph"].find((item) => item["@type"] === "Person").name, "Yash");
+      assert.equal(
+        json["@graph"].find((item) => item["@type"] === "Person").name,
+        "Yash Shrivastava",
+      );
       assert.equal(
         json["@graph"].find((item) => item["@type"] === "ProfilePage").hasPart.length,
         2,

@@ -5,10 +5,11 @@ Read order: `AGENTS.md` → this file → [architecture.md](architecture.md) →
 [decisions.md](decisions.md). Checks and their limits: [testing.md](testing.md). Open
 items: [follow-ups.md](follow-ups.md). Cleanup plan: [code-cleanup.md](code-cleanup.md).
 
-**Project:** Maxsash Studio's public site (<https://www.maxsash.com>): a WebGL sea that
-resolves into its own maths, project spreads, a notebook, a sea studio where visitors
-build and print their own sea, and a shoreline footer. Next.js 16, React 19, TypeScript;
-no database, accounts or cookies.
+**Project:** Maxsash Studio's public site (<https://www.maxsash.com>), Yash Shrivastava's
+one-person studio for web products built end to end: a WebGL sea that resolves into its own
+maths, services, project spreads, about, contact, a sea studio where visitors build and print
+their own sea, a notebook, and a shoreline footer. Next.js 16, React 19, TypeScript; no
+database, accounts or cookies.
 
 ## State
 
@@ -16,34 +17,38 @@ no database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Released:** `production` is at `9bd133f` (the WebGL-flag post). Local `main` is one commit
-  ahead (`9787313`: notebook newest first, the symbol note as 001, the flag post's own plate);
-  not pushed yet.
-- **Uncommitted now: the error pages**, built from the owner's picks (decisions.md, "Error
-  pages"). Unknown address: "Nothing on the horizon" (glassy sea, one plank). Unknown or draft
-  note: "This note was torn out" (ruled paper torn across, the scrap floating below). Bad plate
-  link: "That sea can't be drawn" (half engraved, a raft). Page crash: "A rogue wave" (night
-  squall, tilted, a raft). Whole site down: "Caught in the storm" (whirlpool, storm clouds,
-  soft lightning, a plank circling). Code: `components/drift/` and the five files in `app/`.
-  The homepage engine was refactored to share `sea-gl.ts` and shader builders; its shader
-  strings and ship mesh are byte-identical (pinned by tests).
-- **Suggested commit message:** `feat: give every error page its own sea` — body: the five
-  pages and their scenes; what floats encodes severity; shared sea-gl and shader builders
-  with the homepage byte-identical; unknown notes now render on demand to reach the notebook
-  404; the sea loads lazily so every route carries only about 6 KB more; what was verified.
+- **Released:** `main` and `production` are both at `383f6b4` (the error pages).
+- **Uncommitted now: a client-first homepage** (decisions.md, "Structure and content"). Order:
+  Hero → Services → Work → About → Contact → Sea studio → Notebook → Elsewhere. Nav: Services,
+  Work, About, Notebook, Contact (the blog nav now derives from it). New: `Services` (one
+  offer, "Web products, end to end", three steps Chart / Build / Launch from
+  `content/services.ts`, one line on backend work), `About` (name, 5+ years, Tikamgarh and
+  remote, tools from `content/about.ts`, portfolio link), `Contact` (moved out of Elsewhere;
+  "Open to freelance work", the email). Hero line: "Web apps, built end to end. Open to
+  freelance work. By Yash." The skip link, the hero's chapter link and the phone's last swipe
+  ("View services ↓") lead to Services via `site.afterHero`. `site.owner` is the full name and
+  JSON-LD gains `jobTitle`; the description names the offer. `components/Section.module.css`
+  is the one copy of the paper palette, header, kicker, facts and link that Work, Elsewhere
+  and the new sections compose from.
+- **Suggested commit message:** `feat: put the services first for potential clients` — body:
+  the new order and nav; one offer with three steps; About with name, years, location and
+  tools only; contact as its own section; hero line and skip link lead to Services; shared
+  section styles replace the copies in Work and Elsewhere; checks updated for the new order;
+  what was verified.
 - **Verified** (scratch copy, Node 24, production build): `tsc`, `lint`, `format:check`; 58 Node
-  tests with `SEA_TEST_BASE`; `check-seo` (20 cases, unknown-article 404, drafts kept out);
-  `check-headers`; `check-keyboard` 20/20; `check-software-fallback`; `check-page-turn`;
-  `check-creative-v2` (126 cases, no runtime exceptions, no failed record); `compare-builds`
-  against `9787313`: 31/32 views identical, the 32nd the known phone Work-image flake (its
-  differing pixels moved between reruns). All five error pages rendered with WebGL in headless
-  Chrome at 1280×800 and 390×844 with no horizontal overflow (the crash pages through a
-  throwaway scratch build with a throwing page and layout); with `--disable-gpu` the 404s show
-  the static plate and stay readable. The last change (the fallback plate's colour) was
-  re-checked with `check-seo`, `check-headers`, the Node tests and a no-GPU screenshot only.
-- **Not verified:** the error pages on a real GPU, a phone, Safari or Firefox; a screen reader;
-  the whirlpool shader against `sampleDrift` (no parity test); `error.tsx` "Try again"
-  actually recovering. No automated check covers the error pages.
+  tests with `SEA_TEST_BASE`; `check-seo` (20 cases, Person name now "Yash Shrivastava");
+  `check-headers`; `check-keyboard` 20/20 (skip link now reaches Services, tab order Services,
+  Work, About, Notebook, Contact); `check-software-fallback`; `check-page-turn`;
+  `check-creative-v2` (132 records, no failures, no runtime exceptions; the phone's last stage
+  now scrolls to Services). `compare-builds` against `383f6b4`: only the plate matches (4/44);
+  expected, since the blog nav, Elsewhere and the new sections changed and everything below
+  Services sits a fraction of a pixel lower (Services is 1180.8 px tall), which re-antialiases
+  the text. To prove Work, the studio and the notebook did not change, every element's
+  computed style and relative box were compared in both builds: 309 of 311 identical, the
+  other two zero-size SVG `title`/`desc`. Screenshots at 1440 × 900 and 390 × 844, day and
+  night: no horizontal overflow; the hero line fits the phone.
+- **Not verified:** a real phone, Safari or Firefox; a screen reader; the copy itself (the
+  owner must confirm the step promises match how they work).
 - **Posts:** three in `content/posts/`; the flag post is published and live, the other two are
   drafts ending in "Notes for the editor". Write at `/write` (dev only) or edit the `.md` files.
 - **Node 24** (`nvm use`; the owner's default is 22). Never build or test inside the
@@ -51,11 +56,10 @@ no database, accounts or cookies.
 
 ## Next
 
-1. Owner: review the error pages (`/nope`, `/blog/nope`, `/plate?seed=zz` in `pnpm dev`), commit,
-   push `main`, release when ready.
+1. Owner: review the homepage in `pnpm dev` and the copy (follow-ups.md, first item), update
+   the portfolio's location, commit, release when ready.
 2. Owner's ideas parked in [follow-ups.md](follow-ups.md): the capsized red sea and ghost
-   photos as Easter eggs; stars and birds in the sky (add them to every sky where they fit,
-   error pages included).
+   photos as Easter eggs (the ghost photos could sit by About); stars and birds in the sky.
 3. Finish the two drafts. Step 6 and social content stay on hold
    ([code-cleanup.md](code-cleanup.md), [follow-ups.md](follow-ups.md)).
 
@@ -75,7 +79,9 @@ about 6 KB gzipped JS and CSS to each route (homepage measured 214.9 vs 208.6 KB
 - No right-click blocking and no obfuscation. The personal Gmail must never appear in the
   repository (identity is `maxsash <16003409+ctrl-alt-yash@users.noreply.github.com>`).
 - Projects: Household Hub and Wedding Photo Platform, with case studies on the owner's
-  portfolio (<https://ctrl-alt-yash.github.io/portfolio/>). Invent nothing else.
+  portfolio (<https://ctrl-alt-yash.github.io/portfolio/>). Invent nothing else. From the
+  portfolio, only name, role, years and tools may appear; never its Gmail, phone, employer or
+  degrees. Location is Tikamgarh (the portfolio's Mumbai is stale).
 - The owner's photo for the ghost-photo idea lives outside the repo; never commit a face.
 
 ## Limits of what was verified

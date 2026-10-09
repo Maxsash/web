@@ -51,7 +51,15 @@ export async function runViewportCaptures(ctx) {
       await snapshot(`observatory-${width}-${p === 1 ? "drawing" : "reveal"}`);
     }
     if (!quick && (width === 1440 || width === 390)) {
-      for (const section of ["work", "sea-studio", "notebook", "elsewhere"]) {
+      for (const section of [
+        "services",
+        "work",
+        "about",
+        "contact",
+        "sea-studio",
+        "notebook",
+        "elsewhere",
+      ]) {
         await evaluate("document.getElementById(" + JSON.stringify(section) + ").scrollIntoView()");
         await delay(100);
         await snapshot("home-" + width + "-" + section);

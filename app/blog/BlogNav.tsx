@@ -1,14 +1,13 @@
 "use client";
 
 import NotebookLink from "@/components/NotebookLink";
+import { site } from "@/content/site";
 import { usePathname } from "next/navigation";
 
-const items = [
-  { label: "Work", href: "/#work" },
-  { label: "Sea studio", href: "/#sea-studio" },
-  { label: "Notebook", href: "/blog" },
-  { label: "Elsewhere", href: "/#elsewhere" },
-];
+const items = site.nav.map(({ label, href }) => ({
+  label,
+  href: href.startsWith("#") ? `/${href}` : href,
+}));
 
 export default function BlogNav() {
   const pathname = usePathname();

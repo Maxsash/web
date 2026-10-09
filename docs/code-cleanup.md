@@ -10,7 +10,7 @@ longer true), suggest a commit message, and do not commit.
 | 2    | Delete dead code, generators, comments             | done, committed                |
 | 3    | Remove repetition                                  | done, committed                |
 | 4    | Split by responsibility                            | done, committed                |
-| 5    | Cut the docs, rewrite the README                   | done, uncommitted              |
+| 5    | Cut the docs, rewrite the README                   | done, committed                |
 | 6    | Make it fun to read (needs the owner's approval)   | next, ideas only               |
 
 ## Step 6 — fun to read (ideas, nothing built)

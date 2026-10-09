@@ -1,21 +1,21 @@
 import ArrowIcon from "@/components/ArrowIcon";
-import { destinations, site } from "@/content/site";
+import { destinations } from "@/content/site";
 import { formatIndex } from "@/lib/format";
 import styles from "./Elsewhere.module.css";
+import section from "./Section.module.css";
 
 export default function Elsewhere() {
   return (
     <section id="elsewhere" className={styles.section} aria-labelledby="elsewhere-heading">
       <header className={styles.header}>
         <div>
-          <p className={styles.overline}>Elsewhere / Ports of call</p>
+          <p className={section.kicker}>Elsewhere / Ports of call</p>
           <h2 id="elsewhere-heading">
             The other <br />
             <em>ports.</em>
           </h2>
           <p className={styles.intro}>
-            The work lives here. The background, the code, and the conversations have their own
-            places.
+            The work lives here. The background and the code have their own places.
           </p>
         </div>
         <svg className={styles.compass} viewBox="0 0 240 240" aria-hidden="true">
@@ -54,20 +54,6 @@ export default function Elsewhere() {
             </li>
           ))}
         </ul>
-      </section>
-      <section className={styles.contact} aria-labelledby="contact-title">
-        <div>
-          <p className={styles.overline}>An open line</p>
-          <h3 id="contact-title">
-            Something <br />
-            <em>on your mind?</em>
-          </h3>
-          <p>A question, an idea, or a thing worth building together.</p>
-        </div>
-        <a href={site.links.email} className={styles.email}>
-          {site.links.email.slice(7)}
-          <span aria-hidden="true">↗</span>
-        </a>
       </section>
     </section>
   );

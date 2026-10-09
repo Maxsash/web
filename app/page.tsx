@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
 import Elsewhere from "@/components/Elsewhere";
 import NotebookSection from "@/components/NotebookSection";
+import Services from "@/components/Services";
 import Work from "@/components/Work";
 import Hero from "@/components/observatory/Hero";
 import ShoreFooter from "@/components/shore/ShoreFooter";
@@ -32,13 +35,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<Pag
           __html: JSON.stringify(studioStructuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <a className={styles.skip} href="#work">
-        Skip to the work
+      <a className={styles.skip} href={`#${site.afterHero.id}`}>
+        Skip to {site.afterHero.label}
       </a>
       <main id="main">
         <Hero edition={edition} />
 
+        <Services />
         <Work />
+        <About />
+        <Contact />
 
         <SeaStudio seed={seed} version={version} />
 

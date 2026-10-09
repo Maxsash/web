@@ -7,7 +7,7 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 
 | Route                              | What it is                                                                                     |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/`                                | Hero sea, Work, sea studio, notebook, Elsewhere, shoreline footer. Dynamic: a fresh sea per visit. |
+| `/`                                | Hero sea, Services, Work, About, Contact, sea studio, notebook, Elsewhere, shoreline footer. Dynamic: a fresh sea per visit. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
 | `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`). Unknown slugs render on demand so they reach the notebook 404. |
@@ -97,7 +97,7 @@ moon hide when the sky is narrower than 1.1:1, where they would sit behind the t
 Desktop scroll maps continuously to progress 0–1 (sea, structure, drawing). When the
 primary pointer is coarse, the hero is staged instead: Sea (0), Structure (0.55),
 Drawing (1), one stage per vertical swipe (≥ 35 px, 1.25× vertical dominance) or button,
-and the next swipe after Drawing scrolls into Work. Sea → Structure eases out over
+and the next swipe after Drawing scrolls into Services (`site.afterHero`). Sea → Structure eases out over
 1,800 ms (`t·(2−t)`); every other move is a 600 ms smootherstep. Below progress 0.55 the
 reveal is `progress / 0.55 · (0.55 − 0.14) / 0.75`. Reduced motion shows stills. Without
 JavaScript the page is readable and scrolls natively. These timings were approved on a
@@ -149,10 +149,15 @@ origin sending JSON (so another website cannot write files while the dev server 
 - `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`
   and the `useSeaSettings` hook. The drawing it redraws is the same `renderSeaPlate` that
   prints.
-- `content/`: `site.ts` (destinations, nav, links), `projects.ts` (the two project
-  spreads), `notebook.ts` (essay copy and captions). `components/Work.tsx` renders
-  projects through `ProjectFeature`; `components/atlas/` holds the notebook's scoped
-  styling, `MarkPlate` and `OceanPlate`.
+- `content/`: `site.ts` (identity, nav, links, destinations, and `afterHero`, the section the
+  skip link, the hero's chapter link and the phone's last swipe lead to), `services.ts` (the
+  three project steps), `projects.ts` (the two project spreads), `about.ts` (the about facts),
+  `notebook.ts` (essay copy and captions).
+- Homepage sections are one component each: `Services`, `Work` (projects through
+  `ProjectFeature`), `About`, `Contact`, `Elsewhere`. `components/Section.module.css` is their
+  one copy of the paper palette (day and night), section header, kicker, lede, rust index
+  numbers, facts list and link; the section modules `composes` from it.
+  `components/atlas/` holds the notebook's scoped styling, `MarkPlate` and `OceanPlate`.
 - **Written posts** are markdown files in `content/posts/` (`NN-slug.md`, frontmatter: `title`,
   `summary`, `topic`, `date`, `status`, and optionally `emphasis` (the last words of the title,
   set in red italics), `caption` (the cover plate's caption) and `closing` (the red closing

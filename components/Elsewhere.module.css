@@ -1,11 +1,6 @@
 .section {
-  --paper: #eae7d9;
-  --ink: #17383d;
-  --muted: #506468;
-  --rule: #17383d33;
-  background: var(--paper);
-  color: var(--ink);
-  padding: 1.5rem clamp(1.25rem, 6vw, 7rem) 2rem;
+  composes: paper from "./Section.module.css";
+  padding-block: 1.5rem 2rem;
 }
 .header {
   display: grid;
@@ -14,16 +9,10 @@
   align-items: center;
   padding-block: clamp(3rem, 8vw, 7rem) 3rem;
 }
-.overline,
-.number,
 .destination,
 .routeHead span {
   font: 0.7rem/1.7 var(--font-mono);
   letter-spacing: 0.08em;
-}
-.overline {
-  text-transform: uppercase;
-  margin-bottom: 1.3rem;
 }
 .header h2 {
   font-size: clamp(3.5rem, 8vw, 8rem);
@@ -84,9 +73,9 @@
   text-decoration: none;
 }
 .number {
+  composes: index from "./Section.module.css";
   align-self: start;
   padding-top: 0.6rem;
-  color: #875136;
 }
 .routeCopy {
   display: flex;
@@ -110,42 +99,8 @@
   color: var(--muted);
   letter-spacing: 0.02em;
 }
-.contact {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3rem;
-  padding: clamp(1.5rem, 4vw, 4rem);
-  background: #17383d;
-  color: var(--paper);
-}
-.contact h3 {
-  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
-  line-height: 1;
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  margin-bottom: 1.5rem;
-}
-.contact p:last-child {
-  max-width: 25rem;
-  line-height: 1.7;
-  color: #c4cec4;
-}
-.email {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 44px;
-  text-underline-offset: 0.4em;
-  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
-  overflow-wrap: anywhere;
-}
 .route:focus-visible {
   outline: 2px solid #a24732;
-  outline-offset: 5px;
-}
-.email:focus-visible {
-  outline: 2px solid #e8d3a8;
   outline-offset: 5px;
 }
 @media (max-width: 48rem) {
@@ -167,11 +122,6 @@
   .destination {
     display: none;
   }
-  .contact {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
 }
 @media (max-width: 26rem) {
   .header {
@@ -189,21 +139,8 @@
     background: #17383d08;
   }
 }
-:global(html[data-studio-theme="night"]) .section {
-  --paper: #122126;
-  --ink: #d8e2dc;
-  --muted: #b4c8c4;
-  --rule: #b5d1ca33;
-}
-:global(html[data-studio-theme="night"]) .contact {
-  background: #223b43;
-  color: #e8e5d8;
-}
 :global(html[data-studio-theme="night"]) .compass .needle {
   fill: #d8e2dc18;
-}
-:global(html[data-studio-theme="night"]) .number {
-  color: #e4967c;
 }
 :global(html[data-studio-theme="night"]) .route:focus-visible {
   outline-color: #e4967c;

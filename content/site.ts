@@ -7,12 +7,13 @@ type Destination = {
 
 export const site = {
   name: "Maxsash Studio",
-  tagline: "software, games, and tools",
-  owner: "Yash",
+  tagline: "web products, built end to end",
+  owner: "Yash Shrivastava",
+  role: "Software engineer",
 
   description:
-    "Maxsash Studio is where I keep the things I build — applications, games, " +
-    "and small tools — alongside notes on how they were made.",
+    "Maxsash Studio is Yash Shrivastava's one-person studio: web products built end to end, " +
+    "from the first sketch to a deployed app. Open to freelance work.",
 
   url: "https://www.maxsash.com",
 
@@ -26,11 +27,14 @@ export const site = {
   },
 
   nav: [
+    { label: "Services", href: "#services" },
     { label: "Work", href: "#work" },
-    { label: "Sea studio", href: "#sea-studio" },
+    { label: "About", href: "#about" },
     { label: "Notebook", href: "/blog" },
-    { label: "Elsewhere", href: "#elsewhere" },
+    { label: "Contact", href: "#contact" },
   ],
+
+  afterHero: { id: "services", label: "services" },
 } as const;
 
 export const destinations: Destination[] = [

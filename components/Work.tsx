@@ -1,18 +1,21 @@
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import ProjectFeature from "./ProjectFeature";
+import section from "./Section.module.css";
 import styles from "./Work.module.css";
 
 export default function Work() {
   return (
     <section id="work" className={styles.section} aria-labelledby="work-heading">
-      <header className={styles.header}>
-        <p className={styles.kicker}>Work</p>
+      <header className={section.header}>
+        <p className={section.kicker}>Work</p>
         <h2 id="work-heading">
           Ideas, made <br />
           <em>tangible.</em>
         </h2>
-        <p>Useful tools. Personal stories. Software made to carry something that matters.</p>
+        <p className={section.lede}>
+          Useful tools. Personal stories. Software made to carry something that matters.
+        </p>
       </header>
       {projects.map((project, index) => (
         <ProjectFeature

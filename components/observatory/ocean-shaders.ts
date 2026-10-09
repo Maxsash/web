@@ -14,13 +14,15 @@ vec3 field(vec2 p) {
   return s;
 }`;
 
-export const seaVertex = `#version 300 es
+export type ShaderAdditions = { declarations?: string; finish?: string };
+
+export const seaVertexSource = (field = fieldGLSL) => `#version 300 es
 precision highp float;
 layout(location=0) in vec2 aPosition;
 uniform mat4 uVP;
 out vec3 vWorld;
 out vec3 vNormal;
-${fieldGLSL}
+${field}
 void main() {
   vec3 s=field(aPosition);
   vWorld=vec3(aPosition.x,s.x,aPosition.y);
@@ -28,7 +30,20 @@ void main() {
   gl_Position=uVP*vec4(vWorld,1.);
 }`;
 
-export const seaFragment = `#version 300 es
+const shipWakeGLSL = `
+  vec2 ship=vWorld.xz-vec2(4.5,-5.5);
+  float shadow=exp(-dot(ship*vec2(.6,1.4),ship*vec2(.6,1.4)))*.34;
+  color*=1.-shadow;
+  float wake=exp(-pow(abs(ship.x)-max(ship.y,0.)*.25,2.)*12.)*exp(-ship.y*.24)*step(0.,ship.y);
+  color+=vec3(.13,.22,.2)*wake*.22;`;
+
+export function seaFragmentSource({
+  field = fieldGLSL,
+  declarations = "",
+  surface = shipWakeGLSL,
+  finish = "",
+}: ShaderAdditions & { field?: string; surface?: string } = {}) {
+  return `#version 300 es
 precision highp float;
 in vec3 vWorld;
 in vec3 vNormal;
@@ -38,7 +53,7 @@ uniform float uReveal;
 uniform float uNight;
 uniform vec3 uLight;
 out vec4 outColor;
-${fieldGLSL}
+${field}${declarations}
 float rule(float value,float width) {
   float d=abs(fract(value-.5)-.5);
   return 1.-smoothstep(width,width+fwidth(value)*1.25,d);
@@ -59,12 +74,7 @@ void main() {
   vec3 color=mix(body,sky,fresnel*.84);
   float glint=pow(max(dot(reflect(-light,n),view),0.),110.);
   float broad=pow(max(dot(reflect(-light,n),view),0.),18.);
-  color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);
-  vec2 ship=vWorld.xz-vec2(4.5,-5.5);
-  float shadow=exp(-dot(ship*vec2(.6,1.4),ship*vec2(.6,1.4)))*.34;
-  color*=1.-shadow;
-  float wake=exp(-pow(abs(ship.x)-max(ship.y,0.)*.25,2.)*12.)*exp(-ship.y*.24)*step(0.,ship.y);
-  color+=vec3(.13,.22,.2)*wake*.22;
+  color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);${surface}
   float dist=length(uEye-vWorld);
   float fog=1.-exp(-dist*.007);
   color=mix(color,mix(vec3(.60,.73,.72),vec3(.07,.13,.21),uNight),fog*fog);
@@ -78,32 +88,40 @@ void main() {
   float screenY=gl_FragCoord.y/uResolution.y;
   float wipe=smoothstep(-.12,.12,uReveal*1.5-.25-(screenY*.75));
   color=mix(color,drawing,wipe);
-  outColor=vec4(color,1.);
+  outColor=vec4(color,1.);${finish}
 }`;
+}
 
 export const skyVertex = `#version 300 es
 precision highp float;
 out vec2 vUv;
 void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));vUv=p;gl_Position=vec4(p*2.-1.,.9999,1.);}`;
 
-export const skyFragment = `#version 300 es
+export function skyFragmentSource({
+  declarations = "",
+  finish = "",
+  weather = "",
+  orbScale = "",
+}: ShaderAdditions & { weather?: string; orbScale?: string } = {}) {
+  return `#version 300 es
 precision highp float;
 in vec2 vUv;
 uniform float uReveal;
 uniform float uNight;
 uniform float uAspect;
-out vec4 outColor;
+out vec4 outColor;${declarations}
 void main(){
   vec3 daylight=mix(vec3(.76,.86,.83),vec3(.36,.65,.76),smoothstep(.1,1.,vUv.y));
   float sun=1.-smoothstep(.022,.028,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
-  daylight=mix(daylight,vec3(1.,.92,.70),sun);
+  daylight=mix(daylight,vec3(1.,.92,.70),sun${orbScale});
   vec3 midnight=mix(vec3(.10,.20,.25),vec3(.012,.028,.07),smoothstep(.1,1.,vUv.y));
   float moon=1.-smoothstep(.017,.021,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
-  midnight+=vec3(.65,.75,.8)*moon;
+  midnight+=vec3(.65,.75,.8)*moon${orbScale};
   vec3 color=mix(daylight,midnight,uNight);
-  color=mix(color,mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight),smoothstep(.05,.8,uReveal));
-  outColor=vec4(color,1.);
+  color=mix(color,mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight),smoothstep(.05,.8,uReveal));${weather}
+  outColor=vec4(color,1.);${finish}
 }`;
+}
 
 export const shipVertex = `#version 300 es
 precision highp float;
@@ -118,7 +136,8 @@ out vec3 vColor;
 out vec3 vBary;
 void main(){vNormal=mat3(uModel)*aNormal;vColor=aColor;vBary=aBary;gl_Position=uVP*uModel*vec4(aPosition,1.);}`;
 
-export const shipFragment = `#version 300 es
+export const shipFragmentSource = ({ declarations = "", finish = "" }: ShaderAdditions = {}) =>
+  `#version 300 es
 precision highp float;
 in vec3 vNormal;
 in vec3 vColor;
@@ -126,12 +145,17 @@ in vec3 vBary;
 uniform float uReveal;
 uniform float uNight;
 uniform vec3 uLight;
-out vec4 outColor;
+out vec4 outColor;${declarations}
 void main(){
   float light=.4+.6*max(dot(normalize(vNormal),normalize(uLight)),0.);
   vec3 color=vColor*light*mix(vec3(1.),vec3(.50,.66,.82),uNight);
   vec3 edges=smoothstep(vec3(0.),fwidth(vBary)*.85,vBary);
   float edge=1.-min(min(edges.x,edges.y),edges.z);
   vec3 drawing=mix(mix(vec3(.94,.92,.85),vec3(.11,.18,.21),uNight),mix(vec3(.1,.24,.27),vec3(.65,.76,.76),uNight),edge*.8);
-  outColor=vec4(mix(color,drawing,smoothstep(.12,.88,uReveal)),1.);
+  outColor=vec4(mix(color,drawing,smoothstep(.12,.88,uReveal)),1.);${finish}
 }`;
+
+export const seaVertex = seaVertexSource();
+export const seaFragment = seaFragmentSource();
+export const skyFragment = skyFragmentSource();
+export const shipFragment = shipFragmentSource();

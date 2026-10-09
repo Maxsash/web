@@ -1,0 +1,220 @@
+.page {
+  --drift-ink: #0f2f3a;
+  --drift-kicker: #0f2f3a;
+  --drift-accent: #135a72;
+  --drift-ground: #f4f1e6;
+  --drift-plate: #cfe0dc;
+  --drift-sky: linear-gradient(#5ca6c2, #a9cfd4 48%, #24525c 52%, #0d3a44);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: minmax(50svh, auto) 1fr;
+  background: var(--drift-sky);
+  color: var(--drift-ink);
+}
+
+.notebook {
+  --drift-ink: #242722;
+  --drift-kicker: #ac402a;
+  --drift-accent: #ac402a;
+  --drift-ground: #eee9dd;
+  --drift-sky: linear-gradient(#eee9dd 50%, #1c4c55 50%, #0f3a43);
+}
+
+.plate {
+  --drift-ink: #173f44;
+  --drift-kicker: #ac402a;
+  --drift-accent: #ac402a;
+  --drift-ground: #eee9dd;
+  --drift-plate: #173f44;
+  --drift-sky: linear-gradient(#cfd8d0, #e6e4d8 48%, #e9e6da);
+}
+
+.squall {
+  --drift-ink: #fbe7c6;
+  --drift-kicker: #ffb454;
+  --drift-accent: #ffb454;
+  --drift-ground: #1b1206;
+  --drift-sky: linear-gradient(#050608, #11161a 48%, #1a2622 52%, #07100e);
+}
+
+.storm {
+  --drift-ink: #e9eeee;
+  --drift-kicker: #a8d8d0;
+  --drift-accent: #a8d8d0;
+  --drift-ground: #0b1114;
+  --drift-sky: linear-gradient(#141a1d, #252c2f 44%, #0f2b30 46%, #061418);
+}
+
+.sea {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.squall .canvas {
+  transform: rotate(-5deg) scale(1.16);
+}
+
+.sea[data-rendering="webgl2"] .canvas {
+  opacity: 1;
+}
+
+.sea[data-rendering="webgl2"] .fallback {
+  visibility: hidden;
+}
+
+.fallback {
+  position: absolute;
+  inset: 52% 0 0;
+  display: grid;
+  place-items: center;
+  padding: 0 1rem;
+  color: var(--drift-plate);
+  opacity: 0.7;
+}
+
+.fallback svg {
+  width: min(100%, 46rem);
+  height: 100%;
+}
+
+.sheet {
+  position: absolute;
+  inset: 0 -2% auto;
+  height: 52%;
+  z-index: 1;
+  filter: drop-shadow(0 0.45rem 0.6rem rgb(8 20 24 / 0.45));
+}
+
+.fibre,
+.face {
+  position: absolute;
+  inset: 0;
+}
+
+.fibre {
+  background: #fffdf7;
+}
+
+.face {
+  background:
+    linear-gradient(
+      to right,
+      transparent 13%,
+      rgb(172 64 42 / 0.55) 13%,
+      rgb(172 64 42 / 0.55) calc(13% + 1.5px),
+      transparent calc(13% + 1.5px)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(2.2rem - 1px),
+      rgb(36 80 110 / 0.2) calc(2.2rem - 1px) 2.2rem
+    ),
+    var(--drift-ground);
+}
+
+.face::before {
+  content: "";
+  position: absolute;
+  left: 5.5%;
+  top: 14%;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #55666a;
+  box-shadow: 0 5rem 0 #55666a;
+  opacity: 0.35;
+}
+
+.copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: clamp(0.5rem, 1.4vw, 1rem);
+  padding: clamp(3.5rem, 8vh, 6rem) 1rem clamp(2rem, 6vh, 4rem);
+  text-align: center;
+}
+
+.kicker {
+  margin: 0;
+  font: 500 0.75rem/1 var(--font-mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--drift-kicker);
+}
+
+.copy h1 {
+  max-width: 16ch;
+  font-size: clamp(2.3rem, 6vw, 4.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.copy h1 em {
+  color: var(--drift-accent);
+}
+
+.body {
+  max-width: 44ch;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.actions a,
+.actions button {
+  font: 500 0.78rem/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--drift-ink);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actions > :first-child {
+  background: var(--drift-ink);
+  color: var(--drift-ground);
+}
+
+.actions a:hover,
+.actions button:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.actions a:focus-visible,
+.actions button:focus-visible {
+  outline: 2px solid var(--drift-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    transition: none;
+  }
+}

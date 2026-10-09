@@ -17,8 +17,6 @@ import styles from "@/components/atlas/Atlas.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return [...notebook, ...writtenPosts()].map(({ slug }) => ({ slug }));
 }

@@ -9,13 +9,16 @@ import { resolvePageSea, type PageSeaQuery, type SeaParam } from "@/lib/sea/requ
 import PrintButton from "./PrintButton";
 import styles from "./Plate.module.css";
 
-export const metadata: Metadata = {
-  title: "Field plate",
-  description: "A printable engraving of an authored sea from Maxsash Studio.",
-  robots: { index: false, follow: false },
-};
-
 type Props = { searchParams: Promise<PageSeaQuery & { print?: SeaParam }> };
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  if (!resolvePageSea(await searchParams, () => DEFAULT_SEA_SEED_V2)) notFound();
+  return {
+    title: "Field plate",
+    description: "A printable engraving of an authored sea from Maxsash Studio.",
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function PlatePage({ searchParams }: Props) {
   const query = await searchParams;

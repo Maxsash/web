@@ -2,7 +2,7 @@ import Link from "next/link";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import Mark from "@/components/Mark";
 import NotebookLink from "@/components/NotebookLink";
-import { WaveSoundControl } from "@/components/shore/WaveSound";
+import { WaveSoundControl } from "@/components/sound/WaveSound";
 import { site } from "@/content/site";
 import type { SeaEdition } from "@/lib/sea/types";
 import OceanScene from "./OceanScene";

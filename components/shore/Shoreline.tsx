@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { WaveSoundControl, WaveSoundController } from "./WaveSound";
+import { WaveSoundControl, Waves } from "@/components/sound/WaveSound";
 import ThemeControl from "@/components/observatory/ThemeControl";
 import { site } from "@/content/site";
 import { FootTrail } from "./footprints";
@@ -144,7 +144,7 @@ export default function Shoreline({
   }, []);
   return (
     <footer className={styles.shore} data-shore aria-labelledby="shore-title">
-      <WaveSoundController />
+      <Waves />
       <canvas className={styles.canvas} ref={canvasRef} aria-hidden="true" />
       <div className={styles.inner}>
         <div className={styles.tools}>

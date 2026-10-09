@@ -6,10 +6,11 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       promises (a short plan before code, shown as it takes shape, handed over with the code
       and accounts) are written from the chosen offer, not from a stated process; change any
       that do not match how you work.
-- [ ] **Louder waves (owner, 9 October 2026; a later commit).** The wave sound is too quiet; raise
-      it "by quite some bit". In `components/shore/WaveSound.tsx` the level ramps to `0.028` and
-      the swell swings it by `0.024`; scale both together so the swell keeps its shape, then
-      check the page turn (`lib/page-turn.ts`) still sits well against it.
+- [ ] **Listen to the sounds** (owner): the louder surf, the page turn over it and the compass
+      ticks, on the MacBook's speakers and on an iPhone (with the silent switch off: it mutes Web
+      Audio). `node tools/render-sounds.mjs` writes them to `tools/.out/` (`waves-before.wav` is the
+      old level, kept there for comparison). Levels are single constants: `SURF.level`,
+      `DIAL.peak`, `BED.duck` in `lib/sound/`.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all

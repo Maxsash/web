@@ -81,7 +81,7 @@
 .card {
   transform-box: view-box;
   transform-origin: 50% 50%;
-  rotate: calc((var(--progress) - 0.5) * 40deg);
+  rotate: calc((var(--progress) - 0.5) * var(--turn));
 }
 .legend {
   fill: currentColor;

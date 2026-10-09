@@ -91,19 +91,41 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **The commit-log card** shows the three newest commits and no counts or charts: a
   14-day strip and "24 commits in the last 14 days" reads as neglect once the site is
   stable. It publishes commit messages by design.
-- **Wave sound is opt-in.** Scrolling, tapping and key presses never start audio; mute is
-  remembered; reload never plays.
 - **Theme follows the system** until the visitor picks day or night in the
   footer.
+
+## Sound
+
+- **Sound is opt-in, and the visitor's choice is kept both ways** (revised 9 October 2026: the
+  owner felt the site was "actively against the sound playing"). A visitor who never pressed
+  "Play waves" hears nothing; scrolling, tapping and key presses never start audio. After "Play
+  waves" the choice holds across pages and visits: the waves fade out in the notebook and come
+  back with the shore without another click, and after a reload or on a later visit they resume
+  at the first click, tap or key press (browsers allow sound only after one; a first click on
+  the wave button itself plays rather than mutes). "Mute waves" is remembered the same way.
+  Replaced rule: "reload never plays".
+- **One switch for every sound.** The page turn and the compass play only after "Play waves"
+  (the owner chose this over always-on and a separate toggle).
+- **The surf is mixed to be heard on laptop speakers** (9 October 2026: the owner could not hear
+  it without maxing a MacBook's volume). The old waves sat at about -46 LUFS with most of their
+  energy below 150 Hz, which small speakers cannot play. The surf is now a 33-second loop of
+  three breakers, washed between 300 and 1,600 Hz with the rumble below 90 Hz removed: about
+  -32 LUFS, never fading to silence, its crests 5-6 dB over its lulls. A page turn ducks the
+  waves by 9 dB so it stays on top. Levels are pinned by tests on a laptop-speaker model.
+- **The waves belong to the shore.** They play on the home page only; the notebook is quiet but
+  for page turns, which also play on the browser's back and forward into or within it.
+- **The compass bezel ticks like a dial** (the owner's idea, 9 October 2026): one tick per
+  degree the ring turns as the medal scrolls past, at most 32 a second so a fast scroll is a
+  "trrrr", never a buzz. Jumps (a link, a restored scroll) turn silently. The ring does not turn
+  under reduced motion, so neither does the sound. The first ticks were pitched and muffled and
+  sounded "underwater, bubbly"; they are now sharp mechanical ticks: a snap with resonances
+  shorter than a millisecond and a softer catch, over in 3 ms, mostly above 2 kHz.
 
 ## Writing
 
 - **Posts are markdown, drafts are development-only.** A post marked `draft` is visible in
   `pnpm dev` and cannot ship by accident: the production build has no page and no link for
   it, and `check-seo` fails if one is served. Publishing is a one-word edit.
-- **The page-turn sound respects the existing sound rule.** It plays only after the visitor has
-  switched sound on (the owner chose this over always-on and a separate toggle), so ordinary
-  clicks stay silent by default.
 - **The editor is a development tool, enforced by the build.** Its routes use `.dev.tsx`
   extensions that only exist outside production, rather than a runtime `if` that could be
   forgotten. The save endpoint refuses anything but same-origin JSON from localhost.

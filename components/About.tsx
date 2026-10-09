@@ -1,5 +1,5 @@
 import { aboutFacts } from "@/content/about";
-import { destinations, site } from "@/content/site";
+import { profiles, site } from "@/content/site";
 import Portrait from "./portrait/Portrait";
 import section from "./Section.module.css";
 import styles from "./About.module.css";
@@ -15,10 +15,9 @@ export default function About() {
           <em>{last}.</em>
         </h2>
         <p className={section.lede}>
-          A founding engineer with more than five years in backend and real-time systems. As a
-          freelancer I have built a real-time intrusion detection platform, a multi-tenant SaaS
-          platform and a law practice&apos;s website. Maxsash Studio is where I build whole
-          products, from the drawing underneath to the finished thing. Working with me means talking
+          A founding engineer with more than five years in backend and real-time systems. I have led
+          whole systems from the first plan to the deployed product; Maxsash Studio is where I build
+          them now, from the drawing underneath to the finished thing. Working with me means talking
           to the person who writes the code.
         </p>
         <dl className={section.facts}>
@@ -30,10 +29,10 @@ export default function About() {
           ))}
         </dl>
         <ul className={styles.profiles} aria-label="Profiles">
-          {destinations.map((place) => (
-            <li key={place.label}>
-              <a className={section.link} href={place.href}>
-                {`${place.label} ↗`}
+          {profiles.map((profile) => (
+            <li key={profile.label}>
+              <a className={section.link} href={profile.href}>
+                {`${profile.label} ↗`}
               </a>
             </li>
           ))}

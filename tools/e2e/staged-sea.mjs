@@ -231,9 +231,9 @@ export async function runStagedSea(ctx) {
   await evaluate("document.querySelector('[data-stage-next]').click()");
   await delay(100);
   results.push({
-    name: "mobile-stage-button-exits-to-services",
+    name: "mobile-stage-button-exits-to-work",
     pass: await evaluate(
-      "document.getElementById('services').getBoundingClientRect().top<innerHeight && scrollY>30",
+      "document.getElementById('work').getBoundingClientRect().top<innerHeight && scrollY>30",
     ),
   });
   await send("Emulation.setDeviceMetricsOverride", {

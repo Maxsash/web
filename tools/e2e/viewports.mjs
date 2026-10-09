@@ -51,15 +51,7 @@ export async function runViewportCaptures(ctx) {
       await snapshot(`observatory-${width}-${p === 1 ? "drawing" : "reveal"}`);
     }
     if (!quick && (width === 1440 || width === 390)) {
-      for (const section of [
-        "services",
-        "work",
-        "about",
-        "contact",
-        "sea-studio",
-        "notebook",
-        "elsewhere",
-      ]) {
+      for (const section of ["work", "about", "contact", "notebook", "sea-studio"]) {
         await evaluate("document.getElementById(" + JSON.stringify(section) + ").scrollIntoView()");
         await delay(100);
         await snapshot("home-" + width + "-" + section);
@@ -81,15 +73,15 @@ export async function runViewportCaptures(ctx) {
         name: "work-spread-figure-layout",
         width,
         pass: await evaluate(
-          "(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===3&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()",
+          "(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===5&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()",
         ),
       });
     }
     if (width === 1440 || width === 390) {
-      await evaluate("document.getElementById('elsewhere').scrollIntoView({behavior:'instant'})");
+      await evaluate("document.getElementById('contact').scrollIntoView({behavior:'instant'})");
       await delay(100);
       const clip = await evaluate(
-        "(()=>{const r=document.getElementById('elsewhere').getBoundingClientRect();return {x:0,y:r.top+scrollY,width:innerWidth,height:r.height,scale:1};})()",
+        "(()=>{const r=document.getElementById('contact').getBoundingClientRect();return {x:0,y:r.top+scrollY,width:innerWidth,height:r.height,scale:1};})()",
       );
       const shot = await send("Page.captureScreenshot", {
         format: "png",
@@ -97,14 +89,14 @@ export async function runViewportCaptures(ctx) {
         clip,
       });
       writeFileSync(
-        join(out, `home-${width}-elsewhere-spread.png`),
+        join(out, `home-${width}-contact-spread.png`),
         Buffer.from(shot.data, "base64"),
       );
       results.push({
-        name: "elsewhere-link-layout",
+        name: "contact-and-profile-link-layout",
         width,
         pass: await evaluate(
-          "[...document.querySelectorAll('#elsewhere a')].every(a=>{const r=a.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.height>=44;})",
+          "[...document.querySelectorAll('#contact a, #contact button, #about ul a, [data-shore] ul a')].every(a=>{const r=a.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.height>=44;})",
         ),
       });
     }

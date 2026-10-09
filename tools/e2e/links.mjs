@@ -53,7 +53,7 @@ export async function runLinkChecks(ctx) {
       top === 0 &&
       kept.sameSea &&
       kept.path === "/" &&
-      kept.focus === "#services",
+      kept.focus === "#work",
   });
 
   await evaluate("document.getElementById('notebook').scrollIntoView({behavior:'instant'})");

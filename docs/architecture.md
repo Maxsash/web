@@ -7,7 +7,7 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 
 | Route                              | What it is                                                                                     |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/`                                | Hero sea, Services, Work, About, Contact, sea studio, notebook, Elsewhere, shoreline footer. Dynamic: a fresh sea per visit. |
+| `/`                                | Hero sea, Work, About, Contact, notebook, sea studio, shoreline footer. Dynamic: a fresh sea per visit. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
 | `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`). Unknown slugs render on demand so they reach the notebook 404. |
@@ -94,11 +94,12 @@ moon hide when the sky is narrower than 1.1:1, where they would sit behind the t
 
 ### Scroll and the mobile stages
 
-Desktop scroll maps continuously to progress 0–1 (sea, structure, drawing); the reveal is
+On desktop the hero is 180svh (at least 1,100 px; 170svh in a narrow window) and scroll maps
+continuously to progress 0–1 (sea, structure, drawing); the reveal is
 `(progress − 0.14) / 0.75`, and the text has two layers, the intro and the end ("Look closer").
 When the primary pointer is coarse, the hero is staged instead: Sea (0) and Drawing (1), one
 stage per vertical swipe (≥ 35 px, 1.25× vertical dominance) or button, and the next swipe
-after Drawing scrolls into Services (`site.afterHero`). Sea → Drawing eases out over 1,800 ms
+after Drawing scrolls into Work (`site.afterHero`). Sea → Drawing eases out over 1,800 ms
 (`t·(2−t)`) with the reveal equal to progress; the way back is a 600 ms smootherstep. Reduced
 motion shows stills. Without
 JavaScript the page is readable and scrolls natively. These timings were approved on a
@@ -172,14 +173,25 @@ origin sending JSON (so another website cannot write files while the dev server 
 - `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`
   and the `useSeaSettings` hook. The drawing it redraws is the same `renderSeaPlate` that
   prints.
-- `content/`: `site.ts` (identity, portrait, nav, links, destinations, and `afterHero`, the section the
-  skip link, the hero's chapter link and the phone's last swipe lead to), `services.ts` (the
-  three project steps), `projects.ts` (the three project spreads; the first is the lead), `about.ts` (the about facts),
-  `notebook.ts` (essay copy and captions).
-- Homepage sections are one component each: `Services`, `Work` (projects through
-  `ProjectFeature`), `About`, `Contact`, `Elsewhere`. `components/Section.module.css` is their
-  one copy of the paper palette (day and night), section header, kicker, lede, rust index
-  numbers, facts list, plate (head and caption) and link; the section modules `composes` from it.
+- `content/`: `site.ts` (identity; the offer as `offer` and `promise`, joined in `tagline`; the
+  email; nav; links; `profiles` for About and the shore; and `afterHero`, the section the skip
+  link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),
+  `contact.ts` (the three "What to expect" steps), `projects.ts` (five projects: `kind` client
+  or personal, a screenshot or a system drawing as `visual`; the first is the lead),
+  `about.ts` (the about facts), `notebook.ts` (the sample essays' copy and captions).
+- Homepage sections are one component each: `Work` (the lead through `ProjectFeature`, then a
+  grid per kind), `About`, `Contact` (with `CopyButton`, which shares `copy-text.ts` with the
+  studio's "Copy link"), `NotebookSection` (the three newest entries from `latestNotes`, and the
+  compass). `components/Section.module.css` is their one copy of the paper palette (day and
+  night), section header, kicker, lede, rust index numbers, facts list, plate (head and caption)
+  and link; the section modules `composes` from it.
+- **System drawings:** `lib/system-drawing.ts` (pure) lays a drawing out on a 340 × 330 plate:
+  labelled bands, each a four-column grid of boxes (span 1, 2 or 4), and arrows that run
+  straight where two boxes overlap horizontally or vertically and diagonally otherwise, clipped
+  to the box edges. `components/SystemPlate.tsx` draws it in the section's ink, paper and rust
+  (night colours follow the palette); the drawing is one `role="img"` with the project's `alt`.
+  `tools/system-drawing.test.mjs` checks that every project drawing fits, overlaps nothing and
+  routes no arrow through a box.
 - `components/portrait/`: `engraving.ts` (pure) turns the photo's shade into 72 closed row
   outlines lifted by light and rippled by Home water (`sampleSea`); `medal.ts` (pure) is the
   bezel's geometry (face inset, ticks, legend arcs) drawn by `Bezel.tsx`; `Portrait.tsx` reads
@@ -201,10 +213,14 @@ origin sending JSON (so another website cannot write files while the dev server 
   paragraphs, fenced code, tables, lists, rules, and inline code, bold, italic and links with
   safe schemes only); `content/posts.ts` loads them; `components/atlas/Prose.tsx` and
   `WrittenArticle.tsx` render them; `lib/post-structure.ts` groups the blocks.
-  `ArticleParts.tsx` (header, cover, sections, next link) and `NoteFeature.tsx` (the big
+  `ArticleParts.tsx` (header, cover, sections, and `ArticleEnd`: the author line and the next
+  note) and `NoteFeature.tsx` (the big
   light and dark features on `/blog`) are shared with the sample essays. `status: draft` posts appear in development and are
   absent from production builds (no page, no link); set `status: published` to ship one.
-  They stay `noindex` and out of the sitemap either way.
+  They stay `noindex` and out of the sitemap either way. `postsDirectory` is a literal path
+  (`process.cwd()`, `content`, `posts`) so the build traces only that folder; a path built from
+  an imported constant made Turbopack trace the whole project into every route that reads
+  posts (353 files for `/`, 153 now). The editor's `post-files.ts` imports the same constant.
 - The studio mark lives in `components/Mark.tsx`, `app/icon.svg` and `public/mark.svg`.
 - **Links:** `SmoothLinks` (root layout) sets `html[data-glide]` (`scroll-behavior: smooth`)
   for the one scroll a click on a `#` link starts, until `scrollend` or 1.5 s. `PageLink` wraps

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import NotebookLink from "@/components/NotebookLink";
+import { site } from "@/content/site";
 import { formatIndex } from "@/lib/format";
 import styles from "./Atlas.module.css";
 
@@ -104,11 +106,24 @@ export function ReadingSection({
   );
 }
 
-export function NextArticle({ slug, title }: { slug: string; title: string }) {
+export function ArticleEnd({ next }: { next: { slug: string; title: string } }) {
   return (
-    <nav className={styles.nextArticle} aria-label="Next field note">
-      <span className={styles.overline}>Keep looking</span>
-      <NotebookLink href={`/blog/${slug}`}>{title} ↗</NotebookLink>
-    </nav>
+    <>
+      <aside className={styles.authorNote} aria-label="About the author">
+        <p>
+          Written by {site.owner}, who builds {site.offer} end to end at {site.name}.
+        </p>
+        <p>
+          <Link prefetch={false} href={`/#${site.afterHero.id}`}>
+            See the work
+          </Link>
+          <a href={site.links.email}>{site.email}</a>
+        </p>
+      </aside>
+      <nav className={styles.nextArticle} aria-label="Next field note">
+        <span className={styles.overline}>Keep looking</span>
+        <NotebookLink href={`/blog/${next.slug}`}>{next.title} ↗</NotebookLink>
+      </nav>
+    </>
   );
 }

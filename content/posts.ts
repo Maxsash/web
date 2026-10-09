@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseFrontmatter, parseMarkdown, type Block } from "@/lib/markdown";
-import { POSTS_DIR, slugFromFile } from "@/lib/post-file";
+import { slugFromFile } from "@/lib/post-file";
 import { notebook } from "./notebook";
 
 export type WrittenPost = {
@@ -19,12 +19,12 @@ export type WrittenPost = {
   blocks: Block[];
 };
 
-const postsDirectory = () => join(process.cwd(), POSTS_DIR);
+export const postsDirectory = join(process.cwd(), "content", "posts");
 const WORDS_PER_MINUTE = 200;
 const showDrafts = process.env.NODE_ENV !== "production";
 
 function readPost(file: string, index: number): WrittenPost {
-  const { meta, body } = parseFrontmatter(readFileSync(join(postsDirectory(), file), "utf8"));
+  const { meta, body } = parseFrontmatter(readFileSync(join(postsDirectory, file), "utf8"));
   const words = body.split(/\s+/).filter(Boolean).length;
   return {
     slug: slugFromFile(file),
@@ -43,11 +43,24 @@ function readPost(file: string, index: number): WrittenPost {
 }
 
 export const writtenPosts = (): WrittenPost[] =>
-  readdirSync(postsDirectory())
+  readdirSync(postsDirectory)
     .filter((file) => file.endsWith(".md"))
     .sort()
     .map(readPost)
     .filter((post) => showDrafts || !post.draft);
+
+type NoteKind = "Note" | "Draft" | "Sample essay";
+
+export const noteMeta = (kind: NoteKind, minutes: number) => `${kind} · ${minutes} min read`;
+export const writtenKind = (post: WrittenPost): NoteKind => (post.draft ? "Draft" : "Note");
+
+export const latestNotes = (count: number) =>
+  [
+    ...writtenPosts()
+      .toReversed()
+      .map((post) => ({ ...post, kind: writtenKind(post) })),
+    ...notebook.map((post) => ({ ...post, kind: "Sample essay" as const })),
+  ].slice(0, count);
 
 export const findWrittenPost = (slug: string) => writtenPosts().find((post) => post.slug === slug);
 

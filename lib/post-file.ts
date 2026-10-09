@@ -1,6 +1,5 @@
 import { parseFrontmatter } from "./markdown.ts";
 
-export const POSTS_DIR = "content/posts";
 export const POST_FILE = /^\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 
 export type PostFields = {

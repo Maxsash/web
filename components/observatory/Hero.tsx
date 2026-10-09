@@ -4,6 +4,7 @@ import NotebookLink from "@/components/NotebookLink";
 import PageLink from "@/components/PageLink";
 import { WaveSoundControl } from "@/components/sound/WaveSound";
 import { site } from "@/content/site";
+import { sentenceCase } from "@/lib/format";
 import type { SeaEdition } from "@/lib/sea/types";
 import OceanScene from "./OceanScene";
 import styles from "./Observatory.module.css";
@@ -54,14 +55,19 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             </span>
           </h1>
           <p>
-            Web apps, built end to end.
+            {sentenceCase(site.offer)},
+            <br />
+            {site.promise}.
             <br />
             Open to freelance work. By Yash.
           </p>
         </div>
-        <p className={styles.sceneMeta} aria-hidden="true">
+        <a className={styles.sceneMeta} href="#sea-studio">
           Authored sea / {edition.seed}
-        </p>
+          <span>
+            Make your own <span aria-hidden="true">↓</span>
+          </span>
+        </a>
         <div className={styles.end}>
           <h2>
             Look closer. <br />

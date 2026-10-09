@@ -4,14 +4,14 @@ export async function runContentChecks(ctx) {
   const { articlePaths, evaluate, load, results } = ctx;
   await load("/");
   const homepage = await evaluate(
-    `(()=>{const anchors=['services','work','about','contact','sea-studio','notebook','elsewhere'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {order:[...document.querySelectorAll('main > section[id]')].map(s=>s.id).join(),anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
+    `(()=>{const anchors=['work','about','contact','notebook','sea-studio'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {order:[...document.querySelectorAll('main > section[id]')].map(s=>s.id).join(),anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
   );
-  const linkedSections = ["services", "work", "about", "contact"];
+  const linkedSections = ["work", "about", "contact"];
   results.push({
     name: "public-homepage-content",
     ...homepage,
     pass:
-      homepage.order === "services,work,about,contact,sea-studio,notebook,elsewhere" &&
+      homepage.order === "work,about,contact,notebook,sea-studio" &&
       homepage.anchors.every(
         (a) => a.targets === 1 && (!linkedSections.includes(a.id) || a.links > 0),
       ) &&
@@ -22,13 +22,16 @@ export async function runContentChecks(ctx) {
   );
   const notebookLinks = await evaluate("document.querySelectorAll('a[href=\"/blog\"]').length");
   results.push({ name: "notebook-direct-link", pass: writing === "Notebook" });
-  // One nav link, one section link, nothing duplicated under Elsewhere.
+  // One nav link and one section link.
+  results.push({ name: "notebook-not-repeated", notebookLinks, pass: notebookLinks === 2 });
+  // Real notes lead the home notebook; the samples follow.
+  const homeNotes = await evaluate(
+    "[...document.querySelectorAll('#notebook ul a')].map(a=>a.lastElementChild.textContent)",
+  );
   results.push({
-    name: "notebook-not-repeated",
-    notebookLinks,
-    pass:
-      notebookLinks === 2 &&
-      (await evaluate("!document.querySelector('#elsewhere a[href=\"/blog\"]')")),
+    name: "home-notebook-leads-with-written-notes",
+    homeNotes,
+    pass: homeNotes.length === 3 && /^Note · /.test(homeNotes[0]),
   });
   // The sea studio: four real controls, a live plate, and every way to keep the result.
   const studio = await evaluate(`(async()=>{
@@ -82,10 +85,13 @@ export async function runContentChecks(ctx) {
     name: "real-projects-and-case-studies",
     ...projectContent,
     pass:
-      projectContent.titles.join("|") === "Velora Rights|Household Hub|Wedding Photo Platform" &&
+      projectContent.titles.join("|") ===
+        "Velora Rights|Real-time Intrusion Detection|Business Operations Platform|Household Hub|Wedding Photo Platform" &&
       [
         "https://velorarights.com",
         "https://ctrl-alt-yash.github.io/portfolio/case-study/velora-rights.html",
+        "https://ctrl-alt-yash.github.io/portfolio/case-study/intrusion-detection.html",
+        "https://ctrl-alt-yash.github.io/portfolio/case-study/modular-saas.html",
         "https://tenant-management-2my6.vercel.app/",
         "https://wedding-demo-teal.vercel.app/",
         "https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html",
@@ -96,13 +102,13 @@ export async function runContentChecks(ctx) {
   results.push({
     name: "approved-work-spreads",
     pass: await evaluate(
-      "(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===3&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('Velora Rights')&&images[1].alt.includes('light theme')&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===3&&!w.textContent.includes('awaiting selection');})()",
+      "(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===3&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('Velora Rights')&&images[1].alt.includes('light theme')&&[...w.querySelectorAll('svg[role=img]')].filter(s=>s.getAttribute('aria-label').startsWith('System drawing')&&s.querySelectorAll('rect').length>=6).length===2&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===5&&!w.textContent.includes('awaiting selection');})()",
     ),
   });
   results.push({
-    name: "approved-elsewhere-and-contact",
+    name: "contact-with-what-to-expect",
     pass: await evaluate(
-      "(()=>{const e=document.getElementById('elsewhere'),c=document.getElementById('contact');return e.querySelectorAll('ul a').length===3&&e.querySelector('h2#elsewhere-heading')!==null&&c.querySelector('h2#contact-heading')!==null&&c.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
+      "(()=>{const c=document.getElementById('contact');return c.querySelectorAll('ol li h3').length===3&&[...c.querySelectorAll('button')].some(b=>b.textContent==='Copy address')&&c.querySelector('h2#contact-heading')!==null&&c.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
     ),
   });
   await evaluate("document.getElementById('about').scrollIntoView({behavior:'instant'})");
@@ -111,9 +117,9 @@ export async function runContentChecks(ctx) {
   for (let i = 0; i < 80 && !(await evaluate(engraved)); i++) await delay(50);
   results.push({ name: "about-portrait-engraved-in-waves", pass: await evaluate(engraved) });
   results.push({
-    name: "portfolio-replaces-placeholder-destinations",
+    name: "profiles-and-email-in-about-and-shore",
     pass: await evaluate(
-      "!!document.querySelector('#elsewhere a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]') && !document.querySelector('#elsewhere a[href=\"/resume.pdf\"]') && !document.querySelector('#elsewhere a[href=\"https://www.maxsash.com\"]')",
+      "['#about','[data-shore]'].every(scope=>!!document.querySelector(scope+' a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]')) && !!document.querySelector('[data-shore] a[href=\"mailto:yash@maxsash.com\"]') && !document.querySelector('a[href=\"/resume.pdf\"]')",
     ),
   });
 
@@ -154,7 +160,7 @@ export async function runContentChecks(ctx) {
   for (const path of articlePaths) {
     await load(path);
     const article = await evaluate(
-      `(()=>({robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),heading:document.querySelector('h1')?.textContent,blogLinks:document.querySelectorAll('a[href="/blog"]').length}))()`,
+      `(()=>{const author=document.querySelector('aside[aria-label="About the author"]');return {robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(','),heading:document.querySelector('h1')?.textContent,blogLinks:document.querySelectorAll('a[href="/blog"]').length,author:!!author?.querySelector('a[href="/#work"]')&&!!author.querySelector('a[href^="mailto:"]')};})()`,
     );
     results.push({
       name: "public-blog-article",
@@ -163,7 +169,8 @@ export async function runContentChecks(ctx) {
       pass:
         /\bnoindex\b/i.test(article.robots) &&
         Boolean(article.heading?.trim()) &&
-        article.blogLinks > 0,
+        article.blogLinks > 0 &&
+        article.author,
     });
   }
 }

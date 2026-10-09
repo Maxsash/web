@@ -2,9 +2,15 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
-- [ ] **Services steps and the Work showcase** (owner, 9 October 2026: not happy with either;
-      the owner will rework them after the two-stage phone hero and smooth scrolling). Also
-      review About, Contact and the hero line.
+- [ ] **Feedback run** (next, after the owner reviews the structure run):
+      [feedback.md](feedback.md).
+- [ ] **Phone length.** After the structure run the phone page is 15.4 screens, Work alone 6.3
+      (five projects). If it feels long on the iPhone, the four smaller cards are the place to
+      cut (a shorter summary, or the screenshots smaller).
+- [ ] **Portfolio deep links.** maxsash.com now links `velora-rights.html`,
+      `intrusion-detection.html` and `modular-saas.html` as well as the two it listed before;
+      the portfolio's `AGENTS.md` ("Links in from maxsash.com") should name all five. Another
+      repository: the owner's call.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
@@ -24,7 +30,7 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **PageSpeed after the release** (8 October 14:41 IST): desktop 99, mobile 92, accessibility
       100. The remaining mobile loss is Largest Contentful Paint (3.2 s); see the function-region
       item above. Re-run after any change to the hero or the region.
-- [ ] **Hero length without WebGL.** The hero is 255svh tall because its text changes with
+- [ ] **Hero length without WebGL.** The hero is 180svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in
       fallback.
@@ -43,7 +49,7 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       Needs the owner's answers (brand name, handles, tone, first assets). Use only the three
       real projects; invent nothing.
 - [ ] **Case studies on maxsash.com** (owner agreed, 9 October 2026, as a later step).
-      `/work/<project>` pages for Velora Rights, Household Hub and the wedding platform, moved
+      `/work/<project>` pages for the five projects in Work, moved
       from the GitHub Pages portfolio; add them to the sitemap and point the Work links there.
 - [ ] **Real essays and projects.** The two essays are samples (`noindex`); replace them,
       then enable indexing and add them to the sitemap.

@@ -5,6 +5,10 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Structure first, then feedback** (owner, 9 October 2026). The structure run (below,
+  "Structure and content") settled what goes where and why. Next, a feedback run gives every
+  action, and inaction such as waiting, an acknowledgement in sound and other channels:
+  maximalist first, then dialled down after the owner tries it ([feedback.md](feedback.md)).
 - **A is the main site, B is the blog, C is an optional Easter egg.** A ("Living Atlas")
   is one authored sea that reveals its own mathematics as the visitor scrolls and
   becomes a printable plate. B (the Notebook) is a separate editorial composition in ink
@@ -48,22 +52,47 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Structure and content
 
-- **Client-first homepage (chosen 9 October 2026).** A visitor who might hire Yash should
-  learn what is on offer, see proof, meet the person and find the email before the
-  explorations. **Order:** Hero → Services → Work → About → Contact → Sea studio → Notebook →
-  Elsewhere → shoreline. **Nav:** Services, Work, About, Notebook, Contact (the sea studio and
-  Elsewhere left the nav). The blog's nav is derived from the same list. Section kickers are
-  named, not numbered; numbers appear only inside lists.
+- **Every section has one job, said once (structure run, 9 October 2026).** A review measured
+  the page (13.1 desktop screens, 15.1 phone) and found the offer said four times, Services
+  asking for trust before any proof, the strongest work missing from Work, Elsewhere repeating
+  About's links, and the real post missing from the home Notebook. The owner answered its
+  questions and the page was rebuilt. **Order:** Hero → Work → About → Contact → Notebook →
+  Sea studio → shore (the sea studio sits last so the sea ends at the shore). **Nav:** Work,
+  About, Notebook, Contact; the blog's nav is derived from it. Section kickers are named, not
+  numbered; numbers appear only inside lists. Measured after: 11.1 desktop screens, 15.4 on a
+  phone (Work grew from three projects to five).
+- **Services is gone.** Its offer is the hero's line; its steps became "What to expect" in
+  Contact (Plan, Build, Launch). Plan carries the owner's promise (9 October): advice on what
+  will work for the client's business, not what looks fancy or costs too much. Contact also
+  holds the backend and real-time line and a "Copy address" button (a `mailto:` link does
+  nothing without a mail app).
+- **Elsewhere is gone.** Its links live in About (they belong to the person) and in the shore,
+  which also shows the email, so the end of every page has a way to write. Its compass moved
+  into the home Notebook band (desktop only, 72rem and up).
+- **Work shows five projects** (owner, 9 October: "yes, definitely"). For clients: Velora
+  Rights as the lead spread, then the real-time intrusion detection platform and the
+  business-operations SaaS. Those two were backend systems with no screenshots worth showing,
+  so each is drawn as a system plate ("the drawing underneath") from its portfolio case study;
+  nothing beyond the case studies is claimed. Then "Of my own": Household Hub and the wedding
+  platform. Smaller cards fold role and stack into one line; the lead keeps a facts list.
+- **Desktop hero 180svh** (was 255svh; the owner agreed). Phone timings are untouched. Its
+  seed label links to the sea studio ("Make your own").
+- **Every post ends with an author line**: who wrote it, what the studio builds, "See the
+  work" and the email, so a reader arriving at a post can find the offer.
 - **Links within a page glide; nothing else does** (owner, 9 October 2026). Section links and
   a link to the page already open (the "Maxsash Studio" links on `/`, "Notebook" on `/blog`)
   scroll smoothly; the latter scroll to the top and keep the sea instead of drawing a new one,
   and focus moves to the page's first control. Not a global `scroll-behavior: smooth`, which
   also glides every Tab focus. Reduced motion jumps. Other pages open at their top at once.
-- **One offer: web products, end to end** (the owner's choice; more offers add complexity).
-  Backend and real-time work is mentioned in one line, not as a second service. The hero's
-  line names the offer and says "Open to freelance work".
+- **One offer: websites and web apps, built end to end** (the owner's choice of one offer;
+  on 9 October the wording moved from "web products" to the plainer "websites and web apps",
+  which a client understands at once and which covers both kinds of work). One source:
+  `site.offer` and `site.promise`. Backend and real-time work is one line in Contact, not a
+  second service. The hero's line names the offer and says "Open to freelance work".
 - **About:** Yash Shrivastava, founding engineer, 5+ years in backend and real-time systems,
-  Tikamgarh, India, working remotely; the freelance projects named in one sentence; tools;
+  Tikamgarh, India, working remotely; experience as "Java, then full-stack developer at a
+  product SaaS company, 2021–2026. Founding engineer on two freelance platforms" (the company
+  unnamed; owner, 9 October); tools;
   links to the portfolio, LinkedIn and GitHub; and the headshot (the owner's GitHub and
   LinkedIn picture, from the 1254 px original, exported at 720 px with no metadata; approved for
   the repo on 9 October 2026). No employer, degrees or phone.
@@ -73,7 +102,7 @@ each group. How the code is built: [architecture.md](architecture.md).
   for a round frame (important), a monochrome photo and the same animation when scrolling away.
   - The photo is monochrome in the theme's own two colours (ink to paper by day, paper to ink by
     night), so it reads as a print, not a snapshot.
-  - The frame is a compass bezel, echoing the compass in Elsewhere: a tick every 5°, a dotted
+  - The frame is a compass bezel, echoing the compass in the home Notebook: a tick every 5°, a dotted
     ring, the name and title on the top arc, Tikamgarh and its coordinates on the bottom. The
     tick ring turns slightly as the medal passes.
   - The engraving: 72 lines of Home water lifted by the photo's light, drawn front to back. One
@@ -91,8 +120,9 @@ each group. How the code is built: [architecture.md](architecture.md).
   a 1200 × 750 capture of the live homepage after the disclaimer; the advocate's name stays off
   this site.
 - **One name:** the publication is the **Notebook**. It appears once in the header and
-  once as a home section. Elsewhere lists only places that leave the site (Portfolio,
-  GitHub); the email lives in Contact.
+  once as a home section, which shows the three newest entries: written notes first, then the
+  two sample essays. The owner keeps the samples as placeholder content, to judge the look
+  and feel, until he rewrites them in his own words (9 October).
 - **One `<main>`**, the footer outside it as the contentinfo landmark, no whole-section
   links around headings, one `<article>` per essay.
 - **The commit-log card** shows the three newest commits and no counts or charts: a

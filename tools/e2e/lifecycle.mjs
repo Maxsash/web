@@ -11,13 +11,13 @@ export async function runLifecycleChecks(ctx) {
   });
   await load("/");
   await evaluate(
-    "document.documentElement.style.fontSize='200%';document.getElementById('elsewhere').scrollIntoView({behavior:'instant'})",
+    "document.documentElement.style.fontSize='200%';document.getElementById('notebook').scrollIntoView({behavior:'instant'})",
   );
   await delay(100);
   results.push({
     name: "sections-390-text-200",
     pass: await evaluate(
-      "[...document.querySelectorAll(['services','about','contact','elsewhere'].map(id=>`#${id} :is(h2,h3,p,a,dd)`).join())].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})",
+      "[...document.querySelectorAll(['work','about','contact','notebook'].map(id=>`#${id} :is(h2,h3,p,a,dd)`).join())].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})",
     ),
   });
   await evaluate("document.documentElement.style.fontSize=''");

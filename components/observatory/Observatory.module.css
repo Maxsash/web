@@ -121,6 +121,29 @@
 .story[data-rendering="webgl2"] .canvas {
   opacity: 1;
 }
+@media (pointer: fine) {
+  .story[data-rendering="webgl2"] .canvas {
+    cursor: crosshair;
+  }
+}
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(#dfe7e300, #dfe7e3c4 40%, #dfe7e3d6 58%, #dfe7e333);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+:global(html[data-offline]) .stage::after {
+  opacity: 1;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .stage::after {
+    background: #dfe7e3f2;
+  }
+}
 .story[data-rendering="webgl2"] .fallback {
   visibility: hidden;
 }
@@ -202,14 +225,31 @@
   font-size: 0.75rem;
 }
 .nav a {
+  position: relative;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
 }
-.nav a:hover {
-  text-decoration: underline;
-  text-underline-offset: 5px;
+.nav nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.65rem;
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: right;
+}
+.nav nav a:hover::after {
+  scale: 1 1;
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav nav a::after {
+    transition: scale 260ms cubic-bezier(0.3, 0.6, 0.2, 1);
+  }
 }
 .story[data-chapter="structure"] .nav,
 .story[data-chapter="atlas"] .nav {
@@ -383,15 +423,19 @@
 .compass .needle {
   fill: #e8e5d818;
   stroke-width: 1;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  rotate: calc((var(--progress) - 0.5) * var(--turn));
 }
 .publicationTop {
+  composes: drawnRule from "../Section.module.css";
+  --drawn-rule: #e8e5d849;
   display: flex;
   justify-content: space-between;
   font: 0.6rem/1.7 var(--font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding-bottom: 3rem;
-  border-top: 1px solid #e8e5d849;
   padding-top: 1rem;
 }
 .publicationBody {

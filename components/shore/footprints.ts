@@ -22,22 +22,22 @@ export class FootTrail {
   track(x: number, y: number, time: number) {
     if (!this.previous) {
       this.previous = { x, y };
-      return;
+      return false;
     }
     const dx = x - this.previous.x,
       dy = y - this.previous.y;
-    if (Math.hypot(dx, dy) > STRIDE_PX) {
-      this.side *= -1;
-      this.steps.push({
-        x,
-        y,
-        angle: Math.atan2(dy, dx) + Math.PI / 2,
-        born: time,
-        side: this.side,
-      });
-      this.steps = this.steps.slice(-MAX_STEPS);
-      this.previous = { x, y };
-    }
+    if (Math.hypot(dx, dy) <= STRIDE_PX) return false;
+    this.side *= -1;
+    this.steps.push({
+      x,
+      y,
+      angle: Math.atan2(dy, dx) + Math.PI / 2,
+      born: time,
+      side: this.side,
+    });
+    this.steps = this.steps.slice(-MAX_STEPS);
+    this.previous = { x, y };
+    return true;
   }
 
   fade(time: number, shorelineAt: (x: number) => number) {

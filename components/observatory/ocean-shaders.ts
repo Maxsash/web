@@ -37,10 +37,19 @@ const shipWakeGLSL = `
   float wake=exp(-pow(abs(ship.x)-max(ship.y,0.)*.25,2.)*12.)*exp(-ship.y*.24)*step(0.,ship.y);
   color+=vec3(.13,.22,.2)*wake*.22;`;
 
+const rippleDeclarations = `
+uniform vec3 uRipple;`;
+
+const rippleGLSL = `
+  float age=uTime-uRipple.z;
+  float reach=length(vWorld.xz-uRipple.xy)-age*3.4;
+  float ring=(exp(-reach*reach*6.)+.6*exp(-pow(reach+1.3,2.)*6.))*exp(-age*.8)*step(0.,age);
+  color=mix(color,mix(vec3(.92,.97,.93),vec3(.6,.76,.82),uNight),min(ring,1.)*.75);`;
+
 export function seaFragmentSource({
   field = fieldGLSL,
-  declarations = "",
-  surface = shipWakeGLSL,
+  declarations = rippleDeclarations,
+  surface = shipWakeGLSL + rippleGLSL,
   finish = "",
 }: ShaderAdditions & { field?: string; surface?: string } = {}) {
   return `#version 300 es

@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { playCue, respond } from "@/components/feedback/respond";
+import { soundsRunning } from "@/components/sound/sound";
+import { createTicker } from "@/components/sound/ticker";
 import { site } from "@/content/site";
+import { FEEDBACK } from "@/lib/feedback/vocabulary";
+import { ratchet } from "@/lib/sound/dial";
 import type { SeaEdition } from "@/lib/sea/types";
 import { clamp01 } from "./clamp";
 import {
@@ -14,9 +19,12 @@ import {
 } from "./frame-governor";
 import { layerOpacities } from "./layer-opacity";
 import { chapterFor, revealFor } from "./reveal-mapping";
+import { easePace, paceTarget } from "./sea-pace";
 import { STAGES, planMove, progressAt, stepStage, type StageMove } from "./stage-director";
 import { beginGesture, swipeDirection, trackGesture, type TouchGesture } from "./touch-stages";
 import styles from "./Observatory.module.css";
+
+const INK_STEPS = 60;
 
 export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,6 +69,19 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     let scrollDirty = true,
       lastScrollY = -1;
     let nextDraw = 0;
+    let pace = 1,
+      paceScrollY = window.scrollY,
+      inked: number | null = null;
+    const inkTick = createTicker((at) => playCue("nib", FEEDBACK.draw, at));
+    const ink = (reveal: number) => {
+      if (!soundsRunning()) {
+        inked = null;
+        return;
+      }
+      const step = ratchet(inked, reveal * INK_STEPS);
+      inked = step.detent;
+      inkTick(step.clicks);
+    };
     const opacityGroups = [
       [styles.intro, styles.shade, styles.sceneMeta],
       [styles.end],
@@ -105,7 +126,11 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       }
       const interval = lastTime ? (now - lastTime) / 1000 : 0;
       const delta = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0;
-      if (active) elapsed += delta;
+      const travelled = Math.abs(window.scrollY - paceScrollY) / Math.max(1, height);
+      paceScrollY = window.scrollY;
+      const idle = Number(document.documentElement.dataset.idle ?? 0);
+      pace = easePace(pace, paceTarget(idle, delta ? travelled / delta : 0), delta);
+      if (active) elapsed += delta * pace;
       lastTime = active ? now : 0;
       const damping = 1 - Math.exp(-delta * 4);
       pointer = media.matches
@@ -114,9 +139,11 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             pointer[0] + (target[0] - pointer[0]) * damping,
             pointer[1] + (target[1] - pointer[1]) * damping,
           ];
+      const reveal = revealFor(progress, { reducedMotion: media.matches, staged });
+      ink(reveal);
       engine.draw(
         elapsed,
-        revealFor(progress, { reducedMotion: media.matches, staged }),
+        reveal,
         pointer,
         document.documentElement.dataset.studioTheme === "night" ? 1 : 0,
       );
@@ -219,7 +246,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         "touchend",
         () => {
           const direction = touch ? swipeDirection(touch) : 0;
-          if (direction) stageRef.current?.(direction);
+          if (direction) {
+            respond("swipe");
+            stageRef.current?.(direction);
+          }
           touch = null;
         },
         { passive: true, signal: events.signal },
@@ -264,6 +294,20 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       (event) => {
         if (event.pointerType !== "mouse" || media.matches) return;
         target = [(event.clientX / width - 0.5) * 2, (event.clientY / height - 0.5) * 2];
+      },
+      { passive: true, signal: events.signal },
+    );
+    scene.addEventListener(
+      "pointerdown",
+      (event) => {
+        if (!engine || stopped || media.matches) return;
+        if (event.target instanceof Element && event.target.closest("a,button,input")) return;
+        const bounds = canvas.getBoundingClientRect();
+        const ndc: [number, number] = [
+          ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+          1 - ((event.clientY - bounds.top) / bounds.height) * 2,
+        ];
+        if (engine.ripple(ndc, elapsed)) respond("drop");
       },
       { passive: true, signal: events.signal },
     );
@@ -344,8 +388,13 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         className={styles.pause}
         type="button"
         data-hero-pause
+        data-press="none"
         disabled={!ready}
-        onClick={() => setPaused(pauseRef.current?.() ?? false)}
+        onClick={() => {
+          const stilled = pauseRef.current?.() ?? false;
+          respond(stilled ? "still" : "stir");
+          setPaused(stilled);
+        }}
       >
         <span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>{" "}
         {paused ? "Resume the sea" : "Still the sea"}

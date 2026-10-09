@@ -9,6 +9,7 @@ import {
 } from "../components/observatory/frame-governor.ts";
 import { layerOpacities } from "../components/observatory/layer-opacity.ts";
 import { chapterFor, revealFor } from "../components/observatory/reveal-mapping.ts";
+import { PACE, easePace, paceTarget } from "../components/observatory/sea-pace.ts";
 import { planMove, progressAt, stepStage } from "../components/observatory/stage-director.ts";
 import {
   beginGesture,
@@ -97,4 +98,20 @@ test("draw pacing holds frames, resets when idle, and caps pixels", () => {
   );
   assert.equal(qualityLabel({ reducedMotion: false, low: false, compact: true }), "compact");
   assert.equal(qualityLabel({ reducedMotion: true, low: true, compact: true }), "still");
+});
+
+test("the sea slows as the visitor goes idle and quickens with a fast scroll, within bounds", () => {
+  assert.equal(paceTarget(0, 0), 1);
+  const idle = [0, 1, 2, 3, 9].map((level) => paceTarget(level, 0));
+  for (let i = 1; i < idle.length; i++) assert.ok(idle[i] <= idle[i - 1]);
+  assert.ok(idle.at(-1) > 0, "an idle sea still moves");
+  assert.ok(paceTarget(0, 2) > 1 && paceTarget(0, 50) === PACE.gust);
+  let pace = 1;
+  for (let frame = 0; frame < 600; frame++) {
+    const next = easePace(pace, 0.3, 1 / 60);
+    assert.ok(next <= pace && next >= 0.3, "it eases without overshooting");
+    pace = next;
+  }
+  assert.ok(Math.abs(pace - 0.3) < 0.01);
+  assert.equal(easePace(0.5, 1, 0), 0.5, "no time, no change");
 });

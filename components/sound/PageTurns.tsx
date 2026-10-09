@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { PAGE_TURNS, choosePageTurn, synthesizePageTurn, turnsPage } from "@/lib/sound/page-turn";
-import { playClip, soundChosen } from "./sound";
+import { playClip, soundsChosen } from "./sound";
 import { duckWaves } from "./waves";
 
 let previous = -1;
@@ -27,7 +27,7 @@ export default function PageTurns() {
   }, [pathname]);
   useEffect(() => {
     const turn = () => {
-      if (turnsPage(shown.current, location.pathname) && soundChosen()) playPageTurn();
+      if (turnsPage(shown.current, location.pathname) && soundsChosen()) playPageTurn();
     };
     addEventListener("popstate", turn);
     return () => removeEventListener("popstate", turn);

@@ -2,8 +2,8 @@ import { expectations } from "@/content/contact";
 import { site } from "@/content/site";
 import { formatIndex } from "@/lib/format";
 import CopyButton from "./CopyButton";
+import Kicker from "./Kicker";
 import styles from "./Contact.module.css";
-import section from "./Section.module.css";
 
 export default function Contact() {
   return (
@@ -11,7 +11,7 @@ export default function Contact() {
       <div className={styles.panel}>
         <div className={styles.ask}>
           <div>
-            <p className={section.kicker}>Open to freelance work</p>
+            <Kicker>Open to freelance work</Kicker>
             <h2 id="contact-heading" className={styles.title}>
               Something <br />
               <em>to build?</em>
@@ -31,9 +31,7 @@ export default function Contact() {
             </CopyButton>
           </div>
         </div>
-        <p id="expectations" className={section.kicker}>
-          What to expect
-        </p>
+        <Kicker id="expectations">What to expect</Kicker>
         <ol className={styles.steps} aria-labelledby="expectations">
           {expectations.map((step, index) => (
             <li key={step.title}>

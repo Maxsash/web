@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
+import { respond } from "@/components/feedback/respond";
 import styles from "./ThemeControl.module.css";
 
 const subscribe = (callback: () => void) => {
@@ -36,9 +37,11 @@ export default function ThemeControl() {
       className={styles.toggle}
       type="button"
       data-theme-toggle
+      data-press="none"
       onClick={() => {
         manual.current = true;
         const next = night ? "day" : "night";
+        respond(night ? "dawn" : "dusk");
         document.documentElement.dataset.studioTheme = next;
         try {
           localStorage.setItem("studio-theme", next);

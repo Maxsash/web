@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { respond } from "@/components/feedback/respond";
+import { createDetentTicker } from "@/components/sound/ticker";
+import { FEEDBACK } from "@/lib/feedback/vocabulary";
 import { describeSea } from "@/lib/sea/describe";
 import type { SeaSettings } from "@/lib/sea/types";
 import styles from "./SeaStudio.module.css";
@@ -38,6 +42,7 @@ type Props = {
 
 export default function SettingSlider({ control, id, settings, onChange }: Props) {
   const { key, label, hint, low, high } = control;
+  const [tick] = useState(() => createDetentTicker(FEEDBACK.detent.gain));
   const reading =
     key === "variation" ? `No. ${settings.variation + 1} of 256` : describeSea(settings)[key];
   return (
@@ -57,7 +62,12 @@ export default function SettingSlider({ control, id, settings, onChange }: Props
         value={settings[key]}
         aria-valuetext={reading}
         aria-describedby={`${id}-hint`}
-        onChange={(event) => onChange(key, Number(event.target.value))}
+        onChange={(event) => {
+          const value = Number(event.target.value);
+          tick(Math.abs(value - settings[key]));
+          respond("detent");
+          onChange(key, value);
+        }}
       />
       <div className={styles.ends} aria-hidden="true">
         <span>{low}</span>

@@ -1,7 +1,8 @@
-/** The site's sounds follow the visitor's choice. Silent until "Play waves"; then the waves play on
- * the home page, leave when the notebook opens with a page turn and come back with the shore, and
- * the compass ticks as its ring turns. The choice outlasts a reload (the waves resume at the first
- * click, as browsers require), and so does muting.
+/** The site's sounds follow the visitor. Nothing plays before the first click, tap or key (browsers
+ * require one); after it, every answer sounds (a hover, the dice, the compass, page turns into and
+ * within the notebook) while the waves wait for "Play waves". The waves leave with the notebook and
+ * come back with the shore. Both choices outlast a reload: the waves resume at the first click, and
+ * "Mute sounds" on the shore silences everything until "Unmute sounds".
  * node tools/check-sound.mjs [http://localhost:3000]
  */
 import { delay, localBaseFromArgs, withBrowser } from "./lib/browser.mjs";
@@ -54,6 +55,13 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
     for (const type of ["mousePressed", "mouseReleased"])
       await send("Input.dispatchMouseEvent", { type, ...point, button: "left", clickCount: 1 });
   };
+  const hover = async (selector) => {
+    const point = await pointAt(selector);
+    await delay(200);
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...point });
+  };
+  const lengthsSince = async (count) =>
+    (await sound()).starts.slice(count).map(({ seconds }) => seconds);
   const waitFor = async (expression) => {
     for (let i = 0; i < 100; i++) {
       if (await evaluate(expression)) return true;
@@ -65,9 +73,9 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
   const played = async (kind) => {
     const { starts } = await sound();
     const matches = {
-      turn: ({ seconds }) => seconds > 0.5 && seconds < 1.2,
+      turn: ({ seconds }) => seconds >= 0.8 && seconds <= 0.95,
       waves: ({ loop }) => loop,
-      detent: ({ seconds }) => seconds < 0.1,
+      detent: ({ seconds }) => seconds <= 0.02,
     }[kind];
     return starts.filter(matches).map(({ seconds }) => seconds);
   };
@@ -92,13 +100,41 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
   };
 
   await open("/");
-  await click('nav[aria-label="Studio"] a[href="/blog"]');
-  await waitFor("location.pathname === '/blog'");
-  check("silent by default", (await sound()).contexts === 0 && (await played("turn")).length === 0);
-
-  await open("/");
   await turnTheDial();
-  check("the compass is silent by default", (await sound()).contexts === 0);
+  await hover("#about a[href]");
+  check("nothing plays before the first click, tap or key", (await sound()).contexts === 0);
+
+  await click("h1");
+  await waitFor("__audio?.state === 'running'");
+  await delay(300);
+  check(
+    "the first click opens the sounds, never the waves",
+    (await sound()).contexts === 1 &&
+      (await played("waves")).length === 0 &&
+      (await label()) === "Play waves",
+  );
+
+  await waitFor("__audio.currentTime > 0.5");
+  await turnTheDial();
+  const ticks = await played("detent");
+  check("the compass ticks as its ring turns", ticks.length >= 8, `${ticks.length} clicks`);
+
+  let heard = (await sound()).starts.length;
+  await hover("#about a[href]");
+  await delay(200);
+  check(
+    "a hover ticks",
+    (await lengthsSince(heard)).includes(0.03),
+    `${await lengthsSince(heard)}`,
+  );
+  heard = (await sound()).starts.length;
+  await click('#sea-studio [data-press="dice"]');
+  await delay(300);
+  check(
+    "the dice rattle",
+    (await lengthsSince(heard)).includes(0.6),
+    `${await lengthsSince(heard)}`,
+  );
 
   await click("[data-wave-sound]");
   check(
@@ -111,20 +147,11 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
     await evaluate("localStorage.getItem('studio-wave-sound') === 'on'"),
   );
 
-  await waitFor("__audio.currentTime > 0.5");
-  await turnTheDial();
-  const ticks = await played("detent");
-  check("the compass ticks as its ring turns", ticks.length >= 8, `${ticks.length} clicks`);
-
   await click('nav[aria-label="Studio"] a[href="/blog"]');
   await waitFor("location.pathname === '/blog'");
   await delay(300);
   const entered = await played("turn");
-  check(
-    "plays when entering the notebook with sound on",
-    entered.length === 1,
-    JSON.stringify(entered),
-  );
+  check("a page turns on the way into the notebook", entered.length === 1, JSON.stringify(entered));
   check("the waves leave with the shore", (await sound()).stops === 1);
 
   await click('a[href="/blog/three-waves-one-sea"]');
@@ -198,15 +225,28 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
 
   await click("[data-wave-sound]");
   await waitFor("document.querySelector('[data-wave-sound]').textContent === 'Play waves'");
+  heard = (await sound()).starts.length;
+  await hover("#about a[href]");
+  await delay(200);
+  check(
+    "muting the waves keeps every other sound",
+    (await lengthsSince(heard)).includes(0.03),
+    `${await lengthsSince(heard)}`,
+  );
+
+  await click("[data-sounds]");
+  await waitFor("document.querySelector('[data-sounds]').textContent === 'Unmute sounds'");
   const before = await sound();
   await turnTheDial();
+  await hover("#about a[href]");
   await click('nav[aria-label="Studio"] a[href="/blog"]');
   await waitFor("location.pathname === '/blog'");
   await delay(400);
   const after = await sound();
   check(
-    "silent again after muting",
-    after.starts.length === before.starts.length,
+    "Mute sounds silences everything",
+    after.starts.length === before.starts.length &&
+      (await evaluate("localStorage.getItem('studio-sound') === 'off'")),
     `${after.starts.length - before.starts.length} sounds`,
   );
 
@@ -217,7 +257,18 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
     "muting outlasts a reload, and a click does not undo it",
     (await sound()).contexts === 0 &&
       (await label()) === "Play waves" &&
-      (await evaluate("localStorage.getItem('studio-wave-sound') === 'off'")),
+      (await evaluate("document.querySelector('[data-sounds]').textContent === 'Unmute sounds'")),
+  );
+
+  await click("[data-sounds]");
+  await waitFor("document.querySelector('[data-sounds]').textContent === 'Mute sounds'");
+  await delay(300);
+  check(
+    "Unmute sounds answers with a press and leaves the waves off",
+    (await played("waves")).length === 0 &&
+      (await label()) === "Play waves" &&
+      (await sound()).starts.some(({ seconds }) => seconds === 0.12),
+    `${await lengthsSince(0)}`,
   );
 });
 

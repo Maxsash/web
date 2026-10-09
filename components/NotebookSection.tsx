@@ -1,3 +1,4 @@
+import Compass from "@/components/Compass";
 import NotebookLink from "@/components/NotebookLink";
 import { latestNotes, noteMeta } from "@/content/posts";
 import styles from "./observatory/Observatory.module.css";
@@ -7,14 +8,8 @@ const SHOWN = 3;
 export default function NotebookSection() {
   return (
     <section id="notebook" className={styles.publication} aria-labelledby="notebook-title">
-      <svg className={styles.compass} viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="120" r="92" />
-        <circle cx="120" cy="120" r="74" strokeDasharray="1 8" />
-        <path d="M120 12v216M12 120h216M54 54l132 132M54 186 186 54" />
-        <path className={styles.needle} d="m120 38 18 82-18 82-18-82Z" />
-        <circle cx="120" cy="120" r="5" />
-      </svg>
-      <div className={styles.publicationTop}>
+      <Compass />
+      <div className={styles.publicationTop} data-arrive>
         <span>The navigator’s notebook</span>
         <span>Observations & constructions</span>
       </div>

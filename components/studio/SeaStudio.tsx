@@ -1,20 +1,34 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
+import { respond } from "@/components/feedback/respond";
 import { HOME_WATER, SEA_PRESETS } from "@/lib/sea/presets";
+import { seedFromSettings } from "@/lib/sea/seed";
+import type { SeaSettings } from "@/lib/sea/types";
+import Die, { dieFace } from "./Die";
 import KeepActions from "./KeepActions";
 import SeedField from "./SeedField";
 import SettingSlider, { CONTROLS } from "./SettingSlider";
 import { randomSettings, useSeaSettings } from "./useSeaSettings";
 import styles from "./SeaStudio.module.css";
 
+const STARTS = [...SEA_PRESETS, { name: "Home water", settings: HOME_WATER }];
+
 export default function SeaStudio({ seed, version }: { seed: string; version: "1" | "2" }) {
   const fieldId = useId();
   const sea = useSeaSettings(seed, version);
+  const [drawn, setDrawn] = useState(0);
+  const [rolls, setRolls] = useState(0);
+  useEffect(() => respond("redraw"), [sea.shown]);
+
+  const draw = (settings: SeaSettings) => {
+    sea.apply(settings);
+    setDrawn((count) => count + 1);
+  };
 
   return (
     <section id="sea-studio" className={styles.studio} aria-labelledby="sea-studio-title">
-      <div className={styles.top}>
+      <div className={styles.top} data-arrive>
         <span>The sea studio</span>
         <span>Make it · See it · Keep it</span>
       </div>
@@ -39,19 +53,31 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
           <fieldset>
             <legend>Start from</legend>
             <div className={styles.chips}>
-              {SEA_PRESETS.map((preset) => (
-                <button type="button" key={preset.name} onClick={() => sea.apply(preset.settings)}>
-                  {preset.name}
+              {STARTS.map((start) => (
+                <button
+                  type="button"
+                  key={start.name}
+                  data-press="preset"
+                  aria-pressed={seedFromSettings(start.settings) === sea.current}
+                  onClick={() => draw(start.settings)}
+                >
+                  {start.name}
                 </button>
               ))}
-              <button type="button" onClick={() => sea.apply(HOME_WATER)}>
-                Home water
-              </button>
               <button
                 type="button"
                 className={styles.dice}
-                onClick={() => sea.apply(randomSettings())}
+                data-press="dice"
+                onClick={() => {
+                  draw(randomSettings());
+                  setRolls((count) => count + 1);
+                }}
               >
+                <Die
+                  key={rolls}
+                  className={rolls ? styles.rolled : styles.die}
+                  face={dieFace(sea.settings.variation)}
+                />
                 Roll the dice
               </button>
             </div>
@@ -85,7 +111,9 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
         <div className={styles.result}>
           <figure className={styles.plate}>
             <div
+              key={drawn}
               className={styles.plateFrame}
+              data-inked={drawn > 0 || undefined}
               role="img"
               aria-label={`Engraved drawing of the sea with seed ${sea.shown}: ${sea.words.sentence}.`}
               dangerouslySetInnerHTML={{ __html: sea.plate }}

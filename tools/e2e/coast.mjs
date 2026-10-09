@@ -83,11 +83,11 @@ export async function runCoastChecks(ctx) {
       "document.querySelector('[data-wave-sound]').textContent.includes('Play waves')",
     ),
   });
-  // Ordinary page interaction must stay silent; only sound controls start playback.
+  // Ordinary interaction never starts the waves; only the wave button does.
   await evaluate("localStorage.removeItem('studio-wave-sound')");
   await load("/");
   results.push({
-    name: "wave-sound-default-silent",
+    name: "waves-off-by-default",
     pass: await evaluate(
       "[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.textContent.includes('Play waves') && b.textContent.includes('Play waves'))",
     ),
@@ -108,7 +108,7 @@ export async function runCoastChecks(ctx) {
   });
   await delay(250);
   results.push({
-    name: "ordinary-click-keeps-sound-off",
+    name: "ordinary-click-keeps-waves-off",
     pass: await evaluate(
       "[...document.querySelectorAll('[data-wave-sound]')].every(b=>b.textContent.includes('Play waves'))",
     ),
@@ -122,7 +122,7 @@ export async function runCoastChecks(ctx) {
   });
   await delay(150);
   results.push({
-    name: "ordinary-scroll-keeps-sound-off",
+    name: "ordinary-scroll-keeps-waves-off",
     pass: await evaluate(
       "document.querySelector('[data-wave-sound]').textContent.includes('Play waves')",
     ),
@@ -174,7 +174,7 @@ export async function runCoastChecks(ctx) {
   await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await delay(250);
   results.push({
-    name: "ordinary-touch-keeps-sound-off",
+    name: "ordinary-touch-keeps-waves-off",
     pass: await evaluate(
       "document.querySelector('[data-wave-sound]').textContent.includes('Play waves')",
     ),

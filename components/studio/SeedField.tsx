@@ -1,4 +1,11 @@
+import { respond } from "@/components/feedback/respond";
+import { normaliseSeaSeed } from "@/lib/sea/seed";
 import styles from "./SeaStudio.module.css";
+
+const SEED_LENGTH = 8;
+
+const typed = (value: string) =>
+  normaliseSeaSeed(value) ? "success" : value.length === SEED_LENGTH ? "refusal" : "key";
 
 type Props = {
   id: string;
@@ -23,11 +30,14 @@ export default function SeedField({ id, value, valid, onType, onBlur }: Props) {
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
-          maxLength={8}
+          maxLength={SEED_LENGTH}
           value={value}
           aria-invalid={!valid}
           aria-describedby={`${id}-seed-note`}
-          onChange={(event) => onType(event.target.value)}
+          onChange={(event) => {
+            respond(typed(event.target.value));
+            onType(event.target.value);
+          }}
           onBlur={onBlur}
         />
       </div>

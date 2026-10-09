@@ -1,0 +1,84 @@
+.notice {
+  position: fixed;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 60;
+  max-width: min(26rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  background: #0c2e3f;
+  color: #f7efdf;
+  font: 0.72rem/1.5 var(--font-mono);
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 18px #04191f33;
+  pointer-events: none;
+}
+.notice:empty {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .notice:not(:empty) {
+    animation: surface 240ms ease-out;
+  }
+}
+@keyframes surface {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}
+.depth,
+.ribbon {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .depth,
+  .ribbon {
+    display: block;
+    position: fixed;
+    top: 0;
+    z-index: 40;
+    pointer-events: none;
+  }
+  .depth {
+    right: max(0.4rem, env(safe-area-inset-right));
+    width: 7px;
+    height: 100vh;
+    background: repeating-linear-gradient(#c0703f59 0 1px, transparent 1px 10vh) 0 0 / 100% 100%;
+  }
+  .depth::before {
+    content: "";
+    position: absolute;
+    inset: 0 3px;
+    background: #c0703f;
+    transform-origin: top;
+    animation: fill linear both;
+    animation-timeline: scroll(root);
+  }
+  .ribbon {
+    right: clamp(1rem, 4vw, 3rem);
+    width: 0.8rem;
+    height: 30vh;
+    background: #a5512f;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 0.55rem), 0 100%);
+    transform-origin: top;
+    animation: fill linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes fill {
+  from {
+    scale: 1 0.04;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@media print {
+  .notice,
+  .depth,
+  .ribbon {
+    display: none;
+  }
+}

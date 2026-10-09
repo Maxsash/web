@@ -23,18 +23,29 @@ node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result (9 October 2026, the structure run): `tsc`, `lint`, `format:check`, 82 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, 19 sound checks, 132 browser records (the Services and Elsewhere snapshots went, the home-notebook record came), no failures, and a build with no warnings. `compare-builds` cannot prove "unchanged" across a change in section heights: a section above that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the text. Compare computed styles and relative boxes instead (done for Work, the studio and the notebook: identical).
+Last full result (9 October 2026, the feedback run's first pass): `tsc`, `lint`, `format:check`,
+a clean build with no warnings, 92 Node tests, 20 SEO cases (drafts and the editor routes not
+served), header checks, 20 keyboard checks, software fallback, 23 sound checks and 132 browser
+records, no failures. Scroll cost was compared against the released build (see below).
+`compare-builds` cannot prove "unchanged" across a change in section heights: a section above
+that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the
+text. Compare computed styles and relative boxes instead.
+
+**Scroll cost before and after a change:** build the previous commit
+(`git archive HEAD | tar -x -C $SCRATCH/old`) and run `node tools/check-creative-v2.mjs <url>
+--diagnose --scroll` against both; compare p95, long tasks and the `RecalcStyleCount` and
+`LayoutCount` metrics, at least twice each.
 
 ## What each check covers
 
 | Check                       | Covers                                                                                                   |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`          | Sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
+| `tools/*.test.mjs`          | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
-| `check-sound.mjs`           | Every sound against the visitor's choice, with the Web Audio calls spied on: silent by default (the compass too); "Play waves" starts the loop and remembers it; the compass ticks as its ring turns; page turns into and within the notebook (by link and by back and forward), never the same variation twice in a row, none on the page already open; the waves leave with the shore and come back without a click; after a reload a remembered choice waits for the first click (and a first click on the button plays); muting silences everything and outlasts a reload. How it sounds is not tested: listen to `node tools/render-sounds.mjs`. |
+| `check-sound.mjs`           | Every sound against the visitor's choices, with the Web Audio calls spied on: nothing before the first click; after it the answers sound (a hover, the dice, the compass) and the waves do not; "Play waves" starts the loop and remembers it; page turns into and within the notebook (by link and by back and forward), never the same variation twice in a row, none on the page already open; the waves leave with the shore and come back without a click; after a reload a remembered choice waits for the first click (and a first click on the button plays); muting the waves keeps the answers; "Mute sounds" silences everything and outlasts a reload; "Unmute sounds" answers and leaves the waves off. Sounds are told apart by their length (page turns 0.8–0.95 s, detents 0.015 s). How it sounds is not tested: listen to `node tools/render-sounds.mjs`. |
 | `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, links (a section link glides, the home link on `/` glides to the top and keeps the sea, another page opens at its top, reduced motion jumps), fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
 | `compare-builds.mjs`        | Pixel comparison of two builds over 36 views (9 pages and homepage sections, desktop and phone, day and night). The way to prove a refactor changed nothing. |
 | `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |
@@ -71,4 +82,8 @@ Everything above runs in headless Chrome on a Mac. Not covered, so do not claim 
 - a printed plate on paper, and the real WhatsApp app's preview;
 - how the sounds sound on real speakers and headphones, and audio in Safari, Firefox or on an
   iPhone (its silent switch mutes Web Audio);
+- the feedback run on a real phone: vibration on Android, a tap's press sound, the sea's ripple
+  under a finger, and the notices with a screen reader;
+- the hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
+  idle and offline beyond headless Chrome's emulation;
 - Search Console, indexing and AI citation outcomes.

@@ -60,7 +60,7 @@
   border-radius: 99px;
   background: transparent;
   color: inherit;
-  cursor: pointer;
+  cursor: copy;
 }
 .email:focus-visible,
 .copy:focus-visible {

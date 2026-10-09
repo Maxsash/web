@@ -144,7 +144,7 @@ await withBrowser(
       "[...document.querySelectorAll('#sea-studio button')].find(b=>b.textContent==='Squall').focus()",
     );
     await press("Enter");
-    record("Enter chooses a preset", (await seedText()) === "f532e107");
+    record("Enter chooses a preset", (await seedText()) === "be32c807");
     await evaluate(
       "[...document.querySelectorAll('#sea-studio button')].find(b=>b.textContent==='Glass').focus()",
     );
@@ -197,6 +197,7 @@ await withBrowser(
     await evaluate("window.scrollTo(0,0)");
     await delay(300);
     await focus("nav[aria-label=Studio] a");
+    await delay(350);
     const ring = await evaluate(
       "(()=>{const c=getComputedStyle(document.querySelector('nav[aria-label=Studio] a'));return [c.outlineStyle,c.outlineWidth,c.outlineColor===c.color]})()",
     );

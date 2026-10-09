@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Contact from "@/components/Contact";
 import NotebookSection from "@/components/NotebookSection";
 import Work from "@/components/Work";
+import ScrollMark from "@/components/feedback/ScrollMark";
 import Hero from "@/components/observatory/Hero";
 import ShoreFooter from "@/components/shore/ShoreFooter";
 import SeaStudio from "@/components/studio/SeaStudio";
@@ -36,6 +37,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Pag
       <a className={styles.skip} href={`#${site.afterHero.id}`}>
         Skip to {site.afterHero.label}
       </a>
+      <ScrollMark kind="depth" />
       <main id="main">
         <Hero edition={edition} />
 

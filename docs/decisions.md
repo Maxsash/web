@@ -6,9 +6,9 @@ each group. How the code is built: [architecture.md](architecture.md).
 ## Direction
 
 - **Structure first, then feedback** (owner, 9 October 2026). The structure run (below,
-  "Structure and content") settled what goes where and why. Next, a feedback run gives every
-  action, and inaction such as waiting, an acknowledgement in sound and other channels:
-  maximalist first, then dialled down after the owner tries it ([feedback.md](feedback.md)).
+  "Structure and content") settled what goes where and why, and is released. The feedback run
+  was built maximalist and the owner kept all of it (below, "Feedback";
+  [feedback.md](feedback.md)).
 - **A is the main site, B is the blog, C is an optional Easter egg.** A ("Living Atlas")
   is one authored sea that reveals its own mathematics as the visitor scrolls and
   becomes a printable plate. B (the Notebook) is a separate editorial composition in ink
@@ -38,6 +38,10 @@ each group. How the code is built: [architecture.md](architecture.md).
   The studio's sliders, presets, dice and typed seed all edit that one recipe, and the
   live drawing is the very function that prints.
 - Home water (`70806d5e`) is the studio's reset and the sea in the essays.
+- **Squall is "Heavy · choppy", not storm-high** (owner, 9 October 2026: "too wild"). The
+  preset was swell 245, character 225, which half-buried the ship; it is now 190 and 200, one
+  step down on each. The sliders still reach 255. The crash page's "Rogue wave" keeps the old
+  storm-high sea on purpose; one draft's cover sea, which started from Squall, calmed with it.
 
 ## Mobile hero
 
@@ -131,18 +135,43 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **Theme follows the system** until the visitor picks day or night in the
   footer.
 
+## Feedback
+
+- **One table, one vocabulary** (9 October 2026). Every action's answer lives in
+  `lib/feedback/vocabulary.ts`, so the owner's review turns into one-line edits. The same kind of
+  action answers the same way everywhere.
+- **Every channel answers every visitor**: sound (after the first press; see "Sound"), ink,
+  type, the sea, cursors, notices and haptics. Haptics need a first interaction and only Android
+  vibrates.
+- **Levels are relative, and measured** on the laptop-speaker model: focus < hover < the dial's
+  tick < a press < a roll, every cue under a page turn and none lost (above -56 LUFS). Touch has
+  no hover, so a tap answers with the press.
+- **What a sound tells is also shown:** copy, mail, offline and online use one polite notice;
+  refusals mark the field. Buttons whose result speaks (`data-press="none"`) do not also click.
+- **Responses before arrival exist only with JavaScript** (`html[data-feedback]`), so a reader
+  without it sees everything at once.
+- **Scroll cost is measured, not assumed.** A smooth settle of the headings' font axes reflowed
+  them every frame (95 layouts in one scroll), so they settle in three steps. The depth line and
+  the reading ribbon cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame
+  pacing unchanged); the owner kept them.
+
 ## Sound
 
-- **Sound is opt-in, and the visitor's choice is kept both ways** (revised 9 October 2026: the
-  owner felt the site was "actively against the sound playing"). A visitor who never pressed
-  "Play waves" hears nothing; scrolling, tapping and key presses never start audio. After "Play
-  waves" the choice holds across pages and visits: the waves fade out in the notebook and come
-  back with the shore without another click, and after a reload or on a later visit they resume
-  at the first click, tap or key press (browsers allow sound only after one; a first click on
-  the wave button itself plays rather than mutes). "Mute waves" is remembered the same way.
-  Replaced rule: "reload never plays".
-- **One switch for every sound.** The page turn and the compass play only after "Play waves"
-  (the owner chose this over always-on and a separate toggle).
+- **The waves are opt-in; every other sound is feedback and plays by default** (owner, 9 October
+  2026: "everything else is feedback by design"). Replaced rule: "one switch for every sound",
+  where page turns and the compass waited for "Play waves". Browsers allow no sound before a
+  visitor's first click, tap or key press, so hovers and scrolling are silent until then; from
+  that press on, every answer sounds. The waves still wait for "Play waves", and that choice holds
+  across pages and visits: they fade out in the notebook, come back with the shore without
+  another click, and after a reload resume at the first click, tap or key press (a first click on
+  the wave button itself plays rather than mutes).
+- **"Mute sounds" lives on the shore only** (owner's choice, 9 October 2026, over no button and
+  over one in the hero too). Earphones and a muted device cover most visitors, but a
+  screen-reader user cannot mute the device without silencing the reader. It silences every
+  sound, waves included, and is remembered (`studio-sound`); "Unmute sounds" brings back the
+  answers, not the waves, and answers with a press. "Play waves" also unmutes.
+- **No cue lasts 3 seconds or more**, so nothing that can play unasked (the foghorn when the
+  connection drops) needs a stop control.
 - **The surf is mixed to be heard on laptop speakers** (9 October 2026: the owner could not hear
   it without maxing a MacBook's volume). The old waves sat at about -46 LUFS with most of their
   energy below 150 Hz, which small speakers cannot play. The surf is now a 33-second loop of

@@ -3,8 +3,9 @@
 The public site of Maxsash Studio, <https://www.maxsash.com>, a one-person studio for websites
 and web apps built end to end: a WebGL sea that resolves into its own mathematics, the work
 (screenshots, and drawings of systems that have none), an about and a contact section, a
-notebook, a sea studio where visitors build and print their own sea, and a shoreline footer. Next.js 16, React 19 and TypeScript.
-No database, accounts or cookies.
+notebook, a sea studio where visitors build and print their own sea, and a shoreline footer.
+Every action gets a small answer of its own, in sound from the first click. Next.js 16,
+React 19 and TypeScript. No database, accounts or cookies.
 
 Working on this repository? Read [AGENTS.md](AGENTS.md), then
 [docs/handoff.md](docs/handoff.md).
@@ -43,19 +44,21 @@ git push origin main:production
 
 ## Layout
 
-| Path                      | What lives there                                                                  |
-| ------------------------- | --------------------------------------------------------------------------------- |
-| `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                   |
-| `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing          |
-| `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, and their shared parts    |
-| `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders           |
-| `components/shore/`       | The shoreline footer and the commit-log card                                      |
-| `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons     |
-| `components/studio/`      | The sea studio                                                                    |
-| `components/atlas/`       | The notebook's scoped styling and plates                                          |
-| `content/`                | Copy and data: `site.ts`, `contact.ts`, `projects.ts`, `about.ts`, `notebook.ts`  |
-| `tools/`                  | Node tests and browser checks; see [docs/testing.md](docs/testing.md)             |
-| `docs/`                   | Architecture, decisions, testing, SEO, follow-ups and the handoff                 |
+| Path                      | What lives there                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                  |
+| `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing         |
+| `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, feedback cues            |
+| `lib/feedback/`           | The feedback vocabulary: what every action answers with, and at what level       |
+| `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders          |
+| `components/feedback/`    | The page's answers to the visitor: listeners, arrivals, notices                  |
+| `components/shore/`       | The shoreline footer and the commit-log card                                     |
+| `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons    |
+| `components/studio/`      | The sea studio                                                                   |
+| `components/atlas/`       | The notebook's scoped styling and plates                                         |
+| `content/`                | Copy and data: `site.ts`, `contact.ts`, `projects.ts`, `about.ts`, `notebook.ts` |
+| `tools/`                  | Node tests and browser checks; see [docs/testing.md](docs/testing.md)            |
+| `docs/`                   | Architecture, decisions, testing, SEO, follow-ups and the handoff                |
 
 To change copy, edit its content file: identity, the offer, navigation, profiles and links in
 [`content/site.ts`](content/site.ts), the "What to expect" steps in

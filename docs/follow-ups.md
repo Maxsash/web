@@ -2,8 +2,9 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
-- [ ] **Feedback run** (next, after the owner reviews the structure run):
-      [feedback.md](feedback.md).
+- [ ] **Feedback on real devices.** Built and kept; listen on real speakers and headphones, and
+      try a phone (a tap's press, the ripple under a finger, Android vibration) and a screen
+      reader with the notices. What was not built is listed in [feedback.md](feedback.md).
 - [ ] **Phone length.** After the structure run the phone page is 15.4 screens, Work alone 6.3
       (five projects). If it feels long on the iPhone, the four smaller cards are the place to
       cut (a shorter summary, or the screenshots smaller).
@@ -27,9 +28,9 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
       owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
       first-byte time. See [decisions.md](decisions.md).
-- [ ] **PageSpeed after the release** (8 October 14:41 IST): desktop 99, mobile 92, accessibility
-      100. The remaining mobile loss is Largest Contentful Paint (3.2 s); see the function-region
-      item above. Re-run after any change to the hero or the region.
+- [ ] **PageSpeed** (last run 8 October 14:41 IST): desktop 99, mobile 92, accessibility 100.
+      The remaining mobile loss is Largest Contentful Paint (3.2 s); see the function-region
+      item above. Due again: the hero changed in the 9 October release.
 - [ ] **Hero length without WebGL.** The hero is 180svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in
@@ -42,8 +43,8 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       print on paper. Version 2 is new; keep version 1 stable.
 - [ ] **Search Console.** Sitemap showed "Couldn't fetch" at first; recheck. See
       [seo-and-sharing.md](seo-and-sharing.md).
-- [ ] **Vercel.** Confirm Node.js Version 24.x after the next release; add a rate-limit rule
-      for `/api/sea-edition*` and `/plate`.
+- [ ] **Vercel.** Add a rate-limit rule for `/api/sea-edition*` and `/plate` (Node 24.x was
+      confirmed by the owner on 9 October 2026).
 - [ ] **security.txt** expires on 6 October 2027; renew it.
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and related assets.
       Needs the owner's answers (brand name, handles, tone, first assets). Use only the three

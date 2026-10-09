@@ -8,7 +8,7 @@ import { seedFromSettings } from "@/lib/sea/seed";
 import Bezel from "./Bezel";
 import { PLATE, SHADE_SIZE, engraveRows, shadeFromPixels } from "./engraving";
 import { FACE_INSET, TURN } from "./medal";
-import { useDialSound } from "./useDialSound";
+import { useDialSound } from "@/components/sound/useDialSound";
 import styles from "./Portrait.module.css";
 
 const homeWater = createSeaEdition(seedFromSettings(HOME_WATER), "2");
@@ -35,7 +35,7 @@ export default function Portrait({ src, alt, size, sizes, legend }: Props) {
   const medal = useRef<HTMLDivElement>(null);
   const image = useRef<HTMLImageElement>(null);
   const [rows, setRows] = useState<string[]>([]);
-  useDialSound(medal);
+  useDialSound(medal, TURN);
 
   const engrave = useCallback(() => {
     const loaded = image.current;
@@ -52,6 +52,8 @@ export default function Portrait({ src, alt, size, sizes, legend }: Props) {
       className={styles.medal}
       style={medalStyle}
       data-engraved={rows.length > 0 || undefined}
+      data-voyage={rows.length > 0 || undefined}
+      data-hover="engrave"
     >
       <div className={styles.face}>
         <div className={styles.photo}>

@@ -4,6 +4,6 @@ export const aboutFacts = [
   {
     term: "Works with",
     detail:
-      "Java · Spring Boot · Python · TypeScript · React · Next.js · PostgreSQL · MongoDB · Docker",
+      "Java · Spring Boot · Python · TypeScript · React · Next.js · PostgreSQL · MongoDB · InfluxDB · Docker",
   },
 ];

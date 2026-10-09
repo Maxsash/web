@@ -1,0 +1,121 @@
+@property --progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.5;
+}
+@property --look {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+.medal {
+  --shadow: var(--ink);
+  --light: var(--paper);
+  --printed: clamp(0, var(--progress) / 0.12, 1);
+  --unprinted: clamp(0, (var(--progress) - 0.88) / 0.12, 1);
+  --rising: clamp(0, (var(--progress) - 0.2) / 0.16, 1);
+  --sinking: clamp(0, (0.8 - var(--progress)) / 0.16, 1);
+  --surfaced: calc(min(var(--rising), var(--sinking)) * (1 - var(--look)));
+  position: relative;
+  aspect-ratio: 1;
+  color: var(--ink);
+}
+.face {
+  position: absolute;
+  inset: var(--face-inset);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--paper);
+}
+.photo {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.12);
+}
+.photo::before,
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.photo::before {
+  background: var(--shadow);
+  mix-blend-mode: screen;
+}
+.photo::after {
+  background: var(--light);
+  mix-blend-mode: multiply;
+}
+.medal[data-engraved] .photo {
+  opacity: var(--surfaced);
+}
+.engraving {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+  clip-path: inset(calc(var(--unprinted) * 100%) 0 calc((1 - var(--printed)) * 100%) 0);
+  opacity: calc(1 - var(--surfaced));
+}
+.engraving path {
+  vector-effect: non-scaling-stroke;
+}
+.bezel {
+  position: absolute;
+  inset: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.8;
+}
+.card {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  rotate: calc((var(--progress) - 0.5) * 40deg);
+}
+.legend {
+  fill: currentColor;
+  stroke: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 2.6px;
+}
+@media (hover: hover) {
+  .medal:hover {
+    --look: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .medal {
+    transition: --look 700ms ease;
+  }
+  @supports (animation-timeline: view()) {
+    .medal[data-engraved] {
+      animation: voyage linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+@keyframes voyage {
+  from {
+    --progress: 0;
+  }
+  to {
+    --progress: 1;
+  }
+}
+:global(html[data-studio-theme="night"]) .medal {
+  --shadow: var(--paper);
+  --light: var(--ink);
+}

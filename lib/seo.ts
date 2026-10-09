@@ -40,8 +40,9 @@ export const studioStructuredData = {
       "@id": absoluteUrl("/#yash"),
       name: site.owner,
       jobTitle: site.role,
+      image: absoluteUrl(site.portrait),
       url: site.links.portfolio,
-      sameAs: [site.links.github, site.links.portfolio],
+      sameAs: [site.links.linkedin, site.links.github, site.links.portfolio],
     },
     {
       "@type": "WebSite",

@@ -22,7 +22,7 @@ What is in place, and what only the owner can do. The crawler checks are in
   request (`private, no-store`); crawlers see varying artwork but identical headings,
   copy, canonical URL and structured data.
 - **Structured data.** The home page describes the website, Yash, verified external
-  profiles and the two real projects, using the visible descriptions. It invents no
+  profiles (LinkedIn, GitHub, portfolio), the headshot and the three real projects, using the visible descriptions. It invents no
   ratings, credentials or business claims, and it is escaped for HTML embedding.
 
 ## AI discovery

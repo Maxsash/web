@@ -81,7 +81,7 @@ export async function runViewportCaptures(ctx) {
         name: "work-spread-figure-layout",
         width,
         pass: await evaluate(
-          "(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===2&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()",
+          "(()=>{const w=document.getElementById('work'),figures=[...w.querySelectorAll('figure')];return figures.length===3&&figures.every(f=>{const r=f.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth+1;});})()",
         ),
       });
     }

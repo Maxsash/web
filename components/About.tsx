@@ -1,5 +1,6 @@
 import { aboutFacts } from "@/content/about";
-import { site } from "@/content/site";
+import { destinations, site } from "@/content/site";
+import Portrait from "./portrait/Portrait";
 import section from "./Section.module.css";
 import styles from "./About.module.css";
 
@@ -14,13 +15,12 @@ export default function About() {
           <em>{last}.</em>
         </h2>
         <p className={section.lede}>
-          A software engineer with more than five years in backend and real-time systems:
-          event-driven services, APIs and the databases beneath them. Maxsash Studio is where I
-          build whole products, from the drawing underneath to the finished thing. Working with me
-          means talking to the person who writes the code.
+          A founding engineer with more than five years in backend and real-time systems. As a
+          freelancer I have built a real-time intrusion detection platform, a multi-tenant SaaS
+          platform and a law practice&apos;s website. Maxsash Studio is where I build whole
+          products, from the drawing underneath to the finished thing. Working with me means talking
+          to the person who writes the code.
         </p>
-      </header>
-      <div className={styles.details}>
         <dl className={section.facts}>
           {aboutFacts.map(({ term, detail }) => (
             <div key={term}>
@@ -29,10 +29,29 @@ export default function About() {
             </div>
           ))}
         </dl>
-        <a className={section.link} href={site.links.portfolio}>
-          Experience and background in the portfolio ↗
-        </a>
-      </div>
+        <ul className={styles.profiles} aria-label="Profiles">
+          {destinations.map((place) => (
+            <li key={place.label}>
+              <a className={section.link} href={place.href}>
+                {`${place.label} ↗`}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </header>
+      <figure className={styles.portrait}>
+        <Portrait
+          src={site.portrait}
+          size={720}
+          sizes="(max-width: 48rem) 60vw, 22vw"
+          alt={`Portrait of ${site.owner}`}
+          legend={{ top: `${site.owner} · ${site.title}`, bottom: site.home }}
+        />
+        <figcaption className={section.caption}>
+          The drawing underneath: a photograph, engraved in the waves of Home water, the
+          studio&apos;s own sea.
+        </figcaption>
+      </figure>
     </section>
   );
 }

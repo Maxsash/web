@@ -12,6 +12,7 @@ export default function CopyButton({ text, done, className, children }: Props) {
       <button
         type="button"
         className={className}
+        data-press="none"
         onClick={async () => setCopied(await copyText(text))}
       >
         {children}

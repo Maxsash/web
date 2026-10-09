@@ -36,7 +36,7 @@ export async function runContentChecks(ctx) {
   // The sea studio: four real controls, a live plate, and every way to keep the result.
   const studio = await evaluate(`(async()=>{
  const root=document.getElementById('sea-studio');const sliders=[...root.querySelectorAll('input[type=range]')];
- const plateOf=()=>root.querySelector('svg')?.innerHTML.length+':'+root.querySelector('svg')?.querySelector('polyline')?.getAttribute('points').slice(0,80);
+ const plateOf=()=>root.querySelector('figure svg')?.innerHTML.length+':'+root.querySelector('figure svg')?.querySelector('polyline')?.getAttribute('points').slice(0,80);
  const seedOf=()=>root.querySelector('figcaption code')?.textContent;
  const before=plateOf(),seedBefore=seedOf();
  const set=(el,v)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,String(v));el.dispatchEvent(new Event('input',{bubbles:true}));};

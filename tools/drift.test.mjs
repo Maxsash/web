@@ -17,10 +17,10 @@ import { sampleSea } from "../lib/sea/sample.ts";
 
 const digest = (text) => createHash("sha256").update(text).digest("hex").slice(0, 16);
 
-test("the homepage shaders are byte-identical after becoming builders", () => {
+test("the homepage shaders change only on purpose (the sea last gained the press ripple)", () => {
   assert.deepEqual([seaVertex, seaFragment, skyFragment, shipFragment].map(digest), [
     "01d90267da202f98",
-    "884541297ed3cea9",
+    "f743315976c90615",
     "2a723ecbb48bec6b",
     "0df202684c3ef2d6",
   ]);
@@ -30,6 +30,7 @@ test("error scenes never carry the homepage ship or its wake", () => {
   for (const scene of Object.values(DRIFT_SCENES)) {
     const { sea } = driftShaders(scene);
     assert.ok(!sea[1].includes("vec2 ship="));
+    assert.ok(!sea[1].includes("uRipple"), "error seas do not answer a press");
   }
   assert.ok(driftShaders(DRIFT_SCENES.storm).sky[1].includes("fbm("), "the storm has clouds");
   assert.ok(!driftShaders(DRIFT_SCENES.horizon).sky[1].includes("fbm("), "clear skies have none");

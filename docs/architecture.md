@@ -69,6 +69,10 @@ behind a server-rendered SVG plate, which is also the fallback.
   to 30 Hz and 70% resolution. Hidden or offscreen scenes do not draw.
 - The GPU surface and `sampleSea` must agree; a parity test checks the shader against
   the CPU for a version 1 and a version 2 sea.
+- **Answers to the visitor:** a press on the sea sets `uRipple` (where, and when in sea time) and
+  the homepage fragment shader draws a fading ring there (`camera.ts` `seaPointAt` finds the point
+  of the sea under the pointer); error seas have no ripple. Sea time runs at a pace
+  (`sea-pace.ts`): slower as the visitor idles (`html[data-idle]`), faster with scroll speed.
 - The context is requested with `failIfMajorPerformanceCaveat`, so a browser that can
   only render in software (hardware acceleration off, no GPU, a blocklisted driver) gets
   the SVG plate instead of a janky scene. Context creation failure and context loss also
@@ -130,28 +134,59 @@ files. The rules are in decisions.md ("Sound").
   variations of a sharp detent tick, `ratchet` that counts degrees turned, and `clickTimes` that
   spaces ticks at most 32 a second and never queues them more than 0.1 s ahead).
 - `components/sound/sound.ts` owns the one `AudioContext` for the whole visit and the visitor's
-  choice (`localStorage` key `studio-wave-sound`, `on` or `off`). The context is created only
-  inside a click, tap or key press, outlives client navigation, is suspended while the tab is
-  hidden, and is never closed. With a remembered `on` and no context yet, the first gesture of
-  the visit (except on the wave button, which handles its own click) starts it. `playClip`
-  caches each synthesised buffer by name and never throws.
+  two choices: the waves (`studio-wave-sound`, off unless chosen) and every other sound
+  (`studio-sound`, on unless muted). The context is created only inside a click, tap or key
+  press, outlives client navigation, is suspended while the tab is hidden or everything is muted,
+  and is never closed. `listenForFirstGesture` (started by `Feedback`) creates it at the visit's
+  first gesture, except on the two sound buttons, which handle their own click. `playClip` plays
+  only while sounds are on, caches each synthesised buffer by name and never throws.
 - `components/sound/waves.ts` is the wave bed: `holdWaves()` (used by `<Waves />` in the shore)
   starts the loop with a slow fade-in when sound is on, fades it out when the last holder
   unmounts and stops it at once on mute. The loop is synthesised once per visit at 22,050 Hz,
   after the click that asks for it (about 16 ms on an M-series Mac). `duckWaves()` dips it under
   a page turn.
-- `components/sound/WaveSound.tsx`: `WaveSoundControl` (the "Play waves" / "Mute waves" buttons in
-  the hero and the shore, kept in step by one store) and `Waves`.
+- `components/sound/SoundControls.tsx`: `WaveSoundControl` (the "Play waves" / "Mute waves"
+  buttons in the hero and the shore, kept in step by one store), `MuteControl` ("Mute sounds" /
+  "Unmute sounds", shore only) and `Waves`.
 - `components/NotebookLink.tsx` plays the page turn on a plain click into the notebook (a link to
   `/blog…` that is not the page already open, `turnsPage`), ducking the waves;
   `components/sound/PageTurns.tsx` (in the root layout) does the same on the browser's back and
   forward, using only an audio context that already exists.
-- `components/portrait/useDialSound.ts` reads the medal's own `--progress` while it is on screen
-  and sound is playing, turns it into degrees with `TURN` (the same constant the CSS rotation
-  uses) and plays one tick per degree.
+- `components/sound/useDialSound.ts` reads an element's own `--progress` while it is on screen
+  and sound is playing, turns it into degrees with that dial's turn (the same constant its CSS
+  rotation uses) and plays one tick per degree: the medal (40°) and the home notebook's compass
+  (60°). `ticker.ts` holds the shared scheduling (`createTicker`, never more than 32 a second,
+  never queued) and `createDetentTicker`, also used by the studio's sliders.
+- `lib/sound/cues.ts` (pure) synthesises the feedback cues from recipes: layers of filtered noise
+  or tones, each a strike with an attack and a decay, optionally repeated (dice, a creak) or
+  gliding in pitch. Each layer is normalised before mixing, the mix is warmed by a one-pole filter
+  and scaled to the cue's peak.
 
 `node tools/render-sounds.mjs` writes every sound to `tools/.out/` as WAV files (page turns, the
 wave loop twice so the seam can be heard, the dial alone and over the waves).
+
+## Feedback
+
+Every action gets a small answer; the brief and the full map are in [feedback.md](feedback.md).
+
+- `lib/feedback/vocabulary.ts` (pure) is the one table, `FEEDBACK`: each action's cue, gain, rate,
+  spacing (a burst inside it is dropped), haptic pattern and words. `classify.ts` reads an
+  activated element into an action (a `#` link glides, `mailto:` rings, a download saves, another
+  origin or a new tab leaves, a button presses, `data-press` names its own or `"none"`); `idle.ts`
+  holds the idle thresholds.
+- `components/feedback/respond.ts` plays an action: the cue (unless sounds are muted), a vibration
+  (only after the visitor has interacted; Android only) and a notice. Cues are synthesised once per
+  visit, ahead of need once sound is on.
+- `Feedback.tsx` (root layout) sets `html[data-feedback]` and starts the listeners: `actions.ts`
+  (hover, press, focus, click, toggle, copy, selection; one set of capture listeners on the
+  document), `arrivals.ts` (marks `[data-arrive]` elements `data-arrived` once, playing
+  `data-arrive-cue`; a swell when a section crosses the middle of the screen; re-run per path),
+  and `presence.ts` (idle levels, the hidden tab's title and anchor icon, offline and online).
+  `Announcer` is the one visible, polite status line for notices.
+- Styling a response before arrival uses `html[data-feedback] …:not([data-arrived])`, so without
+  JavaScript everything is simply shown. `app/feedback.css` holds the site-wide visual responses;
+  section responses sit in their modules. `ScrollMark` is the depth line (home) and the reading
+  ribbon (posts), scroll-driven CSS only.
 
 ## Local post editor
 
@@ -170,9 +205,10 @@ origin sending JSON (so another website cannot write files while the dev server 
 
 ## Studio and content
 
-- `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`
-  and the `useSeaSettings` hook. The drawing it redraws is the same `renderSeaPlate` that
-  prints.
+- `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`,
+  `Die` (the dice button's drawn die) and the `useSeaSettings` hook. The starting seas are the
+  presets plus Home water, and the chip for the current sea is pressed. The drawing it redraws is
+  the same `renderSeaPlate` that prints.
 - `content/`: `site.ts` (identity; the offer as `offer` and `promise`, joined in `tagline`; the
   email; nav; links; `profiles` for About and the shore; and `afterHero`, the section the skip
   link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),
@@ -183,8 +219,9 @@ origin sending JSON (so another website cannot write files while the dev server 
   grid per kind), `About`, `Contact` (with `CopyButton`, which shares `copy-text.ts` with the
   studio's "Copy link"), `NotebookSection` (the three newest entries from `latestNotes`, and the
   compass). `components/Section.module.css` is their one copy of the paper palette (day and
-  night), section header, kicker, lede, rust index numbers, facts list, plate (head and caption)
-  and link; the section modules `composes` from it.
+  night), section header, kicker (and its arrival), lede, a rule that draws itself
+  (`drawnRule`), rust index numbers, facts list, plate (head and caption) and link; the section
+  modules `composes` from it. `Kicker` is the kicker paragraph that arrives.
 - **System drawings:** `lib/system-drawing.ts` (pure) lays a drawing out on a 340 × 330 plate:
   labelled bands, each a four-column grid of boxes (span 1, 2 or 4), and arrows that run
   straight where two boxes overlap horizontally or vertically and diagonally otherwise, clipped
@@ -201,7 +238,8 @@ origin sending JSON (so another website cannot write files while the dev server 
   timeline, `cover 0%` to `cover 100%`): it prints and unprints the lines (clip), surfaces and
   sinks the photo (opacity) and turns the tick ring; `--look` on hover shows the lines. Without
   scroll timelines, under reduced motion or without JavaScript, `--progress` stays at 0.5 and the
-  photo shows.
+  photo shows. `--progress` and its view timeline are global (`[data-voyage]` in `globals.css`),
+  shared with the compass.
   `components/atlas/` holds the notebook's scoped styling, `MarkPlate` and `OceanPlate`.
 - **Written posts** are markdown files in `content/posts/` (`NN-slug.md`, frontmatter: `title`,
   `summary`, `topic`, `date`, `status`, and optionally `emphasis` (the last words of the title,

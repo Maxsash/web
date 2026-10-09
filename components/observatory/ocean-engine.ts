@@ -1,6 +1,6 @@
 import { sampleSea } from "@/lib/sea/sample";
 import type { SeaEdition } from "@/lib/sea/types";
-import { cameraAt } from "./camera";
+import { cameraAt, seaPointAt } from "./camera";
 import { GlResources } from "./gl-resources";
 import { lookAt, modelMatrix, multiply, perspective } from "./matrices";
 import { seaLightDirection } from "./ocean-light";
@@ -43,20 +43,29 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     "uReveal",
     "uNight",
     "uLight",
+    "uRipple",
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight"]),
     ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect"]);
   gl.useProgram(sea);
   setWaves(gl, su, edition);
   let aspect = 1,
-    frames = 0;
+    frames = 0,
+    camera: ReturnType<typeof cameraAt> | null = null,
+    ripple: [number, number, number] = [0, 0, -1e4];
   canvas.dataset.triangles = String(surface.triangles);
   return {
     resize(width: number, height: number, ratio: number) {
       aspect = resizeCanvas(canvas, gl, width, height, ratio);
     },
+    ripple(ndc: [number, number], time: number) {
+      const point = camera && seaPointAt(ndc, camera.eye, camera.target, aspect);
+      if (point) ripple = [point[0], point[1], time];
+      return Boolean(point);
+    },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
-      const { eye, target } = cameraAt(reveal, aspect, pointer);
+      camera = cameraAt(reveal, aspect, pointer);
+      const { eye, target } = camera;
       const vp = multiply(perspective(aspect), lookAt(eye, target));
       const light = seaLightDirection(eye, target, aspect);
       gl.clearColor(0.07, 0.16, 0.21, 1);
@@ -78,6 +87,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.uniform3fv(su.uLight, light);
       gl.uniform3fv(su.uEye, eye);
       gl.uniform2f(su.uResolution, canvas.width, canvas.height);
+      gl.uniform3fv(su.uRipple, ripple);
       gl.drawElements(gl.TRIANGLES, surface.count, gl.UNSIGNED_SHORT, 0);
       const swell = sampleSea(edition, 4.5, -5.5, time);
       gl.useProgram(boat);

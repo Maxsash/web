@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Project } from "@/content/projects";
 import { formatIndex } from "@/lib/format";
+import Kicker from "./Kicker";
 import SystemPlate from "./SystemPlate";
 import section from "./Section.module.css";
 import styles from "./Work.module.css";
@@ -17,7 +18,7 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
   ];
   return (
     <article className={lead ? styles.feature : styles.entry} aria-label={project.title}>
-      <figure className={lead || drawn ? styles.plate : styles.plainPlate}>
+      <figure className={lead || drawn ? styles.plate : styles.plainPlate} data-hover="slide">
         {plate && (
           <div className={styles.plateHead}>
             <span>{`${label} / ${plate.title}`}</span>
@@ -40,7 +41,7 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
         )}
       </figure>
       <div className={lead ? styles.description : undefined}>
-        <p className={styles.kicker}>{`${label} / ${project.kicker}`}</p>
+        <Kicker className={styles.kicker}>{`${label} / ${project.kicker}`}</Kicker>
         <h3>
           {headline.lead} <br />
           <em>{headline.emphasis}</em>

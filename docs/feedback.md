@@ -1,104 +1,97 @@
-# Feedback run (planned)
+# Feedback run
 
 **The owner's brief (9 October 2026).** Every action, and inaction such as waiting on a screen,
 gets an acknowledgement: "I got what you did there". Nothing breaks immersion. Sound for every
-little thing that can have one, plus other channels. Go maximalist first; the owner then
-removes or dials down after trying it. The compass dial's tick is the model: a response that
-follows the action exactly, is small, and could not belong to any other site. **It runs after
-the structure run** (done 9 October; see decisions.md, "Structure and content"), so feedback is
-built for the sections as they now stand.
+little thing that can have one, plus other channels. Maximalist first; the owner then removes or
+dials down after trying it. The model is the compass dial's tick: small, exactly on the action,
+and could not belong to any other site.
+
+**State:** built and kept as it is (9 October 2026: the owner tried it and wants nothing toned
+down). Every answer sounds by default; only the waves wait for "Play waves". Uncommitted.
+
+## Changing an answer
+
+- **Any action's sound, level, pitch, spacing, buzz or words:** one line in
+  `lib/feedback/vocabulary.ts` (`FEEDBACK`). Remove `sound` to silence an action, `haptic` to stop
+  a buzz, `say` to drop a notice; lower `gain`; raise `spacing` to answer less often.
+- **What a cue sounds like:** its recipe in `lib/sound/cues.ts` (layers of filtered noise and
+  tones, each a strike with attack and decay, optionally repeated or gliding).
+- **Visual responses:** each is one block in the file named in the table below.
+- **Listen first:** `node tools/render-sounds.mjs` writes `tools/.out/action-<name>.wav` for each
+  action at its level and `actions-over-waves.wav` (one per second, in the table's order, over the
+  surf) to judge on laptop speakers.
 
 ## Principles
 
-- **A vocabulary, not a pile.** One response per kind of action, the same everywhere: hover,
-  press, select, drag step, arrive, leave the site, success, refusal. Learn it once.
-- **Immediate and proportional.** Within about 100 ms; a small action gets a small response.
-  Never queue (the dial's 32-per-second cap is the pattern).
-- **Sound stays behind the one "Play waves" switch** (decided). Every other channel works for
-  every visitor, so the acknowledgement never depends on sound.
-- **Nothing is only audible.** If a sound carries information (copied, invalid seed), the page
-  shows it too.
-- **Reduced motion** turns motion responses into still ones (a colour or weight change), not
-  nothing. Respect `prefers-reduced-transparency` and forced colours too.
-- **Built to be dialled down.** One table maps each action to its responses and levels, so the
-  owner's review turns into one-line edits, not refactors. Pure rules apart from DOM code.
-- **Costs nothing on scroll.** No new main-thread work per scroll frame beyond what exists;
-  measure before and after.
+- **A vocabulary, not a pile:** one answer per kind of action, the same everywhere.
+- **Immediate and proportional:** small actions get small sounds (focus < hover < the dial's
+  tick < a press < a roll); a burst inside an action's spacing is dropped, never queued.
+- **Every answer sounds by default** (owner, 9 October 2026), from the visitor's first click, tap
+  or key press (browsers allow none before). Only the waves wait for "Play waves". "Mute sounds"
+  on the shore silences everything and is remembered.
+- **Nothing is only audible:** what a sound tells (copied, refused, offline, mail) is also shown.
+- **Reduced motion** keeps every response but makes it still (the global rule makes transitions
+  instant; the sea ripple is skipped because the sea itself is still).
+- **Costs nothing on scroll**, with one measured exception (below).
 
-## Channels other than sound
+## What answers what
 
-1. **Ink.** Underlines that draw in on hover and retract on leave, focus rings that ink in,
-   buttons that press like letterpress into paper, rules that draw as a section arrives.
-2. **Type.** The display font's variable axes (`SOFT`, `WONK`, `opsz`, already loaded) can
-   soften or "wonk" a heading on hover or as it arrives. No extra download.
-3. **The sea itself.** The WebGL sea as a response surface: a ripple where the pointer
-   presses, the ship turning toward a hovered nav item, the wind rising with scroll speed, the
-   sea calming when the visitor stops.
-4. **Scroll.** A progress mark (a depth line, a log line filling), the nav marking the section
-   in view, section kickers typing in, a cue when a section is crossed.
-5. **Cursor.** A pointer that changes over the sea, the sliders and links (a crosshair over
-   the sea). Risky for accessibility; keep the system cursor available.
-6. **Haptics.** `navigator.vibrate` works on Android Chrome, not on iOS Safari. iOS 18 Safari
-   reportedly gives a haptic tick on a native `<input type="checkbox" switch>`; unverified, try
-   it on the iPhone before relying on it.
-7. **Idle and absence.** After a pause: the sea settles, gulls cross by day and stars appear by
-   night (already planned: [follow-ups.md](follow-ups.md)), the ship trims its sail. When the tab
-   is hidden: the title and favicon change (the ship at anchor); on return, a brief "welcome
-   back" in the title.
-8. **Words.** Microcopy that answers the action, like "Link copied. Anyone who opens it sails
-   this sea." Status lines for the slider read-outs and the seed field.
-9. **Page state.** Offline turns the sea foggy (`online`/`offline` events), and back online
-   clears it. A designed print view when someone presses Ctrl/Cmd+P on any page.
-10. **Selection and copy.** A styled text selection (ink or rust highlighter); copying the email
-    confirms it.
+| Where       | Action                          | Sound (action)            | Also                                                            | Wired in                                   |
+| ----------- | ------------------------------- | ------------------------- | --------------------------------------------------------------- | ------------------------------------------ |
+| Everywhere  | Hover a link, button or slider  | soft tick (`hover`)       | Underline inks in (thicker, closer)                             | `components/feedback/actions.ts`, `app/feedback.css` |
+| Everywhere  | Press a button                  | firm click (`press`)      | Letterpress: 1 px down, inset shadow                            | same                                       |
+| Everywhere  | Keyboard focus moves            | fainter tick (`focus`)    | Focus ring inks in from transparent, 8 px out                   | same                                       |
+| Everywhere  | Link within the page            | whoosh (`glide`)          | The glide (existed)                                             | same                                       |
+| Everywhere  | Link off the site or a new tab  | sail filling, creak (`leave`) |                                                             | same                                       |
+| Everywhere  | Email link                      | ship's bell (`mail`)      | Notice: "Opening your mail app. The address is …"               | same                                       |
+| Everywhere  | Select text; copy it            | pen scratch (`select`, `copy`) | Rust highlighter; notice "Copied."                         | same                                       |
+| Everywhere  | Open or close a disclosure      | latch (`unfold`, `fold`)  | Studio's "Inside the sea" unfolds                               | same, `SeaStudio.module.css`               |
+| Everywhere  | Cross into a section            | passing swell (`cross`)   |                                                                 | `components/feedback/arrivals.ts`          |
+| Everywhere  | Tab hidden, then back           | (waves fade, existed)     | Title "At anchor · …" and an anchor favicon; "Welcome back · …" for 3 s | `components/feedback/presence.ts`  |
+| Everywhere  | Idle 10, 30, 60 s               |                           | `html[data-idle]`; the hero sea slows to 0.6, 0.4, 0.3 pace     | same, `observatory/sea-pace.ts`            |
+| Everywhere  | Offline, back online            | foghorn; bell (`offline`, `online`) | Fog over the hero sea and the shore; notices           | same, module CSS                           |
+| Home        | Scroll                          |                           | Depth line with 10 vh marks at the right edge                   | `components/feedback/ScrollMark.tsx`       |
+| Hero        | Press the sea                   | water drop (`drop`)       | A ring spreads from the point pressed; crosshair cursor         | `OceanScene.tsx`, `ocean-shaders.ts`       |
+| Hero        | Scroll fast                     |                           | The sea quickens (wind), up to 1.6 pace                         | `sea-pace.ts`                              |
+| Hero        | Scroll from sea to drawing      | nib trill, one per 1/60 of the reveal (`draw`) |                                            | `OceanScene.tsx`                           |
+| Hero        | Phone: swipe a stage            | swell, 10 ms buzz (`swipe`) |                                                               | `OceanScene.tsx`                           |
+| Hero, shore | Still or resume the sea, shore  | wind drops, rises (`still`, `stir`) |                                                       | `OceanScene.tsx`, `Shoreline.tsx`          |
+| Hero        | "Make your own"                 | rope pulled taut (`rope`) | Nav underlines draw in left to right and retract                | `Hero.tsx`, `Observatory.module.css`       |
+| Sections    | A section's kicker arrives      |                           | Kicker types in; the heading under it sets from soft to crisp in three steps | `Kicker.tsx`, `Section.module.css` |
+| Work        | Hover a project image           | paper slide (`slide`)     | The plate lifts 4 px; its head rule inks in                     | `ProjectFeature.tsx`, `Work.module.css`    |
+| Work        | A system drawing arrives        | pen, box by box (`drawing`) | Boxes ink in one by one, then the arrows draw along the data | `SystemPlate.tsx`, `Work.module.css`       |
+| About       | Hover the medal                 | engraving scratch (`engrave`) | Lines return (existed)                                      | `Portrait.tsx`                             |
+| Contact     | Copy the address                | stamp (`success`) or thud (`refusal`) | "Address copied." (existed); copy cursor            | `copy-text.ts`                             |
+| Notebook    | The compass passes (desktop)    | dial ticks, like the medal | The needle swings 60° across the pass                          | `Compass.tsx`                              |
+| Notebook    | The band's rule arrives         |                           | The rule draws left to right                                    | `Section.module.css` (`drawnRule`)         |
+| Posts       | Reading                         |                           | A rust bookmark ribbon lengthens with the page                  | `ScrollMark.tsx`                           |
+| Posts       | The author line arrives         | quill flourish (`end`)    |                                                                 | `ArticleParts.tsx`                         |
+| Studio      | A starting sea                  | chart pin, 8 ms (`preset`) | The chip for the current sea stays pressed (`aria-pressed`)    | `SeaStudio.tsx`                            |
+| Studio      | Roll the dice                   | dice rattle, buzzes (`dice`) | A drawn die tumbles and shows a face of the new sea          | `SeaStudio.tsx`, `Die.tsx`                 |
+| Studio      | A slider step                   | dial detent per step (`detent`), 2 ms buzz | Resize cursor                                  | `SettingSlider.tsx`                        |
+| Studio      | Type a seed                     | typewriter key; stamp when valid; thud at eight wrong characters | Field state (existed)    | `SeedField.tsx`                            |
+| Studio      | The plate redraws               | a nib (`redraw`)          | After a preset or roll, the plate inks in left to right         | `SeaStudio.tsx`                            |
+| Studio      | Print, save SVG, sail, copy link | stamp, slide, long swell, bell | "Link copied…" (existed)                                   | `KeepActions.tsx`                          |
+| Shore       | Walk on the sand                | soft step per footprint (`step`) | Footprints (existed)                                     | `Shoreline.tsx`                            |
+| Shore       | Day or night                    | swell, brighter or darker (`dawn`, `dusk`) | The theme (existed)                             | `ThemeControl.tsx`                         |
 
-## Every action on the site, with candidates
+Buttons whose result speaks for itself carry `data-press="none"` (the copy buttons, the pause
+buttons, the theme switch), so they do not also click.
 
-| Where           | Action                              | Sound candidate                   | Other candidates                          |
-| --------------- | ----------------------------------- | --------------------------------- | ----------------------------------------- |
-| Everywhere      | Hover a link or button              | Soft tick, quieter than the dial  | Ink underline draws in; font axis shifts  |
-| Everywhere      | Press a button                      | Firm click                        | Letterpress press; ripple                 |
-| Everywhere      | Keyboard focus moves                | Faint tick (maybe too much)       | Focus ring inks in                        |
-| Everywhere      | Scroll; cross a section             | A passing swell                   | Progress mark; nav marks the section      |
-| Everywhere      | Idle 10 s / 30 s / 60 s             | Surf rises slightly               | Sea settles; gulls or stars; sail trims   |
-| Everywhere      | Tab hidden, tab back                | Waves fade out and back (exists)  | Title and favicon at anchor; welcome back |
-| Everywhere      | Offline, back online                | Foghorn, far off                  | Fog over the sea                          |
-| Everywhere      | Select text, copy                   | Pen scratch                       | Styled selection                          |
-| Everywhere      | Follow a link off the site          | Sail filling, a rope creak        | Arrow sets sail                           |
-| Hero            | Load                                | (none: sound needs a click)       | The sea fades in (exists)                 |
-| Hero            | Scroll from sea to drawing          | Ink lines being drawn             | The drawing (exists)                      |
-| Hero (phone)    | Swipe a stage                       | One swell                         | Haptic on Android                         |
-| Hero            | Nav link, brand link                | A glide whoosh                    | Glide (exists)                            |
-| Hero, shore     | Play waves, mute                    | Waves fade in or out (exists)     | Icon state                                |
-| Hero            | Still the sea                       | Wind dropping                     | The sea stops (exists)                    |
-| Work            | Hover a project image               | Paper slide                       | The image lifts, the plate head inks in   |
-| Work            | A system drawing comes into view    | Pen on paper, box by box          | Boxes ink in, arrows flow along the data  |
-| About           | Medal passes                        | Dial ticks (exists)               | Ring turns (exists)                       |
-| About           | Hover the medal                     | Engraving scratch                 | Lines return (exists)                     |
-| Contact         | Hover, click the email; copy it     | Ship's bell; a soft stamp         | "Address copied." (exists); button press  |
-| Hero            | The seed link ("Make your own")     | A rope pulled taut                | Glide down to the studio (exists)         |
-| Notebook (home) | The compass passes                  | Dial ticks, like the medal        | The needle swings toward the entries      |
-| Notebook        | Into or within the notebook         | Page turn (exists)                | A page curl (follow-ups idea 3)           |
-| Notebook        | Reading a post; its end             | Quill flourish at the end         | A reading ribbon (follow-ups idea 5)      |
-| Studio          | Preset chip                         | Chart pin                         | Chip presses                              |
-| Studio          | Roll the dice                       | Dice rattle                       | Dice tumble                               |
-| Studio          | Slider step                         | Detent tick per step, like the dial | Haptic on Android                       |
-| Studio          | Type a seed: key, valid, invalid    | Typewriter key; confirm; dull thud | Field state; plate redraws              |
-| Studio          | Plate redraws                       | Ink scratch                       | Lines draw in (follow-ups idea 1)         |
-| Studio          | Print, save SVG, copy link          | Press stamp; paper; bell          | Confirmation line (copy exists)           |
-| Studio          | Sail this sea                       | A long swell                      | The hero redraws                          |
-| Studio          | Open "Inside the sea"               | A latch                           | Unfolds                                   |
-| Shore           | Walk on the sand                    | A soft step per footprint         | Footprints (exist)                        |
-| Shore           | Day or night                        | Dawn or dusk swell                | The theme changes (exists)                |
-| Shore           | Pause the shoreline                 | Surf hushes                       | The shore stops (exists)                  |
-| Error pages     | Arrive                              | Thunder with the lightning, a raft's creak, wind | The scene (exists)     |
-| Plate page      | Print                               | Press stamp                       | Print view                                |
+## Measured
 
-## Open for the run
+Programmatic scroll through the hero, released build against this one, headless Chrome on an M4
+Pro: frame pacing unchanged (p95 16.7 ms, no long tasks), layouts 1–2 → 4–5 (the heading's three
+settle steps; a smooth settle cost 95 layouts and was changed). **The one exception:** the depth
+line (and the ribbon on posts) is a scroll-driven animation, and Chrome recalculates style once per
+frame for it (357 recalcs against 125 without it, about 0.1 ms a frame here). The medal's timeline
+already does the same. If that is too much, delete `<ScrollMark kind="depth" />` from
+`app/page.tsx` first.
 
-- Which sounds start before "Play waves"? Today none do, by decision; keep it.
-- Hover sounds on touch devices: no hover, so none; decide what press gives instead.
-- Levels: everything sits under the waves and the dial; render each with
-  `tools/render-sounds.mjs` and check on laptop speakers, as was done for the surf.
-- Screen readers: decorative responses stay silent to them; informative ones use the existing
-  status lines.
+## Not built
+
+The ship turning toward a hovered nav item; the surf rising slightly when idle; the sail trimming;
+gulls by day and stars by night ([follow-ups.md](follow-ups.md)); a page curl and marginalia in the
+notebook; a designed print view for every page; thunder and a raft's creak on the error pages; the
+iOS Safari switch haptic (unverified); the nav marking the section in view (the nav stays in the
+hero); headings that "wonk" on hover.

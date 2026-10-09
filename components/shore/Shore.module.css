@@ -14,6 +14,19 @@
   z-index: -1;
   pointer-events: none;
 }
+.shore::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(#dfe7e3eb, #dfe7e3b8 55%, #dfe7e300);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+:global(html[data-offline]) .shore::after {
+  opacity: 1;
+}
 .inner {
   padding: clamp(7rem, 11vw, 11rem) clamp(1.25rem, 6vw, 7rem) 1.5rem;
 }

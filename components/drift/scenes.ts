@@ -26,7 +26,8 @@ export type DriftScene = {
   storm?: boolean;
 };
 
-const [glass, tradeWind, squall] = SEA_PRESETS.map((preset) => seedFromSettings(preset.settings));
+const [glass, tradeWind] = SEA_PRESETS.map((preset) => seedFromSettings(preset.settings));
+const rogueSquall = seedFromSettings({ swell: 245, heading: 50, character: 225, variation: 7 });
 
 export const DRIFT_SCENES = {
   horizon: {
@@ -61,7 +62,7 @@ export const DRIFT_SCENES = {
     reveal: 0.52,
   },
   squall: {
-    seed: squall,
+    seed: rogueSquall,
     night: 1,
     swell: 1.25,
     pace: 1.4,

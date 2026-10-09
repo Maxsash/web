@@ -5,7 +5,7 @@ import type { SeaSettings } from "./types.ts";
 export const SEA_PRESETS: { name: string; settings: SeaSettings }[] = [
   { name: "Glass", settings: { swell: 30, heading: 128, character: 20, variation: 7 } },
   { name: "Trade wind", settings: { swell: 140, heading: 200, character: 110, variation: 7 } },
-  { name: "Squall", settings: { swell: 245, heading: 50, character: 225, variation: 7 } },
+  { name: "Squall", settings: { swell: 190, heading: 50, character: 200, variation: 7 } },
 ];
 export const HOME_WATER: SeaSettings = { swell: 112, heading: 128, character: 109, variation: 94 };
 

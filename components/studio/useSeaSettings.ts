@@ -44,6 +44,7 @@ export function useSeaSettings(seed: string, version: "1" | "2") {
 
   return {
     settings,
+    current,
     shown,
     plate,
     words: describeSea(edition.settings!),

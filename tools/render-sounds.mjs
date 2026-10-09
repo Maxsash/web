@@ -1,9 +1,13 @@
 /** Write the site's sounds to tools/.out/ as WAV files, to hear them in any player:
- * page-turn-1…4.wav, waves.wav (the loop twice, so the seam can be heard) and dial.wav
- * (the compass bezel turning faster and slower, alone and over the waves).
+ * page-turn-1…4.wav, waves.wav (the loop twice, so the seam can be heard), dial.wav
+ * (the compass bezel turning faster and slower, alone and over the waves), and every feedback
+ * action at its level in lib/feedback/vocabulary.ts, alone (action-<name>.wav) and over the waves
+ * (actions-over-waves.wav, one every second in the table's order).
  * node tools/render-sounds.mjs
  */
 import { mkdirSync, writeFileSync } from "node:fs";
+import { FEEDBACK } from "../lib/feedback/vocabulary.ts";
+import { CUES, synthesizeCue } from "../lib/sound/cues.ts";
 import { DETENTS, chooseDetent, clickTimes, synthesizeDetent } from "../lib/sound/dial.ts";
 import { PAGE_TURNS, synthesizePageTurn } from "../lib/sound/page-turn.ts";
 import { synthesizeSurf } from "../lib/sound/surf.ts";
@@ -37,6 +41,16 @@ function write(name, samples) {
   console.log(`Wrote tools/.out/${name}.wav`);
 }
 
+function mixAt(out, clip, at, { gain = 1, rate = 1 } = {}) {
+  const start = Math.round(at * SAMPLE_RATE);
+  for (let i = 0; i * rate < clip.length - 1 && start + i < out.length; i++) {
+    const position = i * rate;
+    const index = Math.floor(position);
+    const blend = position - index;
+    out[start + i] += gain * (clip[index] * (1 - blend) + clip[index + 1] * blend);
+  }
+}
+
 function dialTurn(seconds) {
   const clicks = DETENTS.map((detent) => synthesizeDetent(SAMPLE_RATE, detent));
   const out = new Float32Array(Math.round(seconds * SAMPLE_RATE));
@@ -51,14 +65,7 @@ function dialTurn(seconds) {
       const { variant, rate, gain } = chooseDetent(random, previous);
       previous = variant;
       last = at;
-      const click = clicks[variant];
-      const start = Math.round(at * SAMPLE_RATE);
-      for (let i = 0; i * rate < click.length - 1 && start + i < out.length; i++) {
-        const position = i * rate;
-        const index = Math.floor(position);
-        const blend = position - index;
-        out[start + i] += gain * (click[index] * (1 - blend) + click[index + 1] * blend);
-      }
+      mixAt(out, clicks[variant], at, { gain, rate });
     }
   }
   return out;
@@ -78,4 +85,18 @@ write("dial", turn);
 write(
   "dial-over-waves",
   turn.map((sample, i) => sample + loop[i]),
+);
+
+const actions = Object.entries(FEEDBACK).filter(([, response]) => response.sound);
+const tour = new Float32Array(Math.max(loop.length, (actions.length + 3) * SAMPLE_RATE));
+actions.forEach(([action, response], index) => {
+  const clip = synthesizeCue(SAMPLE_RATE, CUES[response.sound]);
+  const alone = new Float32Array(Math.ceil(clip.length / (response.rate ?? 1)) + 1);
+  mixAt(alone, clip, 0, response);
+  write(`action-${action}`, alone);
+  mixAt(tour, clip, index + 1, response);
+});
+write(
+  "actions-over-waves",
+  tour.map((sample, i) => sample + loop[i % loop.length]),
 );

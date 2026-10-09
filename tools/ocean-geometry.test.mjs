@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { cameraAt } from "../components/observatory/camera.ts";
+import { cameraAt, seaPointAt } from "../components/observatory/camera.ts";
 import { lookAt, modelMatrix, multiply, perspective } from "../components/observatory/matrices.ts";
 import { buildSeaGrid } from "../components/observatory/sea-grid.ts";
 import { buildShipMesh } from "../components/observatory/ship-mesh.ts";
@@ -48,4 +48,26 @@ test("the sea grid is denser on desktop and indexes every vertex", () => {
     assert.equal(grid.indices.length, nx * nz * 6);
     assert.ok(grid.indices.every((index) => index < (nx + 1) * (nz + 1)));
   }
+});
+
+test("a press on the screen finds the point of the sea under it", () => {
+  for (const [reveal, aspect] of [
+    [0, 1.7],
+    [0.6, 0.5],
+  ]) {
+    const { eye, target } = cameraAt(reveal, aspect, [0, 0]);
+    const viewProjection = multiply(perspective(aspect), lookAt(eye, target));
+    for (const [x, z] of [
+      [4.5, -5.5],
+      [-6, -20],
+    ]) {
+      const clip = [0, 1, 2, 3].map(
+        (row) => viewProjection[row] * x + viewProjection[8 + row] * z + viewProjection[12 + row],
+      );
+      const found = seaPointAt([clip[0] / clip[3], clip[1] / clip[3]], eye, target, aspect);
+      assert.ok(Math.hypot(found[0] - x, found[1] - z) < 1e-4, `${found} for ${[x, z]}`);
+    }
+  }
+  const { eye, target } = cameraAt(0, 1.7, [0, 0]);
+  assert.equal(seaPointAt([0, 0.95], eye, target, 1.7), null, "the sky has no sea under it");
 });

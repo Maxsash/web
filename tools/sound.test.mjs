@@ -15,71 +15,17 @@ import {
   turnsPage,
 } from "../lib/sound/page-turn.ts";
 import { BED, SURF, surfSeconds, synthesizeSurf } from "../lib/sound/surf.ts";
+import {
+  METER_RATE,
+  butterworthHighpass,
+  lcg,
+  momentaryLoudness,
+  peakOf,
+  percentile,
+  rms,
+} from "./lib/loudness.mjs";
 
 const SAMPLE_RATE = 44100;
-const METER_RATE = 48000;
-
-const rms = (samples, from, to) => {
-  const slice = samples.slice(Math.round(from * SAMPLE_RATE), Math.round(to * SAMPLE_RATE));
-  return Math.sqrt(slice.reduce((sum, value) => sum + value * value, 0) / slice.length);
-};
-
-const peakOf = (samples) => samples.reduce((max, value) => Math.max(max, Math.abs(value)), 0);
-
-function lcg(seed) {
-  let state = seed;
-  return () => {
-    state = (state * 1664525 + 1013904223) >>> 0;
-    return state / 4294967296;
-  };
-}
-
-function biquad([b0, b1, b2], [a1, a2]) {
-  let x1 = 0;
-  let x2 = 0;
-  let y1 = 0;
-  let y2 = 0;
-  return (x) => {
-    const y = b0 * x + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2;
-    [x2, x1, y2, y1] = [x1, x, y1, y];
-    return y;
-  };
-}
-
-function butterworthHighpass(hz) {
-  const w = (2 * Math.PI * hz) / METER_RATE;
-  const alpha = Math.sin(w) / Math.SQRT2;
-  const a0 = 1 + alpha;
-  const b = (1 + Math.cos(w)) / 2 / a0;
-  return biquad([b, -2 * b, b], [(-2 * Math.cos(w)) / a0, (1 - alpha) / a0]);
-}
-
-/** ITU-R BS.1770 momentary loudness (400 ms windows every 100 ms) at 48 kHz, in LUFS.
- * The laptop variant first removes what small speakers cannot play (below about 180 Hz). */
-function momentaryLoudness(samples, { laptop = false } = {}) {
-  const stages = [
-    biquad(
-      [1.53512485958697, -2.69169618940638, 1.19839281085285],
-      [-1.69065929318241, 0.73248077421585],
-    ),
-    biquad([1, -2, 1], [-1.99004745483398, 0.99007225036621]),
-    ...(laptop ? [butterworthHighpass(180), butterworthHighpass(180)] : []),
-  ];
-  const window = 0.4 * METER_RATE;
-  const hop = 0.1 * METER_RATE;
-  const loudness = [];
-  let sum = 0;
-  const squares = new Float64Array(samples.length);
-  for (let i = 0; i < samples.length; i++) {
-    squares[i] = stages.reduce((value, stage) => stage(value), samples[i]) ** 2;
-    sum += squares[i] - (i >= window ? squares[i - window] : 0);
-    if (i >= window - 1 && (i + 1 - window) % hop === 0)
-      loudness.push(-0.691 + 10 * Math.log10(sum / window));
-  }
-  return loudness.sort((a, b) => a - b);
-}
-
-const percentile = (sorted, p) => sorted[Math.floor(p * (sorted.length - 1))];
 
 function trill(clicksPerSecond, seconds) {
   const clicks = DETENTS.map((detent) => synthesizeDetent(METER_RATE, detent));
@@ -117,9 +63,9 @@ test("each page turn swells, lands softly and fades without clicks", () => {
   for (const variant of PAGE_TURNS) {
     const sound = synthesizePageTurn(SAMPLE_RATE, variant);
     const { at } = variant.landing;
-    const swish = rms(sound, 0.2, 0.35);
-    const landing = rms(sound, at, at + 0.06);
-    const tail = rms(sound, variant.duration - 0.1, variant.duration - 0.02);
+    const swish = rms(sound, 0.2, 0.35, SAMPLE_RATE);
+    const landing = rms(sound, at, at + 0.06, SAMPLE_RATE);
+    const tail = rms(sound, variant.duration - 0.1, variant.duration - 0.02, SAMPLE_RATE);
     assert.ok(swish > 4 * tail, "the swell is louder than the tail");
     assert.ok(landing > 0.004, `the page lands audibly (${landing})`);
     assert.ok(landing > 3 * tail, "and then it is quiet");

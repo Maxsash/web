@@ -1,5 +1,6 @@
 import { aboutFacts } from "@/content/about";
 import { profiles, site } from "@/content/site";
+import Kicker from "./Kicker";
 import Portrait from "./portrait/Portrait";
 import section from "./Section.module.css";
 import styles from "./About.module.css";
@@ -9,7 +10,7 @@ export default function About() {
   return (
     <section id="about" className={styles.section} aria-labelledby="about-heading">
       <header className={section.header}>
-        <p className={section.kicker}>About</p>
+        <Kicker>About</Kicker>
         <h2 id="about-heading" className={styles.name}>
           {first} <br />
           <em>{last}.</em>

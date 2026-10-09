@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import PageLink from "@/components/PageLink";
-import { WaveSoundControl, Waves } from "@/components/sound/WaveSound";
+import { respond } from "@/components/feedback/respond";
+import { MuteControl, WaveSoundControl, Waves } from "@/components/sound/SoundControls";
 import ThemeControl from "@/components/observatory/ThemeControl";
 import { profiles, site } from "@/content/site";
 import { FootTrail } from "./footprints";
@@ -126,7 +127,7 @@ export default function Shoreline({
           x = ((event.clientX - bounds.left) / bounds.width) * width,
           y = ((event.clientY - bounds.top) / bounds.height) * height;
         if (y <= shorelineAt(view(), x) + height * 0.07) trail.lift();
-        else trail.track(x, y, time);
+        else if (trail.track(x, y, time)) respond("step");
       },
       { passive: true, signal: events.signal },
     );
@@ -152,10 +153,16 @@ export default function Shoreline({
           <button
             type="button"
             data-shore-pause
-            onClick={() => setPaused(pauseRef.current?.() ?? false)}
+            data-press="none"
+            onClick={() => {
+              const stilled = pauseRef.current?.() ?? false;
+              respond(stilled ? "still" : "stir");
+              setPaused(stilled);
+            }}
           >
             {paused ? "Resume shoreline" : "Pause shoreline"}
           </button>
+          <MuteControl />
           <WaveSoundControl />
         </div>
         <div className={styles.folio}>

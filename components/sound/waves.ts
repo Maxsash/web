@@ -1,5 +1,5 @@
 import { BED, SURF, synthesizeSurf } from "@/lib/sound/surf";
-import { audio, resumeOnFirstGesture, soundBuffer, soundStatus, subscribeSound } from "./sound";
+import { audio, soundBuffer, subscribeSound, wavesStatus } from "./sound";
 
 type Bed = { source: AudioBufferSourceNode; fade: GainNode; duck: GainNode };
 
@@ -38,7 +38,7 @@ function leave({ source, fade }: Bed, context: AudioContext, muted: boolean) {
 
 function reconcile() {
   const context = audio();
-  const status = soundStatus();
+  const status = wavesStatus();
   const wanted = holders > 0 && status === "on";
   if (!context || wanted === Boolean(bed)) return;
   if (bed) {
@@ -51,7 +51,6 @@ function reconcile() {
 export function holdWaves() {
   holders += 1;
   unsubscribe ??= subscribeSound(reconcile);
-  resumeOnFirstGesture();
   reconcile();
   return () => {
     holders -= 1;

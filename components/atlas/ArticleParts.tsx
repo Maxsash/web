@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import NotebookLink from "@/components/NotebookLink";
+import ScrollMark from "@/components/feedback/ScrollMark";
 import { site } from "@/content/site";
 import { formatIndex } from "@/lib/format";
 import styles from "./Atlas.module.css";
@@ -26,6 +27,7 @@ const formatDate = (date: string) =>
 export function ArticleTop({ number, status }: { number: string; status: string }) {
   return (
     <div className={styles.articleTop}>
+      <ScrollMark kind="ribbon" />
       <NotebookLink href="/blog">← Back to the notebook</NotebookLink>
       <span>
         Field note {number}
@@ -109,7 +111,12 @@ export function ReadingSection({
 export function ArticleEnd({ next }: { next: { slug: string; title: string } }) {
   return (
     <>
-      <aside className={styles.authorNote} aria-label="About the author">
+      <aside
+        className={styles.authorNote}
+        aria-label="About the author"
+        data-arrive
+        data-arrive-cue="end"
+      >
         <p>
           Written by {site.owner}, who builds {site.offer} end to end at {site.name}.
         </p>

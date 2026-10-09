@@ -99,10 +99,6 @@ a:hover {
   border-radius: 4px;
 }
 
-::selection {
-  background: color-mix(in oklab, var(--accent) 26%, transparent);
-}
-
 main {
   position: relative;
   isolation: isolate;
@@ -139,6 +135,31 @@ main::before {
 
 section[id] {
   scroll-margin-block-start: 1rem;
+}
+
+@property --progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.5;
+}
+
+@keyframes voyage {
+  from {
+    --progress: 0;
+  }
+  to {
+    --progress: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-voyage] {
+      animation: voyage linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
 }
 
 .visually-hidden {

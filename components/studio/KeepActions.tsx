@@ -16,6 +16,7 @@ export default function KeepActions({ query, sailing, copied, onCopied }: Props)
       <div className={styles.actions}>
         <a
           className={styles.primary}
+          data-press="print"
           href={`/plate?${query}&print=1`}
           target="_blank"
           rel="noopener noreferrer"
@@ -29,13 +30,15 @@ export default function KeepActions({ query, sailing, copied, onCopied }: Props)
         {sailing ? (
           <span className={styles.sailing}>You are sailing this sea</span>
         ) : (
-          <Link prefetch={false} href={`/?${query}`}>
+          <Link prefetch={false} href={`/?${query}`} data-press="sail">
             Sail this sea <span aria-hidden="true">↑</span>
           </Link>
         )}
         <button
           type="button"
-          onClick={async () => onCopied(await copyText(`${location.origin}/?${query}`))}
+          data-press="none"
+          className={styles.copy}
+          onClick={async () => onCopied(await copyText(`${location.origin}/?${query}`, "share"))}
         >
           Copy link
         </button>

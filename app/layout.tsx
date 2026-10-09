@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import SmoothLinks from "@/components/SmoothLinks";
+import Feedback from "@/components/feedback/Feedback";
 import PageTurns from "@/components/sound/PageTurns";
 import { site } from "@/content/site";
 import { siteOrigin, sharingMetadata } from "@/lib/seo";
 import { fontVariables } from "./fonts";
 import "./globals.css";
+import "./feedback.css";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -42,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <PageTurns />
         <SmoothLinks />
+        <Feedback />
       </body>
     </html>
   );

@@ -2,7 +2,7 @@ import OceanPlate from "@/components/atlas/OceanPlate";
 import Mark from "@/components/Mark";
 import NotebookLink from "@/components/NotebookLink";
 import PageLink from "@/components/PageLink";
-import { WaveSoundControl } from "@/components/sound/WaveSound";
+import { WaveSoundControl } from "@/components/sound/SoundControls";
 import { site } from "@/content/site";
 import { sentenceCase } from "@/lib/format";
 import type { SeaEdition } from "@/lib/sea/types";
@@ -62,7 +62,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             Open to freelance work. By Yash.
           </p>
         </div>
-        <a className={styles.sceneMeta} href="#sea-studio">
+        <a className={styles.sceneMeta} href="#sea-studio" data-press="rope">
           Authored sea / {edition.seed}
           <span>
             Make your own <span aria-hidden="true">↓</span>

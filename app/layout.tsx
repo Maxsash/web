@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import PageTurns from "@/components/sound/PageTurns";
 import { site } from "@/content/site";
 import { siteOrigin, sharingMetadata } from "@/lib/seo";
 import { fontVariables } from "./fonts";
@@ -36,7 +37,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fontVariables}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <PageTurns />
+      </body>
     </html>
   );
 }

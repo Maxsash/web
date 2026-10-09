@@ -108,26 +108,48 @@ physical iPhone: refactor around them, never change them.
 `components/shore/`: `Shoreline` owns the canvas lifecycle; `sand` paints the cached
 sand and shells, `tide` the shore line, wet sand and surf, `footprints` the mouse-only
 fading tracks, `palette` the day and night colours. Budgets: 30 Hz, 420,000 pixels, paused
-when hidden or offscreen, still under reduced motion. `WaveSound` synthesises wave sound
-and stays silent until a visitor presses "Play waves"; mute is remembered and reload
-never starts audio. Theme follows the system until the footer switch saves an override
-(`ThemeControl`).
+when hidden or offscreen, still under reduced motion. `<Waves />` holds the wave sound while the
+shore is mounted (see Sound). Theme follows the system until the footer switch saves an
+override (`ThemeControl`).
 
 `GitHubActivity` shows this site's three newest commits (`maxsash/web`, public),
 fetched on the server, cached for an hour, with a 2.5 s timeout and a plain link as
 fallback. It shows no counts or charts. `ShoreFooter` prints the package version and,
 when the host provides one, a short commit.
 
-## Page-turn sound
+## Sound
 
-Going into the notebook (any link to `/blog`, from the home page, the notebook index, an essay or
-the "Keep looking" link) plays a synthesised page turn: a very soft, low swell that builds and fades into a barely-there landing, deliberately gentler than a real page (the owner chose this "hush" tuning by ear). There are four slight variations of it (length, pitch, landing), chosen at random without repeating the last one, and each play shifts speed by up to ±4% and volume by up to ±15%, so it does not sound mechanical. `lib/page-turn.ts` makes it (pure, deterministic, no
-audio file); `components/NotebookLink.tsx` plays it. **It only plays after the visitor has
-switched sound on** with "Play waves" (the module remembers that until the page is reloaded)
-and stays silent after "Mute waves", on modified clicks, and when the link points at the page
-already open. `node tools/render-page-turn.mjs` writes `tools/.out/page-turn-1…4.wav` to listen to; the
-`PAGE_TURNS` in `lib/page-turn.ts` tune them, and a test keeps it soft (low hissiness) rather than a
-tearing sound.
+Every sound is synthesised in the browser from pure, deterministic code; there are no audio
+files. The rules are in decisions.md ("Sound").
+
+- `lib/sound/` (pure): `synth` (the state-variable filter, easing, peak scaling and the take
+  chooser that never repeats the last variation), `page-turn` (four variations of a soft page
+  turn), `surf` (the 33-second wave loop and `BED`, its fades and the duck), `dial` (three
+  variations of a sharp detent tick, `ratchet` that counts degrees turned, and `clickTimes` that
+  spaces ticks at most 32 a second and never queues them more than 0.1 s ahead).
+- `components/sound/sound.ts` owns the one `AudioContext` for the whole visit and the visitor's
+  choice (`localStorage` key `studio-wave-sound`, `on` or `off`). The context is created only
+  inside a click, tap or key press, outlives client navigation, is suspended while the tab is
+  hidden, and is never closed. With a remembered `on` and no context yet, the first gesture of
+  the visit (except on the wave button, which handles its own click) starts it. `playClip`
+  caches each synthesised buffer by name and never throws.
+- `components/sound/waves.ts` is the wave bed: `holdWaves()` (used by `<Waves />` in the shore)
+  starts the loop with a slow fade-in when sound is on, fades it out when the last holder
+  unmounts and stops it at once on mute. The loop is synthesised once per visit at 22,050 Hz,
+  after the click that asks for it (about 16 ms on an M-series Mac). `duckWaves()` dips it under
+  a page turn.
+- `components/sound/WaveSound.tsx`: `WaveSoundControl` (the "Play waves" / "Mute waves" buttons in
+  the hero and the shore, kept in step by one store) and `Waves`.
+- `components/NotebookLink.tsx` plays the page turn on a plain click into the notebook (a link to
+  `/blog…` that is not the page already open, `turnsPage`), ducking the waves;
+  `components/sound/PageTurns.tsx` (in the root layout) does the same on the browser's back and
+  forward, using only an audio context that already exists.
+- `components/portrait/useDialSound.ts` reads the medal's own `--progress` while it is on screen
+  and sound is playing, turns it into degrees with `TURN` (the same constant the CSS rotation
+  uses) and plays one tick per degree.
+
+`node tools/render-sounds.mjs` writes every sound to `tools/.out/` as WAV files (page turns, the
+wave loop twice so the seam can be heard, the dial alone and over the waves).
 
 ## Local post editor
 

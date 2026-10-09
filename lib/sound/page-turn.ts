@@ -1,4 +1,5 @@
-import { seededRandom } from "./sea/random.ts";
+import { seededRandom } from "../sea/random.ts";
+import { chooseTake, scaleToPeak, smooth, stateVariableFilter } from "./synth.ts";
 
 type Swish = {
   start: number;
@@ -63,28 +64,8 @@ export const PAGE_TURNS: PageTurn[] = [
   },
 ];
 
-export function choosePageTurn(random: () => number, previous = -1) {
-  const others = PAGE_TURNS.map((_, index) => index).filter((index) => index !== previous);
-  return {
-    variant: others[Math.floor(random() * others.length)],
-    rate: 0.96 + random() * 0.08,
-    gain: 0.85 + random() * 0.3,
-  };
-}
-
-function filter() {
-  let low = 0;
-  let band = 0;
-  return (input: number, hz: number, sampleRate: number, quality: number) => {
-    const frequency = 2 * Math.sin((Math.PI * hz) / sampleRate);
-    low += frequency * band;
-    const high = input - low - band / quality;
-    band += frequency * high;
-    return { low, band };
-  };
-}
-
-const smooth = (t: number) => Math.sin((Math.PI / 2) * Math.min(1, Math.max(0, t))) ** 2;
+export const choosePageTurn = (random: () => number, previous = -1) =>
+  chooseTake(random, PAGE_TURNS.length, previous, { rate: 0.04, gain: 0.15 });
 
 export function synthesizePageTurn(
   sampleRate: number,
@@ -94,8 +75,8 @@ export function synthesizePageTurn(
   const random = seededRandom(variant.seed);
   const noise = () => random() * 2 - 1;
   const samples = new Float32Array(Math.round(variant.duration * sampleRate));
-  const swishFilter = filter();
-  const thudFilter = filter();
+  const swishFilter = stateVariableFilter();
+  const thudFilter = stateVariableFilter();
   const toneRate = 1 - Math.exp((-2 * Math.PI * variant.brightness) / sampleRate);
   let tone = 0;
   for (let i = 0; i < samples.length; i++) {
@@ -120,12 +101,7 @@ export function synthesizePageTurn(
     tone += toneRate * (value - tone);
     samples[i] = tone;
   }
-  const peak = samples.reduce((max, sample) => Math.max(max, Math.abs(sample)), 0);
-  const scale = peak ? variant.peak / peak : 0;
-  const fade = Math.round(0.02 * sampleRate);
-  for (let i = 0; i < samples.length; i++) {
-    const edge = Math.min(1, i / fade, (samples.length - 1 - i) / fade);
-    samples[i] *= scale * edge;
-  }
-  return samples;
+  return scaleToPeak(samples, variant.peak, 0.02, sampleRate);
 }
+
+export const turnsPage = (from: string, to: string) => to.startsWith("/blog") && to !== from;

@@ -47,8 +47,10 @@ git push origin main:production
 | ------------------------- | --------------------------------------------------------------------------------- |
 | `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                   |
 | `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing          |
+| `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, and their shared parts    |
 | `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders           |
-| `components/shore/`       | The shoreline footer, wave sound and the commit-log card                          |
+| `components/shore/`       | The shoreline footer and the commit-log card                                      |
+| `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons     |
 | `components/studio/`      | The sea studio                                                                    |
 | `components/atlas/`       | The notebook's scoped styling and plates                                          |
 | `content/`                | Copy and data: `site.ts`, `services.ts`, `projects.ts`, `about.ts`, `notebook.ts` |

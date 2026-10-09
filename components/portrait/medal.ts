@@ -21,3 +21,5 @@ export function tickMarks(inner: number, short: number, long: number, every = 5)
 
 export const legendArc = (radius: number, over: boolean) =>
   `M${CENTRE - radius} ${CENTRE}A${radius} ${radius} 0 0 ${over ? 1 : 0} ${CENTRE + radius} ${CENTRE}`;
+
+export const TURN = 40;

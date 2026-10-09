@@ -7,11 +7,12 @@ import { HOME_WATER } from "@/lib/sea/presets";
 import { seedFromSettings } from "@/lib/sea/seed";
 import Bezel from "./Bezel";
 import { PLATE, SHADE_SIZE, engraveRows, shadeFromPixels } from "./engraving";
-import { FACE_INSET } from "./medal";
+import { FACE_INSET, TURN } from "./medal";
+import { useDialSound } from "./useDialSound";
 import styles from "./Portrait.module.css";
 
 const homeWater = createSeaEdition(seedFromSettings(HOME_WATER), "2");
-const faceInset = { "--face-inset": FACE_INSET } as CSSProperties;
+const medalStyle = { "--face-inset": FACE_INSET, "--turn": `${TURN}deg` } as CSSProperties;
 
 function readShade(image: HTMLImageElement) {
   const canvas = document.createElement("canvas");
@@ -31,8 +32,10 @@ type Props = {
 };
 
 export default function Portrait({ src, alt, size, sizes, legend }: Props) {
+  const medal = useRef<HTMLDivElement>(null);
   const image = useRef<HTMLImageElement>(null);
   const [rows, setRows] = useState<string[]>([]);
+  useDialSound(medal);
 
   const engrave = useCallback(() => {
     const loaded = image.current;
@@ -44,7 +47,12 @@ export default function Portrait({ src, alt, size, sizes, legend }: Props) {
   useEffect(engrave, [engrave]);
 
   return (
-    <div className={styles.medal} style={faceInset} data-engraved={rows.length > 0 || undefined}>
+    <div
+      ref={medal}
+      className={styles.medal}
+      style={medalStyle}
+      data-engraved={rows.length > 0 || undefined}
+    >
       <div className={styles.face}>
         <div className={styles.photo}>
           <Image

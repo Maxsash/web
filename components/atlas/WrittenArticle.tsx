@@ -2,7 +2,7 @@ import { nextEntry, type WrittenPost } from "@/content/posts";
 import { structurePost } from "@/lib/post-structure";
 import { createSeaEdition } from "@/lib/sea/edition";
 import { seaSeedForName } from "@/lib/sea/presets";
-import { ArticleCover, ArticleHead, ArticleTop, NextArticle, ReadingSection } from "./ArticleParts";
+import { ArticleCover, ArticleHead, ArticleTop, ArticleEnd, ReadingSection } from "./ArticleParts";
 import PostPlate from "./PostPlate";
 import Prose, { InlineText } from "./Prose";
 import styles from "./Atlas.module.css";
@@ -49,7 +49,7 @@ export default function WrittenArticle({ post }: { post: WrittenPost }) {
               </div>
             </aside>
           ) : null}
-          <NextArticle slug={next.slug} title={next.title} />
+          <ArticleEnd next={next} />
         </div>
       </article>
     </main>

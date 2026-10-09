@@ -7,7 +7,7 @@ import {
   ArticleCover,
   ArticleHead,
   ArticleTop,
-  NextArticle,
+  ArticleEnd,
   ReadingSection,
 } from "@/components/atlas/ArticleParts";
 import WrittenArticle from "@/components/atlas/WrittenArticle";
@@ -103,7 +103,7 @@ export default async function AtlasArticle({ params }: Props) {
             </ReadingSection>
           ))}
           <p className={styles.closing}>{post.closing}</p>
-          <NextArticle slug={next.slug} title={next.title} />
+          <ArticleEnd next={next} />
         </div>
       </article>
     </main>

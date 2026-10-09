@@ -11,13 +11,11 @@ const pages = [
   ["essay waves", "/blog/three-waves-one-sea", null],
   ["essay mark", "/blog/an-integral-under-sail", null],
   ["plate", "/plate?seed=f532e107&version=2", null],
-  ["home services", "/?seed=70806d5e&version=2", "#services"],
   ["home work", "/?seed=70806d5e&version=2", "#work"],
   ["home about", "/?seed=70806d5e&version=2", "#about"],
   ["home contact", "/?seed=70806d5e&version=2", "#contact"],
   ["home sea studio", "/?seed=70806d5e&version=2", "#sea-studio"],
   ["home notebook", "/?seed=70806d5e&version=2", "#notebook"],
-  ["home elsewhere", "/?seed=70806d5e&version=2", "#elsewhere"],
 ];
 const viewports = [
   { name: "desktop", width: 1280, height: 900, mobile: false },

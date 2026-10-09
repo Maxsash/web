@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import PageLink from "@/components/PageLink";
 import { WaveSoundControl, Waves } from "@/components/sound/WaveSound";
 import ThemeControl from "@/components/observatory/ThemeControl";
-import { site } from "@/content/site";
+import { profiles, site } from "@/content/site";
 import { FootTrail } from "./footprints";
 import { shorePalette } from "./palette";
 import { paintSand } from "./sand";
@@ -170,6 +170,16 @@ export default function Shoreline({
               <br />
               The work keeps finding its way here.
             </p>
+            <ul className={styles.links} aria-label="Contact and profiles">
+              <li>
+                <a href={site.links.email}>{site.email}</a>
+              </li>
+              {profiles.map((profile) => (
+                <li key={profile.label}>
+                  <a href={profile.href}>{`${profile.label} ↗`}</a>
+                </li>
+              ))}
+            </ul>
             <p className={styles.hint}>Move across the sand. The tide takes the tracks back.</p>
           </div>
           <section className={styles.activity} aria-labelledby="activity-title">

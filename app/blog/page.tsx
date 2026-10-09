@@ -6,7 +6,7 @@ import OceanPlate from "@/components/atlas/OceanPlate";
 import MarkPlate from "@/components/atlas/MarkPlate";
 import PostPlate from "@/components/atlas/PostPlate";
 import { findPost } from "@/content/notebook";
-import { writtenPosts } from "@/content/posts";
+import { noteMeta, writtenKind, writtenPosts } from "@/content/posts";
 import { createSeaEdition } from "@/lib/sea/edition";
 import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 import styles from "@/components/atlas/Atlas.module.css";
@@ -78,7 +78,7 @@ export default function AtlasIndex() {
             blurb={post.summary}
             href={`/blog/${post.slug}`}
             linkLabel="Read the note"
-            meta={`${post.draft ? "Draft" : "Note"} · ${post.minutes} min read`}
+            meta={noteMeta(writtenKind(post), post.minutes)}
             plateTop={
               dark
                 ? undefined
@@ -116,7 +116,7 @@ export default function AtlasIndex() {
         blurb="A crest, a trough, a little disagreement. Follow the simple parts that make a surface feel wonderfully complicated."
         href="/blog/three-waves-one-sea"
         linkLabel="Read the wave study"
-        meta="Sample essay · 4 min read"
+        meta={noteMeta("Sample essay", waves.minutes)}
         plateTop={[
           `Plate ${roman(Number(waves.number))} — The sum of a sea`,
           `${waves.number.slice(-2)} / ${formatIndex(total)}`,
@@ -143,7 +143,7 @@ export default function AtlasIndex() {
         blurb="Where an integral becomes a mast, and the space between three shapes does the quiet work."
         href="/blog/an-integral-under-sail"
         linkLabel="Read the construction"
-        meta="Sample essay · 4 min read"
+        meta={noteMeta("Sample essay", integral.minutes)}
         plate={<MarkPlate />}
         plateCaption={[
           `Plate ${roman(Number(integral.number))} — An integral under sail`,

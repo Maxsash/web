@@ -1,24 +1,23 @@
-type Destination = {
-  label: string;
-  href: string;
-  blurb: string;
-  scope: string;
-};
-
 const title = "Founding engineer";
+const email = "yash@maxsash.com";
+const offer = "websites and web apps";
+const promise = "built end to end";
 
 export const site = {
   name: "Maxsash Studio",
-  tagline: "web products, built end to end",
+  offer,
+  promise,
+  tagline: `${offer}, ${promise}`,
   owner: "Yash Shrivastava",
   title,
   role: `${title}, backend and real-time systems`,
   portrait: "/images/yash-shrivastava.webp",
   home: "Tikamgarh · 24.74° N, 78.83° E",
+  email,
 
   description:
-    "Maxsash Studio is Yash Shrivastava's one-person studio: web products built end to end, " +
-    "from the first sketch to a deployed app. Open to freelance work.",
+    `Maxsash Studio is Yash Shrivastava's one-person studio: ${offer} ${promise}, ` +
+    "from the first plan to the launch. Open to freelance work.",
 
   url: "https://www.maxsash.com",
 
@@ -29,37 +28,21 @@ export const site = {
     github: "https://github.com/ctrl-alt-yash",
     linkedin: "https://www.linkedin.com/in/maxsash",
     repo: "https://github.com/maxsash/web",
-    email: "mailto:yash@maxsash.com",
+    email: `mailto:${email}`,
   },
 
   nav: [
-    { label: "Services", href: "#services" },
     { label: "Work", href: "#work" },
     { label: "About", href: "#about" },
     { label: "Notebook", href: "/blog" },
     { label: "Contact", href: "#contact" },
   ],
 
-  afterHero: { id: "services", label: "services" },
+  afterHero: { id: "work", label: "work" },
 } as const;
 
-export const destinations: Destination[] = [
-  {
-    label: "Portfolio",
-    href: site.links.portfolio,
-    blurb: "Experience, skills, and the stories behind the projects.",
-    scope: "Experience & projects",
-  },
-  {
-    label: "LinkedIn",
-    href: site.links.linkedin,
-    blurb: "The professional profile: roles, experience, and updates.",
-    scope: "Professional profile",
-  },
-  {
-    label: "GitHub",
-    href: site.links.github,
-    blurb: "Code, experiments, and public repositories.",
-    scope: "Code & repositories",
-  },
-];
+export const profiles = [
+  { label: "Portfolio", href: site.links.portfolio },
+  { label: "LinkedIn", href: site.links.linkedin },
+  { label: "GitHub", href: site.links.github },
+] as const;

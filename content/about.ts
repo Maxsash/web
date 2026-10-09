@@ -1,6 +1,10 @@
 export const aboutFacts = [
   { term: "Based in", detail: "Tikamgarh, India. Working remotely." },
-  { term: "Experience", detail: "5+ years in backend and real-time systems" },
+  {
+    term: "Experience",
+    detail:
+      "Java, then full-stack developer at a product SaaS company, 2021–2026. Founding engineer on two freelance platforms.",
+  },
   {
     term: "Works with",
     detail:

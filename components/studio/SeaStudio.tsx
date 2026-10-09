@@ -23,24 +23,11 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
           Make a sea. <br />
           <em>Keep the drawing.</em>
         </h2>
-        <div>
-          <p>
-            The sea above is built from six waves and a seed, eight characters long. Those eight
-            characters are four settings written in hexadecimal. Change a setting and the sea
-            changes, along with the drawing of it below.
-          </p>
-          <ol className={styles.steps}>
-            <li>
-              <b>Make it.</b> Move a setting, roll the dice, or start from a preset.
-            </li>
-            <li>
-              <b>See it.</b> The plate redraws as you go. It is the very drawing that gets printed.
-            </li>
-            <li>
-              <b>Keep it.</b> Print the plate, save it as a file, or sail your sea on this page.
-            </li>
-          </ol>
-        </div>
+        <p>
+          The sea above is built from six waves and a seed, eight characters long. Those eight
+          characters are four settings written in hexadecimal. Change a setting and the sea changes,
+          along with the drawing of it below: the very drawing that gets printed.
+        </p>
       </div>
 
       <div className={styles.workbench}>

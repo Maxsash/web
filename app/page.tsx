@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
-import Elsewhere from "@/components/Elsewhere";
 import NotebookSection from "@/components/NotebookSection";
-import Services from "@/components/Services";
 import Work from "@/components/Work";
 import Hero from "@/components/observatory/Hero";
 import ShoreFooter from "@/components/shore/ShoreFooter";
@@ -41,15 +39,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<Pag
       <main id="main">
         <Hero edition={edition} />
 
-        <Services />
         <Work />
         <About />
         <Contact />
 
-        <SeaStudio seed={seed} version={version} />
-
         <NotebookSection />
-        <Elsewhere />
+        <SeaStudio seed={seed} version={version} />
       </main>
       <ShoreFooter seaModel={edition.version} />
     </div>

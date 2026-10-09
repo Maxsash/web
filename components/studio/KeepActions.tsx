@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { copyText } from "@/components/copy-text";
 import styles from "./SeaStudio.module.css";
 
 type Props = {
@@ -34,14 +35,7 @@ export default function KeepActions({ query, sailing, copied, onCopied }: Props)
         )}
         <button
           type="button"
-          onClick={async () => {
-            try {
-              await navigator.clipboard.writeText(`${location.origin}/?${query}`);
-              onCopied(true);
-            } catch {
-              onCopied(false);
-            }
-          }}
+          onClick={async () => onCopied(await copyText(`${location.origin}/?${query}`))}
         >
           Copy link
         </button>

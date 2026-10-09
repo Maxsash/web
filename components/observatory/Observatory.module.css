@@ -51,8 +51,8 @@
   --end-opacity: 0;
   --ink-progress: 0;
   position: relative;
-  height: 255svh;
-  min-height: 1500px;
+  height: 180svh;
+  min-height: 1100px;
   background: #143238;
 }
 .stage {
@@ -260,6 +260,19 @@
   opacity: var(--intro-opacity);
   border-top: 1px solid #aec1b26b;
   padding-top: 0.8rem;
+  min-height: 44px;
+  text-decoration: none;
+}
+.sceneMeta > span {
+  display: block;
+  margin-top: 0.2rem;
+  color: #e8e5d8;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+.story[data-chapter="structure"] .sceneMeta,
+.story[data-chapter="atlas"] .sceneMeta {
+  visibility: hidden;
 }
 .chapterRail {
   position: absolute;
@@ -355,6 +368,22 @@
   position: relative;
   overflow: hidden;
 }
+.compass {
+  position: absolute;
+  top: 8rem;
+  left: 40%;
+  width: 12rem;
+  height: auto;
+  fill: none;
+  stroke: #e8e5d8;
+  stroke-width: 0.7;
+  opacity: 0.45;
+  pointer-events: none;
+}
+.compass .needle {
+  fill: #e8e5d818;
+  stroke-width: 1;
+}
 .publicationTop {
   display: flex;
   justify-content: space-between;
@@ -427,10 +456,15 @@
 .publication .textLink {
   color: #e8e5d8;
 }
+@media (max-width: 72rem) {
+  .compass {
+    display: none;
+  }
+}
 @media (max-width: 760px) {
   .story {
-    height: 230svh;
-    min-height: 1350px;
+    height: 170svh;
+    min-height: 1000px;
   }
   .stage {
     min-height: 100svh;
@@ -616,6 +650,7 @@
 .pause:focus-visible,
 .stageControls :focus-visible,
 .chapterRail a:focus-visible,
+.sceneMeta:focus-visible,
 .sceneControls :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;

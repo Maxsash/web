@@ -3,13 +3,20 @@
   padding-block: 0 4rem;
 }
 .panel {
+  --panel-rule: #e8e5d833;
+  --panel-muted: #c4cec4;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  background: #17383d;
+  color: var(--paper);
+}
+.ask {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
-  padding: clamp(1.5rem, 4vw, 4rem);
-  background: #17383d;
-  color: var(--paper);
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--panel-rule);
 }
 .panel .title {
   font-size: clamp(2.5rem, 4.5vw, 4.5rem);
@@ -21,7 +28,21 @@
 .note {
   max-width: 25rem;
   line-height: 1.7;
-  color: #c4cec4;
+  color: var(--panel-muted);
+}
+.reach {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+}
+.copy,
+.reach [role="status"] {
+  font: 0.7rem/1.6 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.reach [role="status"] {
+  min-height: 1.6em;
+  color: var(--panel-muted);
 }
 .email {
   display: flex;
@@ -32,15 +53,75 @@
   font-size: clamp(0.9rem, 1.4vw, 1.2rem);
   overflow-wrap: anywhere;
 }
-.email:focus-visible {
+.copy {
+  min-height: 44px;
+  padding: 0.2rem 0.9rem;
+  border: 1px solid #e8e5d866;
+  border-radius: 99px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.email:focus-visible,
+.copy:focus-visible {
   outline: 2px solid #e8d3a8;
   outline-offset: 5px;
 }
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.steps li {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--panel-rule);
+}
+.index {
+  font: 0.7rem/1.7 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: #e8d3a8;
+}
+.steps h3 {
+  font-size: clamp(1.9rem, 2.8vw, 2.6rem);
+  line-height: 1;
+  margin-block: 0.75rem;
+}
+.steps p,
+.aside {
+  color: var(--panel-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+.steps p {
+  max-width: 22rem;
+}
+.aside {
+  max-width: 40rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
 @media (max-width: 48rem) {
-  .panel {
+  .ask {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .steps li {
+    padding-block: 1.25rem;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .copy {
+    transition: background-color 180ms ease;
+  }
+  .copy:hover {
+    background: #e8e5d81a;
   }
 }
 :global(html[data-studio-theme="night"]) .panel {

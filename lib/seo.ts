@@ -65,7 +65,7 @@ export const studioStructuredData = {
         "@type": "CreativeWork",
         name: project.title,
         description: project.summary,
-        url: project.caseStudy ?? project.href,
+        url: project.caseStudy,
         creator: { "@id": absoluteUrl("/#yash") },
       })),
     },

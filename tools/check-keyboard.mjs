@@ -98,7 +98,7 @@ await withBrowser(
       "hero tab order: skip, brand, nav, then controls",
       order[0].startsWith("Skip") &&
         order[1] === "Maxsash Studio" &&
-        order.slice(2, 7).join() === "Services,Work,About,Notebook,Contact",
+        order.slice(2, 6).join() === "Work,About,Notebook,Contact",
       order.join(" > "),
     );
 
@@ -113,14 +113,14 @@ await withBrowser(
     await press("Tab");
     await press("Enter");
     await delay(1200);
-    const servicesTop = await evaluate(
-      "Math.round(document.getElementById('services').getBoundingClientRect().top)",
+    const workTop = await evaluate(
+      "Math.round(document.getElementById('work').getBoundingClientRect().top)",
     );
-    record("skip link reaches Services", Math.abs(servicesTop) < 120, `top ${servicesTop}`);
+    record("skip link reaches Work", Math.abs(workTop) < 120, `top ${workTop}`);
     await press("Tab");
     record(
-      "the next Tab continues inside Services",
-      /Start a project/.test(await evaluate("document.activeElement.innerText")),
+      "the next Tab continues inside Work",
+      /velorarights\.com/.test(await evaluate("document.activeElement.innerText")),
     );
 
     await evaluate("document.getElementById('sea-studio').scrollIntoView()");

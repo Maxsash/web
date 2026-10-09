@@ -2,26 +2,33 @@
   composes: paper from "./Section.module.css";
   padding-block: 1.5rem 3rem;
 }
-.footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
 .kicker {
   composes: kicker from "./Section.module.css";
 }
-.footer {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+.group {
+  composes: kicker from "./Section.module.css";
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
 }
 .feature {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: clamp(2rem, 6vw, 6rem);
-  padding-block: 4rem;
+  padding-block: 2.5rem 4rem;
   align-items: center;
-  border-bottom: 1px solid var(--rule);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  padding-block: 1rem 4.5rem;
+}
+.entry {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
 }
 .plate {
   composes: plate from "./Section.module.css";
@@ -43,14 +50,18 @@
 .caption {
   composes: caption from "./Section.module.css";
 }
-.description h3,
-.secondary h3 {
+.description h3 {
   font-size: clamp(2.5rem, 4.5vw, 5rem);
   line-height: 1;
   margin-bottom: 1.5rem;
 }
+.entry h3 {
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
 .description p:not(.kicker),
-.secondary p:not(.kicker) {
+.entry p:not(.kicker) {
   color: var(--muted);
   line-height: 1.7;
   max-width: 32rem;
@@ -60,6 +71,10 @@
   color: var(--ink);
   margin-bottom: 1rem;
 }
+.entry .summary {
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
 .links {
   display: flex;
   flex-direction: column;
@@ -67,31 +82,93 @@
   gap: 0.25rem;
   font-size: 0.9rem;
 }
-.secondary {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(2rem, 7vw, 7rem);
-  align-items: center;
-  padding-block: 4rem;
+.entry .links {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0 1.75rem;
 }
-.secondary h3 {
-  font-size: clamp(2.5rem, 3.5vw, 4rem);
+.entry p.meta {
+  margin-block: 1rem 0.5rem;
+  font: 0.7rem/1.7 var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.system {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  margin: 1rem auto;
+}
+.band line {
+  stroke: var(--rule);
+  stroke-dasharray: 2 4;
+}
+.band text,
+.note {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  fill: var(--muted);
+}
+.band text {
+  font-size: 7px;
+}
+.node rect {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+.label,
+.note {
+  text-anchor: middle;
+}
+.label {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  letter-spacing: -0.01em;
+  fill: var(--ink);
+}
+.note {
+  font-size: 7.5px;
+}
+.link {
+  stroke: #875136;
+  stroke-width: 1;
+}
+.system marker path {
+  fill: #875136;
 }
 .footer {
   border-top: 1px solid var(--rule);
   padding-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
   line-height: 1.7;
   letter-spacing: 0.02em;
   color: var(--muted);
 }
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 @media (max-width: 48rem) {
   .feature,
-  .secondary {
+  .grid {
     grid-template-columns: 1fr;
     padding-block: 2.5rem;
     gap: 2rem;
   }
+  .grid {
+    gap: 3.5rem;
+  }
   .feature .description {
     max-width: 34rem;
   }
+}
+:global(html[data-studio-theme="night"]) .link {
+  stroke: #e4967c;
+}
+:global(html[data-studio-theme="night"]) .system marker path {
+  fill: #e4967c;
 }

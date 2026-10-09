@@ -20,11 +20,11 @@ export async function runDesktopChecks(ctx) {
   await pressKey("Tab");
   results.push({
     name: "keyboard-skip-link",
-    pass: await evaluate("document.activeElement?.getAttribute('href')==='#services'"),
+    pass: await evaluate("document.activeElement?.getAttribute('href')==='#work'"),
   });
   await pressKey("Enter");
   const skippedPastHero =
-    "(()=>{const r=document.getElementById('services')?.getBoundingClientRect();return location.hash==='#services'&&Boolean(r&&r.top<innerHeight&&r.bottom>0);})()";
+    "(()=>{const r=document.getElementById('work')?.getBoundingClientRect();return location.hash==='#work'&&Boolean(r&&r.top<innerHeight&&r.bottom>0);})()";
   for (let i = 0; i < 40; i++) {
     if (await evaluate(skippedPastHero)) break;
     await delay(50);

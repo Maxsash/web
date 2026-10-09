@@ -1,0 +1,49 @@
+.section {
+  composes: paper from "./Section.module.css";
+  padding-block: 0 4rem;
+}
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  background: #17383d;
+  color: var(--paper);
+}
+.panel .title {
+  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+}
+.note {
+  max-width: 25rem;
+  line-height: 1.7;
+  color: #c4cec4;
+}
+.email {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 44px;
+  text-underline-offset: 0.4em;
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+  overflow-wrap: anywhere;
+}
+.email:focus-visible {
+  outline: 2px solid #e8d3a8;
+  outline-offset: 5px;
+}
+@media (max-width: 48rem) {
+  .panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+:global(html[data-studio-theme="night"]) .panel {
+  background: #223b43;
+  color: #e8e5d8;
+}

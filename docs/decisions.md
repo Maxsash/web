@@ -45,11 +45,22 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Structure and content
 
+- **Client-first homepage (chosen 9 October 2026).** A visitor who might hire Yash should
+  learn what is on offer, see proof, meet the person and find the email before the
+  explorations. **Order:** Hero → Services → Work → About → Contact → Sea studio → Notebook →
+  Elsewhere → shoreline. **Nav:** Services, Work, About, Notebook, Contact (the sea studio and
+  Elsewhere left the nav). The blog's nav is derived from the same list. Section kickers are
+  named, not numbered; numbers appear only inside lists.
+- **One offer: web products, end to end** (the owner's choice; more offers add complexity).
+  Backend and real-time work is mentioned in one line, not as a second service. The hero's
+  line names the offer and says "Open to freelance work".
+- **About shows name, role, years, location and tools only:** Yash Shrivastava, software
+  engineer, 5+ years in backend and real-time systems, Tikamgarh, India, working remotely.
+  No employer, degrees, phone or photo (never commit a face). The owner's portfolio still says
+  Mumbai; Tikamgarh is current.
 - **One name:** the publication is the **Notebook**. It appears once in the header and
   once as a home section. Elsewhere lists only places that leave the site (Portfolio,
-  GitHub) plus email.
-- **Order:** Hero → Work → Sea studio → Notebook → Elsewhere → shoreline. Section kickers
-  are named, not numbered; numbers appear only inside lists.
+  GitHub); the email lives in Contact.
 - **One `<main>`**, the footer outside it as the contentinfo landmark, no whole-section
   links around headings, one `<article>` per essay.
 - **The commit-log card** shows the three newest commits and no counts or charts: a

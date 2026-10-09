@@ -39,6 +39,7 @@ export const studioStructuredData = {
       "@type": "Person",
       "@id": absoluteUrl("/#yash"),
       name: site.owner,
+      jobTitle: site.role,
       url: site.links.portfolio,
       sameAs: [site.links.github, site.links.portfolio],
     },

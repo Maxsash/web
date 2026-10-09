@@ -2,6 +2,10 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+- [ ] **Review the client-facing copy** (Services steps, About, Contact, hero line). The step
+      promises (a short plan before code, shown as it takes shape, handed over with the code
+      and accounts) are written from the chosen offer, not from a stated process; change any
+      that do not match how you work. Update the portfolio's location (it still says Mumbai).
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
@@ -45,7 +49,7 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       slightly brown; consider native night colours in the SVG.
 - [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,
       shown behind an Easter egg (Konami code, or maybe when a screenshot is detected; undecided),
-      next to a coming About page. The owner's photo is kept outside this public repo (Claude
+      near the homepage's About section. The owner's photo is kept outside this public repo (Claude
       memory, `ghost-photo-yash.png`); do not commit any face until the owner says where it goes.
 - [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
       exploration, parked for a hidden moment (the owner's suggestion). Not built.

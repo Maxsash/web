@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { site } from "@/content/site";
 import type { SeaEdition } from "@/lib/sea/types";
 import { clamp01 } from "./clamp";
 import {
@@ -156,13 +157,14 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         stageLabel.textContent = `${stageIndex + 1} / ${STAGES.length} · ${STAGES[stageIndex].label}`;
       if (previousButton) previousButton.disabled = stageIndex === 0;
       if (nextButton)
-        nextButton.textContent = stageIndex === STAGES.length - 1 ? "View work ↓" : "Next ↑";
+        nextButton.textContent =
+          stageIndex === STAGES.length - 1 ? `View ${site.afterHero.label} ↓` : "Next ↑";
     };
     stageRef.current = (direction) => {
       if (!staged) return;
       if (direction > 0 && stageIndex === STAGES.length - 1) {
         document
-          .getElementById("work")
+          .getElementById(site.afterHero.id)
           ?.scrollIntoView({ behavior: media.matches ? "instant" : "smooth" });
         return;
       }

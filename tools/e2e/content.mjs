@@ -4,13 +4,17 @@ export async function runContentChecks(ctx) {
   const { articlePaths, evaluate, load, results } = ctx;
   await load("/");
   const homepage = await evaluate(
-    `(()=>{const anchors=['work','sea-studio','notebook','elsewhere'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
+    `(()=>{const anchors=['services','work','about','contact','sea-studio','notebook','elsewhere'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {order:[...document.querySelectorAll('main > section[id]')].map(s=>s.id).join(),anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
   );
+  const linkedSections = ["services", "work", "about", "contact"];
   results.push({
     name: "public-homepage-content",
     ...homepage,
     pass:
-      homepage.anchors.every((a) => a.targets === 1 && (a.id === "notebook" || a.links > 0)) &&
+      homepage.order === "services,work,about,contact,sea-studio,notebook,elsewhere" &&
+      homepage.anchors.every(
+        (a) => a.targets === 1 && (!linkedSections.includes(a.id) || a.links > 0),
+      ) &&
       !/\bnoindex\b/i.test(homepage.robots),
   });
   const writing = await evaluate(
@@ -96,7 +100,7 @@ export async function runContentChecks(ctx) {
   results.push({
     name: "approved-elsewhere-and-contact",
     pass: await evaluate(
-      "(()=>{const e=document.getElementById('elsewhere');return e.querySelectorAll('ul a').length===2&&e.querySelector('h2#elsewhere-heading')!==null&&e.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
+      "(()=>{const e=document.getElementById('elsewhere'),c=document.getElementById('contact');return e.querySelectorAll('ul a').length===2&&e.querySelector('h2#elsewhere-heading')!==null&&c.querySelector('h2#contact-heading')!==null&&c.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
     ),
   });
   results.push({

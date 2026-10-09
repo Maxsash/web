@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Project } from "@/content/projects";
 import { formatIndex } from "@/lib/format";
+import section from "./Section.module.css";
 import styles from "./Work.module.css";
 
 type Props = { project: Project; number: number; lead?: boolean };
@@ -34,7 +35,7 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
           </p>
         )}
         <p>{project.summary}</p>
-        <dl className={styles.facts}>
+        <dl className={section.facts}>
           <div>
             <dt>Form</dt>
             <dd>{project.form}</dd>
@@ -45,8 +46,8 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
           </div>
         </dl>
         <div className={styles.links}>
-          <a href={project.href}>{`${project.demoLabel} ↗`}</a>
-          <a href={project.caseStudy}>
+          <a className={section.link} href={project.href}>{`${project.demoLabel} ↗`}</a>
+          <a className={section.link} href={project.caseStudy}>
             Read the case study<span className="visually-hidden"> of {project.title}</span> ↗
           </a>
         </div>

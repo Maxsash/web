@@ -1,7 +1,7 @@
-import Link from "next/link";
 import OceanPlate from "@/components/atlas/OceanPlate";
 import Mark from "@/components/Mark";
 import NotebookLink from "@/components/NotebookLink";
+import PageLink from "@/components/PageLink";
 import { WaveSoundControl } from "@/components/sound/WaveSound";
 import { site } from "@/content/site";
 import type { SeaEdition } from "@/lib/sea/types";
@@ -22,10 +22,10 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
         <div className={styles.shade} />
         <div className={styles.paperVeil} />
         <header className={styles.nav}>
-          <Link prefetch={false} href="/" className={styles.brand}>
+          <PageLink href="/" className={styles.brand}>
             <Mark />
             <span>Maxsash Studio</span>
-          </Link>
+          </PageLink>
           <nav aria-label="Studio">
             {site.nav.map((item) =>
               item.href.startsWith("#") ? (
@@ -59,33 +59,9 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             Open to freelance work. By Yash.
           </p>
         </div>
-        <div className={styles.sceneMeta} aria-hidden="true">
-          <span>A surface in motion.</span>
-          <span>A structure underneath.</span>
-          <span className={styles.edition}>Authored sea / {edition.seed}</span>
-        </div>
-        <div className={styles.middle}>
-          <p className={styles.eyebrow}>02 / Beneath the impression</p>
-          <h2>
-            Wonder has <br />
-            <em>a structure.</em>
-          </h2>
-          <p>
-            The light gives way to lines. The same crest, the same ship, the same sea—seen through
-            its mathematics.
-          </p>
-        </div>
-        <div className={styles.technical} aria-hidden="true">
-          <p>
-            <b>01</b> / Six directional waves
-          </p>
-          <p>
-            <b>02</b> / A hull on the same surface
-          </p>
-          <p>
-            <b>03</b> / A drawing of the motion
-          </p>
-        </div>
+        <p className={styles.sceneMeta} aria-hidden="true">
+          Authored sea / {edition.seed}
+        </p>
         <div className={styles.end}>
           <h2>
             Look closer. <br />
@@ -95,8 +71,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
         </div>
         <div className={styles.chapterRail}>
           <a href={`#${site.afterHero.id}`}>
-            <span aria-hidden="true">↓</span> <span>From a surface to a structure</span>
-            <b>Keep exploring</b>
+            <span aria-hidden="true">↓</span> View {site.afterHero.label}
           </a>
         </div>
       </div>

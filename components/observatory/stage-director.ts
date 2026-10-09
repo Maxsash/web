@@ -2,7 +2,6 @@ import { clamp01 } from "./clamp.ts";
 
 export const STAGES = [
   { label: "Sea", progress: 0 },
-  { label: "Structure", progress: 0.55 },
   { label: "Drawing", progress: 1 },
 ];
 

@@ -2,15 +2,9 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
-- [ ] **Review the client-facing copy** (Services steps, About, Contact, hero line). The step
-      promises (a short plan before code, shown as it takes shape, handed over with the code
-      and accounts) are written from the chosen offer, not from a stated process; change any
-      that do not match how you work.
-- [ ] **Listen to the sounds** (owner): the louder surf, the page turn over it and the compass
-      ticks, on the MacBook's speakers and on an iPhone (with the silent switch off: it mutes Web
-      Audio). `node tools/render-sounds.mjs` writes them to `tools/.out/` (`waves-before.wav` is the
-      old level, kept there for comparison). Levels are single constants: `SURF.level`,
-      `DIAL.peak`, `BED.duck` in `lib/sound/`.
+- [ ] **Services steps and the Work showcase** (owner, 9 October 2026: not happy with either;
+      the owner will rework them after the two-stage phone hero and smooth scrolling). Also
+      review About, Contact and the hero line.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all

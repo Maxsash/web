@@ -107,65 +107,61 @@ export async function runStagedSea(ctx) {
         end,
         pass:
           early > 0.05 &&
-          early < 0.25 &&
+          early < 0.4 &&
           middle > early + 0.1 &&
           late > middle + 0.05 &&
-          Math.abs(end - (0.55 - 0.14) / 0.75) < 0.002,
+          Math.abs(end - 1) < 0.002,
       });
     } else await delay(settle ?? 680);
   };
-  for (let index = 1; index <= 2; index++) {
-    await swipe(1);
-    const state = await evaluate(
-      "(()=>{const s=document.querySelector('[data-observatory]');return {stage:s.dataset.stage,scrollY,label:s.querySelector('[data-stage-label]').textContent};})()",
+  const stageState = () =>
+    evaluate(
+      "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,scrollY,label:s.querySelector('[data-stage-label]').textContent,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
     );
-    results.push({
-      name: "mobile-swipe-one-stage",
-      index,
-      ...state,
-      pass:
-        state.stage === String(index) &&
-        state.scrollY <= 2 &&
-        state.label === `${index + 1} / 3 · ${["Sea", "Structure", "Drawing"][index]}`,
-    });
-    await snapshot("staged-390-" + ["sea", "structure", "drawing"][index]);
-    if (index === 1) {
-      await send("Emulation.setDeviceMetricsOverride", {
-        width: 844,
-        height: 390,
-        deviceScaleFactor: 3,
-        mobile: true,
-      });
-      await delay(180);
-      const rotated = await evaluate(
-        "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
-      );
-      results.push({
-        name: "mobile-rotation-retains-structure",
-        ...rotated,
-        pass:
-          rotated.stage === "1" &&
-          rotated.chapter === "structure" &&
-          rotated.staged === "true" &&
-          rotated.pixels <= 361200 &&
-          rotated.triangles === 21600,
-      });
-      await snapshot("staged-landscape-structure");
-      await send("Emulation.setDeviceMetricsOverride", {
-        width: 390,
-        height: 844,
-        deviceScaleFactor: 1,
-        mobile: true,
-      });
-      await delay(180);
-      results.push({
-        name: "mobile-rotation-return-retains-stage",
-        pass: await evaluate(
-          "document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-observatory]').dataset.chapter==='structure' && scrollY<=2",
-        ),
-      });
-    }
-  }
+  await swipe(1);
+  const drawing = await stageState();
+  results.push({
+    name: "mobile-swipe-one-stage",
+    ...drawing,
+    pass:
+      drawing.stage === "1" &&
+      drawing.chapter === "atlas" &&
+      drawing.scrollY <= 2 &&
+      drawing.label === "2 / 2 · Drawing",
+  });
+  await snapshot("staged-390-drawing");
+  await send("Emulation.setDeviceMetricsOverride", {
+    width: 844,
+    height: 390,
+    deviceScaleFactor: 3,
+    mobile: true,
+  });
+  await delay(180);
+  const rotated = await stageState();
+  results.push({
+    name: "mobile-rotation-retains-drawing",
+    ...rotated,
+    pass:
+      rotated.stage === "1" &&
+      rotated.chapter === "atlas" &&
+      rotated.staged === "true" &&
+      rotated.pixels <= 361200 &&
+      rotated.triangles === 21600,
+  });
+  await snapshot("staged-landscape-drawing");
+  await send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await delay(180);
+  const returned = await stageState();
+  results.push({
+    name: "mobile-rotation-return-retains-stage",
+    ...returned,
+    pass: returned.stage === "1" && returned.chapter === "atlas" && returned.scrollY <= 2,
+  });
   await send("Input.synthesizeScrollGesture", {
     x: 180,
     y: 600,
@@ -177,7 +173,7 @@ export async function runStagedSea(ctx) {
   results.push({
     name: "mobile-final-stage-releases-page",
     pass: await evaluate(
-      "scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='2'",
+      "scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='1'",
     ),
   });
   await evaluate("scrollTo(0,0)");
@@ -186,11 +182,10 @@ export async function runStagedSea(ctx) {
   results.push({
     name: "mobile-reverse-one-stage",
     pass: await evaluate(
-      "document.querySelector('[data-observatory]').dataset.stage==='1' && scrollY<=2",
+      "document.querySelector('[data-observatory]').dataset.stage==='0' && document.querySelector('[data-stage-label]').textContent==='1 / 2 · Sea' && scrollY<=2",
     ),
   });
 
-  await swipe(-1);
   await swipe(1, 150);
   await swipe(-1);
   results.push({
@@ -214,13 +209,14 @@ export async function runStagedSea(ctx) {
     name: "mobile-paused-sea-stage-settles",
     pass:
       (await evaluate(
-        "document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-observatory]').dataset.chapter==='structure' && document.querySelector('[data-hero-pause]').textContent.includes('Resume the sea')",
+        "document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-observatory]').dataset.chapter==='atlas' && document.querySelector('[data-hero-pause]').textContent.includes('Resume the sea')",
       )) && (await frames()) === pausedFrames,
   });
   await evaluate("document.querySelector('[data-hero-pause]').click()");
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
   });
+  await evaluate("document.querySelector('[data-stage-previous]').click()");
   await evaluate("document.querySelector('[data-stage-next]').click()");
   await delay(120);
   const stillBefore = await frames();
@@ -229,7 +225,7 @@ export async function runStagedSea(ctx) {
     name: "mobile-reduced-motion-stage-still",
     pass:
       (await evaluate(
-        "document.querySelector('[data-observatory]').dataset.stage==='2' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')",
+        "document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')",
       )) && (await frames()) === stillBefore,
   });
   await evaluate("document.querySelector('[data-stage-next]').click()");

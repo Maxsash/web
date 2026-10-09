@@ -43,6 +43,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+html[data-glide] {
+  scroll-behavior: smooth;
+}
+
 body {
   min-height: 100dvh;
   font-family: var(--font-sans);

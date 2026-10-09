@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import SmoothLinks from "@/components/SmoothLinks";
 import PageTurns from "@/components/sound/PageTurns";
 import { site } from "@/content/site";
 import { siteOrigin, sharingMetadata } from "@/lib/seo";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <PageTurns />
+        <SmoothLinks />
       </body>
     </html>
   );

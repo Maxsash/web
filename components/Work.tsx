@@ -14,7 +14,8 @@ export default function Work() {
           <em>tangible.</em>
         </h2>
         <p className={section.lede}>
-          Useful tools. Personal stories. Software made to carry something that matters.
+          A client&apos;s practice, a household, a wedding. Software made to carry something that
+          matters.
         </p>
       </header>
       {projects.map((project, index) => (

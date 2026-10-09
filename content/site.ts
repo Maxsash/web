@@ -5,11 +5,16 @@ type Destination = {
   scope: string;
 };
 
+const title = "Founding engineer";
+
 export const site = {
   name: "Maxsash Studio",
   tagline: "web products, built end to end",
   owner: "Yash Shrivastava",
-  role: "Software engineer",
+  title,
+  role: `${title}, backend and real-time systems`,
+  portrait: "/images/yash-shrivastava.webp",
+  home: "Tikamgarh · 24.74° N, 78.83° E",
 
   description:
     "Maxsash Studio is Yash Shrivastava's one-person studio: web products built end to end, " +
@@ -22,6 +27,7 @@ export const site = {
   links: {
     portfolio: "https://ctrl-alt-yash.github.io/portfolio/",
     github: "https://github.com/ctrl-alt-yash",
+    linkedin: "https://www.linkedin.com/in/maxsash",
     repo: "https://github.com/maxsash/web",
     email: "mailto:yash@maxsash.com",
   },
@@ -43,6 +49,12 @@ export const destinations: Destination[] = [
     href: site.links.portfolio,
     blurb: "Experience, skills, and the stories behind the projects.",
     scope: "Experience & projects",
+  },
+  {
+    label: "LinkedIn",
+    href: site.links.linkedin,
+    blurb: "The professional profile: roles, experience, and updates.",
+    scope: "Professional profile",
   },
   {
     label: "GitHub",

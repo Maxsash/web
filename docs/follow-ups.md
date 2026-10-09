@@ -5,7 +5,11 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Review the client-facing copy** (Services steps, About, Contact, hero line). The step
       promises (a short plan before code, shown as it takes shape, handed over with the code
       and accounts) are written from the chosen offer, not from a stated process; change any
-      that do not match how you work. Update the portfolio's location (it still says Mumbai).
+      that do not match how you work.
+- [ ] **Louder waves (owner, 9 October 2026; a later commit).** The wave sound is too quiet; raise
+      it "by quite some bit". In `components/shore/WaveSound.tsx` the level ramps to `0.028` and
+      the swell swings it by `0.024`; scale both together so the swell keeps its shape, then
+      check the page turn (`lib/page-turn.ts`) still sits well against it.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
@@ -41,16 +45,19 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       for `/api/sea-edition*` and `/plate`.
 - [ ] **security.txt** expires on 6 October 2027; renew it.
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and related assets.
-      Needs the owner's answers (brand name, handles, tone, first assets). Use only the two
+      Needs the owner's answers (brand name, handles, tone, first assets). Use only the three
       real projects; invent nothing.
+- [ ] **Case studies on maxsash.com** (owner agreed, 9 October 2026, as a later step).
+      `/work/<project>` pages for Velora Rights, Household Hub and the wedding platform, moved
+      from the GitHub Pages portfolio; add them to the sitemap and point the Work links there.
 - [ ] **Real essays and projects.** The two essays are samples (`noindex`); replace them,
       then enable indexing and add them to the sitemap.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
 - [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,
       shown behind an Easter egg (Konami code, or maybe when a screenshot is detected; undecided),
-      near the homepage's About section. The owner's photo is kept outside this public repo (Claude
-      memory, `ghost-photo-yash.png`); do not commit any face until the owner says where it goes.
+      near the homepage's About section. The ghost photo is kept outside this public repo (Claude
+      memory, `ghost-photo-yash.png`); only the headshot in About is approved for the repo.
 - [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
       exploration, parked for a hidden moment (the owner's suggestion). Not built.
 - [ ] **Stars at night, birds by day (owner's plan).** When they are built, add them wherever the

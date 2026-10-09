@@ -82,8 +82,10 @@ export async function runContentChecks(ctx) {
     name: "real-projects-and-case-studies",
     ...projectContent,
     pass:
-      projectContent.titles.join("|") === "Household Hub|Wedding Photo Platform" &&
+      projectContent.titles.join("|") === "Velora Rights|Household Hub|Wedding Photo Platform" &&
       [
+        "https://velorarights.com",
+        "https://ctrl-alt-yash.github.io/portfolio/case-study/velora-rights.html",
         "https://tenant-management-2my6.vercel.app/",
         "https://wedding-demo-teal.vercel.app/",
         "https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html",
@@ -94,15 +96,20 @@ export async function runContentChecks(ctx) {
   results.push({
     name: "approved-work-spreads",
     pass: await evaluate(
-      "(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===2&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('light theme')&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===2&&!w.textContent.includes('awaiting selection');})()",
+      "(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===3&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('Velora Rights')&&images[1].alt.includes('light theme')&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===3&&!w.textContent.includes('awaiting selection');})()",
     ),
   });
   results.push({
     name: "approved-elsewhere-and-contact",
     pass: await evaluate(
-      "(()=>{const e=document.getElementById('elsewhere'),c=document.getElementById('contact');return e.querySelectorAll('ul a').length===2&&e.querySelector('h2#elsewhere-heading')!==null&&c.querySelector('h2#contact-heading')!==null&&c.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
+      "(()=>{const e=document.getElementById('elsewhere'),c=document.getElementById('contact');return e.querySelectorAll('ul a').length===3&&e.querySelector('h2#elsewhere-heading')!==null&&c.querySelector('h2#contact-heading')!==null&&c.querySelector('a[href=\"mailto:yash@maxsash.com\"]')!==null&&document.querySelectorAll('main h1').length===1&&document.querySelectorAll('footer').length===1&&!document.querySelector('main footer')&&document.querySelectorAll('main').length===1;})()",
     ),
   });
+  await evaluate("document.getElementById('about').scrollIntoView({behavior:'instant'})");
+  const engraved =
+    "(()=>{const p=document.querySelector('#about [data-engraved]');return !!p&&p.querySelectorAll('[data-engraving] path').length===72&&p.querySelector('img').alt==='Portrait of Yash Shrivastava';})()";
+  for (let i = 0; i < 80 && !(await evaluate(engraved)); i++) await delay(50);
+  results.push({ name: "about-portrait-engraved-in-waves", pass: await evaluate(engraved) });
   results.push({
     name: "portfolio-replaces-placeholder-destinations",
     pass: await evaluate(

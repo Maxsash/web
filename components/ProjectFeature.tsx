@@ -7,15 +7,15 @@ import styles from "./Work.module.css";
 type Props = { project: Project; number: number; lead?: boolean };
 
 export default function ProjectFeature({ project, number, lead = false }: Props) {
-  const { headline, image, tagline } = project;
+  const { headline, image, plate, tagline } = project;
   const label = formatIndex(number);
   return (
     <article className={lead ? styles.feature : styles.secondary} aria-label={project.title}>
       <figure className={lead ? styles.plate : styles.plainPlate}>
-        {project.plateTitle && (
+        {plate && (
           <div className={styles.plateHead}>
-            <span>{`${label} / ${project.plateTitle}`}</span>
-            <span>{`Public demo · ${project.year}`}</span>
+            <span>{`${label} / ${plate.title}`}</span>
+            <span>{plate.note}</span>
           </div>
         )}
         <Image src={image.src} width={1200} height={750} sizes={image.sizes} alt={image.alt} />

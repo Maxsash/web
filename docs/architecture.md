@@ -149,14 +149,24 @@ origin sending JSON (so another website cannot write files while the dev server 
 - `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`
   and the `useSeaSettings` hook. The drawing it redraws is the same `renderSeaPlate` that
   prints.
-- `content/`: `site.ts` (identity, nav, links, destinations, and `afterHero`, the section the
+- `content/`: `site.ts` (identity, portrait, nav, links, destinations, and `afterHero`, the section the
   skip link, the hero's chapter link and the phone's last swipe lead to), `services.ts` (the
-  three project steps), `projects.ts` (the two project spreads), `about.ts` (the about facts),
+  three project steps), `projects.ts` (the three project spreads; the first is the lead), `about.ts` (the about facts),
   `notebook.ts` (essay copy and captions).
 - Homepage sections are one component each: `Services`, `Work` (projects through
   `ProjectFeature`), `About`, `Contact`, `Elsewhere`. `components/Section.module.css` is their
   one copy of the paper palette (day and night), section header, kicker, lede, rust index
-  numbers, facts list and link; the section modules `composes` from it.
+  numbers, facts list, plate (head and caption) and link; the section modules `composes` from it.
+- `components/portrait/`: `engraving.ts` (pure) turns the photo's shade into 72 closed row
+  outlines lifted by light and rippled by Home water (`sampleSea`); `medal.ts` (pure) is the
+  bezel's geometry (face inset, ticks, legend arcs) drawn by `Bezel.tsx`; `Portrait.tsx` reads
+  the loaded image through a 160 px canvas and layers the monochrome photo (grayscale, then
+  `screen` and `multiply` with the theme's two colours) and the engraving in a round face. One
+  registered CSS property, `--progress`, runs 0 to 1 over the medal's whole pass (`view()`
+  timeline, `cover 0%` to `cover 100%`): it prints and unprints the lines (clip), surfaces and
+  sinks the photo (opacity) and turns the tick ring; `--look` on hover shows the lines. Without
+  scroll timelines, under reduced motion or without JavaScript, `--progress` stays at 0.5 and the
+  photo shows.
   `components/atlas/` holds the notebook's scoped styling, `MarkPlate` and `OceanPlate`.
 - **Written posts** are markdown files in `content/posts/` (`NN-slug.md`, frontmatter: `title`,
   `summary`, `topic`, `date`, `status`, and optionally `emphasis` (the last words of the title,

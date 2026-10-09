@@ -56,7 +56,7 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
       );
       assert.equal(
         json["@graph"].find((item) => item["@type"] === "ProfilePage").hasPart.length,
-        2,
+        3,
       );
     }
     records.push({ agent, path, title: meta("og:title"), passed: true });

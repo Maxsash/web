@@ -17,7 +17,8 @@ each group. How the code is built: [architecture.md](architecture.md).
   explicit ship controls too simple). The Wind-versus-Helm choice, harbour controls and
   voyage were removed and are not coming back.
 - **Be honest in copy.** The two essays are labelled samples and `noindex` until real
-  writing exists. Only the two real projects appear. The sea is an authored study, not
+  writing exists. Only real projects appear (Velora Rights, Household Hub,
+  Wedding Photo Platform). The sea is an authored study, not
   an ocean observation, and nothing implies tilt, live data or fluid simulation.
 - Real essays and projects come last.
 
@@ -54,10 +55,34 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **One offer: web products, end to end** (the owner's choice; more offers add complexity).
   Backend and real-time work is mentioned in one line, not as a second service. The hero's
   line names the offer and says "Open to freelance work".
-- **About shows name, role, years, location and tools only:** Yash Shrivastava, software
-  engineer, 5+ years in backend and real-time systems, Tikamgarh, India, working remotely.
-  No employer, degrees, phone or photo (never commit a face). The owner's portfolio still says
-  Mumbai; Tikamgarh is current.
+- **About:** Yash Shrivastava, founding engineer, 5+ years in backend and real-time systems,
+  Tikamgarh, India, working remotely; the freelance projects named in one sentence; tools;
+  links to the portfolio, LinkedIn and GitHub; and the headshot (the owner's GitHub and
+  LinkedIn picture, from the 1254 px original, exported at 720 px with no metadata; approved for
+  the repo on 9 October 2026). No employer, degrees or phone.
+  Facts come from the owner's portfolio (`development/personal/portfolio`, live and current).
+- **About's portrait is "the drawing underneath", in a round compass medal** (9 October 2026).
+  The plain photo was "too vanilla"; a rectangular plate was "better but not it". The owner asked
+  for a round frame (important), a monochrome photo and the same animation when scrolling away.
+  - The photo is monochrome in the theme's own two colours (ink to paper by day, paper to ink by
+    night), so it reads as a print, not a snapshot.
+  - The frame is a compass bezel, echoing the compass in Elsewhere: a tick every 5°, a dotted
+    ring, the name and title on the top arc, Tikamgarh and its coordinates on the bottom. The
+    tick ring turns slightly as the medal passes.
+  - The engraving: 72 lines of Home water lifted by the photo's light, drawn front to back. One
+    scroll timeline covers the medal's whole pass: lines print as it enters, the photo surfaces
+    around the middle and sinks back into lines as it leaves. Hover brings the lines back.
+  - Explored and not chosen: a coin with a beaded rim, a porthole with bolts (more decorative), a
+    navigator's log, and a wave squiggle (the face did not read on this dark background).
+- **One page for the pitch, own pages for depth** (9 October 2026, after reviewing the
+  evidence: NN/g attention studies, Chartbeat, long-page A/B tests, Google's handling of URL
+  fragments). The homepage stays a single scroll for one offer; case studies will move onto
+  `maxsash.com/work/<project>` later so clients stay on the site and each project can rank. The
+  2.5-screen hero is the main attention risk; judge it with field data.
+- **Velora Rights leads Work** (9 October 2026): the one client project, with a measured outcome
+  (enquiries from organic search), is the strongest proof for a potential client. Its image is
+  a 1200 × 750 capture of the live homepage after the disclaimer; the advocate's name stays off
+  this site.
 - **One name:** the publication is the **Notebook**. It appears once in the header and
   once as a home section. Elsewhere lists only places that leave the site (Portfolio,
   GitHub); the email lives in Contact.

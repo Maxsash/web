@@ -10,8 +10,6 @@
 .kicker {
   composes: kicker from "./Section.module.css";
 }
-.plateHead,
-.caption,
 .footer {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -25,14 +23,12 @@
   align-items: center;
   border-bottom: 1px solid var(--rule);
 }
-.plate,
+.plate {
+  composes: plate from "./Section.module.css";
+}
 .plainPlate {
   margin: 0;
   min-width: 0;
-}
-.plate {
-  background: #d9dfd6;
-  padding: clamp(1rem, 2.5vw, 2rem);
 }
 .plate img,
 .plainPlate img {
@@ -42,17 +38,10 @@
   margin-block: 1.5rem;
 }
 .plateHead {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule);
+  composes: plateHead from "./Section.module.css";
 }
 .caption {
-  color: var(--muted);
-  letter-spacing: 0.02em;
-  line-height: 1.6;
+  composes: caption from "./Section.module.css";
 }
 .description h3,
 .secondary h3 {
@@ -105,7 +94,4 @@
   .feature .description {
     max-width: 34rem;
   }
-}
-:global(html[data-studio-theme="night"]) .plate {
-  background: #20343a;
 }

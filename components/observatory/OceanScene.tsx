@@ -63,13 +63,12 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     let nextDraw = 0;
     const opacityGroups = [
       [styles.intro, styles.shade, styles.sceneMeta],
-      [styles.middle, styles.technical],
       [styles.end],
       [styles.paperVeil],
     ].map((classes) =>
       classes.flatMap((name) => Array.from(scene.querySelectorAll<HTMLElement>(`.${name}`))),
     );
-    const lastOpacity = [-1, -1, -1, -1];
+    const lastOpacity = opacityGroups.map(() => -1);
     const updateScroll = () => {
       lastScrollY = window.scrollY;
       scrollDirty = false;
@@ -362,12 +361,12 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           ↓ Back
         </button>
         <span data-stage-label role="status" aria-live="polite" aria-atomic="true">
-          1 / 3 · Sea
+          1 / {STAGES.length} · {STAGES[0].label}
         </span>
         <button
           type="button"
           data-stage-next
-          aria-label="Next sea stage or view work"
+          aria-label={`Next sea stage or view ${site.afterHero.label}`}
           onClick={() => stageRef.current?.(1)}
         >
           Next ↑

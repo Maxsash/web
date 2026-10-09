@@ -14,6 +14,7 @@ import { runDesktopChecks } from "./e2e/desktop.mjs";
 import { runDiagnostics } from "./e2e/diagnostics.mjs";
 import { runFallbacks } from "./e2e/fallbacks.mjs";
 import { runLifecycleChecks } from "./e2e/lifecycle.mjs";
+import { runLinkChecks } from "./e2e/links.mjs";
 import { runMobileDegradation } from "./e2e/mobile-degradation.mjs";
 import { createPageHelpers } from "./e2e/page-helpers.mjs";
 import { runShaderParity } from "./e2e/shader-parity.mjs";
@@ -89,6 +90,7 @@ await withBrowser(
         await runLifecycleChecks(ctx);
         await runShaderParity(ctx);
         await runDesktopChecks(ctx);
+        await runLinkChecks(ctx);
         await runMobileDegradation(ctx);
         await runStagedSea(ctx);
         await runFallbacks(ctx);

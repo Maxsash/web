@@ -112,7 +112,7 @@ await withBrowser(
       evaluate("document.querySelector('#sea-studio figcaption code').textContent");
     await press("Tab");
     await press("Enter");
-    await delay(300);
+    await delay(1200);
     const servicesTop = await evaluate(
       "Math.round(document.getElementById('services').getBoundingClientRect().top)",
     );

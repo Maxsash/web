@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import { WaveSoundControl, Waves } from "@/components/sound/WaveSound";
 import ThemeControl from "@/components/observatory/ThemeControl";
 import { site } from "@/content/site";
@@ -184,7 +184,7 @@ export default function Shoreline({
           </section>
         </div>
         <div className={styles.colophon}>
-          <Link href="/">Maxsash Studio ↗</Link>
+          <PageLink href="/">Maxsash Studio ↗</PageLink>
           <span>
             Release v{version}
             {commit ? ` · ${commit}` : ""}

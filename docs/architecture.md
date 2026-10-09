@@ -94,12 +94,13 @@ moon hide when the sky is narrower than 1.1:1, where they would sit behind the t
 
 ### Scroll and the mobile stages
 
-Desktop scroll maps continuously to progress 0–1 (sea, structure, drawing). When the
-primary pointer is coarse, the hero is staged instead: Sea (0), Structure (0.55),
-Drawing (1), one stage per vertical swipe (≥ 35 px, 1.25× vertical dominance) or button,
-and the next swipe after Drawing scrolls into Services (`site.afterHero`). Sea → Structure eases out over
-1,800 ms (`t·(2−t)`); every other move is a 600 ms smootherstep. Below progress 0.55 the
-reveal is `progress / 0.55 · (0.55 − 0.14) / 0.75`. Reduced motion shows stills. Without
+Desktop scroll maps continuously to progress 0–1 (sea, structure, drawing); the reveal is
+`(progress − 0.14) / 0.75`, and the text has two layers, the intro and the end ("Look closer").
+When the primary pointer is coarse, the hero is staged instead: Sea (0) and Drawing (1), one
+stage per vertical swipe (≥ 35 px, 1.25× vertical dominance) or button, and the next swipe
+after Drawing scrolls into Services (`site.afterHero`). Sea → Drawing eases out over 1,800 ms
+(`t·(2−t)`) with the reveal equal to progress; the way back is a 600 ms smootherstep. Reduced
+motion shows stills. Without
 JavaScript the page is readable and scrolls natively. These timings were approved on a
 physical iPhone: refactor around them, never change them.
 
@@ -205,6 +206,10 @@ origin sending JSON (so another website cannot write files while the dev server 
   absent from production builds (no page, no link); set `status: published` to ship one.
   They stay `noindex` and out of the sitemap either way.
 - The studio mark lives in `components/Mark.tsx`, `app/icon.svg` and `public/mark.svg`.
+- **Links:** `SmoothLinks` (root layout) sets `html[data-glide]` (`scroll-behavior: smooth`)
+  for the one scroll a click on a `#` link starts, until `scrollend` or 1.5 s. `PageLink` wraps
+  `Link`: pointing at the page already open (path and query), a plain click scrolls to the top
+  instead, dropping any `#hash` with `pushState`. `NotebookLink` (page turns) builds on it.
 
 ## Headers, security and configuration
 

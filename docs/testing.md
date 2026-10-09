@@ -23,7 +23,7 @@ node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result (9 October 2026, the sound work): 74 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, 17 sound checks, 133 browser records, no failures. `compare-builds` cannot prove "unchanged" across a change in section heights: a section above that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the text. Compare computed styles and relative boxes instead (done for Work, the studio and the notebook: identical).
+Last full result (9 October 2026, the two-stage phone hero and gliding links): 75 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, 19 sound checks, 135 browser records, no failures. `compare-builds` cannot prove "unchanged" across a change in section heights: a section above that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the text. Compare computed styles and relative boxes instead (done for Work, the studio and the notebook: identical).
 
 ## What each check covers
 
@@ -35,7 +35,7 @@ Last full result (9 October 2026, the sound work): 74 Node tests, 20 SEO cases (
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
 | `check-sound.mjs`           | Every sound against the visitor's choice, with the Web Audio calls spied on: silent by default (the compass too); "Play waves" starts the loop and remembers it; the compass ticks as its ring turns; page turns into and within the notebook (by link and by back and forward), never the same variation twice in a row, none on the page already open; the waves leave with the shore and come back without a click; after a reload a remembered choice waits for the first click (and a first click on the button plays); muting silences everything and outlasts a reload. How it sounds is not tested: listen to `node tools/render-sounds.mjs`. |
-| `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
+| `check-creative-v2.mjs`     | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, links (a section link glides, the home link on `/` glides to the top and keeps the sea, another page opens at its top, reduced motion jumps), fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`. |
 | `compare-builds.mjs`        | Pixel comparison of two builds over 44 views (11 pages and homepage sections, desktop and phone, day and night). The way to prove a refactor changed nothing. |
 | `measure-routes.mjs`        | Gzipped inventory of the assets each route references. Not Web Vitals.                                   |
 

@@ -17,54 +17,41 @@ database, accounts or cookies.
   `ctrl-alt-yash`). Folder: `/Users/yash/WithAIAssistant/development/maxsashlabs/web`.
 - **Branches:** `main` never deploys. `production` is live; the owner releases with
   `git push origin main:production`.
-- **Released:** `production` is at `383f6b4` (the error pages). Local `main` is two commits
-  ahead, not pushed: `fd41303` (client-first homepage) and `169c3ae` (Velora Rights and the
-  compass-medal portrait).
-- **Uncommitted now: sound** (owner, 9 October 2026; rules in decisions.md "Sound", code map in
-  architecture.md "Sound"). Louder surf for laptop speakers (about -32 LUFS, was -46; never
-  silent; page turns duck it 9 dB). One `AudioContext` per visit (`components/sound/`); the choice
-  is kept both ways: waves fade out in the notebook and return with the shore without a click,
-  resume at the first gesture after a reload, mute remembered. The compass bezel ticks once per
-  degree (sharp ticks; the first version sounded "underwater, bubbly"). Browser back/forward into
-  or within the notebook plays the page turn (`components/sound/PageTurns.tsx` in the root
-  layout; costs the site 404 +3.2 KB gzipped JS, the notebook +0.4 KB). Moved: `lib/page-turn.ts`
-  to `lib/sound/`, `WaveSound.tsx` to `components/sound/`; renamed `check-page-turn` to
-  `check-sound`, `render-page-turn` to `render-sounds`, `page-turn.test` to `sound.test`. Page
-  turns are unchanged (within 4e-12). Renames are staged (`git mv`); nothing is committed.
-- **Suggested commit message:** `feat: louder surf, a remembered sound choice and a ticking
-  compass` — body: the waves were inaudible on laptop speakers and lost after a trip to the
-  notebook, and a remembered "on" was ignored; one audio context now lives for the visit, the
-  choice (and mute) holds across pages and reloads, resuming at the first gesture; the surf is
-  re-synthesised for small speakers and ducks under page turns; the browser's back and forward
-  turn pages too; the compass bezel ticks once per degree; what was verified.
-- **Verified** (scratch copy, Node 24, production build) before the back/forward change: `tsc`,
-  `lint`, `format:check`, 74 Node tests, `check-seo`, `check-headers`, `check-keyboard` 20/20,
-  `check-software-fallback`, `check-creative-v2` (133 records, no failures or exceptions). After
-  it: build OK, `sound.test` 16/16, `check-sound` 19/19 twice. **Not re-run after it:** `tsc`,
-  `lint`, `format:check` of the whole tree, the other suites.
-- **Not verified:** how it sounds (owner: `node tools/render-sounds.mjs`, then `tools/.out/*.wav`;
-  `waves-before.wav` is the old level); Safari, Firefox, iPhone (silent switch mutes Web Audio).
-  In `pnpm dev`, reload the page fully to hear new tick buffers (they are cached per visit).
-- **Not started, owner's side notes (9 October); plans:**
-  1. **Phone hero in two stages, less text** ("empty words"). `stage-director.ts`: `STAGES` Sea 0,
-     Drawing 1 (Sea→Drawing keeps the 1.8 s ease-out, back stays 0.6 s). `reveal-mapping.ts`:
-     staged reveal = progress (drop `STAGED_STRUCTURE`). `Hero.tsx`: delete the `.middle` block
-     ("02 / Beneath the impression", "Wonder has a structure…") and `.technical` list; keep
-     `sceneMeta`'s "Authored sea / seed" only; chapter rail reads "View {afterHero.label}"; keep
-     the end block (next candidate to cut). `layer-opacity.ts` → `[intro, end, veil]`;
-     `OceanScene.tsx` opacity groups; delete `.middle`/`.technical` CSS and `--middle-opacity`.
-     Update `tools/ocean-scene.test.mjs`, `tools/e2e/staged-sea.mjs` (two stages, labels
-     "n / 2", stage indexes), `tools/e2e/lifecycle.mjs` (looks for the "Wonder" heading), and
-     decisions.md "Mobile hero" (the owner revised the approved three stages) and
-     architecture.md "Scroll and the mobile stages".
-  2. **Same-page links scroll smoothly** (section links, and links back to the top, both ways).
-     Next 16 no longer overrides `scroll-behavior` on navigation unless `<html
-     data-scroll-behavior="smooth">` (`node_modules/next/dist/docs/01-app/02-guides/upgrading/
-     version-16.md`). So `html { scroll-behavior: smooth }` (globals.css already forces `auto`
-     under reduced motion) plus that attribute in `app/layout.tsx`. `Link href="/"` on `/`
-     ("Maxsash Studio" in the hero and the shore) re-renders and draws a new random sea: on the
-     same path, prevent it and scroll to the top instead; same for "Notebook" on `/blog`. Check
-     the phone hero's touch handling and `check-keyboard` (focus after anchors).
+- **Released:** `production` and `main` are both at `06fc3b4` (sound). The owner approved the
+  sounds on 9 October. Re-checked on `06fc3b4` (scratch copy, Node 24, production build): all
+  green, including `tsc`, `lint`, `format:check` and `check-creative-v2` (133 records).
+- **Uncommitted, two steps, both done and verified** (owner's side notes, 9 October):
+  1. **Two-stage phone hero, fewer words.** Phone: Sea → Drawing (1.8 s ease-out, back 0.6 s;
+     reveal = progress). Every screen lost the middle text ("Wonder has a structure…") and the
+     numbered list; the scene note is "Authored sea / seed" only; the rail reads "View
+     services".
+  2. **Links within a page glide.** New `components/SmoothLinks.tsx` (root layout; smooth only
+     for the scroll a `#` link click starts) and `components/PageLink.tsx` (a link to the page
+     already open scrolls to the top, keeps the sea, drops the hash, focuses the first
+     control); used by the hero brand, the shore's "Maxsash Studio ↗" and `NotebookLink`.
+     A global `scroll-behavior: smooth` was tried first and dropped: it glided every Tab focus
+     and failed 7 keyboard checks. New `tools/e2e/links.mjs` (in `check-creative-v2`);
+     `check-keyboard` waits 1.2 s after the skip link.
+- **Verified after both** (scratch copy, Node 24, production build): `tsc`, `lint`,
+  `format:check`, 75 Node tests, SEO, headers, keyboard 20/20, fallback, sound 19/19,
+  `check-creative-v2` 135 records with no failures; phone and desktop screenshots looked at.
+  **Not verified:** a physical iPhone; Safari (no `scrollend` before Safari 26, so the glide
+  ends on the 1.5 s timer); "Notebook" on `/blog` in a browser (same code path as the tested
+  home link); the JS size change (not measured).
+- **Open question for the owner:** the desktop hero is still 255svh, and its middle now shows
+  the sea turning into the drawing with no text over it. Shorten it?
+- **Suggested commits** (two, in this order; docs go with either):
+  - `feat: a two-stage phone hero with fewer words` — body: the owner found the Structure stage
+    and its copy empty; phones now go Sea → Drawing with the approved 1.8 s opening, the middle
+    text and numbered list are gone on every screen, the rail names where it goes; what was
+    verified. Files: `components/observatory/` except the brand link in `Hero.tsx`,
+    `tools/ocean-scene.test.mjs`, `tools/e2e/staged-sea.mjs`, `tools/e2e/lifecycle.mjs`.
+  - `feat: links within a page glide to their place` — body: section links scroll smoothly and
+    a link to the open page returns to its top without drawing a new sea; smoothness is scoped
+    to link clicks so Tab focus stays instant, and reduced motion jumps; what was verified.
+    Files: `components/SmoothLinks.tsx`, `PageLink.tsx`, `NotebookLink.tsx`, the brand link in
+    `Hero.tsx`, `components/shore/Shoreline.tsx`, `app/layout.tsx`, `app/globals.css`,
+    `tools/e2e/links.mjs`, `tools/check-creative-v2.mjs`, `tools/check-keyboard.mjs`.
 - **Servers:** the owner's dev server on :3000 was left alone; the scratch server on :3012 was
   stopped. Scratch copy: the session scratchpad's `wt/` (gone with the session).
 - **Posts:** three in `content/posts/`; the flag post is published and live, the other two are
@@ -74,10 +61,11 @@ database, accounts or cookies.
 
 ## Next
 
-1. Run `tsc`, `lint`, `format:check` and the suites once more (see "Not re-run"), then side
-   notes 1 and 2 above; update decisions, architecture, testing and this file.
-2. Owner: listen, review, commit (sound; hero; scrolling can be separate commits), push `main`,
-   release. The portfolio's `AGENTS.md` should list `velora-rights.html` among the deep-links.
+1. Owner: answer the desktop-hero question; review and commit the two steps; release
+   (`git push origin main:production`). Try the phone hero on the iPhone.
+2. Owner: rework the Services steps and the Work showcase (not happy with either); then
+   About, Contact and the hero line. The portfolio's `AGENTS.md` should list
+   `velora-rights.html` among the deep-links.
 3. Later: case-study pages on maxsash.com, the two drafts, the parked Easter eggs
    ([follow-ups.md](follow-ups.md)).
 
@@ -89,8 +77,8 @@ Open: the function region (`iad1` vs India) and the cached-page decision; see de
 ## Settled (details in decisions.md)
 
 - Commit only when told; at review points suggest a commit message.
-- The staged phone sea's durations and curves are approved; the owner asked on 9 October to cut
-  it from three stages to two (side note 1). Version 1 of the sea is frozen.
+- The staged phone sea's durations and curves are approved; since 9 October it has two stages.
+  Version 1 of the sea is frozen.
 - No right-click blocking and no obfuscation. The personal Gmail must never appear in the
   repository (identity is `maxsash <16003409+ctrl-alt-yash@users.noreply.github.com>`).
 - Projects: Velora Rights, Household Hub, Wedding Photo Platform, with case studies on the

@@ -37,10 +37,12 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Mobile hero
 
-- **Sea → Structure → Drawing, one stage per swipe**, with continuous scrolling kept on
-  desktop. Three stages (not four) because Waves and Structure looked too alike.
-  Durations and curves are approved on a physical iPhone; see architecture.md and never
-  change them while refactoring.
+- **Sea → Drawing, one stage per swipe**, with continuous scrolling kept on desktop. Two
+  stages since 9 October 2026: the owner found the Structure stage and its text ("Wonder has a
+  structure", the numbered list) "empty words", so the middle text is gone on desktop too, and
+  the scene note is only "Authored sea / seed". Four stages became three earlier because Waves
+  and Structure looked too alike. The 1.8 s opening and 0.6 s moves were approved on a physical
+  iPhone; see architecture.md and never change them while refactoring.
 - Touch and narrow screens use a smaller rendering budget; Writing links straight to
   `/blog`. Scroll smoothness, not idle cadence, is the measure that matters.
 
@@ -52,6 +54,11 @@ each group. How the code is built: [architecture.md](architecture.md).
   Elsewhere → shoreline. **Nav:** Services, Work, About, Notebook, Contact (the sea studio and
   Elsewhere left the nav). The blog's nav is derived from the same list. Section kickers are
   named, not numbered; numbers appear only inside lists.
+- **Links within a page glide; nothing else does** (owner, 9 October 2026). Section links and
+  a link to the page already open (the "Maxsash Studio" links on `/`, "Notebook" on `/blog`)
+  scroll smoothly; the latter scroll to the top and keep the sea instead of drawing a new one,
+  and focus moves to the page's first control. Not a global `scroll-behavior: smooth`, which
+  also glides every Tab focus. Reduced motion jumps. Other pages open at their top at once.
 - **One offer: web products, end to end** (the owner's choice; more offers add complexity).
   Backend and real-time work is mentioned in one line, not as a second service. The hero's
   line names the offer and says "Open to freelance work".

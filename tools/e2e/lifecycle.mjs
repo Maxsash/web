@@ -35,7 +35,7 @@ export async function runLifecycleChecks(ctx) {
     pass: pausedBefore === pausedAfter,
   });
   const coalesced = await evaluate(
-    `(async()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas[data-ocean]');const intro=s.querySelector('h1').parentElement,middle=[...s.querySelectorAll('h2')].find(e=>e.textContent.includes('Wonder'))?.parentElement;const before=Number(c.dataset.frameCount),opacityBefore=intro.style.opacity;scrollTo(0,s.offsetTop+(s.offsetHeight-s.firstElementChild.clientHeight)*.52);for(let i=0;i<100;i++)window.dispatchEvent(new Event('scroll'));const synchronousChange=intro.style.opacity!==opacityBefore;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {draws:Number(c.dataset.frameCount)-before,synchronousChange,introOpacity:intro.style.opacity,middleOpacity:middle?.style.opacity,chapter:s.dataset.chapter,inheritedOpacityWrites:['--intro-opacity','--middle-opacity','--end-opacity','--ink-progress'].some(name=>s.style.getPropertyValue(name)!=='')};})()`,
+    `(async()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas[data-ocean]');const intro=s.querySelector('h1').parentElement,end=[...s.querySelectorAll('h2')].find(e=>e.textContent.includes('Keep going'))?.parentElement;const before=Number(c.dataset.frameCount),opacityBefore=intro.style.opacity;scrollTo(0,s.offsetTop+(s.offsetHeight-s.firstElementChild.clientHeight)*.97);for(let i=0;i<100;i++)window.dispatchEvent(new Event('scroll'));const synchronousChange=intro.style.opacity!==opacityBefore;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {draws:Number(c.dataset.frameCount)-before,synchronousChange,introOpacity:intro.style.opacity,endOpacity:end?.style.opacity,chapter:s.dataset.chapter,inheritedOpacityWrites:['--intro-opacity','--end-opacity','--ink-progress'].some(name=>s.style.getPropertyValue(name)!=='')};})()`,
   );
   results.push({
     name: "scroll-reveal-coalesces-with-draw",
@@ -46,8 +46,8 @@ export async function runLifecycleChecks(ctx) {
       coalesced.draws >= 1 &&
       coalesced.draws <= 2 &&
       coalesced.introOpacity === "0" &&
-      coalesced.middleOpacity === "1" &&
-      coalesced.chapter === "structure",
+      coalesced.endOpacity === "1" &&
+      coalesced.chapter === "atlas",
   });
   await evaluate("document.querySelector('[data-hero-pause]').click()");
   await delay(350);

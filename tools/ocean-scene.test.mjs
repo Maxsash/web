@@ -20,28 +20,26 @@ const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-1
 
 test("stage moves: the opening eases out over 1.8 s, every other move is smootherstep over 0.6 s", () => {
   const opening = planMove(0, 1, 0, 1000);
-  assert.deepEqual(opening, { from: 0, target: 0.55, startedAt: 1000, duration: 1800 });
-  close(progressAt(opening, 1900, false).progress, 0.55 * 0.75);
+  assert.deepEqual(opening, { from: 0, target: 1, startedAt: 1000, duration: 1800 });
+  close(progressAt(opening, 1900, false).progress, 0.75);
   assert.equal(progressAt(opening, 2800, false).finished, true);
 
-  const later = planMove(1, 2, 0.55, 0);
-  assert.equal(later.duration, 600);
-  close(progressAt(later, 300, false).progress, 0.55 + 0.45 * 0.5);
-  assert.deepEqual(progressAt(later, 5, true), { progress: 1, finished: true });
-  assert.equal(planMove(1, 0, 0.55, 0).duration, 600);
+  const back = planMove(1, 0, 1, 0);
+  assert.equal(back.duration, 600);
+  close(progressAt(back, 300, false).progress, 0.5);
+  assert.deepEqual(progressAt(back, 5, true), { progress: 0, finished: true });
 });
 
 test("stepping clamps to the first and last stage", () => {
   assert.equal(stepStage(0, -1), 0);
   assert.equal(stepStage(0, 1), 1);
-  assert.equal(stepStage(2, 1), 2);
+  assert.equal(stepStage(1, 1), 1);
 });
 
-test("staged phones reveal the sea over the first 0.55 of progress", () => {
-  const staged = { reducedMotion: false, staged: true };
-  close(revealFor(0.55, staged), (0.55 - 0.14) / 0.75);
-  close(revealFor(0.275, staged), (0.275 / 0.55) * ((0.55 - 0.14) / 0.75));
-  close(revealFor(1, staged), 1);
+test("staged phones reveal the drawing as the stage moves", () => {
+  for (const reducedMotion of [false, true])
+    for (const progress of [0, 0.3, 1])
+      close(revealFor(progress, { reducedMotion, staged: true }), progress);
   assert.equal(revealFor(0.14, { reducedMotion: false, staged: false }), 0);
   assert.equal(revealFor(0.46, { reducedMotion: true, staged: false }), 1);
   assert.equal(revealFor(0.45, { reducedMotion: true, staged: false }), 0);
@@ -49,9 +47,9 @@ test("staged phones reveal the sea over the first 0.55 of progress", () => {
 
 test("chapters and layer opacities follow progress", () => {
   assert.deepEqual(["sea", "structure", "atlas"], [0, 0.5, 0.9].map(chapterFor));
-  assert.deepEqual(layerOpacities(0), [1, 0, 0, 0]);
-  assert.deepEqual(layerOpacities(1), [0, 0, 1, 1]);
-  assert.ok(layerOpacities(0.45)[1] > 0.99);
+  assert.deepEqual(layerOpacities(0), [1, 0, 0]);
+  assert.deepEqual(layerOpacities(1), [0, 1, 1]);
+  assert.equal(layerOpacities(0.75)[1], 0);
 });
 
 test("swipes need 35 px of mostly vertical travel and room to move", () => {

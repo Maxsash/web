@@ -10,10 +10,11 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/`                                | Hero sea, Work, sea studio, notebook, Elsewhere, shoreline footer. Dynamic: a fresh sea per visit. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
-| `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`).                    |
+| `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`). Unknown slugs render on demand so they reach the notebook 404. |
 | `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
 | `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
 | `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage only.                                          |
+| Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side
 inputs are a sea seed (eight hex characters) and the optional GitHub request below.
@@ -72,6 +73,24 @@ behind a server-rendered SVG plate, which is also the fallback.
   only render in software (hardware acceleration off, no GPU, a blocklisted driver) gets
   the SVG plate instead of a janky scene. Context creation failure and context loss also
   fall back to the plate; there is no restoration path.
+- `sea-gl.ts` holds what every sea engine shares (context options, program compilation,
+  the grid and solid-mesh arrays, wave uniforms, canvas resizing); `mesh-writer.ts` writes
+  the ship-layout vertices (position, normal, colour, barycentric). `ocean-shaders.ts`
+  exports builders; the homepage strings are their defaults, pinned byte for byte by
+  `tools/drift.test.mjs`.
+
+### Error-page seas (`components/drift/`)
+
+Each error page is `DriftFrame` (message on top, sea below; `DriftPage` adds the
+server-rendered plate for the 404s) over a fixed-camera scene from `scenes.ts`:
+`horizon`, `notebook`, `plate`, `squall`, `storm`. `drift-engine.ts` draws one with the
+homepage shaders plus `drift-shaders.ts` (a whirlpool in the field, spiral foam, storm
+clouds, tint and lightning) and a floating raft, plank or paper scrap
+(`driftwood-mesh.ts`); `whirlpool.ts` is the matching CPU sample for placing them.
+Only the message, buttons and torn paper load on every page: the boundaries lazy-load
+`DriftFrame`, and the canvas, engine and meshes load only when an error page renders.
+Next ships error-boundary code with every route, so keep these files small. The sun and
+moon hide when the sky is narrower than 1.1:1, where they would sit behind the text.
 
 ### Scroll and the mobile stages
 

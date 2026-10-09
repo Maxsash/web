@@ -73,6 +73,32 @@ each group. How the code is built: [architecture.md](architecture.md).
   forgotten. The save endpoint refuses anything but same-origin JSON from localhost.
 - **Posts are not indexed yet**, like the sample essays, until the owner decides otherwise.
 
+## Error pages
+
+- **Chosen 9 October 2026.** Each error page splits in half: the message centred on top, the
+  real WebGL sea below (the plate when there is no GPU). **What floats tells how bad it is:**
+  the homepage ship means all is well and never appears on an error page; a torn page or bare
+  driftwood for a missing page, a log raft for trouble, a single plank for disaster.
+- **Which page gets which scene:** unknown address, "Nothing on the horizon" (glassy sea, one
+  plank, no paper); unknown or draft note, "Torn from the notebook" (ruled paper torn across, the
+  scrap floating below); bad `/plate` seed, "Half drawn" (the sea stuck mid-way into its
+  engraving, a raft); a page crash (`error.tsx`), "Rogue wave" (night squall, tilted horizon,
+  raft); the whole site down (`global-error.tsx`), "Caught in the storm" (a whirlpool under a
+  turning storm, lightning, a plank circling the drain).
+- **Rejected:** wireframe-only seas, the "torn out" printed page for the site 404 (the owner
+  preferred the open horizon), and a torpedo hitting the raft. The red upside-down sea
+  ("Capsized") is parked as an Easter egg idea ([follow-ups.md](follow-ups.md)).
+- Lightning is one soft flash every few seconds, never a flicker, and no motion at all under
+  reduced motion.
+- **Unknown notes render on demand** (`dynamicParams` removed from `/blog/[slug]`), because
+  with only prebuilt slugs an unknown note never reached the notebook 404. The page still
+  calls `notFound()`, so the status stays 404.
+- **Error-page weight on every route is kept to the message:** Next loads the error
+  boundaries with every page, so the sea behind them loads lazily (measured on the
+  homepage: about +6 KB gzipped JS and CSS, down from +24 KB when the sea loaded eagerly).
+- After a crash, "Back to the studio" is a full page load, not a client navigation, so the
+  studio starts from a clean state.
+
 ## Accessibility
 
 Keyboard and automated checks led to: focus never hidden by the pinned phone drawing

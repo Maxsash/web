@@ -1,4 +1,4 @@
-import { SEA_GRAVITY, sampleSea } from "@/lib/sea/sample";
+import { sampleSea } from "@/lib/sea/sample";
 import type { SeaEdition } from "@/lib/sea/types";
 import { cameraAt } from "./camera";
 import { GlResources } from "./gl-resources";
@@ -12,41 +12,26 @@ import {
   shipVertex,
   shipFragment,
 } from "./ocean-shaders";
-import { buildSeaGrid } from "./sea-grid";
+import {
+  compilePrograms,
+  openSeaContext,
+  resizeCanvas,
+  seaSurface,
+  setWaves,
+  solidMesh,
+} from "./sea-gl";
 import { buildShipMesh } from "./ship-mesh";
 
 export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition, compact = false) {
-  const gl = canvas.getContext("webgl2", {
-    alpha: false,
-    antialias: false,
-    depth: true,
-    powerPreference: "low-power",
-    failIfMajorPerformanceCaveat: true,
-  });
-  if (!gl) throw new Error("Hardware-accelerated WebGL2 is unavailable");
+  const gl = openSeaContext(canvas);
   const resources = new GlResources(gl);
-  let sea: WebGLProgram, sky: WebGLProgram, boat: WebGLProgram;
-  try {
-    sea = resources.program(seaVertex, seaFragment);
-    sky = resources.program(skyVertex, skyFragment);
-    boat = resources.program(shipVertex, shipFragment);
-  } catch (error) {
-    resources.dispose();
-    throw error;
-  }
-  const grid = buildSeaGrid(compact);
-  const seaVAO = resources.vertexArray();
-  resources.buffer(gl.ARRAY_BUFFER, grid.vertices);
-  gl.enableVertexAttribArray(0);
-  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-  resources.buffer(gl.ELEMENT_ARRAY_BUFFER, grid.indices);
-  const boatVAO = resources.vertexArray(),
-    boatData = buildShipMesh();
-  resources.buffer(gl.ARRAY_BUFFER, boatData);
-  for (let i = 0; i < 4; i++) {
-    gl.enableVertexAttribArray(i);
-    gl.vertexAttribPointer(i, 3, gl.FLOAT, false, 48, i * 12);
-  }
+  const { sea, sky, boat } = compilePrograms(resources, {
+    sea: [seaVertex, seaFragment],
+    sky: [skyVertex, skyFragment],
+    boat: [shipVertex, shipFragment],
+  });
+  const surface = seaSurface(resources, gl, compact);
+  const ship = solidMesh(resources, gl, buildShipMesh());
   const skyVAO = resources.vertexArray();
   const su = resources.uniforms(sea, [
     "uVP",
@@ -61,32 +46,14 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight"]),
     ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect"]);
-  const vectors = new Float32Array(
-    edition.waves.flatMap((w) => {
-      const k = (2 * Math.PI) / w.wavelength;
-      return [
-        k * Math.cos(w.direction),
-        k * Math.sin(w.direction),
-        Math.sqrt(SEA_GRAVITY * k),
-        w.phase,
-      ];
-    }),
-  );
   gl.useProgram(sea);
-  gl.uniform4fv(su["uWaveVectors[0]"], vectors);
-  gl.uniform1fv(su["uAmplitudes[0]"], new Float32Array(edition.waves.map((w) => w.amplitude)));
+  setWaves(gl, su, edition);
   let aspect = 1,
     frames = 0;
-  canvas.dataset.triangles = String(grid.nx * grid.nz * 2);
+  canvas.dataset.triangles = String(surface.triangles);
   return {
     resize(width: number, height: number, ratio: number) {
-      const nextWidth = Math.max(1, Math.round(width * ratio)),
-        nextHeight = Math.max(1, Math.round(height * ratio));
-      // Assigning either dimension reallocates the drawing buffer, even when unchanged.
-      if (canvas.width !== nextWidth) canvas.width = nextWidth;
-      if (canvas.height !== nextHeight) canvas.height = nextHeight;
-      aspect = width / height;
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      aspect = resizeCanvas(canvas, gl, width, height, ratio);
     },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
       const { eye, target } = cameraAt(reveal, aspect, pointer);
@@ -103,7 +70,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       gl.enable(gl.DEPTH_TEST);
       gl.useProgram(sea);
-      gl.bindVertexArray(seaVAO);
+      gl.bindVertexArray(surface.array);
       gl.uniformMatrix4fv(su.uVP, false, vp);
       gl.uniform1f(su.uTime, time);
       gl.uniform1f(su.uReveal, reveal);
@@ -111,16 +78,16 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.uniform3fv(su.uLight, light);
       gl.uniform3fv(su.uEye, eye);
       gl.uniform2f(su.uResolution, canvas.width, canvas.height);
-      gl.drawElements(gl.TRIANGLES, grid.indices.length, gl.UNSIGNED_SHORT, 0);
-      const surface = sampleSea(edition, 4.5, -5.5, time);
+      gl.drawElements(gl.TRIANGLES, surface.count, gl.UNSIGNED_SHORT, 0);
+      const swell = sampleSea(edition, 4.5, -5.5, time);
       gl.useProgram(boat);
-      gl.bindVertexArray(boatVAO);
+      gl.bindVertexArray(ship.array);
       gl.uniformMatrix4fv(bu.uVP, false, vp);
-      gl.uniformMatrix4fv(bu.uModel, false, modelMatrix(surface.height, surface.dx, surface.dz));
+      gl.uniformMatrix4fv(bu.uModel, false, modelMatrix(swell.height, swell.dx, swell.dz));
       gl.uniform1f(bu.uReveal, reveal);
       gl.uniform1f(bu.uNight, night);
       gl.uniform3fv(bu.uLight, light);
-      gl.drawArrays(gl.TRIANGLES, 0, boatData.length / 12);
+      gl.drawArrays(gl.TRIANGLES, 0, ship.count);
       canvas.dataset.frameCount = String(++frames);
     },
     dispose: () => resources.dispose(),

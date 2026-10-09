@@ -23,14 +23,13 @@ node tools/check-page-turn.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result: 49 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, 12
-software-fallback checks, 8 page-turn checks, 126 browser records, no failures.
+Last full result (9 October 2026, error pages): 58 Node tests, 20 SEO cases (including that drafts and the editor routes are not served), header checks, 20 keyboard checks, software fallback, page turn, 126 browser records, no failures; `compare-builds` 31/32 (the Work-image flake).
 
 ## What each check covers
 
 | Check                       | Covers                                                                                                   |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`          | Markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
+| `tools/*.test.mjs`          | Error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
@@ -52,6 +51,14 @@ For a refactor, build the previous commit on another port and run
 `node tools/compare-builds.mjs <old url> <new url>`. The phone Work image can be flagged
 in a single run, even when a build is compared with itself (lazy-image timing); repeat the
 run. Servers that just started also have a cold image cache.
+
+## Error pages
+
+See them at `/nope`, `/blog/nope` and `/plate?seed=zz` on any build. The crash pages need a
+throw: in a scratch copy only, add a page that throws (for `error.tsx`) and make the root
+layout throw (for `global-error.tsx`); never commit either. No automated browser check
+covers the error pages yet, and no parity test compares the whirlpool shader with
+`sampleDrift`.
 
 ## Never checked
 

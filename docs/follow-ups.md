@@ -43,3 +43,12 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       then enable indexing and add them to the sitemap.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
+- [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,
+      shown behind an Easter egg (Konami code, or maybe when a screenshot is detected; undecided),
+      next to a coming About page. The owner's photo is kept outside this public repo (Claude
+      memory, `ghost-photo-yash.png`); do not commit any face until the owner says where it goes.
+- [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
+      exploration, parked for a hidden moment (the owner's suggestion). Not built.
+- [ ] **Stars at night, birds by day (owner's plan).** When they are built, add them wherever the
+      sky shows and it makes sense: the hero, and consider each error page (the storm and squall
+      skies are overcast, so probably not there; the open horizon of the 404 may suit birds).

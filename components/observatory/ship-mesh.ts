@@ -1,13 +1,8 @@
-import { cross, normal, type V3 } from "./vec3.ts";
+import { meshWriter } from "./mesh-writer.ts";
+import type { V3 } from "./vec3.ts";
 
 export function buildShipMesh() {
-  const output: number[] = [];
-  const triangle = (a: V3, b: V3, c: V3, color: V3) => {
-    const n = normal(cross(b.map((v, i) => v - a[i]) as V3, c.map((v, i) => v - a[i]) as V3));
-    [a, b, c].forEach((p, i) =>
-      output.push(...p, ...n, ...color, ...[0, 1, 2].map((j) => Number(i === j))),
-    );
-  };
+  const { triangle, build } = meshWriter();
   const hull: V3 = [0.39, 0.22, 0.12],
     deck: V3 = [0.84, 0.78, 0.63],
     sail: V3 = [0.94, 0.91, 0.78];
@@ -63,5 +58,5 @@ export function buildShipMesh() {
         triangle(point(i, j + 1), point(i + 1, j), point(i + 1, j + 1), sail);
       }
   }
-  return new Float32Array(output);
+  return build();
 }

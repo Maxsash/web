@@ -190,27 +190,32 @@ Every action gets a small answer; the brief and the full map are in [feedback.md
 
 ## The gull
 
-`components/gull/` lands a herring gull on the hero's "Play waves" (`<WaveSoundControl gull />`);
+`components/gull/` lands a herring gull in the hero's "Play waves" (`<WaveSoundControl gull />`);
 the story is in [feedback.md](feedback.md), the rules in decisions.md.
 
 - **Pure:** `rotation` (3×3 rotations), `pose` (each wing's joints: lift, sweep, twist, reach, wrist
   lift and sweep, and `fold`, which blends the wing into a designed folded shape on the body's
   flank; tail, legs, neck, head, eye, fluff; named poses and `mixPose`), `body` (`gullFacets(pose,
   view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips, a lofted tail,
-  legs; groups sorted by depth, then facets; flat light; `lookTowards`), `flight` (pure timelines:
-  `planArrival`/`arrivalAt` along a cubic Bézier with flap-and-glide bursts and a linear brake,
-  touchdown, wings raised then folded, sitting; `habitsFor(seed)` and `perchedAt`; `withMoods` for
-  standing and sleeping; `withGaze`; `planDeparture`/`departureAt`), `paint` (canvas colours by
-  theme and an ink mode that fades to paper with ink edges). Units are body lengths, `x` forward,
-  `y` up, `z` the bird's right; a frame's `x`, `y` are pixels from the perch.
+  legs; groups sorted by depth, then facets; flat light; `lookTowards`; `beakTip`, the projected end
+  of the bill), `flight` (pure timelines: `planArrival`/`arrivalAt` along a cubic Bézier with
+  flap-and-glide bursts and a linear brake, touchdown, wings raised then folded, sitting;
+  `habitsFor(seed)` and `perchedAt`; `withMoods` for standing and sleeping; `withGaze`;
+  `planDeparture`/`departureAt`), `song` (the notes: a fixed schedule of phrases from 0.7 s after
+  landing until 36 s, `notesAt`, `restingNotes` for reduced motion, `withSong` which lifts the head
+  with each note), `paint` (canvas colours by theme and an ink mode that fades to paper with ink
+  edges; `paintNotes`). Units are body lengths, `x` forward, `y` up, `z` the bird's right; a
+  frame's `x`, `y` are pixels from the perch.
 - **Lifecycle:** `visit.ts` (called by `Gull.tsx`) owns timing, observers and the frame loop. The
-  canvas and a small hit area sit inside the button, `aria-hidden`; the canvas is centred 6 px right
-  of the button's top centre (`Gull.module.css`) and moved with `transform`; its size follows the
-  button's height (1.14 body lengths per button height, 2.8 lengths a side). It flies within the
+  canvas sits inside the button, `aria-hidden`, anchored to the pill's inner floor near its right
+  end (`Gull.module.css`) and moved with `transform`; its size follows the button's height (1.14
+  body lengths per button height, 2.8 lengths a side). The button makes room by setting `data-room`
+  (`SoundControls.module.css` adds the gull's width, `--perch-seat`, to its right padding, with a
+  transition) about 1.4 s before landing, and removes it once the gull has gone. It flies within the
   nearest `[data-gull-sky]` (the hero stage, which clips it), reads `data-chapter` and `data-still`
   on `[data-observatory]` (`OceanScene` sets `data-still` while stilled), `html[data-idle]` and the
-  theme, and dips the button with `--perch-dip` (`SoundControls.module.css`). It draws only while
-  something moves and keeps a paused clock while hidden, offscreen or stilled.
+  theme, and dips the button with `--perch-dip`. It draws only while something moves (flight,
+  habits, a note in the air) and keeps a paused clock while hidden, offscreen or stilled.
 - **Contract for checks:** the hero now holds two canvases and the gull's comes first, so a check
   must select the sea as `canvas[data-ocean]`, never the first canvas.
 

@@ -20,19 +20,20 @@ TypeScript; no database, accounts or cookies.
   `git push origin main:production`. `origin/production` is still `b65671e` ("feat: every action
   answers", released 9 October). `main` and `origin/main` are four commits ahead (pushed 10
   October, **not released**): shared easing curves, checks that find the sea's canvas by name,
-  the gull, and the research follow-ups with this handoff.
+  the gull, and the research follow-ups with this handoff. **Uncommitted on top of that (10
+  October, the second gull step):** the changes below.
 - **The gull** (the owner's idea, 9 October: a bird flies in and sits on "Play waves" as the only
   hint to press it). What it does, its rules and how to change or remove it:
   [feedback.md](feedback.md), "The gull"; why: [decisions.md](decisions.md) (Feedback); how:
   [architecture.md](architecture.md) ("The gull"). Code: `components/gull/`, the `gull` prop of
-  `WaveSoundControl` (hero only), `sound.ts` (`wavesDeclined`), `OceanScene` (`data-still`).
-- **Research done: "Website feedback beyond sound"** (the owner asked on 9 October). Report:
-  `../web-research/reports/Website feedback beyond sound.md` ("Make the sea answer every scroll"),
-  notes beside it in `../web-research/research_notes/`; both kept outside this public repo on
-  purpose. Published for the owner as a private Claude doc of the same title (two accessibility
-  claims corrected there: `aria-hidden` children inside a button are allowed; a toggle that changes
-  its label should not also carry `aria-pressed`). Its ideas are items in
-  [follow-ups.md](follow-ups.md), including a post from it.
+  `WaveSoundControl` (hero only), `OceanScene` (`data-still`).
+- **Second gull step (10 October, uncommitted, the owner's requests):** it comes whatever the
+  visitor chose before (`wavesDeclined` deleted); it sings (`song.ts`, `paintNotes`); it lands
+  inside the pill, which widens for it (`data-room`), instead of on top; the turn-round habit and
+  the hit-area span are gone. Why inside, not over the label: [decisions.md](decisions.md).
+- **Research done: "Website feedback beyond sound"** (9 October). Report and notes live outside
+  this public repo in `../web-research/`; a private Claude doc of the same title exists. Its ideas
+  are in [follow-ups.md](follow-ups.md).
 - **Servers:** the owner's dev server on :3000 was left running (page loads only, for
   screenshots; it shows the gull). No scratch servers are running. Scratch scripts that render
   the gull's poses, flight and states: the session scratchpad's `gull/`.
@@ -43,9 +44,11 @@ TypeScript; no database, accounts or cookies.
 
 ## Next
 
-1. **Owner: release when happy** (`git push origin main:production`), after trying the gull on
-   the dev server (load `/`, wait about 3 s without scrolling; hover or Tab to "Play waves"; press
-   it or the gull) and ideally on an iPhone and in Safari.
+1. **Owner: look at the second gull step** on the dev server (load `/`, wait about 3 s without
+   scrolling; the pill widens and the gull lands and sings; also with the sounds muted, which
+   used to keep it away). Tune in `song.ts` (`SONG`, `REACH`) and the pill's placement in
+   `Gull.module.css`. Then release when happy (`git push origin main:production`), ideally after
+   an iPhone and Safari. Suggested commit message below.
 2. **Then, if wanted:** a post from the research (draft in `content/posts/`), a takeoff sound
    (needs listening), the shore's gull, birds in the skies, and the research ideas, cheapest first
    ([follow-ups.md](follow-ups.md)).
@@ -54,16 +57,30 @@ TypeScript; no database, accounts or cookies.
 
 ## Verified
 
-Scratch copy, Node 24, clean production build: `tsc`, `lint`, `format:check`, 101 Node tests (9
-new for the gull), SEO 20, headers (WebGL on the sea's canvas), keyboard 20/20, software fallback,
-sound 23/23, `check-creative-v2` 132 records with nothing flagged. The gull was watched in headless
-Chrome: desktop and phone arrival, landing, sitting, the head following the pointer, hover and
-keyboard-focus stand, takeoff on pressing the button and on pressing the gull, night, the drawing
-chapters, reduced motion, and arrival waiting for scrolling to stop. Its geometry costs about 0.1
-ms a frame. After the full suite, small refactors (renames, private names un-exported, the head's
-"look at the viewer" made to respect which way it faces) were checked with `tsc`, `eslint`, the gull
-tests and a live arrival. **Not verified:** a real iPhone, Safari, Firefox; a screen reader; scroll cost against
+Scratch copy, Node 24, clean production build of the second gull step: `tsc`, `lint`,
+`format:check`, 104 Node tests (12 for the gull), SEO 20, headers, keyboard 20/20, software
+fallback, sound checks, `check-creative-v2` 132 records and no exceptions. Watched in headless
+Chrome against the dev server: desktop and phone arrival, the pill widening and the landing, the
+notes, arrival with `studio-wave-sound` and `studio-sound` both remembered `off`, a press (waves
+and sounds turn on, the gull leaves, the pill closes), night, reduced motion (still notes), the
+hover stand, keyboard focus and the drawing chapters (ink gull, ink notes). **Not verified:** a real iPhone, Safari, Firefox; a screen reader; scroll cost against
 the released build; whether visitors press the button more.
+
+## Suggested commit message
+
+```
+feat: the gull sings, sits inside the button, and comes to everyone
+
+It stayed away from visitors who had muted the sounds or turned the waves off, so a
+returning visitor who might want them never saw the hint. It now arrives whenever the
+waves are off, and amber notes leave its beak so the invitation reads as deliberate. It
+lands inside the pill (which widens for it): on top there were 21 px of room, none for
+notes, and covering the label would hide the accessible signal.
+
+Verified: tsc, lint, format, 104 node tests, SEO, headers, keyboard, sound, creative-v2
+on a Node 24 build; watched in headless Chrome on desktop and phone, muted, night,
+reduced motion, hover, focus, a press and the drawing chapters.
+```
 
 ## Settled (details in decisions.md)
 

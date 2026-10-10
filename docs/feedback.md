@@ -8,7 +8,7 @@ and could not belong to any other site.
 
 **State:** built, kept and released (`b65671e`, 9 October 2026: the owner tried it and wants
 nothing toned down). Every answer sounds by default; only the waves wait for "Play waves". Next:
-the gull (below), in progress and uncommitted.
+the gull (below), built; its second step (singing, inside the pill) is uncommitted.
 
 ## Changing an answer
 
@@ -90,41 +90,56 @@ frame for it (357 recalcs against 125 without it, about 0.1 ms a frame here). Th
 already does the same. If that is too much, delete `<ScrollMark kind="depth" />` from
 `app/page.tsx` first.
 
-## The gull (10 October 2026, uncommitted)
+## The gull (10 October 2026)
 
 **The owner's idea:** "a bird or whatever makes sense flies in and sits on that button... that is all
 the signal we need to give the user to click it without doing it on their face." A herring gull
-lands on the hero's "Play waves" and is the only moving hint that the button exists. Pressing the
-button, or the gull, starts the waves, and the gull takes off. The button's words still say what it
-does, for everyone who cannot see the gull.
+lands **inside** the hero's "Play waves" pill, sings, and is the only moving hint that the button
+exists. Pressing the button, or the gull, starts the waves, and the gull takes off. The button's
+words still say what it does, for everyone who cannot see the gull.
 
 **What a visitor sees:** about 3 s after the button is fully on screen, once scrolling has been
 still for 1 s, a gull enters from the left of the sky (on a phone, above the eyebrow), flaps and
-glides across in under 4 s (2 s on a phone), brakes with its legs down and tail fanned, lands on
-the button's top edge (the button dips 1.5 px), raises and folds its wings, looks at the visitor,
-and sits. Perched, it turns its head now and then, blinks, shakes its feathers, may peck the button
-once (a 1 px dip) or turn round; after 45 s it keeps still. Its head follows a mouse pointer within
-280 px; hovering the button or focusing it from the keyboard makes it stand. At the third idle
-level (60 s) it tucks its head and sleeps. In the hero's drawing chapters it is drawn as its own ink
-wireframe, light on dark at night; by day and night it is lit like the ship.
+glides across in under 4 s (2 s on a phone), and brakes with its legs down and tail fanned. About
+1.4 s before it lands the pill widens by one gull's width, at its right end, to make room. The gull
+lands on the pill's floor (the button dips 1.5 px), raises and folds its wings, looks at the
+visitor, and sits beside the label, which is never covered. A beat after landing it **sings**:
+a phrase of three amber musical notes (a single note, a beamed pair, a single note) leaves the
+beak, one every 0.4 s with a small lift of the head, and floats up and forward out of the pill,
+fading as it goes. A phrase repeats every 7 s until 36 s. Perched, it also turns its head now and
+then, blinks, shakes its feathers, and may peck the button once (a 1 px dip); after 45 s it keeps
+still. Its head follows a mouse pointer within 280 px; hovering the button or focusing it from the
+keyboard makes it stand. At the third idle level (60 s) it tucks its head and sleeps. In the
+hero's drawing chapters the gull and its notes are drawn as ink, light on dark at night; by day and
+night it is lit like the ship. After it leaves, the pill closes again.
 
 **Rules:** it comes once per page load (a revisit within the same page life finds it already
-perched; nothing is stored), only while the waves are off, and never after the visitor turned the
-waves off or muted all sounds. "Still the sea" freezes it with the sea; offscreen and in a hidden
-tab it does not draw or move. Reduced motion shows it perched and still (no flight, no habits) and
-fades it out on press. It never covers the focused button (its feet cross the top of the focus ring).
-The hit area over the sitting gull is part of the button, so pressing the gull is pressing the
-button. The research behind these timings (one short arrival, then anchored motion; nothing after
-being ignored) is in `../web-research/reports/Website feedback beyond sound.md`.
+perched; nothing is stored), and only while the waves are off. **It comes whatever the visitor chose
+before** (owner, 10 October 2026: someone who muted the sounds or turned the waves off may want them
+on another visit; the notes make the invitation obvious, the press is the choice, and pressing
+turns every sound back on). It leaves when the waves start. "Still the sea" freezes it with the sea;
+offscreen and in a hidden tab it does not draw or move. Reduced motion shows it perched and still
+(no flight, no habits, no singing: two still notes rest by the beak) and fades it out on press. It
+sits inside the button, so it never covers the focus ring and pressing it is pressing the button.
+The research behind these timings (one short arrival, then anchored motion; nothing after being
+ignored) is in `../web-research/reports/Website feedback beyond sound.md`.
 
 **Change it:** timings and distances are named constants at the top of `components/gull/visit.ts`
-(`WAIT_MS`, `QUIET_MS`, `LOOK`, `DIP`) and `flight.ts` (`BEAT`, `BURST`, `BRAKE`, `HABITS`);
-colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`. To remove it, drop the `gull` prop
+(`WAIT_MS`, `QUIET_MS`, `ROOM_LEAD`, `LOOK`, `DIP`) and `flight.ts` (`BEAT`, `BURST`, `BRAKE`,
+`HABITS`); the song (when, how often, how far the notes rise) in `song.ts` (`SONG`, `REACH`); the
+notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`; where it sits
+in the pill in `Gull.module.css` and `SoundControls.module.css`. To remove it, drop the `gull` prop
 from `WaveSoundControl` in `components/observatory/Hero.tsx`.
 
-**Open:** a takeoff sound (wingbeats, perhaps a call), which needs listening; the shore version
-(the waves button there could have its own gull, standing on the sand); landing into the sea's own
-wind (the research's idea); birds in every sky ([follow-ups.md](follow-ups.md)).
+**Why inside the pill, not on top (owner, 10 October 2026):** on desktop the button is 21 px below
+the top of the page, so a gull standing on its top edge filled the margin and left no room for
+notes. A gull on the bottom edge would have had to cover the label, the words that are the
+accessible signal. The pill makes room for the gull instead.
+
+**Open:** a takeoff sound (wingbeats, perhaps a call), which needs listening, and whether the
+notes should also sound; the shore version (the waves button there could have its own gull,
+standing on the sand); landing into the sea's own wind (the research's idea); birds in every sky
+([follow-ups.md](follow-ups.md)).
 
 ## Not built
 

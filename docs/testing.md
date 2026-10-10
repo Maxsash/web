@@ -24,7 +24,7 @@ node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
 Last full result (10 October 2026, the gull): `tsc`, `lint`, `format:check`, a clean build with no
-warnings, 101 Node tests, 20 SEO cases (drafts and the editor routes not served), header checks
+warnings, 104 Node tests, 20 SEO cases (drafts and the editor routes not served), header checks
 (WebGL found on the sea's canvas), 20 keyboard checks, software fallback, 23 sound checks and 132
 browser records, no failures. The gull's geometry costs about 0.1 ms a frame (69 polygons, Node on
 an M4 Pro) and draws only while it moves; scroll cost was not re-measured against the released build.
@@ -41,10 +41,12 @@ text. Compare computed styles and relative boxes instead.
 
 | Check                       | Covers                                                                                                   |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`          | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), the gull (the sitting gull fits the 21 px above the hero button and rests on its edge, the arrival
+| `tools/*.test.mjs`          | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), the gull (the sitting gull fits inside the 44 px pill and rests on its floor, the arrival
 starts where planned, never jumps and ends at rest on the perch, wingbeats come in bursts with glides,
 every frame of a visit is finite, habits are seeded, spaced at least 4 s, peck at most once and stop
-after 45 s, turning round passes through facing the viewer, the takeoff stands first and fades out at
+after 45 s, the beak tip is the bill's end, the song comes in phrases with quiet between and ends
+before the gull sleeps, notes rise from the beak and fade in and out, the head lifts for each note,
+the takeoff stands first and fades out at
 the exit, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded
 wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
@@ -92,7 +94,8 @@ Everything above runs in headless Chrome on a Mac. Not covered, so do not claim 
   under a finger, and the notices with a screen reader;
 - the gull on a real iPhone and in Safari or Firefox (it was watched only in headless Chrome: desktop
   and phone sizes, day, night, the drawing chapters, reduced motion, hover, keyboard focus, the
-  pointer, a press on the button and on the gull), and how often visitors actually press it;
+  pointer, a press on the button and on the gull, arrival with the waves and sounds remembered
+  off), and how often visitors actually press it;
 - the hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
   idle and offline beyond headless Chrome's emulation;
 - Search Console, indexing and AI citation outcomes.

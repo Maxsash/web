@@ -1,5 +1,5 @@
-import { soundsChosen, subscribeSound, wavesDeclined, wavesStatus } from "@/components/sound/sound";
-import { gullFacets, lookTowards } from "./body";
+import { subscribeSound, wavesStatus } from "@/components/sound/sound";
+import { beakTip, gullFacets, lookTowards } from "./body";
 import {
   arrivalAt,
   arrivalLength,
@@ -22,13 +22,15 @@ import {
   type Perch,
   type Point,
 } from "./flight";
-import { paintGull } from "./paint";
+import { paintGull, paintNotes } from "./paint";
+import { nextNoteAt, notesAt, restingNotes, singingAt, withSong, type Note } from "./song";
 
 const WAIT_MS = 3000;
 const QUIET_MS = 1000;
 const CANVAS_LENGTHS = 2.8;
 const LENGTHS_PER_BUTTON = 1.14;
-const SEAT = { width: 0.95, height: 0.34 };
+const SPAN = 0.95;
+const ROOM_LEAD = 1.4;
 const ENTRY = { beyond: 70, down: 0.17 };
 const EXIT = { across: 0.55, down: 0.3 };
 const LOOK = { radius: 280, toward: 140, settle: 16 };
@@ -45,11 +47,11 @@ type Phase =
   | { kind: "leaving"; plan: Departure; at: number }
   | { kind: "gone" };
 
-const welcome = () => !wavesDeclined() && soundsChosen() && wavesStatus() === "off";
+const welcome = () => wavesStatus() === "off";
 const approach = (value: number, target: number, step: number) =>
   value < target ? Math.min(target, value + step) : Math.max(target, value - step);
 
-export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
+export function visit(canvas: HTMLCanvasElement) {
   const button = canvas.closest("button");
   const context = canvas.getContext("2d");
   if (!button || !context || !welcome()) return;
@@ -62,7 +64,8 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
   let phase: Phase = { kind: "waiting" };
   let scale = 1,
     side = 1,
-    ratio = 1;
+    ratio = 1,
+    measured = 0;
   let raf = 0,
     timer = 0,
     waiting = 0,
@@ -83,10 +86,12 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
   const still = () => scene?.dataset.still !== undefined;
   const inkTarget = () => (/structure|atlas/.test(scene?.dataset.chapter ?? "") ? 1 : 0);
 
+  const makeRoom = (open: boolean) => button.toggleAttribute("data-room", open);
+
   const show = (kind: Phase["kind"]) => {
     canvas.dataset.gull = kind;
-    if (kind === "perched") seat.dataset.perched = "";
-    else delete seat.dataset.perched;
+    if (kind === "perched") makeRoom(true);
+    if (kind === "waiting" || kind === "gone") makeRoom(false);
   };
 
   const perchPoint = (): Point => {
@@ -102,13 +107,13 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
   const area = () => sky.getBoundingClientRect();
 
   const resize = () => {
-    scale = button.offsetHeight * LENGTHS_PER_BUTTON;
+    measured = button.offsetHeight;
+    scale = measured * LENGTHS_PER_BUTTON;
     side = Math.ceil(scale * CANVAS_LENGTHS);
     ratio = Math.min(2, devicePixelRatio || 1);
     canvas.style.setProperty("--gull-size", `${side}px`);
     canvas.width = canvas.height = Math.round(side * ratio);
-    seat.style.width = `${scale * SEAT.width}px`;
-    seat.style.height = `${scale * SEAT.height}px`;
+    button.style.setProperty("--perch-seat", `${scale * SPAN}px`);
   };
 
   const dip = (pixels: number) => {
@@ -116,15 +121,14 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
     window.setTimeout(() => button.style.removeProperty("--perch-dip"), DIP.ms);
   };
 
-  const draw = (frame: Frame) => {
+  const draw = (frame: Frame, notes: Note[]) => {
+    const view = { ...frame, x: side / 2, y: side / 2 };
+    const look = { night: root.dataset.studioTheme === "night", ink, opacity: frame.opacity };
     canvas.style.transform = `translate(${frame.x}px, ${frame.y}px)`;
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.clearRect(0, 0, side, side);
-    paintGull(context, gullFacets(frame.pose, { ...frame, x: side / 2, y: side / 2 }), {
-      night: root.dataset.studioTheme === "night",
-      ink,
-      opacity: frame.opacity,
-    });
+    paintGull(context, gullFacets(frame.pose, view), look);
+    if (notes.length) paintNotes(context, notes, beakTip(frame.pose, view), look);
   };
 
   const settle = (at: number) => {
@@ -142,8 +146,9 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
       settle(phase.at + arrivalLength(phase.plan));
     }
     if (phase.kind === "perched") {
-      const frame = perchedAt(phase.perch, t - phase.at);
-      return withMoods(withGaze(frame, gaze), moods);
+      const since = t - phase.at;
+      const frame = withMoods(withGaze(perchedAt(phase.perch, since), gaze), moods);
+      return reduced.matches ? frame : withSong(frame, since);
     }
     if (phase.kind === "leaving") {
       const since = t - phase.at;
@@ -153,6 +158,12 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
       dispose();
     }
     return null;
+  };
+
+  const notesAtTime = (t: number) => {
+    if (phase.kind !== "perched") return [];
+    const reach = { scale, heading: phase.perch.heading };
+    return reduced.matches ? restingNotes(reach) : notesAt(t - phase.at, reach);
   };
 
   const lookAt = (frame: Frame) => {
@@ -218,16 +229,23 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
     const changing = approachTargets(seconds, frameAt(t));
     const frame = frameAt(t);
     if (!frame) return;
-    draw(frame);
+    draw(frame, notesAtTime(t));
+    if (phase.kind === "arriving" && t >= landing - ROOM_LEAD) makeRoom(true);
     if (lastT < landing && t >= landing) dip(DIP.landing);
     if (pecked(lastT, t)) dip(DIP.peck);
     lastT = t;
-    if (phase.kind !== "perched" || changing || movingAt(phase.perch, t - phase.at)) {
+    const since = phase.kind === "perched" ? t - phase.at : 0;
+    const singing = !reduced.matches && singingAt(since);
+    if (phase.kind !== "perched" || changing || singing || movingAt(phase.perch, since)) {
       raf = requestAnimationFrame(tick);
       return;
     }
     last = 0;
-    const wait = nextHabitAt(phase.perch, t - phase.at) - (t - phase.at);
+    const next = Math.min(
+      nextHabitAt(phase.perch, since),
+      reduced.matches ? Infinity : nextNoteAt(since),
+    );
+    const wait = next - since;
     if (Number.isFinite(wait)) timer = window.setTimeout(request, wait * 1000);
   }
 
@@ -312,6 +330,7 @@ export function visit(canvas: HTMLCanvasElement, seat: HTMLElement) {
   watcher.observe(root, { attributes: true, attributeFilter: ["data-idle", "data-studio-theme"] });
 
   const sizing = new ResizeObserver(() => {
+    if (button.offsetHeight === measured) return;
     resize();
     request();
   });

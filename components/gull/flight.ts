@@ -33,11 +33,11 @@ export type Frame = {
 };
 type Curve = { points: [Point, Point, Point, Point]; lengths: number[] };
 
-const BEAT = 0.34;
+const BEAT = 0.42;
 const BRAKING_BEAT = 0.26;
 const BURST = { flap: 1.1, glide: 0.9 };
 const BRAKE = 0.9;
-const SETTLE = 2.6;
+const SETTLE = 1.8;
 const FAR = 0.6;
 const TOWARD_VIEWER = 0.3;
 const VIEW = { sky: -0.14, perch: 0.16 };
@@ -114,10 +114,13 @@ export function planArrival(entry: Point, scale: number): Arrival {
   const path = curve([
     entry,
     [entry[0] + heading * 0.42 * Math.abs(dx), entry[1]],
-    [touchdown[0] - heading * 0.24 * distance, touchdown[1] + 0.1 * distance],
+    [touchdown[0] - heading * Math.min(0.24 * distance, 3 * scale), touchdown[1] + 0.65 * scale],
     touchdown,
   ]);
-  const cruise = Math.max(260, Math.min(440, 240 + 0.12 * lengthOf(path)));
+  const cruise = Math.min(
+    lengthOf(path) / BRAKE,
+    Math.max(260, Math.min(440, 240 + 0.12 * lengthOf(path))),
+  );
   return { path, cruise, flight: lengthOf(path) / cruise + BRAKE / 2, scale, heading };
 }
 
@@ -125,7 +128,9 @@ function travelled(plan: Arrival, t: number) {
   const brakesAt = plan.flight - BRAKE;
   if (t <= brakesAt) return plan.cruise * t;
   const braking = Math.min(t, plan.flight) - brakesAt;
-  return plan.cruise * (brakesAt + braking - (braking * braking) / (2 * BRAKE));
+  const u = braking / BRAKE;
+  const slowed = u ** 6 - 3 * u ** 5 + 2.5 * u ** 4;
+  return plan.cruise * (brakesAt + braking - BRAKE * slowed);
 }
 
 function arrivingWing(plan: Arrival, t: number) {
@@ -181,9 +186,9 @@ function settling(plan: Arrival, landed: Frame, t: number): Frame {
     fan: mix(landed.pose.fan, 0, ease(t / 0.5)),
     stride: mix(landed.pose.stride, 0, ease(t / 0.2)),
     neck: mix(0.45, STANDING.neck, ease(t / 0.4)),
-    headYaw: -0.9 * plan.heading * Math.min(ramp(t, 1, 0.1), 1 - ramp(t, 1.6, 0.1)),
+    headYaw: -0.7 * plan.heading * Math.min(ramp(t, 0.8, 0.3), 1 - ramp(t, 1.25, 0.3)),
   };
-  const sit = ramp(t, 2, 0.6);
+  const sit = t >= SETTLE - 1e-6 ? 1 : ramp(t, 1.2, 0.6);
   return {
     ...landed,
     y: -mix(STANDING_LIFT, SITTING_LIFT, sit) * plan.scale + 0.03 * plan.scale * pulse(t, 0, 0.2),
@@ -199,7 +204,7 @@ type Habit = {
   value: number;
 };
 
-const HABIT_SECONDS = { look: 0.12, blink: 0.14, ruffle: 0.55, peck: 0.8 };
+const HABIT_SECONDS = { look: 0.4, blink: 0.14, ruffle: 0.55, peck: 0.8 };
 const HABITS = { first: 1.4, gap: 4, spread: 6.5, until: 45, firstPeck: 8 };
 const KINDS: [Habit["kind"], number][] = [
   ["look", 0.5],
@@ -209,7 +214,7 @@ const KINDS: [Habit["kind"], number][] = [
 ];
 const PECKS = [0.32, 0.6];
 
-export function habitsFor(seed: number): Habit[] {
+export function habitsFor(seed: number, night = false): Habit[] {
   const random = seededRandom(seed);
   const habits: Habit[] = [{ at: HABITS.first, kind: "look", value: -0.9 }];
   for (;;) {
@@ -218,9 +223,15 @@ export function habitsFor(seed: number): Habit[] {
     if (at > HABITS.until) return habits;
     const roll = random();
     let kind = KINDS.find(([, upTo]) => roll < upTo)![0];
+    if (night && kind !== "blink") kind = "look";
     if (kind === "peck" && (at < HABITS.firstPeck || habits.some((habit) => habit.kind === "peck")))
       kind = "look";
-    habits.push({ at, kind, value: kind === "look" ? (random() * 2 - 1) * 1.3 : 0 });
+    habits.push({
+      at,
+      kind,
+      value: kind === "look" ? (random() * 2 - 1) * (night ? 0.6 : 1.3) : 0,
+    });
+    if (night && habits.length >= 3) return habits;
   }
 }
 
@@ -282,7 +293,7 @@ export function perchedAt(perch: Perch, t: number): Frame {
 export type Departure = { from: Frame; path: Curve; heading: number; airborne: boolean };
 
 export function planDeparture(from: Frame, exit: Point): Departure {
-  const airborne = from.pose.right.fold < 0.5 && from.pose.legs < 0.5;
+  const airborne = from.pose.right.fold < 0.5;
   const heading = Math.cos(from.yaw) >= 0 ? 1 : -1;
   const start: Point = airborne ? [from.x, from.y] : [from.x, -STANDING_LIFT * from.scale];
   const distance = Math.hypot(exit[0] - start[0], exit[1] - start[1]);
@@ -292,7 +303,7 @@ export function planDeparture(from: Frame, exit: Point): Departure {
     airborne,
     path: curve([
       start,
-      [start[0] + heading * 0.2 * distance, start[1] + 0.14 * distance],
+      [start[0] + heading * 0.2 * distance, start[1] - 0.14 * distance],
       [exit[0] + 0.2 * distance * Math.sign(start[0] - exit[0]), exit[1] - 0.05 * distance],
       exit,
     ]),
@@ -311,8 +322,8 @@ export function departureAt(plan: Departure, t: number): Frame {
       crouch = pulse(t, LEAVE.stand - 0.02, LEAVE.crouch + 0.02);
     return {
       ...from,
-      y: -mix(SITTING_LIFT, STANDING_LIFT, stand) * from.scale + 0.025 * from.scale * crouch,
-      pitch: 0.18 * crouch,
+      y: mix(from.y, -STANDING_LIFT * from.scale, stand) + 0.025 * from.scale * crouch,
+      pitch: mix(from.pitch, 0, stand) + 0.18 * crouch,
       pose: mixPose(
         mixPose(from.pose, STANDING, stand),
         withWings({ ...STANDING, neck: 0.65 }, RAISED),
@@ -325,17 +336,17 @@ export function departureAt(plan: Departure, t: number): Frame {
   const { at, heading } = along(plan.path, progress * lengthOf(plan.path));
   const strong = 1 - ramp(flight, 0.9, 0.4);
   const wing = mixWing(cruising(flight + 0.3), flapping(flight / BRAKING_BEAT + 0.5, 1.15), strong);
-  const takeoff = plan.airborne ? 1 : ramp(flight, 0, 0.12);
+  const takeoff = ramp(flight, 0, 0.2);
   const base = facing(plan.heading);
   const away = ramp(flight, 0.35, 1.5);
   return {
     x: at[0],
     y: at[1],
     scale: from.scale * mix(1, 0.16, ease(flight / LEAVE.flight)),
-    yaw: base + (Math.PI / 2 - base) * 0.92 * away,
-    pitch: climb(heading) * 0.6,
-    roll: -0.45 * plan.heading * pulse(flight, 0.3, 1.6),
-    elevation: mix(VIEW.perch, -0.08, away),
+    yaw: mix(from.yaw, base + (Math.PI / 2 - base) * 0.92 * away, takeoff),
+    pitch: mix(plan.airborne ? from.pitch : 0, climb(heading) * 0.6, takeoff),
+    roll: mix(from.roll, -0.45 * plan.heading * pulse(flight, 0.3, 1.6), takeoff),
+    elevation: mix(from.elevation, mix(VIEW.perch, -0.08, away), takeoff),
     pose: {
       ...mixPose(plan.airborne ? from.pose : withWings(STANDING, RAISED), flying(wing), takeoff),
       legs: (1 - ramp(flight, 0.05, 0.35)) * (plan.airborne ? from.pose.legs : 1),

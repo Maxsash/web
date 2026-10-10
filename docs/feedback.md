@@ -100,18 +100,25 @@ words still say what it does, for everyone who cannot see the gull.
 
 **What a visitor sees:** about 3 s after the button is fully on screen, once scrolling has been
 still for 1 s, a gull enters from the left of the sky (on a phone, above the eyebrow), flaps and
-glides across in under 4 s (2 s on a phone), and brakes with its legs down and tail fanned. About
+glides across with slower wingbeats, and brakes with its legs down and tail fanned. About
 1.4 s before it lands the pill widens by one gull's width, at its right end, to make room. The gull
-lands on the pill's floor (the button dips 1.5 px), raises and folds its wings, looks at the
+lands directly on the pill's bottom border (the button dips 1.5 px), raises and folds its wings, looks at the
 visitor, and sits beside the label, which is never covered. A beat after landing it **sings**:
 a phrase of three amber musical notes (a single note, a beamed pair, a single note) leaves the
 beak, one every 0.4 s with a small lift of the head, and floats up and forward out of the pill,
-fading as it goes. A phrase repeats every 7 s until 36 s. Perched, it also turns its head now and
+fading as it goes. By day a phrase repeats every 7 s until 36 s. At night there is just the first phrase,
+with fewer, quieter head movements; after 12 s it tucks its head and rests unless the
+button is hovered, focused or a mouse pointer is nearby. Perched, it also turns its head now and
 then, blinks, shakes its feathers, and may peck the button once (a 1 px dip); after 45 s it keeps
 still. Its head follows a mouse pointer within 280 px; hovering the button or focusing it from the
 keyboard makes it stand. At the third idle level (60 s) it tucks its head and sleeps. In the
 hero's drawing chapters the gull and its notes are drawn as ink, light on dark at night; by day and
-night it is lit like the ship. After it leaves, the pill closes again.
+night it is lit like the ship. The fuller chest, hooked bill and red bill mark, black
+primaries with white spots, and inset seat make it readable at button size. Its projected belly or feet touch the
+border centreline in every resting posture. The header wraps above the hero copy, and
+turning the device during arrival settles the gull quietly onto its newly placed perch. Landing
+brakes smoothly, folds the wings and settles in 1.8 s; takeoff climbs, starting from
+the current pose even when pressed during arrival or while standing. After it leaves, the pill closes again.
 
 **Rules:** it comes once per page load (a revisit within the same page life finds it already
 perched; nothing is stored), and only while the waves are off. **It comes whatever the visitor chose
@@ -127,7 +134,7 @@ ignored) is in `../web-research/reports/Website feedback beyond sound.md`.
 **Change it:** timings and distances are named constants at the top of `components/gull/visit.ts`
 (`WAIT_MS`, `QUIET_MS`, `ROOM_LEAD`, `LOOK`, `DIP`) and `flight.ts` (`BEAT`, `BURST`, `BRAKE`,
 `HABITS`); the song (when, how often, how far the notes rise) in `song.ts` (`SONG`, `REACH`); the
-notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`; where it sits
+notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`; seat sizing in `placement.ts`, rest policy in `rest.ts`; where it sits
 in the pill in `Gull.module.css` and `SoundControls.module.css`. To remove it, drop the `gull` prop
 from `WaveSoundControl` in `components/observatory/Hero.tsx`.
 

@@ -6,11 +6,14 @@ started.
 
 ## Run everything
 
-Use Node 24 and a production build in a scratch copy:
+Use Node 24 and a production build in a detached git worktree:
 
 ```bash
-rsync -a --exclude node_modules --exclude .next --exclude .git --exclude tools/.out ./ $SCRATCH/wt/
-cd $SCRATCH/wt && pnpm install --frozen-lockfile && pnpm build
+nvm use
+CHECK_DIR=$(mktemp -d /tmp/maxsash-check.XXXXXX)
+git worktree add --detach "$CHECK_DIR/wt" HEAD
+rsync -a --exclude node_modules --exclude .next --exclude .git --exclude tools/.out ./ "$CHECK_DIR/wt/"
+cd "$CHECK_DIR/wt" && pnpm install --frozen-lockfile && pnpm build
 (pnpm exec next start -p 3012 &)
 
 pnpm exec tsc --noEmit && pnpm lint && pnpm format:check
@@ -18,16 +21,32 @@ SEA_TEST_BASE=http://localhost:3012 node --test tools/*.test.mjs
 node tools/check-seo.mjs http://127.0.0.1:3012
 node tools/check-headers.mjs http://localhost:3012
 node tools/check-keyboard.mjs http://localhost:3012
+node tools/check-gull.mjs http://localhost:3012
 node tools/check-software-fallback.mjs http://localhost:3012
 node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Last full result (10 October 2026, the gull): `tsc`, `lint`, `format:check`, a clean build with no
-warnings, 104 Node tests, 20 SEO cases (drafts and the editor routes not served), header checks
-(WebGL found on the sea's canvas), 20 keyboard checks, software fallback, 23 sound checks and 132
-browser records, no failures. The gull's geometry costs about 0.1 ms a frame (69 polygons, Node on
-an M4 Pro) and draws only while it moves; scroll cost was not re-measured against the released build.
+Latest correction (10 October 2026): Node 24 production build, `tsc`, `lint`,
+`format:check`, 109 Node tests (17 gull), 20 SEO cases, headers and 20/20 keyboard
+checks pass. Creative passed 132 records with no failed assertions or exceptions. Inspected corrected gull over WebGL at desktop/phone sizes.
+
+`check-gull.mjs` passes 47 pixel/contact and visible-layout checks across live resizes:
+widths 320–2560, heights 320–1440, DPR 1/1.25/2/3 (including density-only changes at fixed viewport size), root text sizes 16/20/24 px,
+day/night, standing/sleeping/drawing and rotation during arrival. It checks the actual
+alpha footprint against the border, label clearance, viewport clipping, visible
+text/control collisions and refreshed canvas density. Contact error stays within
+0.36 CSS px (raster antialiasing); no tested overlap/clipping. Reports/screenshots:
+`tools/.out/gull/`. Headless focus tests explicitly focus the page. Gull/keyboard
+harnesses printed passing results but their Node processes lingered; gull exited after
+a delay and only the completed keyboard process was stopped. Creative, static, Node, SEO and header checks exited normally.
+
+The previous refinement also passed software fallback and 23 sound checks, and
+verified night rest with no redraws, live theme switching and reduced-motion changes.
+Those sound checks were not rerun for this placement-only correction.
+
+The earlier geometry timing (~0.1 ms/frame on an M4 Pro) predates this refinement;
+geometry cost and scroll cost were not re-measured. No physical-device conclusions.
 `compare-builds` cannot prove "unchanged" across a change in section heights: a section above
 that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the
 text. Compare computed styles and relative boxes instead.
@@ -41,16 +60,19 @@ text. Compare computed styles and relative boxes instead.
 
 | Check                       | Covers                                                                                                   |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`          | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), the gull (the sitting gull fits inside the 44 px pill and rests on its floor, the arrival
+| `tools/*.test.mjs`          | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), the gull (the sitting gull fits inside the 44 px pill and rests on its floor, reserved seats
+fit sitting and standing sizes with label clearance, short approaches do not reverse, the arrival
 starts where planned, never jumps and ends at rest on the perch, wingbeats come in bursts with glides,
 every frame of a visit is finite, habits are seeded, spaced at least 4 s, peck at most once and stop
 after 45 s, the beak tip is the bill's end, the song comes in phrases with quiet between and ends
 before the gull sleeps, notes rise from the beak and fade in and out, the head lifts for each note,
-the takeoff stands first and fades out at
-the exit, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded
+the takeoff stands first, climbs and fades out at
+the exit, departure begins at the current pose during flight/hover, night gets one phrase,
+fewer quiet habits and rests unless engaged, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded
 wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
+| `check-gull.mjs`            | Live portrait/landscape resize matrix, DPR 1/1.25/2/3, larger text, day/night, standing/sleeping/drawing: pixel contact with the pill border, label clearance, no clipped bird/control, no visible text/control overlap and refreshed canvas density. Outputs to `tools/.out/gull/`. |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |
 | `check-sound.mjs`           | Every sound against the visitor's choices, with the Web Audio calls spied on: nothing before the first click; after it the answers sound (a hover, the dice, the compass) and the waves do not; "Play waves" starts the loop and remembers it; page turns into and within the notebook (by link and by back and forward), never the same variation twice in a row, none on the page already open; the waves leave with the shore and come back without a click; after a reload a remembered choice waits for the first click (and a first click on the button plays); muting the waves keeps the answers; "Mute sounds" silences everything and outlasts a reload; "Unmute sounds" answers and leaves the waves off. Sounds are told apart by their length (page turns 0.8–0.95 s, detents 0.015 s). How it sounds is not tested: listen to `node tools/render-sounds.mjs`. |

@@ -109,6 +109,16 @@ motion shows stills. Without
 JavaScript the page is readable and scrolls natively. These timings were approved on a
 physical iPhone: refactor around them, never change them.
 
+### Hero controls and short screens
+
+The stage grid reserves the larger of the authored copy offset or the header's actual
+height plus its bottom margin. The intro, and the drawing copy on narrow/short screens,
+therefore stay below the controls even when they wrap. The secondary seed link stays
+clear of the pause/stage controls and hides below 620 px viewport height; the studio
+is still available in the page. Mobile title sizing also accommodates larger text. Narrow headers place the brand
+and wave pill in the first row, navigation in the second; the name can wrap. Short wide
+screens use one header row and put the offer beside the title. Approved sea timings stay.
+
 ## Shoreline footer
 
 `components/shore/`: `Shoreline` owns the canvas lifecycle; `sand` paints the cached
@@ -196,26 +206,34 @@ the story is in [feedback.md](feedback.md), the rules in decisions.md.
 - **Pure:** `rotation` (3×3 rotations), `pose` (each wing's joints: lift, sweep, twist, reach, wrist
   lift and sweep, and `fold`, which blends the wing into a designed folded shape on the body's
   flank; tail, legs, neck, head, eye, fluff; named poses and `mixPose`), `body` (`gullFacets(pose,
-  view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips, a lofted tail,
+  view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips and white primary spots, a lofted tail,
   legs; groups sorted by depth, then facets; flat light; `lookTowards`; `beakTip`, the projected end
   of the bill), `flight` (pure timelines: `planArrival`/`arrivalAt` along a cubic Bézier with
-  flap-and-glide bursts and a linear brake, touchdown, wings raised then folded, sitting;
-  `habitsFor(seed)` and `perchedAt`; `withMoods` for standing and sleeping; `withGaze`;
+  flap-and-glide bursts and a smootherstep velocity brake, touchdown, wings raised then folded, sitting;
+  `habitsFor(seed, night)` and `perchedAt`; `withMoods` for standing and sleeping; `withGaze`;
   `planDeparture`/`departureAt`), `song` (the notes: a fixed schedule of phrases from 0.7 s after
-  landing until 36 s, `notesAt`, `restingNotes` for reduced motion, `withSong` which lifts the head
+  landing until 36 s by day, one phrase by night, `notesAt`, `restingNotes` for reduced motion, `withSong` which lifts the head
   with each note), `paint` (canvas colours by theme and an ink mode that fades to paper with ink
-  edges; `paintNotes`). Units are body lengths, `x` forward, `y` up, `z` the bird's right; a
+  edges; `paintNotes`), `placement` (scale, canvas and reserved seat from button height; contact offset from
+  the body/feet facets),
+  `rest` (night rest after 12 s unless engaged, idle rest in either theme). Units are body lengths, `x` forward, `y` up, `z` the bird's right; a
   frame's `x`, `y` are pixels from the perch.
 - **Lifecycle:** `visit.ts` (called by `Gull.tsx`) owns timing, observers and the frame loop. The
   canvas sits inside the button, `aria-hidden`, anchored to the pill's inner floor near its right
-  end (`Gull.module.css`) and moved with `transform`; its size follows the button's height (1.14
+  end, 20 px inset and anchored on the bottom border centreline (`Gull.module.css`) and moved with `transform`; its size follows the button's height (1.18
   body lengths per button height, 2.8 lengths a side). The button makes room by setting `data-room`
   (`SoundControls.module.css` adds the gull's width, `--perch-seat`, to its right padding, with a
   transition) about 1.4 s before landing, and removes it once the gull has gone. It flies within the
   nearest `[data-gull-sky]` (the hero stage, which clips it), reads `data-chapter` and `data-still`
   on `[data-observatory]` (`OceanScene` sets `data-still` while stilled), `html[data-idle]` and the
-  theme, and dips the button with `--perch-dip`. It draws only while something moves (flight,
+  theme (resampling the same habit seed on a theme change), and dips the button with `--perch-dip`. It draws only while something moves (flight,
   habits, a note in the air) and keeps a paused clock while hidden, offscreen or stilled.
+  Contact facets identify the belly and feet; the renderer uses their lowest projected point
+  to align the landed bird with the border, without a second geometry pass. Head and wing
+  motion do not move the contact reference. Viewport, control-height and display-density
+  changes refit the canvas; every draw also checks DPR to cover late media events; rotation during arrival settles quietly onto the perch.
+  A live reduced-motion preference is enforced in the frame sampler as well as the
+  media listener: arrival settles, departure vanishes, and habits stop.
 - **Contract for checks:** the hero now holds two canvases and the gull's comes first, so a check
   must select the sea as `canvas[data-ocean]`, never the first canvas.
 

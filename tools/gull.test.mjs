@@ -24,6 +24,8 @@ import {
 } from "../components/gull/flight.ts";
 import { GLIDING, SITTING, flying } from "../components/gull/pose.ts";
 import { nextNoteAt, notesAt, restingNotes, singingAt, withSong } from "../components/gull/song.ts";
+import { contactOffset, measurePerch } from "../components/gull/placement.ts";
+import { NIGHT_REST_AFTER, shouldRest } from "../components/gull/rest.ts";
 
 const SCALE = 50;
 const BUTTON = 44;
@@ -59,6 +61,44 @@ test("the sitting gull rests on the button's floor and fits inside the pill", ()
   assert.ok(box.right - box.left < 62, `${box.right - box.left} px long`);
 });
 
+test("the reserved seat fits the bird at sitting and standing sizes, with a gap for the label", () => {
+  for (const height of [44, 48, 56]) {
+    const { scale, seat } = measurePerch(height);
+    const sitting = perchedAt({ ...perch([]), scale }, 0);
+    for (const frame of [sitting, withMoods(sitting, { alert: 1, asleep: 0 })]) {
+      const box = bounds(frame);
+      assert.ok(box.right - box.left < seat - 6, `bird fits the ${height} px control`);
+      assert.ok(-box.top < height - 10, `standing bird stays inside the pill`);
+    }
+  }
+});
+
+test("the belly or feet touch the perch for either heading, posture and control size", () => {
+  for (const height of [44, 48.5, 56, 64]) {
+    for (const heading of [-1, 1]) {
+      const { scale } = measurePerch(height);
+      const sitting = perchedAt({ scale, heading, habits: [] }, 0);
+      for (const moods of [
+        { alert: 0, asleep: 0 },
+        { alert: 0.5, asleep: 0 },
+        { alert: 1, asleep: 0 },
+        { alert: 0, asleep: 1 },
+      ]) {
+        const frame = withMoods(sitting, moods);
+        const facets = facetsOf(frame);
+        const bottom = Math.max(
+          ...facets
+            .filter(({ contact }) => contact)
+            .flatMap(({ points }) => points.map(([, y]) => y)),
+        );
+        assert.ok(Math.abs(bottom + contactOffset(facets, 0)) < 1e-9);
+        const hangingWing = { ...facets[0], contact: false, points: [[0, bottom + 30]] };
+        assert.equal(contactOffset([...facets, hangingWing], 0), contactOffset(facets, 0));
+      }
+    }
+  }
+});
+
 test("the arrival starts at the entry, never jumps, and ends sitting still on the perch", () => {
   const plan = planArrival(ENTRY, SCALE);
   const start = arrivalAt(plan, 0);
@@ -83,6 +123,24 @@ test("the arrival starts at the entry, never jumps, and ends sitting still on th
   );
   assert.ok(Math.abs(touchdown.y + STANDING_LIFT * SCALE) < 1e-6, "lands on its feet");
   assert.ok(touchdown.pose.legs > 0.99, "legs down to land");
+});
+
+test("even a nearby arrival starts at its entry and brakes without reversing", () => {
+  for (const entry of [
+    [-25, -10],
+    [25, -10],
+    [-350, 40],
+    [-1400, 135],
+  ]) {
+    const plan = planArrival(entry, SCALE);
+    const frames = samples(plan.flight, (t) => arrivalAt(plan, t));
+    assert.ok(Math.hypot(frames[0].x - entry[0], frames[0].y - entry[1]) < 0.01);
+    for (let i = 1; i < frames.length; i++)
+      assert.ok((frames[i].x - frames[i - 1].x) * plan.heading >= -0.01);
+    const landed = frames.at(-1);
+    assert.ok(Math.abs(landed.x) < 0.01);
+    assert.ok(Math.abs(landed.y + STANDING_LIFT * SCALE) < 0.01);
+  }
 });
 
 test("it flaps at a gull's pace, in bursts with glides between", () => {
@@ -200,6 +258,38 @@ test("the takeoff stands, leaves for the exit and fades out small", () => {
   assert.ok(end.scale < 0.2 * SCALE);
   assert.ok(Math.hypot(end.x - EXIT[0], end.y - EXIT[1]) < 1, "reaches the exit");
   assert.ok(departureAt(plan, 0.15).pose.legs > 0.9, "stands before it jumps");
+  assert.ok(departureAt(plan, 0.6).y < -STANDING_LIFT * SCALE, "climbs immediately after launch");
+});
+
+test("a press during flight or a hover starts departure from the current pose", () => {
+  const arrival = planArrival(ENTRY, SCALE);
+  for (const from of [
+    arrivalAt(arrival, 1),
+    arrivalAt(arrival, arrival.flight - 0.1),
+    withMoods(perchedAt(perch([]), 0), { alert: 1, asleep: 0 }),
+  ]) {
+    const start = departureAt(planDeparture(from, EXIT), 0);
+    for (const key of ["x", "y", "scale", "yaw", "pitch", "roll", "elevation"])
+      assert.equal(start[key], from[key], key);
+    assert.deepEqual(start.pose, from.pose);
+  }
+});
+
+test("night offers one phrase, fewer quiet habits, then rests until engaged", () => {
+  assert.ok(notesAt(0.9, { ...SONG_REACH, night: true }).length > 0);
+  assert.deepEqual(notesAt(8, { ...SONG_REACH, night: true }), []);
+  assert.equal(nextNoteAt(2, true), Infinity);
+  assert.equal(singingAt(8, true), false);
+  for (let seed = 1; seed < 40; seed++) {
+    const habits = habitsFor(seed, true);
+    assert.ok(habits.length <= 3 && habits.every(({ kind }) => ["look", "blink"].includes(kind)));
+  }
+  const attention = { night: true, since: NIGHT_REST_AFTER, idle: 0, engaged: false };
+  assert.equal(shouldRest(attention), true);
+  assert.equal(shouldRest({ ...attention, engaged: true }), false);
+  assert.equal(shouldRest({ ...attention, night: false }), false);
+  assert.equal(shouldRest({ ...attention, since: 0 }), false);
+  assert.equal(shouldRest({ ...attention, idle: 3, engaged: true }), true);
 });
 
 test("hovering stands the gull up, idling sends it to sleep, and the head follows the pointer", () => {

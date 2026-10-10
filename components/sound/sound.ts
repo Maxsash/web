@@ -46,7 +46,6 @@ function remember(name: Choice, on: boolean) {
 }
 
 export const wavesChosen = () => choice("waves");
-export const wavesDeclined = () => !wavesChosen() && remembered("waves") === "off";
 export const soundsChosen = () => choice("sounds");
 const anySound = () => wavesChosen() || soundsChosen();
 

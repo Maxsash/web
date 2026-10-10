@@ -126,11 +126,15 @@ function flank(x: number, y: number) {
   );
 }
 
-function painter(view: View, rotation: Rotation) {
-  const project = (point: V3): [number, number] => {
+const projector =
+  (view: View, rotation: Rotation) =>
+  (point: V3): [number, number] => {
     const [x, y] = turn(rotation, point);
     return [view.x + x * view.scale, view.y - y * view.scale];
   };
+
+function painter(view: View, rotation: Rotation) {
+  const project = projector(view, rotation);
   const depthOf = (point: V3) => turn(rotation, point)[2];
   const shade = (facing: V3) => 0.62 + 0.38 * Math.max(0, dot(facing, LIGHT));
   const facingOf = (turned: V3[]) =>
@@ -342,6 +346,11 @@ export function gullFacets(pose: Pose, view: View): Facet[] {
   return groups
     .sort((a, b) => a.depth - b.depth)
     .flatMap((group) => group.facets.sort((a, b) => a.depth - b.depth));
+}
+
+export function beakTip(pose: Pose, view: View) {
+  const place = (point: V3) => add(neckOf(pose), turn(headRotation(pose, view), point));
+  return projector(view, orientation(view))(place(BILL_TIP));
 }
 
 export function lookTowards(pose: Pose, view: View, toward: V3) {

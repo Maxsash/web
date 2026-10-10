@@ -1,6 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { SITTING_LIFT, STANDING_LIFT, gullFacets, lookTowards } from "../components/gull/body.ts";
+import {
+  SITTING_LIFT,
+  STANDING_LIFT,
+  beakTip,
+  gullFacets,
+  lookTowards,
+} from "../components/gull/body.ts";
 import {
   arrivalAt,
   arrivalLength,
@@ -17,9 +23,10 @@ import {
   withMoods,
 } from "../components/gull/flight.ts";
 import { GLIDING, SITTING, flying } from "../components/gull/pose.ts";
+import { nextNoteAt, notesAt, restingNotes, singingAt, withSong } from "../components/gull/song.ts";
 
 const SCALE = 50;
-const HEADROOM = 21;
+const BUTTON = 44;
 const ENTRY = [-1400, 135];
 const EXIT = [-550, 255];
 const perch = (habits = habitsFor(7)) => ({ scale: SCALE, heading: 1, habits });
@@ -45,10 +52,10 @@ function samples(length, frameAt, step = 1 / 60) {
   return frames;
 }
 
-test("the sitting gull rests on the button and fits the 21 px above the hero's", () => {
+test("the sitting gull rests on the button's floor and fits inside the pill", () => {
   const box = bounds(perchedAt(perch([]), 0));
-  assert.ok(Math.abs(box.bottom) < 1.5, `belly ${box.bottom} px from the edge`);
-  assert.ok(box.top > -HEADROOM + 2, `${-box.top} px tall`);
+  assert.ok(Math.abs(box.bottom) < 1.5, `belly ${box.bottom} px from the floor`);
+  assert.ok(-box.top < BUTTON / 2, `${-box.top} px tall in a ${BUTTON} px pill`);
   assert.ok(box.right - box.left < 62, `${box.right - box.left} px long`);
 });
 
@@ -126,14 +133,64 @@ test("habits come from the seed, leave long pauses, peck at most once and then s
   assert.equal(nextHabitAt(resting, first - 0.5), first);
 });
 
-test("turning round passes through facing the viewer and ends facing the other way", () => {
-  const habits = [{ at: 1, kind: "turn", value: 0 }];
-  const turning = perch(habits);
-  assert.equal(Math.cos(perchedAt(turning, 0.9).yaw), 1);
-  const middle = perchedAt(turning, 1 + 0.3 + 0.55);
-  assert.ok(Math.abs(Math.cos(middle.yaw)) < 0.05 && Math.sin(middle.yaw) < 0, "faces the viewer");
-  assert.ok(Math.cos(perchedAt(turning, 3).yaw) < -0.999, "now faces left");
-  assert.ok(Math.abs(perchedAt(turning, 3).y + SITTING_LIFT * SCALE) < 1e-6, "sits again");
+const SONG_REACH = { scale: SCALE, heading: 1 };
+
+test("the beak tip is where the bill ends, whichever way the head is turned", () => {
+  const sitting = perchedAt(perch([]), 0);
+  for (const headYaw of [0, -0.9, 0.6]) {
+    const frame = { ...sitting, pose: { ...sitting.pose, headYaw } };
+    const [x, y] = beakTip(frame.pose, frame);
+    const nearest = Math.min(
+      ...facetsOf(frame)
+        .filter((facet) => facet.tone === "bill")
+        .flatMap((facet) => facet.points)
+        .map(([bx, by]) => Math.hypot(bx - x, by - y)),
+    );
+    assert.ok(nearest < 1.2, `head yaw ${headYaw}: ${nearest.toFixed(2)} px from a bill vertex`);
+  }
+});
+
+test("the song starts soon after landing, comes in phrases and ends well before the gull sleeps", () => {
+  assert.deepEqual(notesAt(0.3, SONG_REACH), []);
+  assert.equal(singingAt(0.3), false);
+  assert.equal(nextNoteAt(0), 0.7);
+  assert.ok(notesAt(1.6, SONG_REACH).length >= 2, "a phrase is several notes");
+  assert.deepEqual(notesAt(45, SONG_REACH), []);
+  assert.equal(nextNoteAt(45), Infinity);
+  let silent = 0,
+    longest = 0;
+  for (let t = 0; t < 45; t += 0.05) {
+    silent = singingAt(t) ? 0 : silent + 0.05;
+    longest = Math.max(longest, silent);
+  }
+  assert.ok(longest > 3, `${longest.toFixed(1)} s of quiet between phrases`);
+});
+
+test("every note rises from the beak forward, fades in and out, and stays within the pill's sky", () => {
+  for (let t = 0; t < 40; t += 0.05) {
+    for (const note of notesAt(t, SONG_REACH)) {
+      assert.ok(note.alpha >= 0 && note.alpha <= 1);
+      assert.ok(note.y < 0 && note.y > -1.1 * SCALE, `${note.y.toFixed(0)} px above the beak`);
+      assert.ok(note.x > -0.1 * SCALE && note.x < 0.8 * SCALE, `${note.x.toFixed(0)} px forward`);
+      assert.ok(Number.isFinite(note.radius) && note.radius > 1);
+    }
+  }
+  const [first] = notesAt(0.7 + 0.01, SONG_REACH);
+  assert.ok(first.alpha < 0.1, "fades in");
+  const [last] = notesAt(0.7 + 1.85, SONG_REACH);
+  assert.ok(last.alpha < 0.1, "fades out");
+  assert.deepEqual(
+    restingNotes(SONG_REACH).map((note) => note.alpha),
+    [1, 1],
+  );
+});
+
+test("the head lifts for each note and is untouched between phrases", () => {
+  const sitting = perchedAt(perch([]), 0);
+  assert.equal(withSong(sitting, 0.3), sitting);
+  const lifted = withSong(sitting, 0.7 + 0.175);
+  assert.ok(lifted.pose.headPitch > sitting.pose.headPitch + 0.25);
+  assert.equal(withSong(sitting, 3.5), sitting);
 });
 
 test("the takeoff stands, leaves for the exit and fades out small", () => {

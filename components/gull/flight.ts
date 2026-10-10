@@ -195,18 +195,17 @@ function settling(plan: Arrival, landed: Frame, t: number): Frame {
 
 type Habit = {
   at: number;
-  kind: "look" | "blink" | "ruffle" | "peck" | "turn";
+  kind: "look" | "blink" | "ruffle" | "peck";
   value: number;
 };
 
-const HABIT_SECONDS = { look: 0.12, blink: 0.14, ruffle: 0.55, peck: 0.8, turn: 1.8 };
+const HABIT_SECONDS = { look: 0.12, blink: 0.14, ruffle: 0.55, peck: 0.8 };
 const HABITS = { first: 1.4, gap: 4, spread: 6.5, until: 45, firstPeck: 8 };
 const KINDS: [Habit["kind"], number][] = [
   ["look", 0.5],
   ["blink", 0.72],
   ["ruffle", 0.82],
-  ["peck", 0.9],
-  ["turn", 1],
+  ["peck", 1],
 ];
 const PECKS = [0.32, 0.6];
 
@@ -227,11 +226,6 @@ export function habitsFor(seed: number): Habit[] {
 
 export type Perch = { scale: number; heading: number; habits: Habit[] };
 
-function headingAt(perch: Perch, t: number) {
-  const turns = perch.habits.filter((habit) => habit.kind === "turn" && habit.at + 0.9 <= t).length;
-  return perch.heading * (turns % 2 ? -1 : 1);
-}
-
 export function movingAt(perch: Perch, t: number) {
   return perch.habits.some((habit) => t >= habit.at && t < habit.at + HABIT_SECONDS[habit.kind]);
 }
@@ -249,12 +243,7 @@ function headAt(perch: Perch, t: number) {
   for (const habit of perch.habits) {
     if (habit.at > t) break;
     if (habit.kind === "look")
-      yaw = mix(
-        yaw,
-        habit.value * headingAt(perch, habit.at),
-        ease((t - habit.at) / HABIT_SECONDS.look),
-      );
-    if (habit.kind === "turn") yaw = 0;
+      yaw = mix(yaw, habit.value * perch.heading, ease((t - habit.at) / HABIT_SECONDS.look));
   }
   return yaw;
 }
@@ -265,10 +254,8 @@ export function perchedAt(perch: Perch, t: number): Frame {
   const active = habit && since < HABIT_SECONDS[habit.kind] ? habit.kind : null;
   let pose: Pose = { ...SITTING, headYaw: headAt(perch, t) };
   let pitch = 0,
-    roll = 0,
-    lift = SITTING_LIFT;
-  const heading = headingAt(perch, t);
-  let yaw = facing(heading);
+    roll = 0;
+  const yaw = facing(perch.heading);
   if (active === "blink") pose = { ...pose, eye: 0 };
   if (active === "ruffle") {
     pose = { ...pose, fluff: 0.35 + 0.65 * pulse(since, 0, 0.55) };
@@ -279,15 +266,9 @@ export function perchedAt(perch: Perch, t: number): Frame {
     pose = { ...pose, headYaw: 0, headPitch: -0.9 * dip, neck: 0.2 + 0.3 * dip };
     pitch = -0.32 * pulse(since, 0.05, 0.75);
   }
-  if (active === "turn") {
-    const up = Math.min(ramp(since, 0, 0.3), 1 - ramp(since, 1.4, 0.4));
-    pose = mixPose(pose, { ...STANDING, headYaw: 0 }, up);
-    lift = mix(SITTING_LIFT, STANDING_LIFT, up);
-    yaw = facing(headingAt(perch, habit!.at)) - Math.PI * ramp(since, 0.3, 1.1);
-  }
   return {
     x: 0,
-    y: -lift * perch.scale,
+    y: -SITTING_LIFT * perch.scale,
     scale: perch.scale,
     yaw,
     pitch,

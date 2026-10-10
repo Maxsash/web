@@ -1,9 +1,11 @@
 import { mix } from "../observatory/vec3.ts";
 import type { Facet, Tone } from "./body.ts";
+import type { Note } from "./song.ts";
 
 type Colour = [number, number, number];
 type Plumage = Record<Tone, Colour>;
 export type Look = { night: boolean; ink: number; opacity: number };
+type Ink = Omit<Look, "opacity">;
 
 const DAY: Plumage = {
   white: [0.96, 0.95, 0.9],
@@ -58,4 +60,57 @@ export function paintGull(
     context.stroke();
   }
   context.globalAlpha = 1;
+}
+
+function notePath(context: CanvasRenderingContext2D, { radius: r, pair }: Note) {
+  const stem = (x: number, y: number) => {
+    context.moveTo(x + r * 0.85, y);
+    context.lineTo(x + r * 0.85, y - r * 3.6);
+  };
+  context.beginPath();
+  context.ellipse(0, 0, r * 1.15, r * 0.8, -0.45, 0, Math.PI * 2);
+  if (pair) {
+    context.moveTo(r * 3.9, -r * 0.7);
+    context.ellipse(r * 3.2, -r * 0.7, r * 1.15, r * 0.8, -0.45, 0, Math.PI * 2);
+    context.moveTo(r * 0.85, -r * 3.6);
+    context.lineTo(r * 4.05, -r * 4.6);
+    context.lineTo(r * 4.05, -r * 3.7);
+    context.lineTo(r * 0.85, -r * 2.7);
+    context.closePath();
+  } else {
+    context.moveTo(r * 0.85, -r * 3.6);
+    context.quadraticCurveTo(r * 2.4, -r * 3, r * 1.9, -r * 1.6);
+    context.quadraticCurveTo(r * 1.9, -r * 2.6, r * 0.85, -r * 2.7);
+    context.closePath();
+  }
+  stem(0, 0);
+  if (pair) stem(r * 3.2, -r * 0.7);
+}
+
+export function paintNotes(
+  context: CanvasRenderingContext2D,
+  notes: Note[],
+  [originX, originY]: [number, number],
+  { night, ink }: Ink,
+) {
+  const colour = css(
+    blend(
+      night ? (DAY.bill.map((c, i) => c * MOONLIT[i]) as Colour) : DAY.bill,
+      night ? LINE.night : LINE.day,
+      ink,
+    ),
+  );
+  context.fillStyle = context.strokeStyle = colour;
+  context.lineJoin = context.lineCap = "round";
+  for (const note of notes) {
+    context.save();
+    context.translate(originX + note.x, originY + note.y);
+    context.rotate(note.tilt);
+    context.globalAlpha = note.alpha;
+    context.lineWidth = note.radius * 0.36;
+    notePath(context, note);
+    context.fill();
+    context.stroke();
+    context.restore();
+  }
 }

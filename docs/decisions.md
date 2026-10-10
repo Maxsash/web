@@ -156,12 +156,16 @@ each group. How the code is built: [architecture.md](architecture.md).
   (`../web-research/reports/Website feedback beyond sound.md`) shaped the rules: motion onset
   catches the eye but travelling motion distracts most, so it arrives once, after the button has
   been in view for 3 s and scrolling has stopped, flies in under 5 s, then moves only in place,
-  rarely, and is still after 45 s; it never returns once the waves are played, turned off or all
-  sounds muted, and nothing about it is stored. It sits rather than stands because the hero button
-  has 21 px above it. Pressing the gull presses the button (its hit area is part of the button);
-  the button's words stay the accessible signal. "Still the sea" freezes it; reduced motion shows
-  it perched and still. In the drawing chapters it becomes its own ink wireframe. No study shows a
-  creature on a control raises clicks; it is kept for delight and is one prop to remove.
+  rarely, and is still after 45 s; it leaves when the waves start and nothing about it is stored.
+  **It comes on every page load while the waves are off, even for a visitor who muted the sounds
+  or turned the waves off before** (owner, 10 October 2026: that visitor may be happy to hear them
+  today); it used to stay away from them. To make it an obvious, deliberate invitation it sings:
+  amber notes leave its beak in phrases until 36 s. It sits **inside** the pill, on its floor, and
+  the pill widens for it as it lands: on top there were 21 px of room (none for notes), and over
+  the label it would hide the words that are the accessible signal. Pressing the gull is pressing
+  the button (it is inside it). "Still the sea" freezes it; reduced motion shows it perched and
+  still, with two still notes. In the drawing chapters it becomes its own ink wireframe. No study
+  shows a creature on a control raises clicks; it is kept for delight and is one prop to remove.
 - **Scroll cost is measured, not assumed.** A smooth settle of the headings' font axes reflowed
   them every frame (95 layouts in one scroll), so they settle in three steps. The depth line and
   the reading ribbon cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame

@@ -3,8 +3,9 @@
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
 - [ ] **Feedback on real devices.** Built and kept; listen on real speakers and headphones, and
-      try a phone (a tap's press, the ripple under a finger, Android vibration) and a screen
-      reader with the notices. What was not built is listed in [feedback.md](feedback.md).
+      try a phone (a tap's press, the ripple under a finger, Android vibration, the gull landing
+      and taking off) and a screen reader with the notices. What was not built is listed in
+      [feedback.md](feedback.md).
 - [ ] **Phone length.** After the structure run the phone page is 15.4 screens, Work alone 6.3
       (five projects). If it feels long on the iPhone, the four smaller cards are the place to
       cut (a shorter summary, or the screenshots smaller).
@@ -14,6 +15,11 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       repository: the owner's call.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
+- [ ] **A post from the feedback research and the gull** (owner, 10 October 2026: "we might be able
+      to make a blog out of it"). Material: the report (`../web-research/reports/Website feedback
+      beyond sound.md`, also published as the owner's private doc "Make the sea answer every
+      scroll") and the gull's build ([feedback.md](feedback.md), `components/gull/`). Write it as a
+      draft in `content/posts/` when the owner asks.
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
       must respect reduced motion, keep sound opt-in, and cost nothing in accessibility):
   1. **Draw the plate in:** the engraving's lines draw themselves on first view, like ink.
@@ -62,6 +68,28 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       memory, `ghost-photo-yash.png`); only the headshot in About is approved for the repo.
 - [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
       exploration, parked for a hidden moment (the owner's suggestion). Not built.
-- [ ] **Stars at night, birds by day (owner's plan).** When they are built, add them wherever the
-      sky shows and it makes sense: the hero, and consider each error page (the storm and squall
-      skies are overcast, so probably not there; the open horizon of the 404 may suit birds).
+- [ ] **Stars at night, birds by day (owner's plan).** The gull now exists (`components/gull/`, on
+      "Play waves"), and its model can fly in any sky: `gullFacets` with the flying poses, or three
+      to nine boids hanging in the wind (the research's calmest ambient motion). Where a sky shows:
+      the hero (day birds; night stars inside the WebGL pass), the 404's open horizon (birds fit),
+      the notebook 404 and the half-drawn plate (maybe, as drawings), the crash and storm pages
+      (no: overcast). Stars should twinkle slowly, far below three flashes a second; the real moon
+      phase needs only the date.
+- [ ] **Ideas from the feedback research** (`../web-research/reports/Website feedback beyond
+      sound.md`, 10 October 2026; nothing built). Cheapest first: scroll speed as one shader
+      uniform (foam and ink bleed that dry back at rest) and a `scrollend` settle (the compass
+      settling on a heading); then the sea's own mathematics as feedback (marks riding phase and
+      group velocity, scrubbable wave terms held to the dispersion curve, a "which waves arrive
+      first?" swell-sorting question, a float tracing the water's orbits beside the pointer); the
+      ship rolling and recovering instead of a shaking field; a ship's log of distance run; other
+      visitors as faint footprints in the sand (needs a socket service and a privacy line).
+- [ ] **Haptics, per the research.** Only Chromium on Android vibrates; Android recommends 10–20
+      ms ticks, so the 2–5 ms pulses in today's 2–18 ms range are probably not felt. Since iOS
+      26.5 a script cannot fire the switch haptic; an iPhone tick needs a real tap on a native
+      switch (the sound control could become one). One tick per deliberate action, none on scroll.
+- [ ] **Compositor-only scroll animation.** The medal and compass animate a registered
+      `--progress`, which runs on the main thread in every browser; `rotate` and `opacity`
+      keyframes placed directly on the `view()` timeline would be threaded in Chrome and Safari
+      26.4+. Safari 27.0 still has two scroll-timeline bugs (view timelines freezing inside a
+      sticky ancestor; fades to `opacity: 0` staying visible), fixed only in Technology Preview
+      254: check the iPhone.

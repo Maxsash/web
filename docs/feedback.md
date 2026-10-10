@@ -45,7 +45,7 @@ the gull (below), built; its second step (singing, inside the pill) is uncommitt
 | Everywhere  | Link within the page            | whoosh (`glide`)          | The glide (existed)                                             | same                                       |
 | Everywhere  | Link off the site or a new tab  | sail filling, creak (`leave`) |                                                             | same                                       |
 | Everywhere  | Email link                      | ship's bell (`mail`)      | Notice: "Opening your mail app. The address is …"               | same                                       |
-| Everywhere  | Select text; copy it            | pen scratch (`select`, `copy`) | Rust highlighter; notice "Copied."                         | same                                       |
+| Everywhere  | Select text; copy it            | pen scratch (`select`, `copy`) | Buff (chart land) highlighter; notice "Copied."            | same                                       |
 | Everywhere  | Open or close a disclosure      | latch (`unfold`, `fold`)  | Studio's "Inside the sea" unfolds                               | same, `SeaStudio.module.css`               |
 | Everywhere  | Cross into a section            | passing swell (`cross`)   |                                                                 | `components/feedback/arrivals.ts`          |
 | Everywhere  | Tab hidden, then back           | (waves fade, existed)     | Title "At anchor · …" and an anchor favicon; "Welcome back · …" for 3 s | `components/feedback/presence.ts`  |
@@ -59,14 +59,14 @@ the gull (below), built; its second step (singing, inside the pill) is uncommitt
 | Hero        | Phone: swipe a stage            | swell, 10 ms buzz (`swipe`) |                                                               | `OceanScene.tsx`                           |
 | Hero, shore | Still or resume the sea, shore  | wind drops, rises (`still`, `stir`) |                                                       | `OceanScene.tsx`, `Shoreline.tsx`          |
 | Hero        | "Make your own"                 | rope pulled taut (`rope`) | Nav underlines draw in left to right and retract                | `Hero.tsx`, `Observatory.module.css`       |
-| Sections    | A section's kicker arrives      |                           | Kicker types in; the heading under it sets from soft to crisp in three steps | `Kicker.tsx`, `Section.module.css` |
+| Sections    | A section's kicker arrives      |                           | Kicker types in; the heading under it inks in, pale to full, in three steps | `Kicker.tsx`, `Section.module.css` |
 | Work        | Hover a project image           | paper slide (`slide`)     | The plate lifts 4 px; its head rule inks in                     | `ProjectFeature.tsx`, `Work.module.css`    |
 | Work        | A system drawing arrives        | pen, box by box (`drawing`) | Boxes ink in one by one, then the arrows draw along the data | `SystemPlate.tsx`, `Work.module.css`       |
 | About       | Hover the medal                 | engraving scratch (`engrave`) | Lines return (existed)                                      | `Portrait.tsx`                             |
 | Contact     | Copy the address                | stamp (`success`) or thud (`refusal`) | "Address copied." (existed); copy cursor            | `copy-text.ts`                             |
 | Notebook    | The compass passes (desktop)    | dial ticks, like the medal | The needle swings 60° across the pass                          | `Compass.tsx`                              |
 | Notebook    | The band's rule arrives         |                           | The rule draws left to right                                    | `Section.module.css` (`drawnRule`)         |
-| Posts       | Reading                         |                           | A rust bookmark ribbon lengthens with the page                  | `ScrollMark.tsx`                           |
+| Posts       | Reading                         |                           | A magenta bookmark ribbon lengthens with the page               | `ScrollMark.tsx`                           |
 | Posts       | The author line arrives         | quill flourish (`end`)    |                                                                 | `ArticleParts.tsx`                         |
 | Studio      | A starting sea                  | chart pin, 8 ms (`preset`) | The chip for the current sea stays pressed (`aria-pressed`)    | `SeaStudio.tsx`                            |
 | Studio      | Roll the dice                   | dice rattle, buzzes (`dice`) | A drawn die tumbles and shows a face of the new sea          | `SeaStudio.tsx`, `Die.tsx`                 |
@@ -84,7 +84,8 @@ buttons, the theme switch), so they do not also click.
 
 Programmatic scroll through the hero, released build against this one, headless Chrome on an M4
 Pro: frame pacing unchanged (p95 16.7 ms, no long tasks), layouts 1–2 → 4–5 (the heading's three
-settle steps; a smooth settle cost 95 layouts and was changed). **The one exception:** the depth
+settle steps; a smooth settle cost 95 layouts and was changed; the settle is now opacity, with
+no layout). **The one exception:** the depth
 line (and the ribbon on posts) is a scroll-driven animation, and Chrome recalculates style once per
 frame for it (357 recalcs against 125 without it, about 0.1 ms a frame here). The medal's timeline
 already does the same. If that is too much, delete `<ScrollMark kind="depth" />` from

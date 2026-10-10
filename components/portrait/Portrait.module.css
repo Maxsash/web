@@ -81,7 +81,7 @@
 .legend {
   fill: currentColor;
   stroke: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 13px;
   letter-spacing: 2.6px;
 }

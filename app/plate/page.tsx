@@ -35,9 +35,7 @@ export default async function PlatePage({ searchParams }: Props) {
       <header className={styles.bar}>
         <div>
           <p className={styles.kicker}>Field plate · {seed}</p>
-          <h1>
-            Your sea, <em>kept.</em>
-          </h1>
+          <h1>Your sea, kept.</h1>
           <p>{words}. Printed from the exact waves you made, frozen at one moment.</p>
         </div>
         <div className={styles.actions}>

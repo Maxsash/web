@@ -41,7 +41,7 @@
   .plate:hover,
   .plainPlate:hover {
     translate: 0 -4px;
-    box-shadow: 0 16px 26px -20px #17383d80;
+    box-shadow: 0 16px 26px -20px color-mix(in oklab, var(--ink) 50%, transparent);
   }
   .plate:hover .plateHead {
     border-bottom-color: var(--ink);
@@ -72,7 +72,7 @@
 }
 .description p:not(.kicker),
 .entry p:not(.kicker) {
-  color: var(--muted);
+  color: var(--ink-2);
   line-height: 1.7;
   max-width: 32rem;
 }
@@ -99,7 +99,7 @@
 }
 .entry p.meta {
   margin-block: 1rem 0.5rem;
-  font: 0.7rem/1.7 var(--font-mono);
+  font: 0.7rem/1.7 var(--font-sans);
   letter-spacing: 0.04em;
   color: var(--ink);
 }
@@ -116,9 +116,9 @@
 }
 .band text,
 .note {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   letter-spacing: 0.08em;
-  fill: var(--muted);
+  fill: var(--ink-2);
 }
 .band text {
   font-size: 7px;
@@ -142,7 +142,7 @@
   font-size: 7.5px;
 }
 .link {
-  stroke: #875136;
+  stroke: var(--accent);
   stroke-width: 1;
   stroke-dasharray: 1;
 }
@@ -173,16 +173,16 @@
   }
 }
 .system marker path {
-  fill: #875136;
+  fill: var(--accent);
 }
 .footer {
   border-top: 1px solid var(--rule);
   padding-top: 1.5rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   line-height: 1.7;
   letter-spacing: 0.02em;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 .footer a {
   display: inline-flex;
@@ -202,10 +202,4 @@
   .feature .description {
     max-width: 34rem;
   }
-}
-:global(html[data-studio-theme="night"]) .link {
-  stroke: #e4967c;
-}
-:global(html[data-studio-theme="night"]) .system marker path {
-  fill: #e4967c;
 }

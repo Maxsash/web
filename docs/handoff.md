@@ -1,69 +1,70 @@
 # Handoff — start here
 
 Updated 10 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 014a375. Ship changes are uncommitted. Nothing committed, pushed or deployed.
+HEAD 0d76507. Font and theme sprint is implemented and **uncommitted** for owner review.
+Nothing committed, pushed or deployed.
 
-## Current state
+## Font and theme sprint (awaiting owner review)
 
-- Owner asked for a unique, refined ship reflecting the whole website.
-- Main hero now has an authored survey cutter in the atlas palette: shaped ink
-  hull, rust sheer stripe, brass trim, plank deck, skylight, cockpit and tiller.
-- Gaff mainsail, jib, bowsprit and fine rigging give it a distinct silhouette.
-  Bone canvas has seams and a sewn rust compass rose on both faces; a narrow
-  pennant follows the breeze. GPU cloth movement keeps the fittings rigid.
-- Five hull stations sampled at three times soften short chop while following
-  long swell. Heel/pitch are bounded; heading and drift are restrained.
-  The directional shadow and wake follow the actual ship position and heading.
-- Opening placement fits the projected model around actual copy and controls.
-  Drawing camera frames the same vessel, keeping its construction legible.
-  Enlarged portrait copy uses open water on the left when the right is crowded.
-- Approved mobile timings (1.8 s/0.6 s), sea versions, page structure, fallback
-  plate and error-page shader defaults are retained. No dependencies/assets added.
-- Pure geometry, motion and composition are separate from rendering/lifecycle.
-  Removed the obsolete fixed modelMatrix and replaced its ship snapshot with
-  meaningful geometry/behaviour checks. Context loss releases the cloth buffer.
-- Production review: http://localhost:3014/?seed=70806d5e&version=2
-  Detached worktree /private/tmp/maxsash-ship-review, server session 39633,
-  left running. Only this turn's port 3014 server was restarted.
-  Existing servers 3000/3012/3013 were not stopped.
+- Why: headings were hard to read (Fraunces at −0.055 to −0.08em) and the site carried the
+  stock Claude/AI look (Fraunces + Inter + JetBrains Mono, mono kickers, roman line + accent
+  italic line, bone paper + rust). Decision: decisions.md "Type and colour of their own".
+  Specimen (both rounds): https://claude.ai/artifact/FDizE3EAiy2JvQaKiBuqzJ
+- Final type ("Logbook slab", round 2): Montagu Slab (display and essay text), Rethink Sans
+  (text, labels), Reddit Mono (data only). All have next/font fallback metrics: clean build.
+  Montagu has no italic; *Math.* and essay emphasis use the browser's slanted roman.
+  Preloaded fonts 185 KB (was 206 KB with Fraunces).
+- Palette: Admiralty chart, one token layer in `globals.css` (night via
+  `html[data-studio-theme]`; fixed `--chart-*` for day-only pages); sea/hero colours untouched.
+- Also: decorative italics removed (Math. kept); project and error-page headlines are single
+  strings; kicker arrival inks headings in by opacity; Notebook masthead sized per breakpoint;
+  About name capped at 14cqi; hero section links have a 24 px minimum width; night studio
+  plate uses invert + 180° hue + screen; shore water and printable plate recoloured.
+- Owner judgement wanted: essays' paragraphs are set in Montagu Slab (wide, characterful);
+  if they feel heavy for long reading, switch `.readingCopy` text to Rethink Sans.
+- Not changed: the private `/write` editor (own cream colours); hero fallback night filter.
+- Review: http://localhost:3015/?seed=70806d5e&version=2 (worktree
+  /private/tmp/maxsash-type-review, server started this session). Screenshots in the
+  scratchpad shots/ (before-*, slab-*, slabnight-*). Servers 3000/3012/3013/3014 untouched.
 
 ## Next / open items
 
-1. Owner review of the ship in the main hero, both themes and the drawing reveal.
-2. Physical iPhone/Safari/Firefox, screen readers and battery/GPU qualification
-   remain unverified. Existing mobile timings stay as approved.
-3. Owner chooses commit/release; main never deploys, production does.
+1. Owner review of the type and theme (home day/night, Notebook, an essay, phone), the
+   slashed zero, then commit. Ship review in both themes is still open too.
+2. Physical iPhone/Safari/Firefox checks: ship/gull, stage controls, studio, sound,
+   screen-reader notices and battery/GPU behaviour. Review phone page length too.
+3. Performance/hosting: rerun PageSpeed after hero changes, decide function region,
+   consider a shorter static-fallback hero, and add the recorded Vercel rate limits.
+4. Search: recheck Search Console's sitemap fetch and indexing; real share previews.
+5. Content: edit/publish two drafts, replace sample essays before enabling indexing,
+   and later bring the five case studies onto `/work/<project>`.
+6. Engineering: investigate browser harness processes lingering after completion;
+   add error-page browser coverage and whirlpool shader/CPU parity coverage.
+7. Optional creative backlog: Notebook treatments, night SVG colours, stars/birds,
+   feedback refinements and Easter eggs. Code cleanup step 6 remains ideas only.
+8. Owner handles release through production; main never deploys. Current release
+   state is unknown. Full backlog: [follow-ups.md](follow-ups.md).
 
-## Verification
+## Verification (font and theme sprint)
 
-- Node 24 production build, lint, types, format, 114 Node tests, 20 SEO cases,
-  headers, 20/20 keyboard checks and 193 creative records pass.
-  No failed assertions, overflow, GL errors or runtime exceptions.
-- 36/36 ship browser checks pass: actual geometry clear of text/viewport,
-  day/night/Drawing at six sizes from 320 × 568 to 2560 × 1440, 150% text,
-  live rotation, reduced motion, pause/resume and native touch-emulated
-  intermediate reveal/return. Inspected desktop, phone, landscape and large text.
-- Five new pure checks cover finite/nondegenerate triangles, cloth/rigid
-  separation, bounded continuous buoyancy, chop damping and composition.
-- Full creative suite's Mac GPU desktop sample: 1,801 frames over 30 s,
-  p95 16.7 ms, zero long tasks, high quality. Not physical-device evidence.
-  Ship-specific browser checks use SwiftShader. Gull/sound suites not rerun.
-- All builds/tests ran only in the detached worktree on Node 24.
-  Dependencies are local APFS copies of the identical installed node_modules.
-- Evidence: worktree tools/.out/ship/ and tools/.out/creative-home/.
-  Logs: /private/tmp/maxsash-ship-*.log. Details in testing.md.
+- Node 24 production build, no warnings; lint, types, format; 114 Node tests; 20 SEO cases;
+  headers; keyboard 20/20; ship 36/36; gull 47; software fallback; sound; creative 193
+  records, 0 exceptions, no overflow. Headline fit rechecked after the final 14cqi tweak.
+- Not verified: physical devices, screen readers, `/write`, hero fallback plate at night.
+- Logs: /private/tmp/maxsash-type-*.log. Details in testing.md.
 
 ## Suggested commit message
 
 ```
-feat: craft an atlas survey cutter
+feat: give the site its own type and Admiralty chart palette
 
-Replace the basic sailboat with a procedural cutter in ink, rust, brass and
-bone canvas. Add useful deck fittings, rigging, compass stitching and restrained
-cloth motion. Sample buoyancy across the hull, align its wake and fit both the
-opening composition and drawing camera around copy and controls.
+Headings were hard to read (Fraunces tracked to -0.08em) and the stack,
+mono kickers, accent italics and bone-and-rust paper read as a stock AI look.
+Switch to Montagu Slab, Rethink Sans and Reddit Mono (data only), all with
+next/font fallback metrics; move every theme colour into one token layer in the
+chart palette, keep italic only for Math., refit headline sizes and ink kicker
+headings in by opacity.
 
-Verified on Node 24: production build, lint, types, format, 114 Node tests,
-SEO, headers, 20 keyboard checks, 193 creative records and 36 ship checks.
-Physical iPhone/Safari verification remains open.
+Verified on a Node 24 production build: lint, types, format, 114 Node tests,
+SEO, headers, keyboard 20/20, ship 36/36, gull, fallback, sound, creative 193.
 ```

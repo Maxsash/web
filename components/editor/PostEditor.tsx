@@ -12,7 +12,11 @@ type SaveState = "saved" | "dirty" | "saving" | "error";
 
 const TEXT_FIELDS: { key: keyof PostFields; label: string; hint?: string }[] = [
   { key: "title", label: "Title" },
-  { key: "emphasis", label: "Emphasis", hint: "The last words of the title, set in red italics" },
+  {
+    key: "emphasis",
+    label: "Emphasis",
+    hint: "The last words of the title, set in italics. Leave empty unless the stress matters",
+  },
   { key: "summary", label: "Summary" },
   { key: "topic", label: "Topic" },
   { key: "caption", label: "Cover caption" },

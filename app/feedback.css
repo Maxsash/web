@@ -8,7 +8,7 @@ a:hover {
 }
 
 ::selection {
-  background: color-mix(in oklab, #c0703f 34%, transparent);
+  background: color-mix(in oklab, var(--buff) 70%, transparent);
 }
 
 @media (prefers-reduced-motion: no-preference) {

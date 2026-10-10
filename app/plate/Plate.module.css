@@ -1,9 +1,9 @@
 .page {
   min-height: 100svh;
-  background: #e8e5d8;
-  color: #183538;
+  background: var(--chart-paper);
+  color: var(--chart-ink);
   padding: clamp(1rem, 4vw, 3rem);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans);
 }
 .page::before {
   display: none;
@@ -18,24 +18,15 @@
   margin: 0 auto 1.5rem;
 }
 .kicker {
-  font:
-    0.65rem/1.7 var(--font-mono-jb),
-    monospace;
+  font: 0.65rem/1.7 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 0.6rem;
 }
 .bar h1 {
   margin: 0 0 0.5rem;
-  font:
-    400 clamp(2.2rem, 5vw, 3.6rem)/1 var(--font-fraunces),
-    Georgia,
-    serif;
-  letter-spacing: -0.04em;
-}
-.bar h1 em {
-  color: #a94d35;
-  font-weight: 350;
+  font: 400 clamp(2.2rem, 5vw, 3.6rem)/1 var(--font-display);
+  letter-spacing: -0.01em;
 }
 .bar p {
   margin: 0;
@@ -58,24 +49,22 @@
   border-radius: 99px;
   background: transparent;
   color: inherit;
-  font:
-    0.7rem/1.3 var(--font-mono-jb),
-    monospace;
+  font: 0.7rem/1.3 var(--font-sans);
   text-decoration: none;
   cursor: pointer;
 }
 .actions button {
-  background: #183538;
-  color: #e8e5d8;
-  border-color: #183538;
+  background: var(--chart-ink);
+  color: var(--chart-paper);
+  border-color: var(--chart-ink);
 }
 .actions :is(a, button):hover {
   color: #fff;
-  background: #a94d35;
-  border-color: #a94d35;
+  background: var(--chart-magenta);
+  border-color: var(--chart-magenta);
 }
 .actions :is(a, button):focus-visible {
-  outline: 2px solid #a94d35;
+  outline: 2px solid var(--chart-magenta);
   outline-offset: 3px;
 }
 .sheet {
@@ -91,7 +80,7 @@
 .sheet figcaption {
   margin-top: 0.8rem;
   font-size: 0.78rem;
-  color: #3d5554;
+  color: #3f565e;
 }
 @media print {
   @page {

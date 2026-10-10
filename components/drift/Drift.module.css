@@ -1,8 +1,8 @@
 .page {
-  --drift-ink: #0f2f3a;
-  --drift-kicker: #0f2f3a;
+  --drift-ink: var(--chart-ink);
+  --drift-kicker: var(--chart-ink);
   --drift-accent: #135a72;
-  --drift-ground: #f4f1e6;
+  --drift-ground: var(--chart-sheet);
   --drift-plate: #cfe0dc;
   --drift-sky: linear-gradient(#5ca6c2, #a9cfd4 48%, #24525c 52%, #0d3a44);
   position: relative;
@@ -16,20 +16,20 @@
 }
 
 .notebook {
-  --drift-ink: #242722;
-  --drift-kicker: #ac402a;
-  --drift-accent: #ac402a;
-  --drift-ground: #eee9dd;
-  --drift-sky: linear-gradient(#eee9dd 50%, #1c4c55 50%, #0f3a43);
+  --drift-ink: #131f27;
+  --drift-kicker: var(--chart-magenta);
+  --drift-accent: var(--chart-magenta);
+  --drift-ground: #f2f3ee;
+  --drift-sky: linear-gradient(#f2f3ee 50%, #1c4c55 50%, #0f3a43);
 }
 
 .plate {
-  --drift-ink: #173f44;
-  --drift-kicker: #ac402a;
-  --drift-accent: #ac402a;
-  --drift-ground: #eee9dd;
-  --drift-plate: #173f44;
-  --drift-sky: linear-gradient(#cfd8d0, #e6e4d8 48%, #e9e6da);
+  --drift-ink: var(--chart-ink);
+  --drift-kicker: var(--chart-magenta);
+  --drift-accent: var(--chart-magenta);
+  --drift-ground: var(--chart-paper);
+  --drift-plate: var(--chart-ink);
+  --drift-sky: linear-gradient(#cfd8d0, #e4e8e2 48%, var(--chart-paper));
 }
 
 .squall {
@@ -151,7 +151,7 @@
 
 .kicker {
   margin: 0;
-  font: 500 0.75rem/1 var(--font-mono);
+  font: 500 0.75rem/1 var(--font-sans);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--drift-kicker);
@@ -162,11 +162,7 @@
   font-size: clamp(2.3rem, 6vw, 4.6rem);
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.025em;
-}
-
-.copy h1 em {
-  color: var(--drift-accent);
+  letter-spacing: -0.01em;
 }
 
 .body {
@@ -185,7 +181,7 @@
 
 .actions a,
 .actions button {
-  font: 500 0.78rem/1 var(--font-mono);
+  font: 500 0.78rem/1 var(--font-sans);
   letter-spacing: 0.06em;
   padding: 0.75rem 1rem;
   border: 1px solid var(--drift-ink);

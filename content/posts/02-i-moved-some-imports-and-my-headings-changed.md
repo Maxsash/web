@@ -4,7 +4,6 @@ summary: A refactor that was supposed to change nothing, a pixel-diff tool that 
 topic: Refactoring & CSS
 date: 2026-10-08
 status: draft
-emphasis: moved the headings
 caption: Two rules, one specificity, and an import order that decided between them.
 closing: No behaviour change is a claim, and a claim needs a tool.
 ---

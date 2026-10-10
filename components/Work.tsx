@@ -30,7 +30,7 @@ export default function Work() {
         <Kicker>Work</Kicker>
         <h2 id="work-heading">
           Ideas, made <br />
-          <em>tangible.</em>
+          tangible.
         </h2>
         <p className={section.lede}>
           For clients: a law practice found through search, a security system that runs in real

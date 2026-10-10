@@ -15,8 +15,7 @@ export default function SiteError() {
           <DriftFrame
             scene="storm"
             kicker="Everything stopped"
-            title="Caught in the"
-            emphasis="storm."
+            title="Caught in the storm."
             actions={
               <button type="button" onClick={() => window.location.reload()}>
                 Reload the page

@@ -1,22 +1,7 @@
 .page {
-  --obs-paper: #e8e5d8;
-  --obs-ink: #183538;
-  --obs-rust: #a94d35;
   --obs-gutter: clamp(1.25rem, 4vw, 4.5rem);
-  --paper: var(--obs-paper);
-  --paper-sunk: #e1ded1;
-  --ink: var(--obs-ink);
-  --ink-2: #3d5554;
-  --ink-3: #52615b;
-  --accent: #a24732;
-  --accent-soft: #d8ddd0;
-  --brass: #8b5932;
-  --teak: #8b4930;
-  --rule: #173f4430;
-  --rule-strong: #173f4460;
-  color: var(--obs-ink);
-  background: var(--obs-paper);
-  color-scheme: light;
+  color: var(--ink);
+  background: var(--paper);
 }
 .page::before,
 .page main::before {
@@ -26,25 +11,20 @@
 .page h2,
 .page h3 {
   font-weight: 450;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0,
-    "opsz" 144;
-  letter-spacing: -0.055em;
 }
 .skip {
   position: absolute;
   left: 1rem;
   top: 1rem;
   z-index: 40;
-  background: var(--obs-paper);
-  color: var(--obs-ink);
+  background: var(--paper);
+  color: var(--ink);
   padding: 0.8rem;
   translate: 0 -180%;
 }
 .skip:focus-visible {
   translate: 0 0;
-  outline: 2px solid var(--obs-ink);
+  outline: 2px solid var(--ink);
 }
 .story {
   --intro-opacity: 1;
@@ -93,7 +73,7 @@
   align-items: center;
   gap: 0.5rem;
   color: #e8e5d8;
-  font: 0.58rem/1.5 var(--font-mono);
+  font: 0.58rem/1.5 var(--font-sans);
 }
 .stageControls button {
   min-height: 44px;
@@ -110,7 +90,7 @@
 }
 .story[data-staged="true"][data-chapter="structure"] .stageControls,
 .story[data-staged="true"][data-chapter="atlas"] .stageControls {
-  color: var(--obs-ink);
+  color: var(--ink);
 }
 .story[data-staged="true"] .pause {
   bottom: var(--pause-bottom);
@@ -193,8 +173,13 @@
   z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(90deg, #e8e5d8fa, #e8e5d8e8 24%, transparent 75%),
-    linear-gradient(#e8e5d8, transparent 22%);
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--paper) 98%, transparent),
+      color-mix(in oklab, var(--paper) 91%, transparent) 24%,
+      transparent 75%
+    ),
+    linear-gradient(var(--paper), transparent 22%);
   opacity: var(--ink-progress);
 }
 .nav {
@@ -217,7 +202,6 @@
   font-size: 0.82rem;
   font-weight: 550;
   text-decoration: none;
-  letter-spacing: -0.02em;
 }
 .brand svg {
   width: 1.75rem;
@@ -237,6 +221,10 @@
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+}
+.nav nav a {
+  min-width: 24px;
+  justify-content: center;
 }
 .nav nav a::after {
   content: "";
@@ -260,7 +248,7 @@
 }
 .story[data-chapter="structure"] .nav,
 .story[data-chapter="atlas"] .nav {
-  color: var(--obs-ink);
+  color: var(--ink);
 }
 .intro {
   position: relative;
@@ -274,7 +262,7 @@
   pointer-events: none;
 }
 .eyebrow {
-  font: 0.59rem/1.6 var(--font-mono);
+  font: 0.59rem/1.6 var(--font-sans);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -287,8 +275,8 @@
   display: block;
 }
 .intro h1 em {
-  font-weight: 350;
-  color: #d5be8e;
+  font-weight: 400;
+  color: var(--gold);
 }
 .intro p:last-child {
   font-size: clamp(0.83rem, 1.1vw, 0.98rem);
@@ -303,7 +291,7 @@
   top: 19%;
   width: 12rem;
   color: #d6bb86;
-  font: 0.56rem/1.9 var(--font-mono);
+  font: 0.56rem/1.9 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   opacity: var(--intro-opacity);
@@ -331,7 +319,7 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  font: 0.58rem/1.7 var(--font-mono);
+  font: 0.58rem/1.7 var(--font-sans);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #d7dfd4;
@@ -348,7 +336,7 @@
 }
 .story[data-chapter="structure"] .chapterRail,
 .story[data-chapter="atlas"] .chapterRail {
-  color: var(--obs-ink);
+  color: var(--ink);
 }
 .pause {
   position: absolute;
@@ -364,7 +352,7 @@
   padding: 0;
   background: transparent;
   color: #d7dfd4;
-  font: 0.6rem/1.5 var(--font-mono);
+  font: 0.6rem/1.5 var(--font-sans);
   cursor: pointer;
 }
 .pause:disabled {
@@ -372,7 +360,7 @@
 }
 .story[data-chapter="structure"] .pause,
 .story[data-chapter="atlas"] .pause {
-  color: var(--obs-ink);
+  color: var(--ink);
   border-color: #49666066;
 }
 .end {
@@ -381,7 +369,7 @@
   left: var(--obs-gutter);
   right: var(--obs-gutter);
   top: 15%;
-  color: var(--obs-ink);
+  color: var(--ink);
   opacity: var(--end-opacity);
   pointer-events: none;
 }
@@ -408,11 +396,11 @@
   font-size: 0.8rem;
 }
 .textLink:hover {
-  color: var(--obs-rust);
+  color: var(--accent);
 }
 .publication {
-  background: #203536;
-  color: #e8e5d8;
+  background: var(--band);
+  color: var(--band-ink);
   padding: 4rem var(--obs-gutter) 5rem;
   position: relative;
   overflow: hidden;
@@ -424,13 +412,13 @@
   width: 12rem;
   height: auto;
   fill: none;
-  stroke: #e8e5d8;
+  stroke: var(--band-ink);
   stroke-width: 0.7;
   opacity: 0.45;
   pointer-events: none;
 }
 .compass .needle {
-  fill: #e8e5d818;
+  fill: color-mix(in oklab, var(--band-ink) 9%, transparent);
   stroke-width: 1;
   transform-box: view-box;
   transform-origin: 50% 50%;
@@ -438,10 +426,10 @@
 }
 .publicationTop {
   composes: drawnRule from "../Section.module.css";
-  --drawn-rule: #e8e5d849;
+  --drawn-rule: var(--band-rule);
   display: flex;
   justify-content: space-between;
-  font: 0.6rem/1.7 var(--font-mono);
+  font: 0.6rem/1.7 var(--font-sans);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding-bottom: 3rem;
@@ -457,17 +445,17 @@
   max-width: 20rem;
   font-size: 0.88rem;
   line-height: 1.8;
-  color: #c4cebc;
+  color: var(--band-muted);
   margin-top: 1.6rem;
 }
 .entries {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid #e8e5d849;
+  border-top: 1px solid var(--band-rule);
 }
 .entries li {
-  border-bottom: 1px solid #e8e5d849;
+  border-bottom: 1px solid var(--band-rule);
 }
 .entries a {
   display: grid;
@@ -477,37 +465,29 @@
   text-decoration: none;
 }
 .entries a:hover strong {
-  color: #c2a879;
+  color: var(--band-accent);
 }
 .entries a:focus-visible,
 .publication .textLink:focus-visible {
-  outline: 2px solid #c2a879;
+  outline: 2px solid var(--band-accent);
   outline-offset: 4px;
 }
 .entries strong {
-  font:
-    400 1.5rem/1.25 var(--font-fraunces),
-    Georgia,
-    serif;
-  letter-spacing: -0.03em;
+  font: 400 1.5rem/1.25 var(--font-display);
 }
 .entries span {
-  font: 0.6rem/1.7 var(--font-mono);
+  font: 0.6rem/1.7 var(--font-sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #c4cebc;
+  color: var(--band-muted);
 }
 .publication h2 {
   font-size: clamp(3.8rem, 8.5vw, 8.5rem);
   line-height: 0.97;
   max-width: 12ch;
 }
-.publication h2 em {
-  font-weight: 350;
-  color: #c2a879;
-}
 .publication .textLink {
-  color: #e8e5d8;
+  color: var(--band-ink);
 }
 @media (max-width: 72rem) {
   .compass {
@@ -561,8 +541,12 @@
   }
   .paperVeil {
     background:
-      linear-gradient(#e8e5d8, #e8e5d8ed 38%, transparent 68%),
-      linear-gradient(90deg, #e8e5d880, transparent 85%);
+      linear-gradient(
+        var(--paper),
+        color-mix(in oklab, var(--paper) 93%, transparent) 38%,
+        transparent 68%
+      ),
+      linear-gradient(90deg, color-mix(in oklab, var(--paper) 50%, transparent), transparent 85%);
   }
   .chapterRail {
     bottom: 1.2rem;
@@ -625,8 +609,13 @@
   }
   .paperVeil {
     background:
-      linear-gradient(90deg, #e8e5d8, #e8e5d8e8 25%, transparent 74%),
-      linear-gradient(#e8e5d8, transparent 22%);
+      linear-gradient(
+        90deg,
+        var(--paper),
+        color-mix(in oklab, var(--paper) 91%, transparent) 25%,
+        transparent 74%
+      ),
+      linear-gradient(var(--paper), transparent 22%);
   }
   .chapterRail,
   .pause {
@@ -638,24 +627,8 @@
     transition: none;
   }
 }
-:global(html[data-studio-theme="night"]) .page {
-  --obs-paper: #122126;
-  --obs-ink: #d8e2dc;
-  --paper-sunk: #192e34;
-  --ink-2: #bdcec7;
-  --ink-3: #9fb7b4;
-  --accent: #d4a880;
-  --rule: #b5d1ca30;
-  --rule-strong: #b5d1ca60;
-  color-scheme: dark;
-}
-:global(html[data-studio-theme="night"]) .paperVeil {
-  background:
-    linear-gradient(90deg, #122126fa, #122126e8 24%, transparent 75%),
-    linear-gradient(#122126, transparent 22%);
-}
-:global(html[data-studio-theme="night"]):global(html[data-studio-theme="night"]) .fallback {
-  background: #122126;
+:global(html[data-studio-theme="night"]) .fallback {
+  background: var(--paper);
 }
 :global(html[data-studio-theme="night"]) .fallback svg {
   filter: invert(0.86) hue-rotate(140deg);
@@ -755,7 +728,7 @@
   color: inherit;
   background: transparent;
   padding: 0.2rem 0.65rem;
-  font: 0.65rem/1.3 var(--font-mono);
+  font: 0.65rem/1.3 var(--font-sans);
   cursor: pointer;
 }
 @media (max-width: 48rem) {

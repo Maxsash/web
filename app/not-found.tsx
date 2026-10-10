@@ -9,8 +9,7 @@ export default function NotFound() {
     <DriftPage
       scene="horizon"
       kicker="Error 404"
-      title="Nothing on the"
-      emphasis="horizon."
+      title="Nothing on the horizon."
       actions={
         <>
           <Link prefetch={false} href="/">

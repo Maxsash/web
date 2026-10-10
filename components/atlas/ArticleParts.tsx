@@ -9,7 +9,7 @@ import styles from "./Atlas.module.css";
 type HeadProps = {
   topic: string;
   title: string;
-  emphasis: string;
+  emphasis?: string;
   summary: string;
   date: string;
   status: string;

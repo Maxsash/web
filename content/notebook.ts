@@ -2,7 +2,6 @@ type NotebookPost = {
   slug: string;
   number: string;
   title: string;
-  titleEmphasis: string;
   summary: string;
   topic: string;
   date: string;
@@ -19,7 +18,6 @@ export const notebook: NotebookPost[] = [
     slug: "an-integral-under-sail",
     number: "001",
     title: "An integral under sail",
-    titleEmphasis: "under sail",
     summary: "The little drawing where a mathematical spine becomes a ship's mast.",
     topic: "Geometry & craft",
     date: "2026-10-04",
@@ -62,7 +60,6 @@ export const notebook: NotebookPost[] = [
     slug: "three-waves-one-sea",
     number: "002",
     title: "The sea is a sum of small things",
-    titleEmphasis: "small things",
     summary:
       "Six waves, a moving surface, and the simple relationships behind an intricate impression.",
     topic: "Waves & motion",

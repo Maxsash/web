@@ -10,8 +10,7 @@ export default function PageError({ retry }: { retry: () => void }) {
       <DriftFrame
         scene="squall"
         kicker="Something broke"
-        title="A rogue"
-        emphasis="wave."
+        title="A rogue wave."
         actions={
           <>
             <button type="button" onClick={() => retry()}>

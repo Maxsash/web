@@ -4,7 +4,6 @@ summary: How to make a WebGL page give up gracefully when there is no GPU, and w
 topic: WebGL & performance
 date: 2026-10-09
 status: published
-emphasis: only half works
 caption: A sea drawn without a GPU: what a browser that can only render in software is left to show.
 closing: Make the fallback a real page, not an apology.
 ---

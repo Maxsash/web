@@ -170,7 +170,7 @@ export default function Shoreline({
             <p className={styles.overline}>Landfall / Maxsash Studio</p>
             <h2 id="shore-title">
               Back to <br />
-              <em>the shore.</em>
+              the shore.
             </h2>
             <p className={styles.description}>
               A little sand, a little salt.

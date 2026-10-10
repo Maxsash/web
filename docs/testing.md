@@ -27,6 +27,19 @@ node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
+Landscape studio (10 October 2026): 43 browser assertions pass across 568 × 320,
+667 × 375, 740 × 360, 844 × 390 and 932 × 430, checking the actual SVG transform
+(full plate visible and larger), all four live sliders, keyboard focus/keep actions,
+sticky preview and rotation back to portrait. Focus visibility allows 1 px for native
+scroll rounding (observed 0.28–0.35 px). Screenshots inspected at 568 × 320 and 844 × 390, including night and editing.
+Also checked the 844 × 390 night view. The seed and actual drawing geometry both change
+with edits. Node 24 production build, lint, types, format, 109 Node tests, 20 SEO cases,
+headers, 20/20 keyboard checks and all 193 creative records pass, without failed assertions,
+overflow or runtime exceptions. Reports/screenshots: worktree
+`tools/.out/creative-home/`; initial targeted evidence `/private/tmp/maxsash-landscape/`.
+`tools/e2e/sea-studio.mjs` is part of the creative suite. The existing keyboard sweeps
+continue to cover portrait and desktop studio focus.
+
 Mobile stage correction (10 October 2026): native mobile emulation reproduced an
 enabled-looking Back that ignored taps and a swipe that bypassed the transition at
 just 5 px of scroll. The new browser regressions fail against the baseline and all

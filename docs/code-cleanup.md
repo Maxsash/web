@@ -36,3 +36,8 @@ cleanup separately, without mixing it into the gull refinement.
 React owns stage labels and button state; the scene lifecycle owns animation and the
 stage dataset. Removed DOM mutations of React-owned controls. Browser regressions use
 native touch emulation and taps, including Back independently and a small scroll offset.
+
+## Landscape sea studio (10 October 2026)
+
+The existing studio grid and wrappers supply the two columns through CSS. No duplicated
+content, new component, new asset or change to the shared printable SVG.

@@ -28,6 +28,12 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Landscape sea studio uses two columns** (owner, 10 October 2026). The lower
+  “Make a sea” drawing looked too small in landscape. At 560–960 px wide and ≤620 px
+  high, put the introduction, settings and keep actions on the left and the complete
+  drawing on the right. Keep it visible while editing; use available viewport height
+  rather than the portrait 32svh cap. Portrait and large-screen layouts stay as before.
+
 - **A fresh sea each visit**, chosen from four curated starting points with nudged
   settings (fully random settings reach ugly corners). **No device, location, IP or
   weather data is read**; the owner considered those signals and declined them.

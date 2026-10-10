@@ -261,7 +261,12 @@ origin sending JSON (so another website cannot write files while the dev server 
 - `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`,
   `Die` (the dice button's drawn die) and the `useSeaSettings` hook. The starting seas are the
   presets plus Home water, and the chip for the current sea is pressed. The drawing it redraws is
-  the same `renderSeaPlate` that prints.
+  the same `renderSeaPlate` that prints. In landscape viewports 560–960 px wide and ≤620 px
+  high, the studio grid puts its introduction, form and keep actions in the left column;
+  `display: contents` on the workbench/result places the sticky figure in the right column
+  beside the introduction and form. Its full SVG is capped at `100svh − 7.5rem`, keeping
+  room for the seed/caption. Controls use a 1rem focus scroll margin because the preview
+  sits beside them. Portrait keeps the top-pinned drawing and its larger focus margin.
 - `content/`: `site.ts` (identity; the offer as `offer` and `promise`, joined in `tagline`; the
   email; nav; links; `profiles` for About and the shore; and `afterHero`, the section the skip
   link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),

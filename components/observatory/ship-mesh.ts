@@ -1,62 +1,91 @@
-import { meshWriter } from "./mesh-writer.ts";
+import { shipBuilder } from "./ship-builder.ts";
+import { buildShipRig } from "./ship-rig.ts";
 import type { V3 } from "./vec3.ts";
 
+const COLORS = {
+  hull: [0.12, 0.27, 0.28],
+  rust: [0.66, 0.29, 0.18],
+  teak: [0.49, 0.31, 0.19],
+  deck: [0.72, 0.65, 0.48],
+  brass: [0.78, 0.59, 0.29],
+  ink: [0.08, 0.16, 0.17],
+  rope: [0.42, 0.4, 0.31],
+  canvas: [0.94, 0.9, 0.76],
+} satisfies Record<string, V3>;
+
 export function buildShipMesh() {
-  const { triangle, build } = meshWriter();
-  const hull: V3 = [0.39, 0.22, 0.12],
-    deck: V3 = [0.84, 0.78, 0.63],
-    sail: V3 = [0.94, 0.91, 0.78];
-  const rows: V3[][] = [];
-  for (let i = 0; i <= 16; i++) {
-    const t = i / 16,
-      z = (t - 0.5) * 3.6,
-      width = 0.64 * Math.pow(Math.sin(Math.PI * t), 0.6) + 0.035;
-    rows.push(
-      Array.from({ length: 9 }, (_, j) => {
-        const a = (j / 8) * Math.PI;
-        return [Math.cos(a) * width, 0.14 - Math.sin(a) * 0.52, z] as V3;
-      }),
+  const mesh = shipBuilder();
+  const { hull, rust, teak, deck, brass, ink } = COLORS;
+  const sections = 18;
+  const edge = (t: number, side: number): V3 => {
+    const width = 0.024 + 0.7 * Math.pow(Math.sin(Math.PI * (0.09 + t * 0.91)), 0.72);
+    return [side * width, 0.47 + 0.17 * Math.pow(t * 2 - 1, 2), -2.15 + t * 4.55];
+  };
+  const section = (t: number, side: number): V3[] => {
+    const [x, y, z] = edge(t, side);
+    return [
+      [x, y, z],
+      [x * 1.01, y - 0.13, z],
+      [x * 0.96, 0.12, z],
+      [x * 0.7, -0.29, z],
+      [x * 0.12, -0.63, z],
+    ];
+  };
+  for (let i = 0; i < sections; i++) {
+    const t = i / sections,
+      next = (i + 1) / sections;
+    for (const side of [-1, 1]) {
+      const a = section(t, side),
+        b = section(next, side);
+      for (let level = 0; level < 4; level++)
+        mesh.quad(a[level], b[level], b[level + 1], a[level + 1], [rust, hull, hull, teak][level]);
+      mesh.spar(edge(t, side), edge(next, side), 0.026, brass, 4);
+    }
+    const left = edge(t, -1),
+      right = edge(t, 1),
+      nextLeft = edge(next, -1),
+      nextRight = edge(next, 1);
+    mesh.quad(section(t, -1)[4], section(t, 1)[4], section(next, 1)[4], section(next, -1)[4], teak);
+    for (const point of [left, right, nextLeft, nextRight]) point[1] -= 0.12;
+    mesh.quad(left, right, nextRight, nextLeft, deck);
+    for (const fraction of [-0.66, -0.33, 0, 0.33, 0.66])
+      mesh.spar(
+        [right[0] * fraction, right[1] + 0.004, right[2]],
+        [nextRight[0] * fraction, nextRight[1] + 0.004, nextRight[2]],
+        0.005,
+        teak,
+        3,
+      );
+  }
+  const sternLeft = section(0, -1),
+    sternRight = section(0, 1);
+  for (let level = 0; level < 4; level++)
+    mesh.quad(
+      sternLeft[level],
+      sternLeft[level + 1],
+      sternRight[level + 1],
+      sternRight[level],
+      level === 0 ? rust : hull,
     );
-  }
-  for (let i = 0; i < 16; i++)
-    for (let j = 0; j < 8; j++) {
-      triangle(rows[i][j], rows[i + 1][j], rows[i][j + 1], hull);
-      triangle(rows[i][j + 1], rows[i + 1][j], rows[i + 1][j + 1], hull);
-    }
-  for (let i = 0; i < 16; i++) {
-    triangle(rows[i][0], rows[i][8], rows[i + 1][0], deck);
-    triangle(rows[i + 1][0], rows[i][8], rows[i + 1][8], deck);
-  }
-  for (let i = 0; i < 24; i++)
-    for (let j = 0; j < 6; j++) {
-      const mast = (u: number, v: number): V3 => [
-        Math.sin(u * 1.3) * 0.09 + Math.cos(v) * 0.035,
-        0.15 + u * 3.4,
-        Math.sin(v) * 0.035,
-      ];
-      const a = mast(i / 24, (j * Math.PI) / 3),
-        b = mast((i + 1) / 24, (j * Math.PI) / 3),
-        c = mast(i / 24, ((j + 1) * Math.PI) / 3),
-        d = mast((i + 1) / 24, ((j + 1) * Math.PI) / 3);
-      triangle(a, b, c, deck);
-      triangle(c, b, d, deck);
-    }
+  const bowLeft = section(1, -1),
+    bowRight = section(1, 1);
+  for (let level = 0; level < 4; level++)
+    mesh.quad(bowLeft[level], bowRight[level], bowRight[level + 1], bowLeft[level + 1], hull);
+  mesh.box([0, 0.58, -0.35], [0.76, 0.38, 0.95], teak);
+  mesh.box([0, 0.79, -0.35], [0.83, 0.07, 1.02], deck);
+  mesh.box([0, 0.84, -0.32], [0.48, 0.06, 0.52], brass);
+  mesh.box([0, 0.88, -0.32], [0.4, 0.025, 0.44], ink);
+  mesh.spar([-0.22, 0.9, -0.32], [0.22, 0.9, -0.32], 0.015, brass);
+  mesh.spar([0, 0.9, -0.57], [0, 0.9, -0.07], 0.015, brass);
+  mesh.box([0, 0.45, -1.38], [0.74, 0.12, 0.72], teak);
+  mesh.box([0, 0.52, -1.38], [0.6, 0.035, 0.59], ink);
   for (const side of [-1, 1]) {
-    const n = 10;
-    const point = (i: number, j: number): V3 => {
-      const u = i / n,
-        v = j / n;
-      return [
-        Math.sin(v * Math.PI) * 0.28 * (1 - u) + 0.045,
-        0.35 + u * 3.1,
-        side * v * (1 - u) * (side === 1 ? 1.55 : 1.2),
-      ];
-    };
-    for (let i = 0; i < n; i++)
-      for (let j = 0; j < n; j++) {
-        triangle(point(i, j), point(i + 1, j), point(i, j + 1), sail);
-        triangle(point(i, j + 1), point(i + 1, j), point(i + 1, j + 1), sail);
-      }
+    mesh.box([side * 0.37, 0.56, -1.42], [0.16, 0.12, 0.8], deck);
+    mesh.spar([side * 0.4, 0.5, 1.45], [side * 0.4, 0.64, 1.45], 0.032, brass);
+    mesh.spar([side * 0.31, 0.61, 1.45], [side * 0.49, 0.61, 1.45], 0.019, brass);
   }
-  return build();
+  mesh.box([0, 0.37, -2.2], [0.08, 0.65, 0.28], hull);
+  mesh.spar([0, 0.58, -2.12], [0.2, 0.62, -1.2], 0.027, teak);
+  buildShipRig(mesh, COLORS);
+  return mesh.build();
 }

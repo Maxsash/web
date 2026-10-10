@@ -54,27 +54,3 @@ export function lookAt(eye: V3, target: V3) {
     1,
   ]);
 }
-export function modelMatrix(height: number, dx: number, dz: number) {
-  const up = normal([-dx * 0.6, 1, -dz * 0.6]),
-    forward = normal([0.85, 0, -0.53]);
-  const right = normal(cross(up, forward)),
-    along = cross(right, up);
-  return new Float32Array([
-    right[0],
-    right[1],
-    right[2],
-    0,
-    up[0],
-    up[1],
-    up[2],
-    0,
-    along[0],
-    along[1],
-    along[2],
-    0,
-    4.5,
-    height - 0.11,
-    -5.5,
-    1,
-  ]);
-}

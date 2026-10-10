@@ -4,6 +4,30 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Ship refinement (10 October 2026)
+
+Node 24 production build, lint, types, format, 114 Node tests, 20 SEO cases, headers,
+20/20 keyboard checks and all 193 creative records pass, with no failed assertions,
+overflow or runtime exceptions. Context loss releases all four buffers, including
+the cloth-flex buffer. Shared shader defaults, sea parity and mobile timings pass.
+
+The five tests in `tools/ship.test.mjs` cover nondegenerate geometry, rigid/cloth
+separation, bounded continuous buoyancy, short-chop damping and finite composition.
+`tools/check-ship.mjs` passes 36/36 checks: actual rendered triangles clear text and
+viewport edges by day/night and in Drawing at 320 × 568, 390 × 844, 768 × 1024,
+844 × 390, 1440 × 1000 and 2560 × 1440; 150% text, live rotation, reduced motion,
+pause/resume and native touch-emulated intermediate reveal/return frames. Screenshots
+inspected at desktop/phone/landscape sizes, both themes, Drawing and enlarged text.
+The ship harness uses SwiftShader; the full creative suite uses the Mac GPU.
+Its 30-second desktop sample delivered 1,801 frames, p95 16.7 ms, zero long tasks,
+high quality. This is headless Chrome evidence, not a physical-device qualification.
+
+Evidence: `/private/tmp/maxsash-ship-review/tools/.out/ship/` and
+`tools/.out/creative-home/` in that worktree. Logs: `/private/tmp/maxsash-ship-*.log`.
+All builds/tests ran in that detached worktree; no main-folder test/build was run.
+Physical iPhone/Safari/Firefox, screen readers and battery/GPU qualification remain
+unverified. Gull and sound-specific browser suites were not rerun for this ship work.
+
 ## Run everything
 
 Use Node 24 and a production build in a detached git worktree:
@@ -21,6 +45,7 @@ SEA_TEST_BASE=http://localhost:3012 node --test tools/*.test.mjs
 node tools/check-seo.mjs http://127.0.0.1:3012
 node tools/check-headers.mjs http://localhost:3012
 node tools/check-keyboard.mjs http://localhost:3012
+node tools/check-ship.mjs http://localhost:3012
 node tools/check-gull.mjs http://localhost:3012
 node tools/check-software-fallback.mjs http://localhost:3012
 node tools/check-sound.mjs http://localhost:3012
@@ -98,6 +123,7 @@ fewer quiet habits and rests unless engaged, hover stands it up, idling puts it 
 wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
 | `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
+| `check-ship.mjs`             | Rendered ship triangles versus visible text and viewport bounds: six sizes, day/night, Drawing, 150% text, live rotation, paused/reduced-motion cloth and native mobile reveal/return. Outputs to `tools/.out/ship/`. |
 | `check-gull.mjs`            | Live portrait/landscape resize matrix, DPR 1/1.25/2/3, larger text, day/night, standing/sleeping/drawing: pixel contact with the pill border, label clearance, no clipped bird/control, no visible text/control overlap and refreshed canvas density. Outputs to `tools/.out/gull/`. |
 | `check-keyboard.mjs`        | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls. |
 | `check-software-fallback.mjs` | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable. |

@@ -40,7 +40,7 @@ const shipWakeGLSL = `
 const rippleDeclarations = `
 uniform vec3 uRipple;`;
 
-const rippleGLSL = `
+export const rippleGLSL = `
   float age=uTime-uRipple.z;
   float reach=length(vWorld.xz-uRipple.xy)-age*3.4;
   float ring=(exp(-reach*reach*6.)+.6*exp(-pow(reach+1.3,2.)*6.))*exp(-age*.8)*step(0.,age);

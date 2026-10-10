@@ -107,7 +107,11 @@ after Drawing scrolls into Work (`site.afterHero`). Sea → Drawing eases out ov
 (`t·(2−t)`) with the reveal equal to progress; the way back is a 600 ms smootherstep. Reduced
 motion shows stills. Without
 JavaScript the page is readable and scrolls natively. These timings were approved on a
-physical iPhone: refactor around them, never change them.
+physical iPhone: refactor around them, never change them. Stage labels and button enabled
+states are React state, so displayed and clickable controls agree. Touch gestures are
+accepted while at least half the hero remains visible, including small scroll offsets
+and returning from Work; a confirmed stage change aligns the hero to its start. A
+swipe past Drawing and scrolling outside that region stay native.
 
 ### Hero controls and short screens
 

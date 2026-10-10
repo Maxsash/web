@@ -32,6 +32,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const stageRef = useRef<((direction: number) => void) | null>(null);
   const [paused, setPaused] = useState(false);
   const [ready, setReady] = useState(false);
+  const [activeStage, setActiveStage] = useState(0);
   useEffect(() => {
     const canvas = canvasRef.current;
     const scene = canvas?.closest<HTMLElement>("[data-observatory]");
@@ -40,10 +41,6 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const compact = matchMedia("(pointer: coarse)").matches || stage.clientWidth < 760;
     const staged = matchMedia("(pointer: coarse)").matches;
-    const stageControls = stage.querySelector<HTMLElement>("[data-stage-controls]");
-    const stageLabel = stageControls?.querySelector<HTMLElement>("[data-stage-label]");
-    const previousButton = stageControls?.querySelector<HTMLButtonElement>("[data-stage-previous]");
-    const nextButton = stageControls?.querySelector<HTMLButtonElement>("[data-stage-next]");
     let stageIndex = 0,
       stageProgress = 0,
       stageMove: StageMove | null = null;
@@ -179,12 +176,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     };
     const updateStageControls = () => {
       scene.dataset.stage = String(stageIndex);
-      if (stageLabel)
-        stageLabel.textContent = `${stageIndex + 1} / ${STAGES.length} · ${STAGES[stageIndex].label}`;
-      if (previousButton) previousButton.disabled = stageIndex === 0;
-      if (nextButton)
-        nextButton.textContent =
-          stageIndex === STAGES.length - 1 ? `View ${site.afterHero.label} ↓` : "Next ↑";
+      setActiveStage(stageIndex);
     };
     stageRef.current = (direction) => {
       if (!staged) return;
@@ -194,6 +186,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           ?.scrollIntoView({ behavior: media.matches ? "instant" : "smooth" });
         return;
       }
+      window.scrollTo({ top: start, behavior: "instant" });
       const previousIndex = stageIndex;
       stageIndex = stepStage(stageIndex, direction);
       const move = planMove(previousIndex, stageIndex, stageProgress, performance.now());
@@ -210,7 +203,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         "touchstart",
         (event) => {
           if (
-            window.scrollY > start + 2 ||
+            window.scrollY > start + height / 2 ||
             event.touches.length !== 1 ||
             (event.target instanceof Element &&
               event.target.closest("a,button,input,textarea,select"))
@@ -406,14 +399,14 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         <button
           type="button"
           data-stage-previous
-          disabled
+          disabled={activeStage === 0}
           aria-label="Previous sea stage"
           onClick={() => stageRef.current?.(-1)}
         >
           ↓ Back
         </button>
         <span data-stage-label role="status" aria-live="polite" aria-atomic="true">
-          1 / {STAGES.length} · {STAGES[0].label}
+          {activeStage + 1} / {STAGES.length} · {STAGES[activeStage].label}
         </span>
         <button
           type="button"
@@ -421,7 +414,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           aria-label={`Next sea stage or view ${site.afterHero.label}`}
           onClick={() => stageRef.current?.(1)}
         >
-          Next ↑
+          {activeStage === STAGES.length - 1 ? `View ${site.afterHero.label} ↓` : "Next ↑"}
         </button>
       </div>
     </>

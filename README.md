@@ -53,6 +53,7 @@ git push origin main:production
 | `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders          |
 | `components/feedback/`    | The page's answers to the visitor: listeners, arrivals, notices                  |
 | `components/shore/`       | The shoreline footer and the commit-log card                                     |
+| `components/gull/`        | The gull that lands on "Play waves": its low-poly body, flight and lifecycle     |
 | `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons    |
 | `components/studio/`      | The sea studio                                                                   |
 | `components/atlas/`       | The notebook's scoped styling and plates                                         |

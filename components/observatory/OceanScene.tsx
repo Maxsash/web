@@ -262,13 +262,57 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       height = stage.clientHeight;
       distance = Math.max(1, scene.offsetHeight - height);
       ratio = renderRatio({ devicePixelRatio, compact, width, height, low: governor.low });
-      engine?.resize(width, height, ratio);
+      const origin = stage.getBoundingClientRect();
+      const readCopy = (selector: string) => {
+        const copy = { right: 0, bottom: 0 };
+        const root = scene.querySelector(selector);
+        if (root) {
+          const text = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+          const range = document.createRange();
+          while (text.nextNode()) {
+            range.selectNodeContents(text.currentNode);
+            for (const rect of range.getClientRects()) {
+              copy.right = Math.max(copy.right, rect.right - origin.left);
+              copy.bottom = Math.max(copy.bottom, rect.bottom - origin.top);
+            }
+          }
+        }
+        return copy;
+      };
+      const readReserved = (names: string[]) =>
+        names.flatMap((name) => {
+          const element = scene.querySelector("." + name);
+          if (!element) return [];
+          const box = element.getBoundingClientRect();
+          if (!box.width || !box.height) return [];
+          return [
+            {
+              left: box.left - origin.left,
+              right: box.right - origin.left,
+              top: box.top - origin.top,
+              bottom: box.bottom - origin.top,
+            },
+          ];
+        });
+      const controls = [styles.pause, styles.stageControls, styles.chapterRail];
+      engine?.resize(width, height, ratio, {
+        width,
+        height,
+        copy: readCopy("." + styles.intro),
+        drawing: readCopy("." + styles.end),
+        reserved: readReserved([...controls, styles.sceneMeta]),
+        drawingReserved: readReserved(controls),
+      });
       scrollDirty = true;
       requestFrame();
     };
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(stage);
     resizeObserver.observe(scene);
+    for (const name of [styles.intro, styles.end]) {
+      const copy = scene.querySelector("." + name);
+      if (copy) resizeObserver.observe(copy);
+    }
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       restart();

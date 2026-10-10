@@ -86,7 +86,7 @@ export async function runLifecycleChecks(ctx) {
   results.push({
     name: "context-loss-releases-engine",
     ...released,
-    pass: released.buffers === 3 && released.arrays === 3 && released.programs === 3,
+    pass: released.buffers === 4 && released.arrays === 3 && released.programs === 3,
   });
   const lostBefore = await frames();
   await delay(350);

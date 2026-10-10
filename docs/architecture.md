@@ -61,8 +61,18 @@ behind a server-rendered SVG plate, which is also the fallback.
   `layer-opacity`, `frame-governor`, `touch-stages`, `clamp`.
 - `ocean-engine.ts` draws; `ocean-shaders.ts` holds the GLSL; `ocean-light.ts` projects
   the sun or moon into the scene; `camera`, `matrices`, `vec3`, `ship-mesh`,
-  `sea-grid` and `gl-resources` are its parts. The ship is a procedural sailboat, not
-  the brand mark.
+  `sea-grid` and `gl-resources` are its parts. The ship is an authored survey cutter,
+  distinct from the brand mark. `ship-builder` writes rigid/cloth triangles and
+  fittings; `ship-mesh` owns the shaped hull and deck; `ship-rig` owns the gaff
+  mainsail, jib, spars, rigging and pennant. `ship-motion` samples five hull stations
+  at three times to soften short chop, with bounded heel, pitch and heading.
+  `ship-placement` fits the projected mesh around actual copy and reserved controls,
+  and frames the drawing camera around the same vessel. Enlarged portrait copy
+  can use open water on the left. Only resize/text layout refits the composition;
+  the home position stays fixed through the reveal. `ship-shaders`
+  breathes only the cloth, lights both faces of canvas, engraves the same mesh and
+  places the directional shadow/wake with the actual vessel. Shared error shaders
+  retain their existing defaults. No downloaded assets or extra animation loop.
 - Budgets: a 60,000-triangle sea and 1.5 million pixels (DPR up to 1.25) on desktop;
   21,600 triangles and 360,000 pixels at DPR 1 when the pointer is coarse or the stage
   is under 760 px at mount. Draws are capped at 60 Hz; sustained slow delivery drops
@@ -80,8 +90,8 @@ behind a server-rendered SVG plate, which is also the fallback.
 - `sea-gl.ts` holds what every sea engine shares (context options, program compilation,
   the grid and solid-mesh arrays, wave uniforms, canvas resizing); `mesh-writer.ts` writes
   the ship-layout vertices (position, normal, colour, barycentric). `ocean-shaders.ts`
-  exports builders; the homepage strings are their defaults, pinned byte for byte by
-  `tools/drift.test.mjs`.
+  exports builders; shared defaults are pinned byte for byte by `tools/drift.test.mjs`.
+  The homepage supplies its moving ship wake; error seas keep their own surfaces.
 
 ### Error-page seas (`components/drift/`)
 

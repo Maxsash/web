@@ -1,15 +1,24 @@
 import { SEA_HALF_FOV } from "./ocean-light.ts";
 import { cross, mix, normal, type V3 } from "./vec3.ts";
 
-export function cameraAt(reveal: number, aspect: number, pointer: [number, number]) {
+export function cameraAt(
+  reveal: number,
+  aspect: number,
+  pointer: [number, number],
+  destination: { eye: V3; target: V3 } = { eye: [10, 29, 16], target: [0, -0.4, -7] },
+) {
   const orbit = reveal * reveal * (3 - 2 * reveal),
     narrow = aspect < 0.8;
   const eye: V3 = [
-    mix(0, 10, orbit) + pointer[0] * 0.75,
-    mix(narrow ? 6.8 : 5, 29, orbit) + pointer[1] * 0.35,
-    mix(narrow ? 24 : 18, 16, orbit),
+    mix(0, destination.eye[0], orbit) + pointer[0] * 0.75,
+    mix(narrow ? 6.8 : 5, destination.eye[1], orbit) + pointer[1] * 0.35,
+    mix(narrow ? 24 : 18, destination.eye[2], orbit),
   ];
-  const target: V3 = [mix(narrow ? 2.5 : 0, 0, orbit), mix(0.6, -0.4, orbit), -7];
+  const target: V3 = [
+    mix(narrow ? 2.5 : 0, destination.target[0], orbit),
+    mix(0.6, destination.target[1], orbit),
+    mix(-7, destination.target[2], orbit),
+  ];
   return { eye, target };
 }
 

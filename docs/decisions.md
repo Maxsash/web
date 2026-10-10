@@ -28,6 +28,16 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **An authored survey cutter** (design interpretation, 10 October 2026). The owner asked for a
+  unique ship, refined motion and placement that reflect the whole website. The
+  resulting model is a gaff cutter in ink, rust, brass and bone canvas:
+  shaped hull, useful deck fittings, jib, bowsprit, rigging and a narrow pennant.
+  Let construction appear in the existing engraving reveal. Sample across the
+  hull to soften short chop; keep cloth breathing restrained and fit the ship
+  around actual copy and controls, and frame the drawing camera around the same
+  vessel. Enlarged portrait copy can put it in open water on the left. This remains
+  an authored scene, not a sailing simulator.
+
 - **Landscape sea studio uses two columns** (owner, 10 October 2026). The lower
   “Make a sea” drawing looked too small in landscape. At 560–960 px wide and ≤620 px
   high, put the introduction, settings and keep actions on the left and the complete

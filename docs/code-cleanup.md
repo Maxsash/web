@@ -41,3 +41,13 @@ native touch emulation and taps, including Back independently and a small scroll
 
 The existing studio grid and wrappers supply the two columns through CSS. No duplicated
 content, new component, new asset or change to the shared printable SVG.
+
+## Survey cutter (10 October 2026)
+
+Hull/deck, rig, geometry writer, motion, placement and shaders have separate
+responsibilities. Removed the obsolete fixed `modelMatrix` and its mesh snapshot;
+new checks assert useful geometry, cloth and buoyancy contracts instead. The
+error-page shaders retain their pinned defaults. Cloth uses one static flex buffer,
+freed with every other GL resource; context-loss checks assert all four buffers
+are released. Placement and drawing-camera fitting share projected bounds and
+composition rules. No dependencies or assets added.

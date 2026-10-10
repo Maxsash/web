@@ -18,6 +18,7 @@ import { runLinkChecks } from "./e2e/links.mjs";
 import { runMobileDegradation } from "./e2e/mobile-degradation.mjs";
 import { createPageHelpers } from "./e2e/page-helpers.mjs";
 import { runShaderParity } from "./e2e/shader-parity.mjs";
+import { runSeaStudioLayout } from "./e2e/sea-studio.mjs";
 import { runStagedSea } from "./e2e/staged-sea.mjs";
 import { runViewportCaptures } from "./e2e/viewports.mjs";
 
@@ -93,6 +94,7 @@ await withBrowser(
         await runLinkChecks(ctx);
         await runMobileDegradation(ctx);
         await runStagedSea(ctx);
+        await runSeaStudioLayout(ctx);
         await runFallbacks(ctx);
       }
       await runCoastChecks(ctx);

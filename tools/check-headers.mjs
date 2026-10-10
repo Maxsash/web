@@ -64,7 +64,7 @@ await withBrowser({ name: "csp", flags: SWIFTSHADER_FLAGS }, async ({ send, eval
     await delay(3500);
     const { v, gl } = JSON.parse(
       await evaluate(
-        "JSON.stringify({v:__violations,gl:!!document.querySelector('canvas')?.getContext('webgl2')})",
+        "JSON.stringify({v:__violations,gl:!!document.querySelector('canvas[data-ocean]')?.getContext('webgl2')})",
       ),
     );
     check(

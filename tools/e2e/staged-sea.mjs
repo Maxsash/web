@@ -116,7 +116,7 @@ export async function runStagedSea(ctx) {
   };
   const stageState = () =>
     evaluate(
-      "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,scrollY,label:s.querySelector('[data-stage-label]').textContent,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
+      "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas[data-ocean]');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,scrollY,label:s.querySelector('[data-stage-label]').textContent,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
     );
   await swipe(1);
   const drawing = await stageState();

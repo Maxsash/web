@@ -2,10 +2,7 @@ import { delay } from "../lib/browser.mjs";
 
 export async function runStagedSea(ctx) {
   const { evaluate, frames, load, results, send, snapshot } = ctx;
-  const coarsePointer = await send("Page.addScriptToEvaluateOnNewDocument", {
-    source:
-      "const originalMatchMedia=window.matchMedia.bind(window);window.matchMedia=query=>originalMatchMedia(query==='(pointer: coarse)'?'(min-width: 0px)':query);",
-  });
+  await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
   await send("Emulation.setDeviceMetricsOverride", {
     width: 844,
     height: 390,
@@ -30,7 +27,6 @@ export async function runStagedSea(ctx) {
     deviceScaleFactor: 1,
     mobile: true,
   });
-  await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
   await load("/");
   await snapshot("staged-390-sea");
   await send("Input.dispatchTouchEvent", {
@@ -66,6 +62,29 @@ export async function runStagedSea(ctx) {
     pass: await evaluate("document.querySelector('[data-observatory]').dataset.stage==='0'"),
   });
   await send("Emulation.setPageScaleFactor", { pageScaleFactor: 1 });
+  const tap = async (selector) => {
+    const point = await evaluate(
+      `(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`,
+    );
+    await send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [{ ...point, id: 1 }],
+    });
+    await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  };
+  const checkStage = async (name, index, chapter) => {
+    const state = await stageState();
+    results.push({
+      name,
+      ...state,
+      pass:
+        state.stage === String(index) &&
+        state.chapter === chapter &&
+        state.scrollY <= 2 &&
+        state.label === `${index + 1} / 2 · ${index ? "Drawing" : "Sea"}` &&
+        state.backDisabled === (index === 0),
+    });
+  };
   const swipe = async (direction, settle) => {
     const openingReveal =
       direction > 0 &&
@@ -116,12 +135,26 @@ export async function runStagedSea(ctx) {
   };
   const stageState = () =>
     evaluate(
-      "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas[data-ocean]');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,scrollY,label:s.querySelector('[data-stage-label]').textContent,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
+      "(()=>{const s=document.querySelector('[data-observatory]'),c=s.querySelector('canvas[data-ocean]');return {stage:s.dataset.stage,chapter:s.dataset.chapter,staged:s.dataset.staged,scrollY,backDisabled:s.querySelector('[data-stage-previous]').disabled,label:s.querySelector('[data-stage-label]').textContent,pixels:c.width*c.height,triangles:Number(c.dataset.triangles)};})()",
     );
+  await tap("[data-stage-next]");
+  await delay(1900);
+  await checkStage("mobile-native-next-tap", 1, "atlas");
+  await tap("[data-stage-previous]");
+  await delay(680);
+  await checkStage("mobile-native-back-tap", 0, "sea");
+  await tap("[data-stage-next]");
+  await delay(150);
+  await tap("[data-stage-previous]");
+  await delay(680);
+  await checkStage("mobile-native-tap-reverses-opening", 0, "sea");
+  await delay(1300);
+  await checkStage("mobile-native-tap-stays-reversed", 0, "sea");
+  await evaluate("scrollTo(0,5)");
   await swipe(1);
   const drawing = await stageState();
   results.push({
-    name: "mobile-swipe-one-stage",
+    name: "mobile-swipe-from-small-scroll-offset",
     ...drawing,
     pass:
       drawing.stage === "1" &&
@@ -176,11 +209,11 @@ export async function runStagedSea(ctx) {
       "scrollY>30 && document.querySelector('[data-observatory]').dataset.stage==='1'",
     ),
   });
-  await evaluate("scrollTo(0,0)");
+  await evaluate("scrollTo(0,120)");
   await delay(100);
   await swipe(-1);
   results.push({
-    name: "mobile-reverse-one-stage",
+    name: "mobile-reverse-from-partially-visible-hero",
     pass: await evaluate(
       "document.querySelector('[data-observatory]').dataset.stage==='0' && document.querySelector('[data-stage-label]').textContent==='1 / 2 · Sea' && scrollY<=2",
     ),
@@ -216,8 +249,10 @@ export async function runStagedSea(ctx) {
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
   });
-  await evaluate("document.querySelector('[data-stage-previous]').click()");
-  await evaluate("document.querySelector('[data-stage-next]').click()");
+  await tap("[data-stage-previous]");
+  await delay(120);
+  await checkStage("mobile-reduced-motion-native-back-tap", 0, "sea");
+  await tap("[data-stage-next]");
   await delay(120);
   const stillBefore = await frames();
   await delay(200);
@@ -228,7 +263,7 @@ export async function runStagedSea(ctx) {
         "document.querySelector('[data-observatory]').dataset.stage==='1' && document.querySelector('[data-stage-label]').textContent.includes('Drawing')",
       )) && (await frames()) === stillBefore,
   });
-  await evaluate("document.querySelector('[data-stage-next]').click()");
+  await tap("[data-stage-next]");
   await delay(100);
   results.push({
     name: "mobile-stage-button-exits-to-work",
@@ -252,8 +287,5 @@ export async function runStagedSea(ctx) {
   });
   await load("/");
   await snapshot("staged-landscape-sea");
-  await send("Page.removeScriptToEvaluateOnNewDocument", {
-    identifier: coarsePointer.identifier,
-  });
   await send("Emulation.setTouchEmulationEnabled", { enabled: false });
 }

@@ -45,6 +45,12 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Mobile hero
 
+- **Mobile stages tolerate scroll offsets** (10 October 2026 bug fix). A 5 px offset
+  previously bypassed the transition. Swipes work while most of the hero is visible,
+  and a confirmed stage change aligns it to the top. Back's enabled state belongs to
+  React rather than being changed directly in the DOM; its old disabled prop silently
+  blocked clicks even when the button looked enabled. Approved timings stay fixed.
+
 - **Sea → Drawing, one stage per swipe**, with continuous scrolling kept on desktop. Two
   stages since 9 October 2026: the owner found the Structure stage and its text ("Wonder has a
   structure", the numbered list) "empty words", so the middle text is gone on desktop too, and

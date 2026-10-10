@@ -27,7 +27,20 @@ node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
 ```
 
-Latest correction (10 October 2026): Node 24 production build, `tsc`, `lint`,
+Mobile stage correction (10 October 2026): native mobile emulation reproduced an
+enabled-looking Back that ignored taps and a swipe that bypassed the transition at
+just 5 px of scroll. The new browser regressions fail against the baseline and all
+20 targeted assertions pass against the fix. They cover independent Next/Back taps,
+interrupted button/swipe reversal, offsets and a partially visible returning hero,
+rotation, paused/reduced-motion stages, horizontal/multitouch rejection and exit to
+Work. `runStagedSea` now uses Chrome's actual touch emulation rather than overriding
+`matchMedia`. Targeted report/screenshots: isolated worktree `tools/.out/mobile-sea/`.
+Node 24 production build, lint, types, format, 109 Node tests, 20 SEO checks, headers,
+20/20 keyboard checks and 137 creative records pass, with no failed assertions or
+runtime exceptions. Full report: worktree `tools/.out/creative-home/report.json`.
+This is headless Chrome, not physical iPhone/Safari.
+
+Prior gull correction (10 October 2026): Node 24 production build, `tsc`, `lint`,
 `format:check`, 109 Node tests (17 gull), 20 SEO cases, headers and 20/20 keyboard
 checks pass. Creative passed 132 records with no failed assertions or exceptions. Inspected corrected gull over WebGL at desktop/phone sizes.
 

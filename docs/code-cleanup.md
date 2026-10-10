@@ -30,3 +30,9 @@ setup across its matrix and keeps pixel/collision assertions independent of plac
 Tooling follow-up: keyboard/creative Node harness processes lingered after all results
 were printed and Chrome exited. Completed processes were stopped; investigate browser
 cleanup separately, without mixing it into the gull refinement.
+
+## Mobile sea controls (10 October 2026)
+
+React owns stage labels and button state; the scene lifecycle owns animation and the
+stage dataset. Removed DOM mutations of React-owned controls. Browser regressions use
+native touch emulation and taps, including Back independently and a small scroll offset.

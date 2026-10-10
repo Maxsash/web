@@ -10,7 +10,6 @@ export type DriftFrameProps = {
   scene: DriftSceneName;
   kicker: string;
   title: string;
-  emphasis: string;
   actions: ReactNode;
   children: ReactNode;
   id?: string;
@@ -32,7 +31,6 @@ export default function DriftFrame({
   scene,
   kicker,
   title,
-  emphasis,
   actions,
   children,
   id,
@@ -52,9 +50,7 @@ export default function DriftFrame({
       {torn ? <TornSheet /> : null}
       <div className={styles.copy}>
         <p className={styles.kicker}>{kicker}</p>
-        <h1>
-          {title} <em>{emphasis}</em>
-        </h1>
+        <h1>{title}</h1>
         <p className={styles.body}>{children}</p>
         <div className={styles.actions}>{actions}</div>
       </div>

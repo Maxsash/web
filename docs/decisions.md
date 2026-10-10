@@ -5,6 +5,24 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
+  stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
+  the generic Claude/AI look, and headings were hard to read. Chosen from a specimen, second
+  round ("Logbook slab"): **Montagu Slab** for display and essay text (optical sizes:
+  high-contrast in headlines, sturdy in text), **Rethink Sans** for text and labels, **Reddit
+  Mono** only for data (seeds, coordinates, code). The first pick (Besley + Atkinson
+  Hyperlegible Next/Mono) was replaced because the owner wanted fresher faces and a build
+  without next/font's missing-metrics warning; every face now has Next's fallback metrics.
+  Montagu Slab has no italic, so *Math.* and essay emphasis use the browser's slanted roman.
+  Palette **Admiralty chart**: cool chart paper, the existing teal-navy
+  ink, chart magenta as the accent (nautical charts use it for lights and cautions). The owner
+  first picked navy and brass, then switched to this. Display tracking stays between −0.02em
+  and +0.01em (uppercase); sizes were refitted to the wider face.
+  **Italic only where it means something**: *Math.* (mathematics sets variables in italic);
+  other headings are one roman voice. Project and error-page headlines are single strings; a
+  post's `emphasis` field stays for deliberate use and renders as plain italic in ink (the
+  samples no longer set it). The sea, sun, ship, engravings and plates are unchanged.
+
 - **Structure first, then feedback** (owner, 9 October 2026). The structure run (below,
   "Structure and content") settled what goes where and why, and is released. The feedback run
   was built maximalist and the owner kept all of it (below, "Feedback";
@@ -12,7 +30,7 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **A is the main site, B is the blog, C is an optional Easter egg.** A ("Living Atlas")
   is one authored sea that reveals its own mathematics as the visitor scrolls and
   becomes a printable plate. B (the Notebook) is a separate editorial composition in ink
-  and bone. C is not built; there is no hidden entrance.
+  on chart paper. C is not built; there is no hidden entrance.
 - **Sea, Ship, Math** is the idea. The first impression must work without a tutorial
   or any input; interaction is offered only where it has a rich, legible payoff.
 - **Creative changes go directly into the main site.** No sample routes, no review
@@ -211,7 +229,8 @@ each group. How the code is built: [architecture.md](architecture.md).
   still, with two still notes. In the drawing chapters it becomes its own ink wireframe. No study
   shows a creature on a control raises clicks; it is kept for delight and is one prop to remove.
 - **Scroll cost is measured, not assumed.** A smooth settle of the headings' font axes reflowed
-  them every frame (95 layouts in one scroll), so they settle in three steps. The depth line and
+  them every frame (95 layouts in one scroll), so they settled in three steps; with Montagu Slab
+  (no such axes) the heading inks in by opacity in three steps, which needs no layout. The depth line and
   the reading ribbon cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame
   pacing unchanged); the owner kept them.
 
@@ -319,8 +338,8 @@ Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
   audience (Vercel project settings, or `regions` in `vercel.json`) is a cheaper lever than
   caching the page, but it depends on where visitors are, so it is the owner's call. Render
   delay: with Slow 4G and no server latency, the heading paints at about 0.9 s; the two
-  render-blocking stylesheets and 206 KB of preloaded fonts share the link with the HTML.
-  The font axes (`SOFT`, `WONK`, `opsz`) are all in use, so trimming them is not free.
+  render-blocking stylesheets and the preloaded fonts share the link with the HTML (206 KB
+  with Fraunces; 185 KB in four files with Montagu Slab, Rethink Sans and Reddit Mono, 10 October 2026).
 - **Forced reflow (168 ms in the report)** is the initial hero layout (about 130 ms at 4×
   CPU throttle locally). `content-visibility: auto` on the sections below changed it by
   under 10%, so it is not worth doing.

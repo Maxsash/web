@@ -1,10 +1,11 @@
 .atlas {
-  --atlas-paper: #eee9dd;
-  --atlas-ink: #242722;
-  --atlas-muted: #686960;
-  --atlas-red: #ac402a;
-  --atlas-rule: #bab8ac;
-  --accent: var(--atlas-red);
+  --atlas-paper: #f2f3ee;
+  --atlas-ink: #131f27;
+  --atlas-muted: #56656c;
+  --atlas-accent: var(--chart-magenta);
+  --atlas-rule: #b8c0bf;
+  --atlas-code: #e2e7e3;
+  --accent: var(--atlas-accent);
   --ink: var(--atlas-ink);
   --ink-2: var(--atlas-muted);
   --atlas-gutter: clamp(1.15rem, 4.2vw, 5.5rem);
@@ -21,21 +22,17 @@
 .atlas h1,
 .atlas h2,
 .atlas h3 {
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0,
-    "opsz" 144;
   font-weight: 500;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.01em;
   text-wrap: initial;
 }
 .atlas :is(a, button):focus-visible {
-  outline: 2px solid var(--atlas-red);
+  outline: 2px solid var(--atlas-accent);
   outline-offset: 5px;
 }
 .atlas ::selection {
-  background: #d4ada0;
-  color: #242722;
+  background: var(--chart-buff);
+  color: var(--atlas-ink);
 }
 .skip {
   position: absolute;
@@ -87,7 +84,7 @@
   gap: 0.65rem;
 }
 .runningHead nav a:hover {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .index,
 .article {
@@ -101,7 +98,7 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  font: 0.62rem/1.5 var(--font-mono);
+  font: 0.62rem/1.5 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.11em;
 }
@@ -113,18 +110,18 @@
   padding-block: 1.4rem 1.8rem;
 }
 .masthead h1 {
-  font-size: clamp(3.5rem, 10.8vw, 10rem);
+  font-size: clamp(3.5rem, 9vw, 10rem);
   line-height: 0.78;
   text-transform: uppercase;
-  letter-spacing: -0.068em;
-  font-weight: 550;
+  letter-spacing: 0.01em;
+  font-weight: 500;
 }
 .masthead h1 > span {
   display: inline-block;
   padding-top: 0.13em;
 }
 .masthead h1 i {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
   font-style: normal;
 }
 .issue {
@@ -135,7 +132,7 @@
   padding-left: 1.4rem;
 }
 .issue > span {
-  font: 0.63rem/1.6 var(--font-mono);
+  font: 0.63rem/1.6 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.09em;
 }
@@ -148,7 +145,7 @@
 .issue b span {
   font-size: 5rem;
   line-height: 1;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.02em;
 }
 .issue p {
   margin-top: 0.6rem;
@@ -173,7 +170,7 @@
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  font: 0.58rem/1.6 var(--font-mono);
+  font: 0.58rem/1.6 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.065em;
 }
@@ -210,7 +207,7 @@
 }
 .plateAccent {
   fill: none;
-  stroke: var(--atlas-red);
+  stroke: var(--atlas-accent);
   stroke-width: 1.15;
 }
 .plateNotation {
@@ -219,7 +216,7 @@
   letter-spacing: 1.2px;
 }
 .plateRedNotation {
-  fill: var(--atlas-red);
+  fill: var(--atlas-accent);
 }
 .featureCopy {
   padding: clamp(1.5rem, 3.2vw, 3.75rem);
@@ -230,7 +227,7 @@
   justify-content: center;
 }
 .overline {
-  font: 0.59rem/1.65 var(--font-mono);
+  font: 0.59rem/1.65 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -239,16 +236,12 @@
   font-size: 1.4rem;
   margin-right: 0.4rem;
   vertical-align: -0.1em;
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .featureCopy h2 {
   font-size: clamp(2.7rem, 4.3vw, 4.6rem);
   line-height: 0.98;
   margin-block: 1.3rem 1.6rem;
-}
-.featureCopy h2 em {
-  font-weight: 400;
-  color: var(--atlas-red);
 }
 .featureCopy > p:not(.overline) {
   max-width: 25rem;
@@ -275,13 +268,13 @@
   transition: translate 180ms ease;
 }
 .readLink:hover {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .readLink:hover > span {
   translate: 2px -2px;
 }
 .sampleLabel {
-  font: 0.56rem/1.6 var(--font-mono);
+  font: 0.56rem/1.6 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--atlas-muted);
@@ -289,11 +282,11 @@
 }
 
 .darkFeature {
-  --atlas-paper: #242722;
-  --atlas-ink: #eee9dd;
-  --atlas-muted: #c1c0b4;
-  --atlas-rule: #55594f;
-  --atlas-red: #e18a6c;
+  --atlas-paper: #131f27;
+  --atlas-ink: var(--chart-paper);
+  --atlas-muted: #bfcacd;
+  --atlas-rule: #3a4a52;
+  --atlas-accent: var(--band-accent);
   color: var(--atlas-ink);
   background: var(--atlas-paper);
   margin: 3rem calc(-1 * var(--atlas-gutter)) 0;
@@ -316,11 +309,6 @@
   margin-block: 2.5rem 1.5rem;
   position: relative;
 }
-.darkCopy h2 em {
-  font-weight: 400;
-  color: var(--atlas-red);
-  font-size: 0.78em;
-}
 .darkCopy > p:not(.overline) {
   font-size: 0.9rem;
   color: var(--atlas-muted);
@@ -330,7 +318,7 @@
   position: absolute;
   right: 1rem;
   top: -1.5rem;
-  color: #d9d4c6;
+  color: var(--atlas-ink);
   opacity: 0.035;
   font: 22rem/1 var(--font-display);
   pointer-events: none;
@@ -366,7 +354,7 @@
 .markBottom,
 .markScale {
   position: absolute;
-  font: 0.51rem/1.5 var(--font-mono);
+  font: 0.51rem/1.5 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.09em;
   color: var(--atlas-muted);
@@ -400,11 +388,10 @@
 }
 .editorsNote > p {
   font: 400 clamp(1.25rem, 2.1vw, 1.8rem)/1.55 var(--font-display);
-  letter-spacing: -0.02em;
   max-width: 37rem;
 }
 .editorStamp {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
   border: 1px solid currentColor;
   border-radius: 50%;
   aspect-ratio: 1;
@@ -415,9 +402,6 @@
   font: 1rem/1.4 var(--font-display);
   rotate: -9deg;
   justify-self: end;
-}
-.editorStamp em {
-  display: block;
 }
 .footer {
   margin-inline: var(--atlas-gutter);
@@ -430,10 +414,10 @@
 }
 .footerTitle {
   font: 400 clamp(1.6rem, 2.8vw, 2.8rem)/1.2 var(--font-display);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
 }
 .footerTitle em {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .footer p {
   font-size: 0.72rem;
@@ -459,14 +443,14 @@
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  font: 0.65rem/1.5 var(--font-mono);
+  font: 0.65rem/1.5 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   text-decoration: none;
 }
 .articleTop > span {
   align-self: center;
-  font: 0.6rem/1.5 var(--font-mono);
+  font: 0.6rem/1.5 var(--font-sans);
   text-transform: uppercase;
   color: var(--atlas-muted);
 }
@@ -482,10 +466,6 @@
   line-height: 0.95;
   max-width: 11ch;
   margin-top: 1rem;
-}
-.articleHead h1 em {
-  font-weight: 400;
-  color: var(--atlas-red);
 }
 .articleDeck {
   font-size: 0.88rem;
@@ -511,8 +491,8 @@
 }
 .figureNumber {
   font: 400 5rem/1 var(--font-display);
-  letter-spacing: -0.06em;
-  color: var(--atlas-red);
+  letter-spacing: -0.02em;
+  color: var(--atlas-accent);
 }
 .figureCaptionText {
   font-size: 0.73rem;
@@ -537,7 +517,7 @@
 }
 .opening {
   font: 400 clamp(1.7rem, 3vw, 2.6rem)/1.5 var(--font-display);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.01em;
   max-width: 42rem;
   margin-left: 18%;
   margin-bottom: 4rem;
@@ -551,8 +531,8 @@
 }
 .sectionNumber {
   font: 400 3.5rem/1 var(--font-display);
-  letter-spacing: -0.05em;
-  color: var(--atlas-red);
+  letter-spacing: -0.02em;
+  color: var(--atlas-accent);
 }
 .readingCopy h2 {
   font-size: clamp(1.9rem, 3vw, 2.7rem);
@@ -562,15 +542,14 @@
 .readingCopy p {
   font: 400 clamp(1.05rem, 1.4vw, 1.18rem)/1.85 var(--font-display);
   max-width: 65ch;
-  letter-spacing: -0.006em;
 }
 .readingCopy p + p {
   margin-top: 1.3rem;
 }
 .marginNote {
-  font: 0.6rem/1.9 var(--font-mono);
+  font: 0.6rem/1.9 var(--font-sans);
   color: var(--atlas-muted);
-  border-top: 2px solid var(--atlas-red);
+  border-top: 2px solid var(--atlas-accent);
   padding-top: 0.75rem;
   align-self: start;
 }
@@ -584,7 +563,7 @@
   max-height: 410px;
 }
 .sectionPlate figcaption {
-  font: 0.59rem/1.8 var(--font-mono);
+  font: 0.59rem/1.8 var(--font-sans);
   color: var(--atlas-muted);
   max-width: 38rem;
 }
@@ -605,20 +584,20 @@
   margin-top: 0.4rem;
 }
 .readingCopy a {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
   text-underline-offset: 0.2em;
 }
 .readingCopy code {
   font: 0.82em / 1.4 var(--font-mono);
-  background: #e2ddcf;
+  background: var(--atlas-code);
   padding: 0.1em 0.35em;
 }
 .readingCopy pre {
   overflow-x: auto;
   max-width: 100%;
   padding: 1rem 1.2rem;
-  background: #e2ddcf;
-  border-left: 3px solid var(--atlas-red);
+  background: var(--atlas-code);
+  border-left: 3px solid var(--atlas-accent);
   font: 0.78rem / 1.7 var(--font-mono);
   letter-spacing: 0;
 }
@@ -631,7 +610,7 @@
   margin: 3rem auto;
   max-width: 46rem;
   padding: 1.2rem 1.5rem;
-  border: 1px dashed var(--atlas-red);
+  border: 1px dashed var(--atlas-accent);
 }
 .draftNotes .readingCopy > * + * {
   margin-top: 0.8rem;
@@ -669,12 +648,11 @@
 }
 .closing {
   font: italic 400 clamp(1.7rem, 3vw, 2.5rem)/1.45 var(--font-display);
-  letter-spacing: -0.03em;
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
   max-width: 43rem;
   margin: 3rem auto 5rem;
   padding-left: 2rem;
-  border-left: 1px solid var(--atlas-red);
+  border-left: 1px solid var(--atlas-accent);
 }
 .authorNote {
   display: grid;
@@ -709,12 +687,12 @@
 }
 .nextArticle > a {
   font: 400 clamp(1.5rem, 3.4vw, 3rem)/1.2 var(--font-display);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
   text-decoration: none;
   min-height: 44px;
 }
 .nextArticle > a:hover {
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .equation {
   padding: 2rem 1rem;
@@ -723,7 +701,7 @@
   justify-content: space-around;
   gap: 2rem;
   font: italic 400 clamp(1.8rem, 3vw, 2.7rem)/1.3 var(--font-display);
-  color: var(--atlas-red);
+  color: var(--atlas-accent);
 }
 .equation span {
   display: flex;
@@ -731,7 +709,7 @@
   gap: 0.8rem;
 }
 .equation small {
-  font: 0.58rem/1.6 var(--font-mono);
+  font: 0.58rem/1.6 var(--font-sans);
   color: var(--atlas-muted);
   text-transform: uppercase;
 }
@@ -791,9 +769,9 @@
     padding-block: 1.3rem 1.6rem;
   }
   .masthead h1 {
-    font-size: clamp(3rem, 10.2vw, 5.5rem);
+    font-size: clamp(2rem, 7.8vw, 4.6rem);
     line-height: 0.9;
-    letter-spacing: -0.065em;
+    letter-spacing: 0.01em;
   }
   .issue {
     padding-left: 0.7rem;
@@ -986,7 +964,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .masthead h1 {
-    font-size: 12vw;
+    font-size: 10.4vw;
   }
   .issue {
     display: none;

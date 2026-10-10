@@ -4,6 +4,21 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Font and theme sprint (10 October 2026)
+
+Final fonts: Montagu Slab, Rethink Sans, Reddit Mono. Node 24 production build with no
+warnings (detached worktree `/private/tmp/maxsash-type-review`, server :3015), lint, types,
+format, 114 Node tests, 20 SEO cases, headers, keyboard 20/20, ship 36/36, gull 47, software
+fallback, sound and 193 creative records pass, with no runtime exceptions or overflow.
+Scratchpad checks: no headline word wider than its box on six pages at 1440/1100/820/600/
+390/320 px (rerun after the About name moved from 15cqi to 14cqi; the suite above ran on the
+15cqi build, the only difference); kicker arrival settles to opacity 1; day, night and phone
+screenshots inspected; the hero brand sits on the gutter at 390 px. Earlier rounds found and
+fixed: phone "Work" link under 24 px, brand centred on phones by that fix, night studio plate
+turning brown, Notebook masthead and About name breaking mid-word.
+Not checked: physical devices, real screen readers, the private `/write` editor, the hero
+fallback plate at night.
+
 ## Ship refinement (10 October 2026)
 
 Node 24 production build, lint, types, format, 114 Node tests, 20 SEO cases, headers,

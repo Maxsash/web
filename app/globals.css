@@ -1,32 +1,51 @@
 :root {
   color-scheme: light;
 
-  --paper: #fbf5e9;
-  --ink: #0c2e3f;
-  --ink-2: #3b5d6e;
-  --ink-3: #4f6977;
-  --accent: #1e7392;
+  --chart-paper: #eef0ea;
+  --chart-sheet: #f5f6f2;
+  --chart-ink: #10303a;
+  --chart-magenta: #9b2366;
+  --chart-buff: #e3d29a;
 
-  --rule: color-mix(in oklab, var(--ink) 14%, transparent);
-  --rule-strong: color-mix(in oklab, var(--ink) 26%, transparent);
+  --paper: var(--chart-paper);
+  --sheet: var(--chart-sheet);
+  --water: #d5e4e5;
+  --ink: var(--chart-ink);
+  --ink-2: #3f565e;
+  --ink-3: #4f646b;
+  --accent: var(--chart-magenta);
+  --buff: var(--chart-buff);
+  --gold: #d5be8e;
+
+  --band: #12323d;
+  --band-ink: #e9eeec;
+  --band-muted: #b5c7c9;
+  --band-accent: #eaa0c9;
+  --band-rule: color-mix(in oklab, var(--band-ink) 26%, transparent);
+
+  --rule: color-mix(in oklab, var(--ink) 16%, transparent);
+  --rule-strong: color-mix(in oklab, var(--ink) 28%, transparent);
   --grid: color-mix(in oklab, var(--ink) 5%, transparent);
   --grid-major: color-mix(in oklab, var(--ink) 8%, transparent);
 
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: var(--typeface-display), "Rockwell", Georgia, serif;
+  --font-sans: var(--typeface-text), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--typeface-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+:root[data-studio-theme="night"] {
+  color-scheme: dark;
 
-    --paper: #071d2a;
-    --ink: #e9f2f3;
-    --ink-2: #a6c2cb;
-    --ink-3: #6d8b97;
-    --accent: #57b2c6;
-  }
+  --paper: #0b1c26;
+  --sheet: #1a3340;
+  --water: #163039;
+  --ink: #e4ecec;
+  --ink-2: #b4c6c9;
+  --ink-3: #9db3b8;
+  --accent: #e690c2;
+  --buff: #c9b377;
+
+  --band: #173a47;
 }
 
 *,
@@ -68,13 +87,9 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.015em;
-  font-variation-settings:
-    "SOFT" 12,
-    "WONK" 0,
-    "opsz" 96;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 

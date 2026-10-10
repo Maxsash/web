@@ -286,14 +286,23 @@ origin sending JSON (so another website cannot write files while the dev server 
 - Homepage sections are one component each: `Work` (the lead through `ProjectFeature`, then a
   grid per kind), `About`, `Contact` (with `CopyButton`, which shares `copy-text.ts` with the
   studio's "Copy link"), `NotebookSection` (the three newest entries from `latestNotes`, and the
-  compass). `components/Section.module.css` is their one copy of the paper palette (day and
-  night), section header, kicker (and its arrival), lede, a rule that draws itself
-  (`drawnRule`), rust index numbers, facts list, plate (head and caption) and link; the section
-  modules `composes` from it. `Kicker` is the kicker paragraph that arrives.
+  compass). `components/Section.module.css` is their one copy of the section header (its size
+  in `--title-size`), kicker (and its arrival), lede, a rule that draws itself (`drawnRule`),
+  accent index numbers, facts list, plate (head and caption) and link; the section modules
+  `composes` from it. `Kicker` is the kicker paragraph that arrives.
+- **Type and colour:** `app/fonts.ts` loads Montagu Slab (display and essay text, `opsz`
+  follows font size), Rethink Sans (text and labels) and Reddit Mono (data only: seeds, code,
+  tables, plate notation) as `--typeface-*`; `globals.css` maps them to `--font-display`,
+  `--font-sans` and `--font-mono`. next/font generates the fallback metrics for all three. `globals.css` is the one palette (Admiralty chart): theme tokens
+  (`--paper`, `--sheet`, `--water`, `--ink`, `--ink-2/3`, `--accent`, `--buff`, `--gold`,
+  `--band*`, rules) switch with `html[data-studio-theme="night"]`. Day-only pages (the
+  Notebook, `/plate`, error pages) read the fixed `--chart-*` constants, because the night
+  attribute survives client-side navigation. The Notebook's `--atlas-*` palette in
+  `Atlas.module.css` is built from them. The hero's colours over the sea are its own.
 - **System drawings:** `lib/system-drawing.ts` (pure) lays a drawing out on a 340 × 330 plate:
   labelled bands, each a four-column grid of boxes (span 1, 2 or 4), and arrows that run
   straight where two boxes overlap horizontally or vertically and diagonally otherwise, clipped
-  to the box edges. `components/SystemPlate.tsx` draws it in the section's ink, paper and rust
+  to the box edges. `components/SystemPlate.tsx` draws it in the section's ink, paper and accent
   (night colours follow the palette); the drawing is one `role="img"` with the project's `alt`.
   `tools/system-drawing.test.mjs` checks that every project drawing fits, overlaps nothing and
   routes no arrow through a box.

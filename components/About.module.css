@@ -7,10 +7,11 @@
   padding-block: 1.5rem 4rem;
 }
 .section > header {
+  container-type: inline-size;
   padding-top: clamp(2rem, 4vw, 3.5rem);
 }
-.name {
-  overflow-wrap: anywhere;
+.section .name {
+  font-size: min(var(--title-size), 14cqi);
 }
 .section dl {
   max-width: 34rem;

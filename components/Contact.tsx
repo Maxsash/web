@@ -14,7 +14,7 @@ export default function Contact() {
             <Kicker>Open to freelance work</Kicker>
             <h2 id="contact-heading" className={styles.title}>
               Something <br />
-              <em>to build?</em>
+              to build?
             </h2>
             <p className={styles.note}>
               Write with the idea, who it is for and when you would like it live. A few lines are

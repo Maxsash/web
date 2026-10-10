@@ -66,7 +66,7 @@ export default async function AtlasArticle({ params }: Props) {
     <main id="atlas-content" className={styles.article}>
       <ArticleTop number={post.number} status="Sample essay" />
       <article>
-        <ArticleHead {...post} emphasis={post.titleEmphasis} status="Sample essay" />
+        <ArticleHead {...post} status="Sample essay" />
         <ArticleCover number={post.number} caption={post.plateCaption}>
           {waves ? <OceanPlate /> : <MarkPlate detail />}
         </ArticleCover>

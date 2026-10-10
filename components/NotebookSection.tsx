@@ -17,7 +17,7 @@ export default function NotebookSection() {
         <div>
           <h2 id="notebook-title">
             Written <br />
-            <em>as I build.</em>
+            as I build.
           </h2>
           <p>
             What broke, what I measured and what I learned while building. With a few studies of the

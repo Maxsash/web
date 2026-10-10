@@ -10,8 +10,7 @@ export default function NoteNotFound() {
       id="atlas-content"
       scene="notebook"
       kicker="Field note N° —"
-      title="This note was"
-      emphasis="torn out."
+      title="This note was torn out."
       actions={
         <>
           <Link prefetch={false} href="/blog">

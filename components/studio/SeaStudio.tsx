@@ -35,7 +35,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
       <div className={styles.lead}>
         <h2 id="sea-studio-title">
           Make a sea. <br />
-          <em>Keep the drawing.</em>
+          Keep the drawing.
         </h2>
         <p>
           The sea above is built from six waves and a seed, eight characters long. Those eight

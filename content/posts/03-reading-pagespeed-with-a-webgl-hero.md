@@ -4,7 +4,6 @@ summary: Which numbers to worry about, which to ignore, and the header that told
 topic: Performance & hosting
 date: 2026-10-08
 status: draft
-emphasis: in the sea
 caption: A lab report read slowly: first byte, render delay, and the number that would not reproduce.
 closing: Treat the lab as a list of leads, not a verdict.
 ---

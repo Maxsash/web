@@ -42,10 +42,7 @@ export default function ProjectFeature({ project, number, lead = false }: Props)
       </figure>
       <div className={lead ? styles.description : undefined}>
         <Kicker className={styles.kicker}>{`${label} / ${project.kicker}`}</Kicker>
-        <h3>
-          {headline.lead} <br />
-          <em>{headline.emphasis}</em>
-        </h3>
+        <h3>{headline}</h3>
         {tagline && (
           <p className={styles.summary}>
             {tagline[0]}

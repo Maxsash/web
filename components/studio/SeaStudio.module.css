@@ -1,17 +1,17 @@
 .studio {
   position: relative;
-  background: var(--obs-paper);
-  color: var(--obs-ink);
+  background: var(--paper);
+  color: var(--ink);
   padding: 5rem var(--obs-gutter) 4rem;
 }
 .top {
   composes: drawnRule from "../Section.module.css";
-  --drawn-rule: #173f444b;
+  --drawn-rule: var(--rule-strong);
   display: flex;
   gap: 2rem;
   justify-content: space-between;
   padding-top: 1rem;
-  font: 0.6rem/1.7 var(--font-mono);
+  font: 0.6rem/1.7 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -26,10 +26,6 @@
   font-size: clamp(3rem, 5.8vw, 6rem);
   line-height: 1.05;
   max-width: 10ch;
-}
-.lead h2 em {
-  color: var(--obs-rust);
-  font-weight: 350;
 }
 .lead p {
   font-size: 0.94rem;
@@ -64,7 +60,7 @@
   padding-top: 1rem;
 }
 .keep h3 {
-  font: 0.62rem/1.7 var(--font-mono);
+  font: 0.62rem/1.7 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-3);
@@ -80,7 +76,7 @@
 }
 .controls legend {
   padding: 0;
-  font: 0.62rem/1.7 var(--font-mono);
+  font: 0.62rem/1.7 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-3);
@@ -103,19 +99,19 @@
   border-radius: 99px;
   background: transparent;
   color: inherit;
-  font: 0.7rem/1.3 var(--font-mono);
+  font: 0.7rem/1.3 var(--font-sans);
   text-decoration: none;
   cursor: pointer;
 }
 .chips button:hover,
 .actions a:hover,
 .actions button:hover {
-  color: var(--obs-rust);
+  color: var(--accent);
 }
 .chips button[aria-pressed="true"] {
-  background: var(--obs-ink);
-  border-color: var(--obs-ink);
-  color: var(--obs-paper);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 .dice {
   border-style: dashed !important;
@@ -145,8 +141,7 @@
 }
 .settingHead label {
   font-size: 1.15rem;
-  font-family: var(--font-fraunces), Georgia, serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
 }
 .settingHead output {
   font: 0.66rem/1.4 var(--font-mono);
@@ -157,14 +152,14 @@
   width: 100%;
   min-height: 44px;
   margin: 0;
-  accent-color: var(--obs-rust);
+  accent-color: var(--accent);
   cursor: ew-resize;
   background: transparent;
 }
 .ends {
   display: flex;
   justify-content: space-between;
-  font: 0.55rem/1.4 var(--font-mono);
+  font: 0.55rem/1.4 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--ink-3);
@@ -193,21 +188,21 @@
   border-radius: 0.3rem;
 }
 .seedInput[aria-invalid="true"] {
-  border-color: var(--obs-rust);
+  border-color: var(--accent);
 }
 .controls :focus-visible,
 .actions :focus-visible,
 .mechanism summary:focus-visible {
-  outline: 2px solid var(--obs-rust);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
 .plate {
   margin: 0;
-  border: 1px solid #173f4445;
-  background: #eeebdf;
+  border: 1px solid var(--rule-strong);
+  background: var(--sheet);
   padding: 1rem;
-  box-shadow: 8px 18px 0 #173f4409;
+  box-shadow: 8px 18px 0 color-mix(in oklab, var(--ink) 4%, transparent);
 }
 .plateFrame svg {
   display: block;
@@ -215,7 +210,7 @@
   height: auto;
 }
 .plate figcaption {
-  border-top: 1px solid #173f4445;
+  border-top: 1px solid var(--rule-strong);
   margin-top: 0.8rem;
   padding-top: 0.9rem;
   display: grid;
@@ -226,7 +221,7 @@
   align-items: baseline;
   gap: 0.8rem;
   margin: 0;
-  font: 0.58rem/1.5 var(--font-mono);
+  font: 0.58rem/1.5 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -237,13 +232,12 @@
 }
 .seedLine i {
   font-style: normal;
-  color: var(--obs-rust);
+  color: var(--accent);
 }
 .sentence {
   margin: 0;
-  font-family: var(--font-fraunces), Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.15rem;
-  letter-spacing: -0.02em;
 }
 .actions {
   display: flex;
@@ -251,14 +245,14 @@
   gap: 0.5rem;
 }
 .actions .primary {
-  background: var(--obs-ink);
-  color: var(--obs-paper);
-  border-color: var(--obs-ink);
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
 }
 .actions .primary:hover {
-  color: var(--obs-paper);
-  background: var(--obs-rust);
-  border-color: var(--obs-rust);
+  color: var(--paper);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 .actions .copy {
   cursor: copy;
@@ -271,12 +265,12 @@
 .copied {
   margin: 0;
   min-height: 1.2em;
-  font: 0.62rem/1.5 var(--font-mono);
+  font: 0.62rem/1.5 var(--font-sans);
   color: var(--ink-2);
 }
 
 .mechanism {
-  border-top: 1px solid #173f444b;
+  border-top: 1px solid var(--rule-strong);
   margin-top: 3.5rem;
   padding-block: 1.3rem;
 }
@@ -304,7 +298,7 @@
   line-height: 1.9;
 }
 .equation {
-  font: 1.15rem/1.6 var(--font-mono);
+  font: italic 1.3rem/1.6 var(--font-display);
 }
 .mechanism p + p {
   margin-top: 1rem;
@@ -339,7 +333,7 @@
     z-index: 3;
     padding: 0.6rem;
     box-shadow: none;
-    background: var(--obs-paper);
+    background: var(--paper);
   }
   .keep {
     order: 2;
@@ -472,22 +466,12 @@
     translate: 0 -0.6rem;
   }
 }
-:global(html[data-studio-theme="night"]) .plate {
-  background: #24363b;
-  border-color: #b5d1ca45;
-}
 :global(html[data-studio-theme="night"]) .plateFrame svg {
-  filter: invert(0.86) hue-rotate(140deg);
-}
-:global(html[data-studio-theme="night"]) .actions .primary {
-  background: var(--obs-ink);
-  color: var(--obs-paper);
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: screen;
 }
 @media (min-width: 60.01rem) and (max-height: 760px) {
   .result {
     position: static;
   }
-}
-:global(html[data-studio-theme="night"]) .studio {
-  --obs-rust: #e4967c;
 }

@@ -33,14 +33,14 @@ export function renderSeaPlate(edition: SeaEdition): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1280 960" role="img" aria-labelledby="title desc">
 <title id="title">Sea, resolved — authored edition ${edition.seed}</title>
 <desc id="desc">A mathematical ocean drawn as an engraved isometric field. Six directional waves form the same surface shown in the Observatory. Frozen at scene time zero. This is an authored study, not an ocean observation.</desc>
-<rect width="1280" height="960" fill="#eee9dc"/>
-<g fill="none" stroke="#173f44" stroke-width="1" opacity=".3"><path d="M56 48H1224V912H56Z M56 124H1224 M56 810H1224"/><path d="M40 48H72M56 32V64M1208 48H1240M1224 32V64M40 912H72M56 896V928M1208 912H1240M1224 896V928"/></g>
-<g fill="#173f44" font-family="monospace" font-size="13" letter-spacing="2"><text x="80" y="87">MAXSASH STUDIO / FIELD PLATE 01</text><text x="1200" y="87" text-anchor="end">EDITION ${edition.seed.toUpperCase()}</text></g>
-<text x="78" y="195" fill="#173f44" font-family="Georgia,serif" font-size="66" letter-spacing="-2">Sea, resolved.</text>
-<text x="1198" y="177" fill="#173f44" font-family="monospace" font-size="12" text-anchor="end">SIX WAVES. ONE SURFACE.</text>
-<g fill="none" stroke="#173f44" stroke-linecap="round" stroke-linejoin="round"><g stroke-width=".7" opacity=".68">${rows.join("")}</g><g stroke-width=".55" opacity=".2">${columns.join("")}</g></g>
-<polyline points="${cut.join(" ")}" fill="none" stroke="#bc542f" stroke-width="2.2"/>
-<g fill="#173f44" font-family="monospace" font-size="12"><text x="91" y="523">−10</text><text x="1165" y="462">+10</text><text x="640" y="739" text-anchor="middle">THE SAME FIELD, SEEN FROM ABOVE</text></g>
-<g fill="#173f44"><text x="80" y="853" font-family="Georgia,serif" font-size="24">An ocean made of relationships.</text><text x="80" y="884" font-family="monospace" font-size="12">AUTHORED STUDY · MODEL V${edition.version} · t = 0 s · NOT LIVE OBSERVATIONS</text><text x="1200" y="853" text-anchor="end" font-family="Georgia,serif" font-size="24">∑ Aᵢ sin(kᵢ · x − ωᵢt + φᵢ)</text><text x="1200" y="884" text-anchor="end" font-family="monospace" font-size="12">${recipe}</text></g>
+<rect width="1280" height="960" fill="#eef0ea"/>
+<g fill="none" stroke="#10303a" stroke-width="1" opacity=".3"><path d="M56 48H1224V912H56Z M56 124H1224 M56 810H1224"/><path d="M40 48H72M56 32V64M1208 48H1240M1224 32V64M40 912H72M56 896V928M1208 912H1240M1224 896V928"/></g>
+<g fill="#10303a" font-family="monospace" font-size="13" letter-spacing="2"><text x="80" y="87">MAXSASH STUDIO / FIELD PLATE 01</text><text x="1200" y="87" text-anchor="end">EDITION ${edition.seed.toUpperCase()}</text></g>
+<text x="78" y="195" fill="#10303a" font-family="Georgia,serif" font-size="66" letter-spacing="-2">Sea, resolved.</text>
+<text x="1198" y="177" fill="#10303a" font-family="monospace" font-size="12" text-anchor="end">SIX WAVES. ONE SURFACE.</text>
+<g fill="none" stroke="#10303a" stroke-linecap="round" stroke-linejoin="round"><g stroke-width=".7" opacity=".68">${rows.join("")}</g><g stroke-width=".55" opacity=".2">${columns.join("")}</g></g>
+<polyline points="${cut.join(" ")}" fill="none" stroke="#9b2366" stroke-width="2.2"/>
+<g fill="#10303a" font-family="monospace" font-size="12"><text x="91" y="523">−10</text><text x="1165" y="462">+10</text><text x="640" y="739" text-anchor="middle">THE SAME FIELD, SEEN FROM ABOVE</text></g>
+<g fill="#10303a"><text x="80" y="853" font-family="Georgia,serif" font-size="24">An ocean made of relationships.</text><text x="80" y="884" font-family="monospace" font-size="12">AUTHORED STUDY · MODEL V${edition.version} · t = 0 s · NOT LIVE OBSERVATIONS</text><text x="1200" y="853" text-anchor="end" font-family="Georgia,serif" font-size="24">∑ Aᵢ sin(kᵢ · x − ωᵢt + φᵢ)</text><text x="1200" y="884" text-anchor="end" font-family="monospace" font-size="12">${recipe}</text></g>
 </svg>`;
 }

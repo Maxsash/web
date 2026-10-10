@@ -71,7 +71,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
         <div className={styles.end}>
           <h2>
             Look closer. <br />
-            <em>Keep going.</em>
+            Keep going.
           </h2>
           <p>Every finished thing has a drawing underneath. This is where I keep mine.</p>
         </div>

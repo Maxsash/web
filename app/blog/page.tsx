@@ -110,7 +110,7 @@ export default function AtlasIndex() {
         }
         headline={
           <>
-            The sea is <br />a sum of <br /> <em>small things.</em>
+            The sea is <br />a sum of <br /> small things.
           </>
         }
         blurb="A crest, a trough, a little disagreement. Follow the simple parts that make a surface feel wonderfully complicated."
@@ -137,7 +137,7 @@ export default function AtlasIndex() {
         headline={
           <>
             A symbol. <br />A vessel. <br />
-            <em>One line of thought.</em>
+            One line of thought.
           </>
         }
         blurb="Where an integral becomes a mast, and the space between three shapes does the quiet work."
@@ -160,7 +160,7 @@ export default function AtlasIndex() {
         <span className={styles.editorStamp}>
           Made to be
           <br />
-          <em>looked into.</em>
+          looked into.
         </span>
       </aside>
     </main>

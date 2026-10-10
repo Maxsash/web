@@ -1,26 +1,22 @@
 .paper {
-  --paper: #eae7d9;
-  --ink: #17383d;
-  --muted: #506468;
-  --rule: #17383d33;
-  --plate: #d9dfd6;
   background: var(--paper);
   color: var(--ink);
   padding-inline: clamp(1.25rem, 6vw, 7rem);
 }
 .header {
+  --title-size: clamp(3.5rem, 9vw, 8.5rem);
   padding-block: clamp(3rem, 9vw, 8rem) 2.5rem;
   max-width: 58rem;
 }
 .kicker {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 1.2rem;
 }
 .header h2 {
-  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-size: var(--title-size);
   line-height: 0.95;
   margin-bottom: 2rem;
 }
@@ -28,17 +24,14 @@
   clip-path: inset(0 100% 0 0);
 }
 :global(html[data-feedback]) .kicker[data-arrive]:not([data-arrived]) + :is(h2, h3) {
-  font-variation-settings:
-    "SOFT" 100,
-    "WONK" 1,
-    "opsz" 96;
+  opacity: 0.3;
 }
 @media (prefers-reduced-motion: no-preference) {
   .kicker[data-arrive] {
     transition: clip-path 760ms steps(22, end);
   }
   .kicker[data-arrive] + :is(h2, h3) {
-    transition: font-variation-settings 1.2s steps(3, end);
+    transition: opacity 1.2s steps(3, end);
   }
 }
 .drawnRule {
@@ -54,25 +47,25 @@
 }
 .lede {
   max-width: 31rem;
-  color: var(--muted);
+  color: var(--ink-2);
   font-size: 1.1rem;
   line-height: 1.65;
 }
 .index {
   display: block;
-  font: 0.7rem/1.7 var(--font-mono);
+  font: 0.7rem/1.7 var(--font-sans);
   letter-spacing: 0.08em;
-  color: #875136;
+  color: var(--accent);
 }
 .plate {
   margin: 0;
   min-width: 0;
-  background: var(--plate);
+  background: var(--water);
   padding: clamp(1rem, 2.5vw, 2rem);
 }
 .plateHead,
 .caption {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
@@ -85,7 +78,7 @@
   border-bottom: 1px solid var(--rule);
 }
 .caption {
-  color: var(--muted);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
   line-height: 1.6;
 }
@@ -102,10 +95,10 @@
   gap: 1rem;
 }
 .facts dt {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--ink-2);
   align-self: center;
 }
 .facts dd {
@@ -128,16 +121,6 @@
     transition: color 180ms ease;
   }
   .link:hover {
-    color: #865136;
+    color: var(--accent);
   }
-}
-:global(html[data-studio-theme="night"]) .paper {
-  --paper: #122126;
-  --ink: #d8e2dc;
-  --muted: #b4c8c4;
-  --rule: #b5d1ca33;
-  --plate: #20343a;
-}
-:global(html[data-studio-theme="night"]) .index {
-  color: #e4967c;
 }

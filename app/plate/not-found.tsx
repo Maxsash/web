@@ -10,8 +10,7 @@ export default function PlateNotFound() {
     <DriftPage
       scene="plate"
       kicker="Seed not recognised"
-      title="That sea can't be"
-      emphasis="drawn."
+      title="That sea can't be drawn."
       actions={
         <>
           <Link prefetch={false} href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>

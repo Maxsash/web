@@ -13,7 +13,7 @@ export default function About() {
         <Kicker>About</Kicker>
         <h2 id="about-heading" className={styles.name}>
           {first} <br />
-          <em>{last}.</em>
+          {last}.
         </h2>
         <p className={section.lede}>
           A founding engineer with more than five years in backend and real-time systems. I have led

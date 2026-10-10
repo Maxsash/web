@@ -1,22 +1,23 @@
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Montagu_Slab, Reddit_Mono, Rethink_Sans } from "next/font/google";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const display = Montagu_Slab({
+  variable: "--typeface-display",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK", "opsz"],
+  axes: ["opsz"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const text = Rethink_Sans({
+  variable: "--typeface-text",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const mono = Reddit_Mono({
+  variable: "--typeface-mono",
   subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrains = JetBrains_Mono({
-  variable: "--font-mono-jb",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const fontVariables = `${fraunces.variable} ${inter.variable} ${jetbrains.variable}`;
+export const fontVariables = `${display.variable} ${text.variable} ${mono.variable}`;

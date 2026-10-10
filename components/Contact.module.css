@@ -3,11 +3,9 @@
   padding-block: 0 4rem;
 }
 .panel {
-  --panel-rule: #e8e5d833;
-  --panel-muted: #c4cec4;
   padding: clamp(1.5rem, 4vw, 4rem);
-  background: #17383d;
-  color: var(--paper);
+  background: var(--band);
+  color: var(--band-ink);
 }
 .ask {
   display: flex;
@@ -16,19 +14,18 @@
   gap: 3rem;
   padding-bottom: clamp(2rem, 4vw, 3rem);
   margin-bottom: clamp(2rem, 4vw, 3rem);
-  border-bottom: 1px solid var(--panel-rule);
+  border-bottom: 1px solid var(--band-rule);
 }
 .panel .title {
   font-size: clamp(2.5rem, 4.5vw, 4.5rem);
   line-height: 1;
   font-weight: 400;
-  letter-spacing: -0.04em;
   margin-bottom: 1.5rem;
 }
 .note {
   max-width: 25rem;
   line-height: 1.7;
-  color: var(--panel-muted);
+  color: var(--band-muted);
 }
 .reach {
   display: grid;
@@ -37,12 +34,12 @@
 }
 .copy,
 .reach [role="status"] {
-  font: 0.7rem/1.6 var(--font-mono);
+  font: 0.7rem/1.6 var(--font-sans);
   letter-spacing: 0.04em;
 }
 .reach [role="status"] {
   min-height: 1.6em;
-  color: var(--panel-muted);
+  color: var(--band-muted);
 }
 .email {
   display: flex;
@@ -56,7 +53,7 @@
 .copy {
   min-height: 44px;
   padding: 0.2rem 0.9rem;
-  border: 1px solid #e8e5d866;
+  border: 1px solid color-mix(in oklab, var(--band-ink) 40%, transparent);
   border-radius: 99px;
   background: transparent;
   color: inherit;
@@ -64,7 +61,7 @@
 }
 .email:focus-visible,
 .copy:focus-visible {
-  outline: 2px solid #e8d3a8;
+  outline: 2px solid var(--band-accent);
   outline-offset: 5px;
 }
 .steps {
@@ -77,12 +74,12 @@
 }
 .steps li {
   padding-top: 1.25rem;
-  border-top: 1px solid var(--panel-rule);
+  border-top: 1px solid var(--band-rule);
 }
 .index {
-  font: 0.7rem/1.7 var(--font-mono);
+  font: 0.7rem/1.7 var(--font-sans);
   letter-spacing: 0.08em;
-  color: #e8d3a8;
+  color: var(--band-accent);
 }
 .steps h3 {
   font-size: clamp(1.9rem, 2.8vw, 2.6rem);
@@ -91,7 +88,7 @@
 }
 .steps p,
 .aside {
-  color: var(--panel-muted);
+  color: var(--band-muted);
   line-height: 1.7;
   font-size: 0.95rem;
 }
@@ -121,10 +118,6 @@
     transition: background-color 180ms ease;
   }
   .copy:hover {
-    background: #e8e5d81a;
+    background: color-mix(in oklab, var(--band-ink) 10%, transparent);
   }
-}
-:global(html[data-studio-theme="night"]) .panel {
-  background: #223b43;
-  color: #e8e5d8;
 }

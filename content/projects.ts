@@ -7,7 +7,7 @@ export type Project = {
   slug: string;
   title: string;
   kind: "client" | "personal";
-  headline: { lead: string; emphasis: string };
+  headline: string;
   kicker: string;
   tagline?: readonly [string, string];
   summary: string;
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     slug: "velora-rights",
     title: "Velora Rights",
     kind: "client",
-    headline: { lead: "Built to be", emphasis: "found." },
+    headline: "Built to be found.",
     kicker: "A client's law practice",
     tagline: ["Found through search.", "Edited without a developer."],
     summary:
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     slug: "intrusion-detection",
     title: "Real-time Intrusion Detection",
     kind: "client",
-    headline: { lead: "A cable that", emphasis: "raises the alarm." },
+    headline: "A cable that raises the alarm.",
     kicker: "A client's security system",
     summary:
       "Fibre-optic sensing hardware, turned into live security alerts for critical infrastructure: anomalies caught on site, people alerted on WhatsApp, Telegram and email, every event on a live map beside the CCTV. I led the architecture and the team, through to on-site deployment.",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
     slug: "business-operations",
     title: "Business Operations Platform",
     kind: "client",
-    headline: { lead: "Off paper,", emphasis: "into one system." },
+    headline: "Off paper, into one system.",
     kicker: "A client's SaaS product",
     summary:
       "Takes traditional businesses off paper and spreadsheets: modules each business switches on, one data model, dashboards for every role, and AI that sorts email enquiries and drafts the replies so leads are not missed. I was the CTO and led the team.",
@@ -153,7 +153,7 @@ export const projects: Project[] = [
     slug: "household-hub",
     title: "Household Hub",
     kind: "personal",
-    headline: { lead: "Household", emphasis: "Hub." },
+    headline: "Household Hub.",
     kicker: "Everyday operations",
     tagline: ["A little less remembering.", "A little more living."],
     summary:
@@ -175,7 +175,7 @@ export const projects: Project[] = [
     slug: "wedding-photo-platform",
     title: "Wedding Photo Platform",
     kind: "personal",
-    headline: { lead: "A day, kept", emphasis: "in chapters." },
+    headline: "A day, kept in chapters.",
     kicker: "A personal archive",
     summary:
       "A wedding told in chapters, photo reels, and albums. An offline photo pipeline removes duplicates and groups faces so guests can find their photographs. The public demo hides faces for privacy.",

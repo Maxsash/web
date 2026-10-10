@@ -18,3 +18,15 @@ longer true), suggest a commit message, and do not commit.
 Console greeting with a small ASCII ship, a custom response header, `humans.txt`, a hidden
 `/api` sea poem or named hidden sea, playful naming. Constraints: no right-click blocking,
 no obfuscation, no accessibility cost, nothing sensitive, no change for ordinary visitors.
+
+## Gull refinement (10 October 2026)
+
+Seat sizing and projected contact (`placement.ts`) and rest policy (`rest.ts`) are pure modules shared by the
+lifecycle and meaningful geometry/behaviour checks. Theme changes reuse the habit seed.
+Flight, model, notes and painting stay separate; no new dependencies or assets.
+The renderer reuses its facets for contact; `check-gull.mjs` shares viewport/motion/phase
+setup across its matrix and keeps pixel/collision assertions independent of placement code.
+
+Tooling follow-up: keyboard/creative Node harness processes lingered after all results
+were printed and Chrome exited. Completed processes were stopped; investigate browser
+cleanup separately, without mixing it into the gull refinement.

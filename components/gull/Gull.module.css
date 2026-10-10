@@ -1,7 +1,7 @@
 .gull {
   position: absolute;
-  left: calc(100% - var(--perch-seat, 0px) / 2 - 12px);
-  top: calc(100% - 8px);
+  left: calc(100% - var(--perch-seat, 0px) / 2 - var(--perch-inset));
+  top: calc(100% + var(--perch-floor, 0.5px));
   width: var(--gull-size, 0);
   height: var(--gull-size, 0);
   margin: calc(var(--gull-size, 0px) / -2) 0 0 calc(var(--gull-size, 0px) / -2);

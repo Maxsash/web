@@ -2,8 +2,14 @@ import { cross, dot, mix, normal, type V3 } from "../observatory/vec3.ts";
 import type { Pose, Wing } from "./pose.ts";
 import { aboutX, aboutY, aboutZ, compose, turn, unturn, type Rotation } from "./rotation.ts";
 
-export type Tone = "white" | "back" | "under" | "tip" | "bill" | "leg" | "eye";
-export type Facet = { points: [number, number][]; depth: number; tone: Tone; light: number };
+export type Tone = "white" | "back" | "under" | "tip" | "bill" | "mark" | "leg" | "eye";
+export type Facet = {
+  points: [number, number][];
+  depth: number;
+  tone: Tone;
+  light: number;
+  contact?: boolean;
+};
 export type View = {
   x: number;
   y: number;
@@ -24,9 +30,9 @@ const BODY: Ring[] = [
   [-0.17, 0.032, 0.068, 0.074],
   [-0.07, 0.014, 0.104, 0.095],
   [0.03, 0.004, 0.116, 0.102],
-  [0.13, 0.018, 0.108, 0.09],
-  [0.2, 0.05, 0.082, 0.07],
-  [0.25, 0.088, 0.055, 0.05],
+  [0.13, 0.025, 0.115, 0.09],
+  [0.2, 0.062, 0.089, 0.07],
+  [0.25, 0.108, 0.059, 0.05],
 ];
 const TAIL: Ring[] = [
   [0, 0, 0.026, 0.036],
@@ -37,19 +43,20 @@ const TAIL_ROOT: V3 = [-0.23, 0.04, 0];
 const TAIL_FAN = [0, 0.04, 0.075];
 const HEAD: Ring[] = [
   [-0.03, -0.012, 0.046, 0.044],
-  [0.018, 0.014, 0.06, 0.051],
-  [0.066, 0.022, 0.06, 0.05],
-  [0.108, 0.013, 0.046, 0.04],
+  [0.018, 0.02, 0.065, 0.051],
+  [0.066, 0.028, 0.066, 0.05],
+  [0.108, 0.018, 0.049, 0.04],
   [0.135, 0, 0.029, 0.021],
 ];
 const BILL: Ring[] = [
   [0.135, 0, 0.027, 0.019],
-  [0.18, -0.004, 0.019, 0.012],
-  [0.216, -0.014, 0.008, 0.007],
+  [0.188, -0.002, 0.021, 0.013],
+  [0.231, -0.009, 0.012, 0.008],
 ];
-const BILL_TIP: V3 = [0.23, -0.024, 0];
-const EYE: V3 = [0.08, 0.034, 0.038];
-const NECK = { hunched: [0.235, 0.1, 0] as V3, stretched: [0.27, 0.165, 0] as V3 };
+const BILL_TIP: V3 = [0.244, -0.026, 0];
+const BILL_MARK: V3 = [0.208, -0.019, 0.012];
+const EYE: V3 = [0.08, 0.034, 0.055];
+const NECK = { hunched: [0.235, 0.12, 0] as V3, stretched: [0.27, 0.185, 0] as V3 };
 const SHOULDER: V3 = [0.12, 0.06, 0.07];
 const WRIST: V3 = [0.04, 0, 0.42];
 const HIP: V3 = [0.01, -0.085, 0.04];
@@ -78,7 +85,7 @@ const FOLDED_PANELS: [number, number][][] = [
   ],
 ];
 const FOLDED_GAP = 0.012;
-const FOLDED_CROSSING = 0.018;
+const FOLDED_CROSSING = 0.065;
 
 export const SITTING_LIFT = 0.108;
 export const STANDING_LIFT = SITTING_LIFT + LEG;
@@ -220,11 +227,13 @@ function body(pose: Pose, draw: Painter): Group {
   const puff = 1 + 0.07 * pose.fluff;
   const tail = compose(aboutZ(pose.tail));
   const facets = [
-    ...draw.loft(
-      BODY.map((section) => ring(section, puff)),
-      (point) => point,
-      (outward, [x]) => (normal(outward)[1] > 0.6 && x > -0.2 && x < 0.21 ? "back" : "white"),
-    ),
+    ...draw
+      .loft(
+        BODY.map((section) => ring(section, puff)),
+        (point) => point,
+        (outward, [x]) => (normal(outward)[1] > 0.6 && x > -0.2 && x < 0.21 ? "back" : "white"),
+      )
+      .map((facet) => ({ ...facet, contact: true })),
     ...draw.loft(
       TAIL.map((section, i) => ring(section, 1, TAIL_FAN[i] * pose.fan)),
       (point) => add(TAIL_ROOT, turn(tail, point)),
@@ -260,12 +269,16 @@ function head(pose: Pose, view: View, draw: Painter): Group {
     );
     if (facet) facets.push(facet);
   }
-  if (pose.eye > 0.5)
-    for (const side of [-1, 1]) {
-      const facing = turn(orientation(view), turn(rotation, normal([0.3, 0.3, side])));
-      if (facing[2] > 0.2)
+  for (const side of [-1, 1]) {
+    const facing = turn(orientation(view), turn(rotation, normal([0.3, 0.3, side])));
+    if (facing[2] > 0.2) {
+      facets.push(
+        draw.disc(place(mirror(BILL_MARK, side)), Math.max(0.55, 0.01 * view.scale), "mark"),
+      );
+      if (pose.eye > 0.5)
         facets.push(draw.disc(place(mirror(EYE, side)), Math.max(0.85, 0.013 * view.scale), "eye"));
     }
+  }
   return { depth: draw.depthOf(place([0.06, 0.02, 0])) + 0.03, facets };
 }
 
@@ -301,15 +314,25 @@ const PANEL_TONES: [Tone, Tone][] = [
 function wing(w: Wing, side: number, draw: Painter): Group {
   const open = wingPanels(w);
   const folding = w.fold;
-  const facets = open.panels
-    .map((panel, i) =>
-      draw.sheet(
-        panel.map((point, k) => mirror(blend(point, FOLDED[i][k], folding), side)),
-        mirror(normal(blend(open.ups[i], FOLDED_UP, folding)), side),
-        PANEL_TONES[i],
-      ),
-    )
-    .sort((a, b) => a.depth - b.depth);
+  const panels = open.panels.map((panel, i) =>
+    panel.map((point, k) => mirror(blend(point, FOLDED[i][k], folding), side)),
+  );
+  const ups = open.ups.map((up) => mirror(normal(blend(up, FOLDED_UP, folding)), side));
+  const facets = panels.map((panel, i) => draw.sheet(panel, ups[i], PANEL_TONES[i]));
+  const [leading, tip, trailing] = panels[2];
+  for (const t of [0.55, 0.8]) {
+    const spot = draw.sheet(
+      [
+        blend(leading, tip, t),
+        blend(leading, tip, t + 0.07),
+        blend(trailing, tip, t + 0.07),
+        blend(trailing, tip, t),
+      ],
+      ups[2],
+      ["white", "white"],
+    );
+    facets.push({ ...spot, depth: facets[2].depth + 0.002 });
+  }
   return { depth: draw.depthOf(mirror(blend(open.anchor, FOLDED_ANCHOR, folding), side)), facets };
 }
 
@@ -329,7 +352,7 @@ function leg(pose: Pose, side: number, scale: number, draw: Painter): Group {
         TOP,
         ["leg", "leg"],
       ),
-    ],
+    ].map((facet) => ({ ...facet, contact: true })),
   };
 }
 

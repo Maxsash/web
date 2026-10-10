@@ -56,12 +56,18 @@
   background: #143238;
 }
 .stage {
+  --copy-top: 22%;
+  --control-height: 44px;
+  --pause-bottom: 4.25rem;
   position: sticky;
   top: 0;
   height: 100svh;
   min-height: 620px;
   overflow: hidden;
   isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(var(--copy-top), max-content) minmax(0, 1fr);
 }
 .stageControls {
   display: none;
@@ -107,7 +113,7 @@
   color: var(--obs-ink);
 }
 .story[data-staged="true"] .pause {
-  bottom: 4.25rem;
+  bottom: var(--pause-bottom);
 }
 .canvas {
   position: absolute;
@@ -192,10 +198,11 @@
   opacity: var(--ink-progress);
 }
 .nav {
-  position: absolute;
-  left: var(--obs-gutter);
-  right: var(--obs-gutter);
-  top: 1.3rem;
+  position: relative;
+  grid-row: 1;
+  grid-column: 1;
+  align-self: start;
+  margin: 1.3rem var(--obs-gutter) 1.25rem;
   z-index: 8;
   display: flex;
   justify-content: space-between;
@@ -256,9 +263,11 @@
   color: var(--obs-ink);
 }
 .intro {
-  position: absolute;
-  top: 22%;
-  left: var(--obs-gutter);
+  position: relative;
+  grid-row: 2;
+  grid-column: 1;
+  align-self: start;
+  margin-inline: var(--obs-gutter);
   z-index: 3;
   color: #f5f0df;
   opacity: var(--intro-opacity);
@@ -349,7 +358,7 @@
   display: flex;
   gap: 0.7rem;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--control-height);
   border: 0;
   border-bottom: 1px solid #b9c4b780;
   padding: 0;
@@ -511,10 +520,11 @@
     min-height: 1000px;
   }
   .stage {
+    --copy-top: 16%;
     min-height: 100svh;
   }
   .nav {
-    top: 0.8rem;
+    margin-top: 0.8rem;
     align-items: flex-start;
     gap: 0.7rem;
   }
@@ -529,11 +539,8 @@
   .brand svg {
     width: 1.5rem;
   }
-  .intro {
-    top: 16%;
-  }
   .intro h1 {
-    font-size: clamp(4.8rem, 20vw, 7.7rem);
+    font-size: clamp(3.2rem, 20vw, 7.7rem);
     line-height: 0.86;
     margin-block: 1.2rem 1.3rem;
   }
@@ -543,7 +550,7 @@
   }
   .sceneMeta {
     top: auto;
-    bottom: 16%;
+    bottom: max(16%, calc(var(--pause-bottom) + var(--control-height) + 0.75rem));
     right: 1.25rem;
     width: 9rem;
     font-size: 0.48rem;
@@ -570,7 +577,6 @@
     font-size: 0.5rem;
   }
   .end {
-    top: 17%;
     display: block;
   }
   .end h2 {
@@ -597,13 +603,11 @@
 }
 @media (max-height: 620px) {
   .stage {
+    --copy-top: 19%;
     min-height: 100svh;
   }
-  .intro {
-    top: 19%;
-  }
   .intro h1 {
-    font-size: clamp(3rem, 9svh, 4.5rem);
+    font-size: clamp(2rem, 9svh, 4.5rem);
     margin-block: 0.8rem 1rem;
   }
   .intro p:last-child {
@@ -611,17 +615,13 @@
     line-height: 1.5;
   }
   .sceneMeta {
-    top: 25%;
-    bottom: auto;
-  }
-  .end {
-    top: 25%;
+    display: none;
   }
   .end h2 {
-    font-size: clamp(2.7rem, 9svh, 4rem);
+    font-size: clamp(2rem, 8svh, 3.5rem);
   }
   .end p {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
   .paperVeil {
     background:
@@ -662,10 +662,84 @@
 }
 @media (max-width: 48rem) {
   .nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem 0.75rem;
+    align-items: center;
+  }
+  .brand {
+    min-width: 0;
+  }
+  .brand svg {
+    flex-shrink: 0;
+  }
+  .brand span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .nav nav {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
   .nav > .sceneControls {
-    margin-left: auto;
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+@media (max-height: 620px) and (min-width: 35rem) and (max-width: 48rem) {
+  .nav {
+    grid-template-columns: auto 1fr auto;
+  }
+  .nav nav {
+    grid-row: 1;
+    grid-column: 2;
+    justify-content: center;
+  }
+  .nav > .sceneControls {
+    grid-column: 3;
+  }
+}
+
+@media (max-height: 620px) and (min-width: 30rem) {
+  .intro,
+  .end {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 2rem;
+  }
+  .eyebrow {
+    grid-column: 1 / -1;
+  }
+  .intro p:last-child,
+  .end p {
+    align-self: center;
+  }
+  .end p {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 760px), (max-height: 620px) {
+  .end {
+    position: relative;
+    grid-row: 2;
+    grid-column: 1;
+    align-self: start;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin-inline: var(--obs-gutter);
+  }
+}
+
+@media (max-height: 620px) and (max-width: 479px) {
+  .intro h1 {
+    font-size: clamp(1.8rem, 6.5svh, 3rem);
+    margin-block: 0.5rem 0.7rem;
   }
 }
 

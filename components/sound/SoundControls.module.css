@@ -1,4 +1,5 @@
 .perch {
+  --perch-inset: 20px;
   position: relative;
   transform: translateY(var(--perch-dip, 0px));
   transition:
@@ -6,5 +7,5 @@
     padding-right 500ms ease;
 }
 .perch[data-room] {
-  padding-right: calc(0.65rem + var(--perch-seat, 0px) + 12px);
+  padding-right: calc(0.65rem + var(--perch-seat, 0px) + var(--perch-inset));
 }

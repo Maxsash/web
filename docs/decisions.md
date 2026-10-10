@@ -150,6 +150,28 @@ each group. How the code is built: [architecture.md](architecture.md).
   refusals mark the field. Buttons whose result speaks (`data-press="none"`) do not also click.
 - **Responses before arrival exist only with JavaScript** (`html[data-feedback]`), so a reader
   without it sees everything at once.
+- **Keep one coastal character by day and night** (10 October 2026 refinement). The owner
+  asked whether night needs a different creature. One gull is the working design choice:
+  night activity is plausible ([Australian Museum](https://australian.museum/learn/species-identification/ask-an-expert/harbour-bridge-birds/)
+  describes Silver Gulls flying and feeding after dark;
+  [Rutgers](https://www.researchwithrutgers.com/en/publications/nocturnal-behavior-of-gulls-in-coastal-new-jersey)
+  studied nocturnal coastal gull activity). These sources support plausibility, not identical
+  behaviour in every gull species. At night the same stylised herring gull gets moonlight,
+  one brief note phrase, fewer habits and a tucked resting pose after 12 s unless engaged.
+  Hover, keyboard focus and a nearby pointer keep it awake. By day its existing invitation
+  schedule stays. This is an authored coastal scene, not a location-specific wildlife simulation.
+- **The gull touches the pill's edge** (owner, 10 October 2026 correction): remove the 10 px
+  bottom inset and align the projected belly/feet with the border centreline, including standing
+  and sleeping. A responsive header reserves space above the hero copy; short screens use
+  compact copy, without changing the approved sea timing. Resize/DPR changes refit the gull;
+  an arrival interrupted by rotation settles rather than jumping across the new layout.
+  On short screens (620 px or less), hide the secondary seed link to keep the
+  offer and controls clear; the sea studio remains in the page.
+- **Refine the gull at button size** (owner, 10 October 2026): fuller chest and crown,
+  hooked bill with red mark, visible eyes and white primary spots on black wingtips. More
+  inset space separates it from the label and the pill's curved end. Wingbeats are slower;
+  braking eases smoothly to zero, wing-folding and sitting finish in 1.8 s, and takeoff climbs.
+  A press during arrival or while standing begins departure from its current pose.
 - **A gull is the only moving hint for "Play waves"** (the owner's idea, 10 October 2026: a bird
   that "flies in and sits on that button ... without doing it on their face"). It is a low-poly
   herring gull in the ship's style, drawn on a small canvas inside the hero's button. Research

@@ -150,6 +150,18 @@ each group. How the code is built: [architecture.md](architecture.md).
   refusals mark the field. Buttons whose result speaks (`data-press="none"`) do not also click.
 - **Responses before arrival exist only with JavaScript** (`html[data-feedback]`), so a reader
   without it sees everything at once.
+- **A gull is the only moving hint for "Play waves"** (the owner's idea, 10 October 2026: a bird
+  that "flies in and sits on that button ... without doing it on their face"). It is a low-poly
+  herring gull in the ship's style, drawn on a small canvas inside the hero's button. Research
+  (`../web-research/reports/Website feedback beyond sound.md`) shaped the rules: motion onset
+  catches the eye but travelling motion distracts most, so it arrives once, after the button has
+  been in view for 3 s and scrolling has stopped, flies in under 5 s, then moves only in place,
+  rarely, and is still after 45 s; it never returns once the waves are played, turned off or all
+  sounds muted, and nothing about it is stored. It sits rather than stands because the hero button
+  has 21 px above it. Pressing the gull presses the button (its hit area is part of the button);
+  the button's words stay the accessible signal. "Still the sea" freezes it; reduced motion shows
+  it perched and still. In the drawing chapters it becomes its own ink wireframe. No study shows a
+  creature on a control raises clicks; it is kept for delight and is one prop to remove.
 - **Scroll cost is measured, not assumed.** A smooth settle of the headings' font axes reflowed
   them every frame (95 layouts in one scroll), so they settle in three steps. The depth line and
   the reading ribbon cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame

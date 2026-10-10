@@ -188,6 +188,32 @@ Every action gets a small answer; the brief and the full map are in [feedback.md
   section responses sit in their modules. `ScrollMark` is the depth line (home) and the reading
   ribbon (posts), scroll-driven CSS only.
 
+## The gull
+
+`components/gull/` lands a herring gull on the hero's "Play waves" (`<WaveSoundControl gull />`);
+the story is in [feedback.md](feedback.md), the rules in decisions.md.
+
+- **Pure:** `rotation` (3×3 rotations), `pose` (each wing's joints: lift, sweep, twist, reach, wrist
+  lift and sweep, and `fold`, which blends the wing into a designed folded shape on the body's
+  flank; tail, legs, neck, head, eye, fluff; named poses and `mixPose`), `body` (`gullFacets(pose,
+  view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips, a lofted tail,
+  legs; groups sorted by depth, then facets; flat light; `lookTowards`), `flight` (pure timelines:
+  `planArrival`/`arrivalAt` along a cubic Bézier with flap-and-glide bursts and a linear brake,
+  touchdown, wings raised then folded, sitting; `habitsFor(seed)` and `perchedAt`; `withMoods` for
+  standing and sleeping; `withGaze`; `planDeparture`/`departureAt`), `paint` (canvas colours by
+  theme and an ink mode that fades to paper with ink edges). Units are body lengths, `x` forward,
+  `y` up, `z` the bird's right; a frame's `x`, `y` are pixels from the perch.
+- **Lifecycle:** `visit.ts` (called by `Gull.tsx`) owns timing, observers and the frame loop. The
+  canvas and a small hit area sit inside the button, `aria-hidden`; the canvas is centred 6 px right
+  of the button's top centre (`Gull.module.css`) and moved with `transform`; its size follows the
+  button's height (1.14 body lengths per button height, 2.8 lengths a side). It flies within the
+  nearest `[data-gull-sky]` (the hero stage, which clips it), reads `data-chapter` and `data-still`
+  on `[data-observatory]` (`OceanScene` sets `data-still` while stilled), `html[data-idle]` and the
+  theme, and dips the button with `--perch-dip` (`SoundControls.module.css`). It draws only while
+  something moves and keeps a paused clock while hidden, offscreen or stilled.
+- **Contract for checks:** the hero now holds two canvases and the gull's comes first, so a check
+  must select the sea as `canvas[data-ocean]`, never the first canvas.
+
 ## Local post editor
 
 `/write` (with `/api/dev/posts` behind it) is a writing tool for the owner's machine only. Its

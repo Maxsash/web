@@ -16,7 +16,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
       data-observatory
       aria-label="From open water to its mathematical construction"
     >
-      <div className={styles.stage}>
+      <div className={styles.stage} data-gull-sky>
         <div className={styles.fallback} aria-hidden="true">
           <OceanPlate edition={edition} />
         </div>
@@ -41,7 +41,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             )}
           </nav>
           <div className={styles.sceneControls}>
-            <WaveSoundControl />
+            <WaveSoundControl gull />
           </div>
         </header>
         <OceanScene key={edition.seed} edition={edition} />

@@ -6,8 +6,9 @@ little thing that can have one, plus other channels. Maximalist first; the owner
 dials down after trying it. The model is the compass dial's tick: small, exactly on the action,
 and could not belong to any other site.
 
-**State:** built and kept as it is (9 October 2026: the owner tried it and wants nothing toned
-down). Every answer sounds by default; only the waves wait for "Play waves". Uncommitted.
+**State:** built, kept and released (`b65671e`, 9 October 2026: the owner tried it and wants
+nothing toned down). Every answer sounds by default; only the waves wait for "Play waves". Next:
+the gull (below), in progress and uncommitted.
 
 ## Changing an answer
 
@@ -52,6 +53,7 @@ down). Every answer sounds by default; only the waves wait for "Play waves". Unc
 | Everywhere  | Offline, back online            | foghorn; bell (`offline`, `online`) | Fog over the hero sea and the shore; notices           | same, module CSS                           |
 | Home        | Scroll                          |                           | Depth line with 10 vh marks at the right edge                   | `components/feedback/ScrollMark.tsx`       |
 | Hero        | Press the sea                   | water drop (`drop`)       | A ring spreads from the point pressed; crosshair cursor         | `OceanScene.tsx`, `ocean-shaders.ts`       |
+| Hero        | Waves off, the button in view   |                           | A gull lands on "Play waves", watches the pointer, takes off when pressed | `components/gull/`               |
 | Hero        | Scroll fast                     |                           | The sea quickens (wind), up to 1.6 pace                         | `sea-pace.ts`                              |
 | Hero        | Scroll from sea to drawing      | nib trill, one per 1/60 of the reveal (`draw`) |                                            | `OceanScene.tsx`                           |
 | Hero        | Phone: swipe a stage            | swell, 10 ms buzz (`swipe`) |                                                               | `OceanScene.tsx`                           |
@@ -88,10 +90,47 @@ frame for it (357 recalcs against 125 without it, about 0.1 ms a frame here). Th
 already does the same. If that is too much, delete `<ScrollMark kind="depth" />` from
 `app/page.tsx` first.
 
+## The gull (10 October 2026, uncommitted)
+
+**The owner's idea:** "a bird or whatever makes sense flies in and sits on that button... that is all
+the signal we need to give the user to click it without doing it on their face." A herring gull
+lands on the hero's "Play waves" and is the only moving hint that the button exists. Pressing the
+button, or the gull, starts the waves, and the gull takes off. The button's words still say what it
+does, for everyone who cannot see the gull.
+
+**What a visitor sees:** about 3 s after the button is fully on screen, once scrolling has been
+still for 1 s, a gull enters from the left of the sky (on a phone, above the eyebrow), flaps and
+glides across in under 4 s (2 s on a phone), brakes with its legs down and tail fanned, lands on
+the button's top edge (the button dips 1.5 px), raises and folds its wings, looks at the visitor,
+and sits. Perched, it turns its head now and then, blinks, shakes its feathers, may peck the button
+once (a 1 px dip) or turn round; after 45 s it keeps still. Its head follows a mouse pointer within
+280 px; hovering the button or focusing it from the keyboard makes it stand. At the third idle
+level (60 s) it tucks its head and sleeps. In the hero's drawing chapters it is drawn as its own ink
+wireframe, light on dark at night; by day and night it is lit like the ship.
+
+**Rules:** it comes once per page load (a revisit within the same page life finds it already
+perched; nothing is stored), only while the waves are off, and never after the visitor turned the
+waves off or muted all sounds. "Still the sea" freezes it with the sea; offscreen and in a hidden
+tab it does not draw or move. Reduced motion shows it perched and still (no flight, no habits) and
+fades it out on press. It never covers the focused button (its feet cross the top of the focus ring).
+The hit area over the sitting gull is part of the button, so pressing the gull is pressing the
+button. The research behind these timings (one short arrival, then anchored motion; nothing after
+being ignored) is in `../web-research/reports/Website feedback beyond sound.md`.
+
+**Change it:** timings and distances are named constants at the top of `components/gull/visit.ts`
+(`WAIT_MS`, `QUIET_MS`, `LOOK`, `DIP`) and `flight.ts` (`BEAT`, `BURST`, `BRAKE`, `HABITS`);
+colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`. To remove it, drop the `gull` prop
+from `WaveSoundControl` in `components/observatory/Hero.tsx`.
+
+**Open:** a takeoff sound (wingbeats, perhaps a call), which needs listening; the shore version
+(the waves button there could have its own gull, standing on the sand); landing into the sea's own
+wind (the research's idea); birds in every sky ([follow-ups.md](follow-ups.md)).
+
 ## Not built
 
 The ship turning toward a hovered nav item; the surf rising slightly when idle; the sail trimming;
-gulls by day and stars by night ([follow-ups.md](follow-ups.md)); a page curl and marginalia in the
+gulls in the sky by day and stars by night ([follow-ups.md](follow-ups.md)); a page curl and marginalia in the
 notebook; a designed print view for every page; thunder and a raft's creak on the error pages; the
-iOS Safari switch haptic (unverified); the nav marking the section in view (the nav stays in the
-hero); headings that "wonk" on hover.
+iOS Safari switch haptic (closed to scripts since iOS 26.5, per the research; only a real tap on a
+native switch ticks); the nav marking the section in view (the nav stays in the hero); headings that
+"wonk" on hover.

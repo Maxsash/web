@@ -344,6 +344,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     );
     pauseRef.current = () => {
       stopped = !stopped;
+      if (stopped) scene.dataset.still = "";
+      else delete scene.dataset.still;
       restart();
       return stopped;
     };
@@ -379,6 +381,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       stageRef.current = null;
       delete scene.dataset.staged;
       delete scene.dataset.stage;
+      delete scene.dataset.still;
     };
   }, [edition]);
   return (

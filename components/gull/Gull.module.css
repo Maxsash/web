@@ -1,0 +1,36 @@
+.gull {
+  position: absolute;
+  left: calc(50% + 6px);
+  top: 0;
+  width: var(--gull-size, 0);
+  height: var(--gull-size, 0);
+  margin: calc(var(--gull-size, 0px) / -2) 0 0 calc(var(--gull-size, 0px) / -2);
+  pointer-events: none;
+  visibility: hidden;
+}
+.gull:is([data-gull="arriving"], [data-gull="perched"], [data-gull="leaving"]) {
+  visibility: visible;
+}
+.seat {
+  position: absolute;
+  left: calc(50% + 6px);
+  bottom: 100%;
+  translate: -50% 0;
+  display: none;
+  cursor: pointer;
+}
+.seat[data-perched] {
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gull {
+    opacity: 0;
+    transition:
+      opacity 600ms ease,
+      visibility 0s linear 600ms;
+  }
+  .gull[data-gull="perched"] {
+    opacity: 1;
+    transition: opacity 600ms ease;
+  }
+}

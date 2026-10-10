@@ -22,14 +22,18 @@ export function subscribeSound(listener: () => void) {
   return () => void listeners.delete(listener);
 }
 
+function remembered(name: Choice) {
+  try {
+    return localStorage.getItem(CHOICES[name]);
+  } catch {
+    return null;
+  }
+}
+
 function choice(name: Choice) {
   if (chosen[name] === undefined) {
-    try {
-      const saved = localStorage.getItem(CHOICES[name]);
-      chosen[name] = saved === null ? DEFAULTS[name] : saved === "on";
-    } catch {
-      chosen[name] = DEFAULTS[name];
-    }
+    const saved = remembered(name);
+    chosen[name] = saved === null ? DEFAULTS[name] : saved === "on";
   }
   return chosen[name];
 }
@@ -42,6 +46,7 @@ function remember(name: Choice, on: boolean) {
 }
 
 export const wavesChosen = () => choice("waves");
+export const wavesDeclined = () => !wavesChosen() && remembered("waves") === "off";
 export const soundsChosen = () => choice("sounds");
 const anySound = () => wavesChosen() || soundsChosen();
 

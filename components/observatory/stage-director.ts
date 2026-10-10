@@ -1,4 +1,5 @@
 import { clamp01 } from "./clamp.ts";
+import { easeOut, smootherstep } from "./easing.ts";
 
 export const STAGES = [
   { label: "Sea", progress: 0 },
@@ -26,9 +27,6 @@ export function planMove(
     duration: fromIndex === 0 && toIndex === 1 ? OPENING_MS : MOVE_MS,
   };
 }
-
-const easeOut = (t: number) => t * (2 - t);
-const smootherstep = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 
 export function progressAt(move: StageMove, now: number, instant: boolean) {
   const t = instant ? 1 : clamp01((now - move.startedAt) / move.duration);

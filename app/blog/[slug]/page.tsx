@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         `/blog/${written.slug}`,
         "article",
       ),
-      robots: { index: false, follow: true },
+      robots: { index: !written.draft, follow: true },
     };
   }
   const post = findPost(slug);

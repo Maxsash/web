@@ -5,6 +5,10 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Index real published writing** (owner, 11 October 2026). Published real posts enter
+  search and the sitemap; drafts and sample essays remain excluded. The notebook listing
+  stays noindex while it mixes real writing and samples.
+
 - **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
   stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
   the generic Claude/AI look, and headings were hard to read. Chosen from a specimen, second

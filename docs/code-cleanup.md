@@ -51,3 +51,9 @@ error-page shaders retain their pinned defaults. Cloth uses one static flex buff
 freed with every other GL resource; context-loss checks assert all four buffers
 are released. Placement and drawing-camera fitting share projected bounds and
 composition rules. No dependencies or assets added.
+
+## SEO coverage (11 October 2026)
+
+Crawler checks read the project catalog and parse post files with the existing pure
+frontmatter/slug helpers. No duplicate project URL list or separate status parser.
+Sitemap uses the existing published-post loader; sample routes stay excluded.

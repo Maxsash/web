@@ -33,9 +33,10 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
       owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
       first-byte time. See [decisions.md](decisions.md).
-- [ ] **PageSpeed** (last run 8 October 14:41 IST): desktop 99, mobile 92, accessibility 100.
-      The remaining mobile loss is Largest Contentful Paint (3.2 s); see the function-region
-      item above. Due again: the hero changed in the 9 October release.
+- [ ] **PageSpeed** (owner report, 11 October 10:00 IST): desktop 97, mobile 85,
+      accessibility 97, SEO/best practices 100. Mobile LCP 3.5 s, TBT 190 ms, CLS 0;
+      desktop LCP 0.7 s, TBT 50 ms. No field data. Investigate document latency
+      (estimated 680–740 ms savings) and obtain contrast failing elements before fixing.
 - [ ] **Hero length without WebGL.** The hero is 180svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in
@@ -46,7 +47,9 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       try VoiceOver on Mac and iPhone (ideally NVDA too) and Safari's Reader mode.
 - [ ] **Sea studio on real devices.** Slider feel, the pinned drawing on a phone, and a real
       print on paper. Version 2 is new; keep version 1 stable.
-- [ ] **Search Console.** Sitemap showed "Couldn't fetch" at first; recheck. See
+- [ ] **Search Console.** Owner confirms sitemap success and screenshot confirms homepage
+      indexed with valid ProfilePage (11 October). Inspect case studies and, after release,
+      the newly indexable real article. See
       [seo-and-sharing.md](seo-and-sharing.md).
 - [ ] **Vercel.** Add a rate-limit rule for `/api/sea-edition*` and `/plate` (Node 24.x was
       confirmed by the owner on 9 October 2026).
@@ -61,8 +64,8 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Case-study extras, if wanted:** a share image per case study (all pages use the sea
       image today); a more detailed system drawing on the two private case studies; a second
       screenshot for the three with public sites.
-- [ ] **Real essays and projects.** The two essays are samples (`noindex`); replace them,
-      then enable indexing and add them to the sitemap.
+- [ ] **Sample essays.** The two samples remain `noindex`; replace them with approved real
+      writing before indexing. Real published posts now enter the sitemap automatically.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
 - [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,

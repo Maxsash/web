@@ -10,11 +10,11 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/`                                | Hero sea, Work, About, Contact, notebook, sea studio, shoreline footer. Dynamic: a fresh sea per visit. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
-| `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`). Unknown slugs render on demand so they reach the notebook 404. |
+| `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays (`noindex`) and written posts (published indexed, drafts dev-only). Unknown slugs render on demand so they reach the notebook 404. |
 | `/work/[slug]`, `/work`            | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`. |
 | `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
 | `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
-| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage and the five case studies.                                          |
+| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, five case studies and published real posts.                                          |
 | Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side

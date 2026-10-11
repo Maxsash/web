@@ -4,6 +4,18 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## SEO expansion (11 October 2026)
+
+Node 24 production build in `/private/tmp/maxsash-seo-check`, server :3018 (stopped):
+126 Node tests, 44 SEO cases, headers, keyboard 20/20, lint, types and format pass.
+Creative report: 193 records, zero failed assertions and zero runtime exceptions. The
+creative process lingered after writing its completed report and was stopped. Expanded
+harness derives all five case studies and real published posts, checks exact sitemap
+membership and index/noindex directives across four crawlers. Samples/listing remain
+noindex; drafts must 404. Owner confirms sitemap success and supplied homepage-indexed
+screenshot. Owner supplied PageSpeed: mobile 85 / desktop 97, accessibility 97, SEO 100.
+These are owner evidence; no fresh PageSpeed or Search Console access by this session.
+
 ## Case studies (10 October 2026)
 
 Rerun after the three-cards-two-rows change and again after Velora's drawing (126 Node tests: the drawing count became "every client project leads with a system drawing"), same results otherwise. Node 24 production build with no

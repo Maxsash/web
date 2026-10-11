@@ -4,19 +4,15 @@ import { site } from "@/content/site";
 
 export const siteOrigin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url).origin;
 export const absoluteUrl = (path: string) => new URL(path, `${siteOrigin}/`).href;
-const socialImage = {
-  url: absoluteUrl("/images/living-atlas-day-v1.jpg"),
-  width: 1200,
-  height: 630,
-  alt: "Maxsash Studio — Sea. Ship. Math. A sailboat on the sunlit Living Atlas sea.",
-};
+
+type ShareImage = { url: string; width: number; height: number; alt: string };
 
 export function sharingMetadata(
   title: string,
   description: string,
   path: string,
   type: "website" | "article" = "website",
-  image = socialImage,
+  image: ShareImage = site.shareImage,
 ): Metadata {
   const sharedImage = { ...image, url: absoluteUrl(image.url) };
   return {

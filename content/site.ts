@@ -14,6 +14,13 @@ export const site = {
   portrait: "/images/yash-shrivastava.webp",
   home: "Tikamgarh · 24.74° N, 78.83° E",
   email,
+  shareImage: {
+    url: "/images/studio-card-v1.jpg",
+    width: 1200,
+    height: 630,
+    alt: "Maxsash Studio. Sea. Ship. Math. Websites and web apps, built end to end, beside a gaff cutter on the Living Atlas sea.",
+  },
+  colors: { paper: "#eef0ea", night: "#0b1c26" },
 
   description:
     `Maxsash Studio is Yash Shrivastava's one-person studio: ${offer} ${promise}, ` +

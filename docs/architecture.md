@@ -358,7 +358,11 @@ origin sending JSON (so another website cannot write files while the dev server 
   (`process.cwd()`, `content`, `posts`) so the build traces only that folder; a path built from
   an imported constant made Turbopack trace the whole project into every route that reads
   posts (353 files for `/`, 153 now). The editor's `post-files.ts` imports the same constant.
-- The studio mark lives in `components/Mark.tsx`, `app/icon.svg` and `public/mark.svg`.
+- The studio mark lives in `components/Mark.tsx`. `app/icon.svg`, `app/favicon.ico`,
+  `app/apple-icon.png`, the manifest icons in `public/` and the default share card
+  (`site.shareImage`, `public/images/studio-card-v1.jpg`) are rendered from it and the live sea by
+  the brand kit beside the repo (`../brand/`, see its README). `app/manifest.ts` and the
+  theme colour read `site.colors`.
 - **Links:** `SmoothLinks` (root layout) sets `html[data-glide]` (`scroll-behavior: smooth`)
   for the one scroll a click on a `#` link starts, until `scrollend` or 1.5 s. `PageLink` wraps
   `Link`: pointing at the page already open (path and query), a plain click scrolls to the top

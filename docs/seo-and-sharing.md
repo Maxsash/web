@@ -11,9 +11,13 @@ What is in place, and what only the owner can do. The crawler checks are in
   Open Graph and Twitter title, description and URL; approved essays carry their own summaries. Screenshot-backed case studies use their
   existing 1200 × 750 covers; the two private case studies and the Notebook articles use
   1200 × 630 cards captured from their own drawings (`lib/note-share.ts`,
-  `projectShareImage`). Recapture a card when its drawing changes. Other pages use the static 1200 × 630 daytime JPEG `/images/living-atlas-day-v1.jpg`,
-  with dimensions and alternative text. It was captured from the real renderer; the
-  capture script was removed, and the versioned filename makes crawlers fetch it fresh.
+  `projectShareImage`). Recapture a card when its drawing changes. Other pages use `site.shareImage`
+  (`/images/studio-card-v1.jpg`, 1200 × 630, 117 KB): the live hero's sea and cutter with the
+  hero's headline, offer and type, rendered by the brand kit (`../brand/`). WhatsApp needs it
+  under 600 KB (`check-seo` asserts it). Bump the version in the filename when it changes so
+  crawlers fetch it fresh. The old `living-atlas-day-v1.jpg` (earlier type, ship and copy) is gone.
+- **Icons and manifest.** SVG, ICO (16–64), Apple 180 and manifest 192/512/maskable icons are
+  the mark in cream on chart ink; `theme-color` is chart paper by day and night by night.
 - **WhatsApp, Facebook and Twitter** are recognised by Next.js as HTML-limited bots, so
   metadata stays in the head.
 - **`/robots.txt`** allows public crawling, excludes the API and points at
@@ -71,13 +75,13 @@ indexing outcomes, and AI citations.
 Read-only live requests using OAI-SearchBot user agent returned 200 for robots, sitemap,
 home, Notebook listing, wave essay and business-operations case study. This checks a
 user-agent string from our network, not verified crawler IP access or Vercel WAF policy.
-Live robots allows all public pages and excludes `/api/`. Live sitemap still has seven
-URLs; listing/wave essay still noindex with sample labels. Latest publication work is
-unreleased; its verified local sitemap has ten URLs. No indexing/citation outcome verified.
+Live robots allows all public pages and excludes `/api/`. Since the owner's release (checked
+11 October, evening) the live sitemap has ten URLs and the essays are `index, follow`. No
+indexing/citation outcome verified.
 
 Priority todos:
 
-1. Owner release publication changes; inspect all ten URLs in Google Search Console.
+1. Inspect all ten URLs in Google Search Console and request indexing.
 2. Set up Bing Webmaster Tools, submit sitemap and inspect pages. Its AI Performance
    report can measure citations: [official announcement](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/).
 3. Inspect hosting logs/WAF for genuine Bingbot and OAI-SearchBot access after release. The local

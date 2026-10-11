@@ -1,90 +1,85 @@
 # Handoff — start here
 
-Updated 11 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD be20ef1. Work is uncommitted; the owner commits and releases; only `production` deploys.
+Updated 11 October 2026, evening. Read AGENTS.md, architecture.md, decisions.md and testing.md.
+HEAD 73fa720, which is also `production` (the owner released the essays and drawing-label work).
+This step is uncommitted; the owner commits and releases.
 
-## Current work — published writing, discovery and backend evidence
+## Current work — brand, icons, share card and social profiles
 
-- Both owner-approved essays are indexable, listed in Notebook and sitemap, with their authored
-  URLs/layouts unchanged. Two Markdown drafts remain development-only.
-- Screenshot-backed case studies now use their existing 1200 × 750 covers for social cards.
-  Private-system and Notebook article cards now use 1200 × 630 captures of their own
-  drawings (separate session, 11 October; check-seo 66 cases and case-study tests pass on a
-  local production build with npm copies of the same fonts). Article tabs end "| Maxsash Studio".
-- GitHub commit dates group in Asia/Kolkata and display IST. Footer failures show only the
-  repository link. Household Hub's headline is “Less to remember.”
-- Business Operations shows an approximate six-month build; Intrusion Detection shows eight
-  months. No calendar ranges were invented.
-- Hero/metadata name the backend and real-time focus. The sea API rejects repeated seed and
-  version parameters through shared parsing. README and security wording reflect the read-only API.
-- Published Notebook articles now emit factual BlogPosting JSON-LD from their source title,
-  summary, topic, author, URL and visible publication date. Drafts do not emit it.
-- The local crawler harness now covers Bingbot and OAI-SearchBot metadata, schema and substantial
-  initial HTML across 66 crawler/page cases.
+The owner asked for on-brand icons, metadata and WhatsApp share image, plus images and copy for
+the LinkedIn Page, Instagram and WhatsApp Business, as a brand identity to carry into Canva.
 
-## Owner-supplied project details now reflected
+**Website (uncommitted, in this repo)**
 
-- Business Operations: clients choose and pay for modules; selected modules share private,
-  business-separated data; insights adapt when data is intentionally absent; accessible workflows
-  use iteration, iconography, colour and bilingual or multilingual options. Its approach informs
-  Household Hub's tenant/expense insights.
-- Intrusion Detection: local Raspberry Pi compute stays on the private LAN; the admin server gets
-  only the alert detail needed for notifications; a separate service converts RTSP video for the
-  browser, selectable cameras and webcam inputs; deployments work only on defined networks.
-- System drawings and case-study prose use these facts, not invented metrics, protocols or blanket
-  security claims. The intrusion plate keeps its LAN-to-notification and video-to-monitor paths
-  separate instead of implying an unverified event-feed route. Moon phases are a documented visual
-  follow-up, not part of either project.
+- `app/icon.svg`, `app/favicon.ico` (64/48/32/16), `app/apple-icon.png`, `public/at-anchor.svg`:
+  same geometry, recoloured from the old `#0C3D55`/`#F7EFDF` to chart ink `#10303A` + cream `#F5F0DF`.
+- Default share card `public/images/studio-card-v1.jpg` (1200 × 630, 117 KB) replaces
+  `living-atlas-day-v1.jpg`, which still had the old type, ship and "Software, games, and
+  experiments" copy. One source: `site.shareImage` (used by `lib/seo.ts` and `check-seo`).
+- `app/manifest.ts` + `public/icon-192.png`, `icon-512.png`, `icon-maskable-512.png`;
+  `theme-color` now `site.colors` (chart paper / night) instead of old-palette blues.
+- `public/mark.svg` deleted (unreferenced since 11 September).
+- `check-seo.mjs`: card under WhatsApp's 600 KB limit; manifest names the studio; icons are PNG.
+
+**Brand kit (outside the repo, `../brand/`, not under git)**
+
+- Renderer: live-sea captures + HTML templates in the site's fonts → `export/` per platform.
+  README there explains every script and how to regenerate.
+- Private page for the owner: https://claude.ai/artifact/NcRFgKvfm9PBXGaH3ps4w1 (source
+  `../brand/kit/index.html`; `downloads` capability for Save buttons and a client-side zip).
+  It holds: seven brand lines, logo files, 12-colour palette, type, voice and usage rules;
+  LinkedIn logo, cover, overview (1556/2000), tagline, specialties and personal-profile extras;
+  Instagram profile picture, name, bio (132/150), five highlight covers, three launch posts with
+  captions and alt text; WhatsApp photo, cover, description (432/512), about, catalog, greeting,
+  away, quick replies, labels; Canva Brand Kit steps, brand-voice text and six backgrounds.
+- All copy reuses the site's own lines and owner-approved figures. No phone number anywhere.
+
+**LinkedIn check not done.** Claude in Chrome tools never appeared in this session (the owner
+said Chrome should be available; ToolSearch found no `mcp__claude-in-chrome__*` tools).
 
 ## Verification
 
-- Final isolated production verification passed on Node 24.21.0: build, lint, TypeScript, format,
-  126 Node tests, 66 crawler/page cases, headers/CSP, keyboard 20/20, and 193 creative records
-  with no runtime exceptions. The final Bingbot/OAI coverage changed only the crawler harness;
-  its 66-case rerun plus lint, TypeScript and format passed after the full browser/test suite.
-- The default build needed network access for the configured Google Fonts. The sandbox-only
-  fallback failed DNS lookup; the network-enabled Node 24 build completed successfully. Localhost
-  access was likewise enabled only for production-server checks.
-- Focused 390 px headless captures after scroll-arrival were inspected for both updated private
-  system plates. The labels, boxes and arrows are legible and unclipped.
-- The local production server used for verification was stopped. No live release, social-app
-  preview or physical-device check happened in this work.
-- Local dependencies were restored after an incomplete `node_modules` install. Under Node 24,
-  `pnpm dev` reached Next 16.3.8 and became ready on localhost before being stopped. Run
-  `nvm use` before normal development; the prior Node 22 shell only produced an engine warning.
-
-## Drawing label fix
-
-- Business module label shortened to “Buying”; module identity and prose unchanged.
-- All three drawings measured with loaded fonts on home and case studies at 390/1440;
-  all labels/notes have 3-unit side clearance. New check: tools/check-drawing-labels.mjs.
-- Captured business drawing WebP stays unchanged; recapture after owner release.
-- Isolated Node 24 webpack build, lint, TypeScript, format, 126 Node tests, 66 SEO cases,
-  headers, keyboard 20/20 and 193 creative cases (zero runtime exceptions) passed.
-  Own production server stopped. Turbopack hit sandbox port restrictions. Main-folder builds
-  were accidentally invoked and stopped/failed; passing build is isolated.
-- Suggested focused commit: `fix: fit business module label inside its drawing box`
-  Body: Shorten purchasing to Buying while preserving module identity and row layout.
-  Measure labels and notes across all system drawings with loaded production fonts.
+- Isolated Node 24 webpack build in a scratchpad worktree (`rsync --delete`), TypeScript, lint,
+  format, 126/126 Node tests, 66 SEO cases (new assertions included), headers/CSP, keyboard 20/20,
+  193 creative cases with zero runtime exceptions. Own server :3019 stopped; worktree removed.
+- Served head checked: new theme colours, manifest link, card URL and alt, new icon links.
+- Every exported image was inspected; profile field counts computed with the page's own
+  normalisation, all within limits.
+- Not checked: real WhatsApp/LinkedIn/Facebook previews (need the release), phone home-screen
+  install, Save/zip buttons inside the claude.ai viewer (needs a viewer click), Canva font
+  availability, handle availability.
 
 ## Next
 
-1. Owner review/commit/release; then inspect the ten published URLs and social cards, request
-   indexing, and set up Bing Webmaster Tools/AI Performance.
-2. Gather measurable production evidence for private systems when available; do not invent it.
-3. Real phone/Safari/Firefox/screen-reader checks, Vercel rate limits, and the full backlog in
-   follow-ups.md. A is the main site, B Notebook, C remains optional/unbuilt.
+1. Owner: review, commit, release. Then Facebook Sharing Debugger (Scrape Again), LinkedIn Post
+   Inspector and a WhatsApp message to self for the home page.
+2. Owner: fill the profiles from the kit page. Decisions listed there: handles
+   (`maxsash.studio`, `maxsash-studio`), founded year and organization type, WhatsApp hours,
+   whether the business number may show on Instagram.
+3. With the final profile URLs: add an Organization node (name, logo, url, founder `#yash`,
+   `sameAs` LinkedIn Page and Instagram) to `studioStructuredData`. This opens the SEO / LLM-SEO
+   step in seo-and-sharing.md.
+4. Connect Claude in Chrome (`/chrome`, or start with `claude --chrome`) and check the Maxsash
+   Studio Page against the kit.
+5. Recapture `public/images/work/business-operations-drawing.webp` now that "Buying" is live.
+6. Still open from before: Search Console inspections, Bing Webmaster Tools, production evidence
+   for private systems, real phone/Safari/Firefox/screen-reader checks, Vercel rate limits,
+   and follow-ups.md.
+7. Housekeeping: 11 old detached worktrees under `/private/tmp/maxsash-*` from earlier sessions
+   (`git worktree list`); remove them when no longer needed.
 
 ## Suggested commit message
 
 ```
-feat: publish essays and clarify backend case studies
+feat: bring icons and the share card onto the current brand
 
-Publish the approved Notebook essays and expose them to discovery. Strengthen project evidence
-with the owner-supplied module, privacy, local-compute and video-service architecture details.
-Use IST in the commit log, reject duplicate sea API versions consistently, and add truthful
-BlogPosting schema for published Notebook articles.
+Recolour the favicon, SVG, Apple and away icons from the old navy and cream to chart ink
+and cream, keeping the mark's geometry. Replace the default share card, which still showed
+the old type, ship and copy, with the live hero's sea, cutter, headline and offer. Add a web
+manifest with 192, 512 and maskable icons, set theme-color to chart paper and night, and keep
+the default card in one place (site.shareImage). Delete the unreferenced mark.svg.
 
-Verified in an isolated Node 24 production build: lint, TypeScript, format, 126 Node tests,
-66 crawler/page cases, headers/CSP, 20 keyboard checks and 193 creative records.
+Verified in an isolated Node 24 production build: TypeScript, lint, format, 126 Node tests,
+66 crawler/page cases (now with the card's 600 KB WhatsApp limit and the manifest icons),
+headers/CSP, 20 keyboard checks and 193 creative records with no runtime exceptions.
 ```

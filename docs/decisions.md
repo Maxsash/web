@@ -5,6 +5,17 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **One brand everywhere, from the site's own sources** (owner asked for on-brand icons, share
+  images and social profiles, 11 October 2026). Icons keep the mark's geometry and move from the
+  old navy/cream to chart ink `#10303A` and hero cream `#F5F0DF`. The default share card is the
+  live hero (Home water sea and cutter, Montagu Slab headline, the offer), replacing a card with
+  the earlier type, ship and "Software, games, and experiments" copy. Social images use the same
+  captures and fonts; profile copy reuses the site's lines verbatim, with real figures only and
+  no phone number. The kit lives beside the public repo in `../brand/`; profile URLs go into the
+  site's structured data once the owner confirms them. `public/mark.svg` was unreferenced since
+  11 September and was deleted (the kit holds mark files); the manifest uses `display: browser`
+  because the site is a website, not an installable app.
+
 - **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
   drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four
   modules and shared drawing typography; leave its social capture for recapture after release.

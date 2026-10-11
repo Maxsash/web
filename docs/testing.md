@@ -4,6 +4,16 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Brand icons, share card and manifest (11 October 2026)
+
+`check-seo.mjs` now reads the default card from `site.shareImage`, asserts it is a JPEG under
+WhatsApp's 600 KB preview limit, and that `/manifest.webmanifest` names the studio and serves
+each icon as PNG. Isolated Node 24 webpack build (detached worktree in the session scratchpad,
+`rsync --delete` so removed files are gone), TypeScript, lint, format, 126/126 Node tests, 66 SEO
+cases, headers/CSP, keyboard 20/20 and 193 creative cases with zero runtime exceptions. Own server
+(:3019) stopped. Not checked: real WhatsApp/LinkedIn/Facebook previews (need the release),
+home-screen install on a phone, Safari pinned tab.
+
 ## System drawing labels (11 October 2026)
 
 `node tools/check-drawing-labels.mjs http://localhost:3035` measures SVG text bounds
@@ -288,7 +298,7 @@ the takeoff stands first, climbs and fades out at
 the exit, departure begins at the current pose during flight/hover, night gets one phrase,
 fewer quiet habits and rests unless engaged, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded
 wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), every project's case study (one file per project, opens with the brief, ends with the outcome, 2–5 minutes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
-| `check-seo.mjs`             | 28 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data (Article on case studies); discovery files; unknown-article and unknown-case-study 404; `/work` redirect. |
+| `check-seo.mjs`             | 28 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data (Article on case studies); discovery files; share card under 600 KB; manifest and its icons; unknown-article and unknown-case-study 404; `/work` redirect. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-ship.mjs`             | Rendered ship triangles versus visible text and viewport bounds: six sizes, day/night, Drawing, 150% text, live rotation, paused/reduced-motion cloth and native mobile reveal/return. Outputs to `tools/.out/ship/`. |
 | `check-gull.mjs`            | Live portrait/landscape resize matrix, DPR 1/1.25/2/3, larger text, day/night, standing/sleeping/drawing: pixel contact with the pill border, label clearance, no clipped bird/control, no visible text/control overlap and refreshed canvas density. Outputs to `tools/.out/gull/`. |

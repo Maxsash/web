@@ -3,9 +3,12 @@ import assert from "node:assert/strict";
 import { writeFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 
 import { projects, caseStudyPath, projectShareImage } from "../content/projects.ts";
+import { site } from "../content/site.ts";
 import { notebook } from "../content/notebook.ts";
 import { noteShareImage } from "../lib/note-share.ts";
 import { parsePostText, slugFromFile } from "../lib/post-file.ts";
+
+const WHATSAPP_PREVIEW_BYTES = 600_000;
 
 const posts = readdirSync("content/posts")
   .filter((file) => file.endsWith(".md"))
@@ -83,7 +86,7 @@ for (const agent of crawlerAgents) {
     const shareImage = project
       ? projectShareImage(project)
       : noteSlug && noteShareImage(noteSlug, "");
-    const imagePath = shareImage?.url ?? "/images/living-atlas-day-v1.jpg";
+    const imagePath = shareImage?.url ?? site.shareImage.url;
     assert.equal(meta("og:image"), `${origin}${imagePath}`);
     assert.equal(meta("og:image:width"), "1200");
     assert.equal(meta("og:image:height"), String(shareImage?.height ?? 630));
@@ -159,9 +162,17 @@ assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));
 const sitemap = await (await fetch(new URL("/sitemap.xml", base))).text();
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
 assert.deepEqual(sitemapUrls.sort(), indexedPaths.map((path) => `${origin}${path}`).sort());
-const image = await fetch(new URL("/images/living-atlas-day-v1.jpg", base));
+const image = await fetch(new URL(site.shareImage.url, base));
 assert.equal(image.status, 200);
 assert.equal(image.headers.get("content-type"), "image/jpeg");
+assert.ok((await image.arrayBuffer()).byteLength < WHATSAPP_PREVIEW_BYTES);
+const manifest = await (await fetch(new URL("/manifest.webmanifest", base))).json();
+assert.equal(manifest.name, site.name);
+for (const { src } of manifest.icons) {
+  const icon = await fetch(new URL(src, base));
+  assert.equal(icon.status, 200);
+  assert.equal(icon.headers.get("content-type"), "image/png");
+}
 for (const shareImage of [
   ...projects.map(projectShareImage),
   ...[...blogArticles.keys()].map((slug) => noteShareImage(slug, "")),

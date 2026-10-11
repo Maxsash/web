@@ -4,6 +4,15 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Owner live preview-release results (11 October 13:44–13:50 IST)
+
+Three mobile runs: performance 87/96/95; LCP 2.6 s throughout; FCP 1.8/1.7/1.7 s;
+TBT 330/50/140 ms; CLS 0; accessibility/best practices/SEO 100. Median score 95
+(previous 90), LCP 2.6 s (previous 3.0), FCP 1.7 s (previous 2.0). TTFB breakdown
+360/290/300 ms, no document-latency warning. First run has larger startup blocking;
+not diagnosed from pasted reports. Owner evidence, no fresh local tests this review.
+No field data or physical-device qualification. Released HEAD be20ef1.
+
 ## Progressive studio preview (11 October 2026)
 
 Lighthouse 13.5.0 installed only in `/private/tmp/maxsash-lighthouse`, disabled GPU,
@@ -320,3 +329,20 @@ Everything above runs in headless Chrome on a Mac. Not covered, so do not claim 
 - the hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
   idle and offline beyond headless Chrome's emulation;
 - Search Console, indexing and AI citation outcomes.
+
+## Approved essays and client-facing polish (11 October 2026)
+
+Node 24.21.0 production build in `/private/tmp/maxsash-publication-check`, lint/types/format,
+126 Node tests, 44 crawler/page cases, headers/CSP and 20/20 keyboard checks pass.
+Full creative rerun passes 193 records/129 assertions with no failures/exceptions. Initial
+three failures expected obsolete noindex policy; corrected harness then rerun.
+SEO checks listing/approved essays are indexed and in exact sitemap, no sample labels,
+project screenshot card dimensions/asset responses, owner Build time and two drafts absent.
+Direct component rendering covers footer network/non-OK failure and loading state.
+Six case-study duration/layout checks pass at 390/1440 with no horizontal overflow;
+Notebook phone and case-study phone screenshots inspected. Final shortened Household Hub
+headline rebuild, 44 SEO cases and six layout checks pass, with phone screenshot inspected;
+full creative result predates only that final copy shortening.
+Logs: `/private/tmp/maxsash-publication-*.log`; screenshots/reports: worktree `tools/.out/`.
+No live, social-app or physical-device review. Accidental main-folder build interrupted;
+all reported passing builds/checks above ran in isolated worktree.

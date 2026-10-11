@@ -10,11 +10,11 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/`                                | Hero sea, Work, About, Contact, notebook, sea studio, shoreline footer. Dynamic: a fresh sea per visit. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
-| `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays (`noindex`) and written posts (published indexed, drafts dev-only). Unknown slugs render on demand so they reach the notebook 404. |
+| `/blog`, `/blog/[slug]`            | The notebook: two approved essays and written posts (published indexed, drafts dev-only); listing indexed. Unknown slugs render on demand so they reach the notebook 404. |
 | `/work/[slug]`, `/work`            | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`. |
 | `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
 | `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
-| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, five case studies and published real posts.                                          |
+| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, the Notebook listing, two essays, five case studies and published markdown posts.                                          |
 | Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side
@@ -285,10 +285,10 @@ origin sending JSON (so another website cannot write files while the dev server 
   link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),
   `contact.ts` (the three "What to expect" steps), `projects.ts` (five projects: `kind` client
   or personal; `visuals`, one or more screenshots or system drawings, each with its plate
-  title and note (the first is the card's, the case study shows all); a `proof` line; facts;
+  title and note (the first is the card's, the case study shows all); a `proof` line; facts (`period` for calendar dates, `duration` for approximate Build time);
   the first project is the lead; `caseStudyPath` and `caseStudyTitle`), `work/<slug>.md` (each case study's prose,
   body only: the file name is the slug; loaded by `case-studies.ts` with `parseMarkdown`),
-  `about.ts` (the about facts), `notebook.ts` (the sample essays' copy and captions).
+  `about.ts` (the about facts), `notebook.ts` (the approved essays' copy and captions).
 - Homepage sections are one component each: `Work` (the lead through `ProjectFeature`, then a
   grid of the other client projects, then the personal ones as `ProjectRow`s; a card is plate,
   headline, one summary, the proof line and `CaseStudyLink`; `ProjectPlate` is the figure,
@@ -337,7 +337,7 @@ origin sending JSON (so another website cannot write files while the dev server 
 - **Written posts** are markdown files in `content/posts/` (`NN-slug.md`, frontmatter: `title`,
   `summary`, `topic`, `date`, `status`, and optionally `emphasis` (the last words of the title,
   set in red italics), `caption` (the cover plate's caption) and `closing` (the red closing
-  line)). They are laid out like the sample essays: the first paragraph is the large
+  line)). They are laid out like the original essays: the first paragraph is the large
   opening, each `##` heading is a numbered section, a `>` quote straight after a heading
   becomes that section's margin note, and a section called "Notes for the editor" is shown
   only on drafts. Each post's cover plate is its own sea, derived from its slug. `lib/markdown.ts` parses a small subset (headings,
@@ -346,9 +346,9 @@ origin sending JSON (so another website cannot write files while the dev server 
   `WrittenArticle.tsx` render them; `lib/post-structure.ts` groups the blocks.
   `ArticleParts.tsx` (header, cover, sections, and `ArticleEnd`: the author line and the next
   note) and `NoteFeature.tsx` (the big
-  light and dark features on `/blog`) are shared with the sample essays. `status: draft` posts appear in development and are
+  light and dark features on `/blog`) are shared with the original essays. `status: draft` posts appear in development and are
   absent from production builds (no page, no link); set `status: published` to ship one.
-  They stay `noindex` and out of the sitemap either way. `postsDirectory` is a literal path
+  Published posts are indexed and included in the sitemap; drafts are excluded. `postsDirectory` is a literal path
   (`process.cwd()`, `content`, `posts`) so the build traces only that folder; a path built from
   an imported constant made Turbopack trace the whole project into every route that reads
   posts (353 files for `/`, 153 now). The editor's `post-files.ts` imports the same constant.
@@ -392,3 +392,10 @@ drawing; the large SVG is excluded from initial HTML. The print model/API are un
 and Reddit Mono use `preload: false`; their self-hosted faces still load when used, with
 `display: swap` and Next fallback metrics. Compare cold production loads with
 `tools/compare-font-loading.mjs <baseline URL> <candidate URL>` in isolated worktrees.
+
+## Client-facing polish (11 October 2026)
+
+GitHub log failures keep only the repository link; the loading state retains its label.
+`projectShareImage` selects the first screenshot from the existing project visuals for
+Open Graph/Twitter (1200 × 750); drawing-only projects retain the sea until cards exist.
+Household Hub uses “Less to remember” as its headline.

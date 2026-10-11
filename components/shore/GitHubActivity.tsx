@@ -20,7 +20,7 @@ const dayName = new Intl.DateTimeFormat("en-GB", {
 export function ActivityFallback({ loading = false }: { loading?: boolean }) {
   return (
     <p className={styles.activityNote}>
-      {loading ? "Loading the log…" : "The log is unavailable right now."}{" "}
+      {loading && "Loading the log… "}
       <a href={site.links.repo}>Read it on GitHub ↗</a>
     </p>
   );

@@ -48,7 +48,7 @@ export const writtenPosts = (): WrittenPost[] =>
     .map(readPost)
     .filter((post) => showDrafts || !post.draft);
 
-type NoteKind = "Note" | "Draft" | "Sample essay";
+type NoteKind = "Note" | "Draft" | "Essay";
 
 export const noteMeta = (kind: NoteKind, minutes: number) => `${kind} · ${minutes} min read`;
 export const writtenKind = (post: WrittenPost): NoteKind => (post.draft ? "Draft" : "Note");
@@ -58,7 +58,7 @@ export const latestNotes = (count: number) =>
     ...writtenPosts()
       .toReversed()
       .map((post) => ({ ...post, kind: writtenKind(post) })),
-    ...notebook.map((post) => ({ ...post, kind: "Sample essay" as const })),
+    ...notebook.map((post) => ({ ...post, kind: "Essay" as const })),
   ].slice(0, count);
 
 export const findWrittenPost = (slug: string) => writtenPosts().find((post) => post.slug === slug);

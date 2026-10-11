@@ -66,8 +66,7 @@ To change copy, edit its content file: identity, the offer, navigation, profiles
 [`content/contact.ts`](content/contact.ts), the about facts in
 [`content/about.ts`](content/about.ts), projects in
 [`content/projects.ts`](content/projects.ts) (a system drawing is data there too), essays in
-[`content/notebook.ts`](content/notebook.ts). Keep sample status explicit until real
-content exists. Shared typography and tokens are in
+[`content/notebook.ts`](content/notebook.ts). The original essays are approved for publication; markdown drafts stay development-only. Shared typography and tokens are in
 [`app/globals.css`](app/globals.css); each area scopes the rest in its own CSS module.
 
 ## Test

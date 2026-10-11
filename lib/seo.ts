@@ -16,7 +16,9 @@ export function sharingMetadata(
   description: string,
   path: string,
   type: "website" | "article" = "website",
+  image = socialImage,
 ): Metadata {
+  const sharedImage = { ...image, url: absoluteUrl(image.url) };
   return {
     alternates: { canonical: absoluteUrl(path) },
     openGraph: {
@@ -26,9 +28,9 @@ export function sharingMetadata(
       siteName: site.name,
       locale: "en_US",
       type,
-      images: [socialImage],
+      images: [sharedImage],
     },
-    twitter: { card: "summary_large_image", title, description, images: [socialImage] },
+    twitter: { card: "summary_large_image", title, description, images: [sharedImage] },
   };
 }
 

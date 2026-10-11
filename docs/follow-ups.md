@@ -8,31 +8,20 @@ A review of the live site as a talent-directory reviewer or client would read it
 India Club profile links here). The site is good enough to apply with; these are what a careful
 reviewer could notice, most visible first. Content was read; nothing was tested on a phone.
 
-- [ ] **Notebook still reads as a template.** Two of its three posts show "Sample essay"
-      (`app/blog/page.tsx`, `app/blog/[slug]/page.tsx`, `content/posts.ts`), and the notebook's
-      share description says "Sample studies in sea, ship, and mathematics" (`app/blog/layout.tsx`).
-      A reviewer who opens Notebook sees placeholder work. Either relabel them ("Essay", "Study")
-      once you approve their text, or hide them until real writing replaces them; the WebGL field
-      note is real and should stay. Ties in with **Sample essays** below.
-- [ ] **"From the workbench" log fails on some loads.** Seen on 11 October: one page showed
-      "Loading the log…" and another "The log is unavailable right now." (`components/shore/GitHubActivity.tsx`).
-      It is in the footer of every page. Likely cause: GitHub's 60 requests an hour limit for
-      unauthenticated calls from shared Vercel addresses; check that `GITHUB_TOKEN` is set in
-      Vercel. Either way, when the fetch fails, show only the repo link (or nothing) instead of
-      an error.
-- [ ] **Missing "When" on two case studies.** `business-operations` and `intrusion-detection`
-      have no `period` in `content/projects.ts`; the other three do. Add the dates.
-- [ ] **Household Hub's title repeats.** Its `headline` is "Household Hub." so the page title
-      reads "Household Hub: Household Hub | Maxsash Studio". Give it a subtitle-style headline
-      like the others ("Built to be found.", "Off paper, into one system.").
+- [x] **Approved essays published in code** (owner, 11 October): Essay labels, indexed
+      Notebook/essays, sitemap entries and current sharing copy. Awaiting owner release.
+- [x] **Workbench failure fallback:** repository link only. Hosting token/rate-limit cause
+      remains unverified; loading still has its status label.
+- [x] **Private-system build times:** owner supplied approximate durations, six months for
+      business operations and eight months for intrusion detection. Shown as Build time;
+      calendar dates were not supplied.
+- [x] **Household Hub title:** uses “Less to remember.” as its headline.
 - [ ] **Phone check before applying.** Open the home page and one case study on a real phone
       (and a slow one if possible): the WebGL sea, scroll length and the gull. Reviewers often
       click a profile link on mobile. See **Phone length** and **Feedback on real devices**.
-- [ ] **Per-project share images.** Every case study shares the sea image, so a case study link
-      pasted in WhatsApp or LinkedIn does not show the project. Use each project's own cover
-      (the Freelance India Club samples already use `/images/work/wedding-platform.webp` and
-      `/images/work/household-insights-light.webp`). Same item as the share image in
-      **Case-study extras** below.
+- [ ] **Per-project share images:** screenshot-backed case studies now use their own
+      covers in code. Business operations and intrusion detection still need drawing cards.
+      Real WhatsApp/LinkedIn previews remain an owner check after release.
 
 - [ ] **Feedback on real devices.** Built and kept; listen on real speakers and headphones, and
       try a phone (a tap's press, the ripple under a finger, Android vibration, the gull landing
@@ -70,11 +59,10 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
 - [ ] **PageSpeed** (three owner mobile runs, 11 October 11:17–11:21 IST):
       post-Mumbai performance 91/91/91; median LCP 3.2 s, TBT 90 ms; CLS 0. Accessibility,
       best practices and SEO 100; contrast fixed in live audits. No field data.
-- [ ] **Release progressive studio preview and remeasure.** Font-preload live result was
-      mixed; restoring body preload and inlining CSS failed to give reliable simulated LCP
-      gains. Lazy initial print image halves HTML transfer and improves local Lighthouse
-      median FCP/LCP by about 450 ms; editing remains exact SVG. Await production checks
-      and owner release, then compare fresh independent PageSpeed mobile reports.
+- [ ] **Startup consistency.** Progressive preview released: owner mobile scores 87/96/95,
+      LCP 2.6 s throughout, FCP median 1.7 s, other scores 100, CLS 0. Median performance
+      improves 90 → 95. First run TBT 330 ms versus 50/140 ms; trace before blaming a
+      component or changing animations. Prioritise real-phone experience and field data.
 - [ ] **PageSpeed investigation order:** CSS/font/LCP trace now that Mumbai is active
       and the server-latency warning is absent (TTFB breakdown 380 ms). Four blocking CSS files
       total 23 KiB (estimated 310–410 ms savings); Math render delay varies 620–1630 ms.
@@ -105,12 +93,9 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       in the owner's first person from the portfolio case studies and his figures, nothing added;
       edit freely into his own voice. Each must keep "The brief" first and "The outcome" last,
       and read in 2–5 minutes (`tools/case-studies.test.mjs`).
-- [ ] **Case-study extras, if wanted:** a share image per case study (all pages use the sea
-      image today; now also listed under *Before applying* above); a more detailed system drawing on the two private case studies; a second
+- [ ] **Case-study extras, if wanted:** a share image per case study (three screenshot covers now wired; two drawing cards remain,
+      also listed under *Before applying* above); a more detailed system drawing on the two private case studies; a second
       screenshot for the three with public sites.
-- [ ] **Sample essays.** The two samples remain `noindex`; replace them with approved real
-      writing before indexing. Their visible "Sample essay" labels are now a reviewer-facing issue
-      (see *Before applying* above). Real published posts now enter the sitemap automatically.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
 - [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,

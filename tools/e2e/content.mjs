@@ -24,7 +24,7 @@ export async function runContentChecks(ctx) {
   results.push({ name: "notebook-direct-link", pass: writing === "Notebook" });
   // One nav link and one section link.
   results.push({ name: "notebook-not-repeated", notebookLinks, pass: notebookLinks === 2 });
-  // Real notes lead the home notebook; the samples follow.
+  // Written notes lead the home notebook; the approved essays follow.
   const homeNotes = await evaluate(
     "[...document.querySelectorAll('#notebook ul a')].map(a=>a.lastElementChild.textContent)",
   );
@@ -153,7 +153,8 @@ export async function runContentChecks(ctx) {
     name: "public-blog-index",
     ...notebook,
     pass:
-      /\bnoindex\b/i.test(notebook.robots) &&
+      /\bindex\b/i.test(notebook.robots) &&
+      !/\bnoindex\b/i.test(notebook.robots) &&
       articlePaths.every((path) => notebook.articles.includes(path)),
   });
   for (const path of articlePaths) {
@@ -166,7 +167,8 @@ export async function runContentChecks(ctx) {
       path,
       ...article,
       pass:
-        /\bnoindex\b/i.test(article.robots) &&
+        /\bindex\b/i.test(article.robots) &&
+        !/\bnoindex\b/i.test(article.robots) &&
         Boolean(article.heading?.trim()) &&
         article.blogLinks > 0 &&
         article.author,

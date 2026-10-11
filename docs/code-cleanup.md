@@ -76,3 +76,9 @@ StudioPlate owns hydration and rendering; useSeaSettings supplies edition/settin
 One renderSeaPlate implementation still generates both print and live preview; the
 initial image uses its existing endpoint. No new API, font asset or dependency.
 Sizing/night rules share one SVG/image selector; comparison tool now supports warm loads.
+
+## Publication and sharing (11 October 2026)
+
+Original essays keep their existing source/layout. Sitemap and crawler checks read the
+Notebook catalog; share images derive from project visuals through `projectShareImage`.
+No duplicated screenshot catalog, new asset or dependency.

@@ -16,6 +16,7 @@ export type Project = {
   proof: string;
   role: string;
   period?: string;
+  duration?: string;
   construction: string;
   visuals: [Visual, ...Visual[]];
   demo?: { href: string; label: string };
@@ -24,6 +25,13 @@ export type Project = {
 export const caseStudyPath = (slug: string) => `/work/${slug}`;
 export const caseStudyTitle = ({ title, headline }: Project) =>
   `${title}: ${headline.replace(/\.$/, "")}`;
+
+export const projectShareImage = (project: Project) => {
+  const screenshot = project.visuals.find((visual) => visual.kind === "image");
+  return screenshot
+    ? { url: screenshot.src, width: 1200, height: 750, alt: screenshot.alt }
+    : undefined;
+};
 
 export const projects: Project[] = [
   {
@@ -115,6 +123,7 @@ export const projects: Project[] = [
       "Takes traditional businesses off paper and spreadsheets: the modules each one needs, one data model, a dashboard for every role, and AI that drafts replies to every enquiry.",
     proof: "Four businesses onboarded, with teams of 2 to 12.",
     role: "CTO, founding engineer",
+    duration: "About six months",
     construction: "Python · React · PostgreSQL · LLMs",
     visuals: [
       {
@@ -178,6 +187,7 @@ export const projects: Project[] = [
       "Fibre-optic sensing hardware, turned into live security alerts for critical infrastructure: anomalies caught on site, people alerted on WhatsApp, Telegram and email, every event on a live map beside the CCTV.",
     proof: "Deployed at five sites over a year and a half.",
     role: "Founding engineer, lead developer",
+    duration: "About eight months",
     construction: "Spring Boot · InfluxDB · PostgreSQL · AWS · Raspberry Pi · React",
     visuals: [
       {
@@ -248,7 +258,7 @@ export const projects: Project[] = [
     slug: "household-hub",
     title: "Household Hub",
     kind: "personal",
-    headline: "Household Hub.",
+    headline: "Less to remember.",
     kicker: "Everyday operations",
     tagline: ["A little less remembering.", "A little more living."],
     summary:

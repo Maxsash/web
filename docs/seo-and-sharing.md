@@ -8,15 +8,15 @@ What is in place, and what only the owner can do. The crawler checks are in
 - **One origin.** `NEXT_PUBLIC_SITE_URL` (default `https://www.maxsash.com`) supplies
   metadata, canonical URLs, discovery files and JSON-LD (`lib/seo.ts`).
 - **Per-page cards.** The home page, notebook pages and five case studies have their own
-  Open Graph and Twitter title, description and URL; essay cards say "sample essay". The
-  shared image is the static 1200 × 630 daytime JPEG `/images/living-atlas-day-v1.jpg`,
+  Open Graph and Twitter title, description and URL; approved essays carry their own summaries. Screenshot-backed case studies use their
+  existing 1200 × 750 covers. Other pages use the static 1200 × 630 daytime JPEG `/images/living-atlas-day-v1.jpg`,
   with dimensions and alternative text. It was captured from the real renderer; the
   capture script was removed, and the versioned filename makes crawlers fetch it fresh.
 - **WhatsApp, Facebook and Twitter** are recognised by Next.js as HTML-limited bots, so
   metadata stays in the head.
 - **`/robots.txt`** allows public crawling, excludes the API and points at
-  `/sitemap.xml`. **The sitemap lists home, five case studies and published real posts** (seven URLs
-  currently). The notebook listing and two sample essays stay `noindex`; drafts do not ship.
+  `/sitemap.xml`. **The sitemap lists home, the Notebook listing, two approved essays, five case studies
+  and published markdown posts**. Drafts do not ship.
 - **Seeds.** `/?seed=…&version=2` canonicalises to `/`. `/plate` is `noindex, nofollow`
   and not in the sitemap. The home page without a seed shows a different sea on every
   request (`private, no-store`); crawlers see varying artwork but identical headings,
@@ -53,9 +53,9 @@ and [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/). Paste t
 a case study and the real article. Test WhatsApp in a chat with yourself. Check title,
 description and the shared sea image; existing message cards may remain cached.
 
-**Notebook policy:** published real posts explicitly override the layout's noindex;
-samples and the listing remain excluded. Drafts stay development-only. The SEO harness
-derives every case study and published post from source content and asserts exact sitemap
+**Notebook policy:** the listing and approved essays are indexed; published markdown
+posts are indexed, while drafts stay development-only. The SEO harness
+derives every essay, case study and published post from source content and asserts exact sitemap
 membership, canonical URLs, cards and robots directives across four crawler agents.
 
 Not tested: the real WhatsApp app preview, a schema validator run, Search Console and

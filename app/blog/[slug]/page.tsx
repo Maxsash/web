@@ -44,11 +44,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: post.summary,
     ...sharingMetadata(
       `${post.title} | Maxsash Studio`,
-      `Sample essay: ${post.summary}`,
+      post.summary,
       `/blog/${post.slug}`,
       "article",
     ),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -64,9 +64,9 @@ export default async function AtlasArticle({ params }: Props) {
 
   return (
     <main id="atlas-content" className={styles.article}>
-      <ArticleTop number={post.number} status="Sample essay" />
+      <ArticleTop number={post.number} status="Essay" />
       <article>
-        <ArticleHead {...post} status="Sample essay" />
+        <ArticleHead {...post} status="Essay" />
         <ArticleCover number={post.number} caption={post.plateCaption}>
           {waves ? <OceanPlate /> : <MarkPlate detail />}
         </ArticleCover>

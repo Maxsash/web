@@ -7,13 +7,13 @@ import styles from "@/components/atlas/Atlas.module.css";
 
 export const metadata: Metadata = {
   title: "Navigator's Notebook — an atlas of things made",
-  description: "Studies in sea, ship, and mathematics. A new publication from Maxsash Studio.",
+  description: "Studies in sea, ship, and mathematics from Maxsash Studio.",
   ...sharingMetadata(
     "Navigator’s Notebook | Maxsash Studio",
-    "Sample studies in sea, ship, and mathematics from Maxsash Studio.",
+    "Studies in sea, ship, and mathematics from Maxsash Studio.",
     "/blog",
   ),
-  robots: { index: false, follow: true },
+  robots: { index: true, follow: true },
 };
 
 export default function AtlasLayout({ children }: { children: React.ReactNode }) {

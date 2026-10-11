@@ -2,7 +2,8 @@
 import assert from "node:assert/strict";
 import { writeFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 
-import { projects, caseStudyPath } from "../content/projects.ts";
+import { projects, caseStudyPath, projectShareImage } from "../content/projects.ts";
+import { notebook } from "../content/notebook.ts";
 import { parsePostText, slugFromFile } from "../lib/post-file.ts";
 
 const posts = readdirSync("content/posts")
@@ -14,19 +15,19 @@ const posts = readdirSync("content/posts")
 const published = posts.filter((post) => post.fields.status === "published");
 const draftPosts = posts.filter((post) => post.fields.status !== "published");
 const publishedPaths = published.map((post) => `/blog/${post.slug}`);
-const indexedPaths = ["/", ...projects.map(({ slug }) => caseStudyPath(slug)), ...publishedPaths];
+const essayPaths = notebook.map(({ slug }) => `/blog/${slug}`);
+const indexedPaths = [
+  "/",
+  "/blog",
+  ...essayPaths,
+  ...projects.map(({ slug }) => caseStudyPath(slug)),
+  ...publishedPaths,
+];
 
 const base = new URL(process.argv[2] ?? "http://127.0.0.1:3010");
 assert.ok(["localhost", "127.0.0.1"].includes(base.hostname), "Use a local production server");
 const origin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.maxsash.com").origin;
-const paths = [
-  "/",
-  "/?seed=27c4b901",
-  "/blog",
-  "/blog/three-waves-one-sea",
-  "/blog/an-integral-under-sail",
-  ...indexedPaths.filter((path) => path !== "/"),
-];
+const paths = ["/", "/?seed=27c4b901", ...indexedPaths.filter((path) => path !== "/")];
 const records = [];
 const attribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1];
 for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot"]) {
@@ -50,11 +51,14 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
     assert.equal(new URL(meta("og:url")).href, `${origin}${canonicalPath}`);
     assert.ok(meta("og:title"));
     assert.ok(meta("og:description"));
-    assert.equal(meta("og:image"), `${origin}/images/living-atlas-day-v1.jpg`);
+    const project = projects.find(({ slug }) => caseStudyPath(slug) === canonicalPath);
+    const shareImage = project && projectShareImage(project);
+    const imagePath = shareImage?.url ?? "/images/living-atlas-day-v1.jpg";
+    assert.equal(meta("og:image"), `${origin}${imagePath}`);
     assert.equal(meta("og:image:width"), "1200");
-    assert.equal(meta("og:image:height"), "630");
+    assert.equal(meta("og:image:height"), String(shareImage?.height ?? 630));
     assert.ok(meta("og:image:alt"));
-    assert.equal(meta("twitter:image"), `${origin}/images/living-atlas-day-v1.jpg`);
+    assert.equal(meta("twitter:image"), `${origin}${imagePath}`);
     assert.equal(meta("twitter:card"), "summary_large_image");
     assert.equal(meta("twitter:title"), meta("og:title"));
     const article = path.startsWith("/blog/") || path.startsWith("/work/");
@@ -67,7 +71,16 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
     assert.ok(!directives.includes(shouldIndex ? "noindex" : "index"));
     assert.ok(directives.includes("follow"));
     if (article) assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
+    if (canonicalPath.startsWith("/blog")) {
+      assert.ok(!html.includes("Sample essay"));
+      assert.ok(!meta("og:description").includes("Sample studies"));
+    }
     if (path.startsWith("/work/")) {
+      if (project.duration) {
+        assert.ok(html.includes("Build time"));
+        assert.ok(html.includes(project.duration));
+      }
+      assert.ok(!meta("og:title").includes("Household Hub: Household Hub"));
       const json = JSON.parse(
         html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
       );
@@ -99,6 +112,13 @@ assert.deepEqual(sitemapUrls.sort(), indexedPaths.map((path) => `${origin}${path
 const image = await fetch(new URL("/images/living-atlas-day-v1.jpg", base));
 assert.equal(image.status, 200);
 assert.equal(image.headers.get("content-type"), "image/jpeg");
+for (const project of projects) {
+  const shareImage = projectShareImage(project);
+  if (!shareImage) continue;
+  const response = await fetch(new URL(shareImage.url, base));
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "image/webp");
+}
 assert.equal((await fetch(new URL("/blog/not-a-post", base))).status, 404);
 assert.equal((await fetch(new URL("/work/not-a-project", base))).status, 404);
 const workIndex = await fetch(new URL("/work", base), { redirect: "manual" });

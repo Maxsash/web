@@ -10,7 +10,7 @@ import Prose from "@/components/Prose";
 import StudioNav from "@/components/StudioNav";
 import ShoreFooter from "@/components/shore/ShoreFooter";
 import { readCaseStudy } from "@/content/case-studies";
-import { caseStudyPath, caseStudyTitle, projects } from "@/content/projects";
+import { caseStudyPath, caseStudyTitle, projects, projectShareImage } from "@/content/projects";
 import { formatIndex, sentenceCase } from "@/lib/format";
 import { caseStudyStructuredData, sharingMetadata } from "@/lib/seo";
 import section from "@/components/Section.module.css";
@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       project.summary,
       caseStudyPath(project.slug),
       "article",
+      projectShareImage(project),
     ),
   };
 }
@@ -51,6 +52,7 @@ export default async function CaseStudy({ params }: Props) {
     ["For", sentenceCase(project.kicker)],
     ["Role", project.role],
     ...(project.period ? [["When", project.period]] : []),
+    ...(project.duration ? [["Build time", project.duration]] : []),
     ["Built with", project.construction],
     ["Reading", `${minutes} min`],
   ];

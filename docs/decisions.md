@@ -5,6 +5,14 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Report private-system build durations** (owner, 11 October 2026): business operations
+  took about six months; intrusion detection about eight. Show Build time, with no invented
+  calendar range; intrusion detection’s deployment history remains a separate proof line.
+
+- **Publish the two approved essays** (owner, 11 October 2026). Keep their existing URLs
+  and authored layouts; label them Essay, index them and the Notebook listing, and include
+  all three in the sitemap. Markdown drafts remain development-only.
+
 - **Deliver the studio drawing progressively** (11 October 2026). The complete inline
   SVG below the fold made initial HTML large. Start with a lazy image of the existing
   print SVG; hydrate to the same inline drawing for editing. Three local Lighthouse
@@ -24,8 +32,8 @@ each group. How the code is built: [architecture.md](architecture.md).
   PageSpeed failures matched that shared rule; readable text takes priority over its fade.
 
 - **Index real published writing** (owner, 11 October 2026). Published real posts enter
-  search and the sitemap; drafts and sample essays remain excluded. The notebook listing
-  stays noindex while it mixes real writing and samples.
+  search and the sitemap; drafts remain excluded. The two original essays and listing were subsequently
+  approved for publication (see above).
 
 - **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
   stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
@@ -60,8 +68,7 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **The first creative review was rejected** (notebook too similar to the home page;
   explicit ship controls too simple). The Wind-versus-Helm choice, harbour controls and
   voyage were removed and are not coming back.
-- **Be honest in copy.** The two essays are labelled samples and `noindex` until real
-  writing exists. Only real projects appear (Velora Rights, Household Hub,
+- **Be honest in copy.** The two original essays are owner-approved published writing. Only real projects appear (Velora Rights, Household Hub,
   Wedding Photo Platform). The sea is an authored study, not
   an ocean observation, and nothing implies tilt, live data or fluid simulation.
 - Real essays and projects come last.
@@ -218,8 +225,7 @@ each group. How the code is built: [architecture.md](architecture.md).
   backend engineer first, so the client work is shown as the system underneath".
 - **One name:** the publication is the **Notebook**. It appears once in the header and
   once as a home section, which shows the three newest entries: written notes first, then the
-  two sample essays. The owner keeps the samples as placeholder content, to judge the look
-  and feel, until he rewrites them in his own words (9 October).
+  two original essays, approved for publication on 11 October.
 - **One `<main>`**, the footer outside it as the contentinfo landmark, no whole-section
   links around headings, one `<article>` per essay.
 - **The commit-log card** shows the three newest commits and no counts or charts: a
@@ -327,7 +333,8 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **The editor is a development tool, enforced by the build.** Its routes use `.dev.tsx`
   extensions that only exist outside production, rather than a runtime `if` that could be
   forgotten. The save endpoint refuses anything but same-origin JSON from localhost.
-- **Posts are not indexed yet**, like the sample essays, until the owner decides otherwise.
+- **Published writing is indexed** (owner, 11 October). Approved essays and the listing
+  join published markdown posts; drafts stay excluded.
 
 ## Error pages
 

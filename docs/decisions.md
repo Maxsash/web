@@ -11,13 +11,17 @@ each group. How the code is built: [architecture.md](architecture.md).
   live hero (Home water sea and cutter, Montagu Slab headline, the offer), replacing a card with
   the earlier type, ship and "Software, games, and experiments" copy. Social images use the same
   captures and fonts; profile copy reuses the site's lines verbatim, with real figures only and
-  no phone number. The kit lives beside the public repo in `../brand/`; profile URLs go into the
+  the phone number only inside the WhatsApp link. The kit lives beside the public repo in `../brand/`; profile URLs go into the
   site's structured data once the owner confirms them. `public/mark.svg` was unreferenced since
   11 September and was deleted (the kit holds mark files); the manifest uses `display: browser`
-  because the site is a website, not an installable app. The studio's profiles (LinkedIn Page
-  `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp username `@maxsash`) are named in the
-  home page's Organization data, with the founding date (June 2026); the WhatsApp number stays
-  off the site, which links the username (`wa.me/maxsash`) instead.
+  because the site is a website, not an installable app. The studio's LinkedIn Page
+  (`/company/maxsash`) and Instagram (`@maxsashstudio`) are named in the home page's Organization
+  data, with the founding date (June 2026).
+- **WhatsApp links the business number** (owner, 12 October 2026: usernames "aren't currently
+  working"; "use the number instead"). `wa.me/919183636567`, from `whatsappNumber` in
+  `content/site.ts`. The number is never shown as text; the username `@maxsash` stays reserved
+  for later. Replaces 11 October's username link, whose check only proved that WhatsApp's web
+  page accepts any well-formed username.
 - **The shore holds the studio's channels, About holds the person's** (owner: "put in socials on
   the website wherever it makes sense", 11 October 2026). Contact offers WhatsApp beside the
   email; the shore and the Notebook footer list WhatsApp, Instagram and the LinkedIn Page; the

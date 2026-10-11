@@ -4,6 +4,14 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## WhatsApp by number (12 October 2026)
+
+`wa.me/919183636567` resolves to a phone-number chat (`send/?phone=…`). The old username check
+was void: wa.me's web page greets any well-formed username, real or not. Isolated build:
+TypeScript, lint, format, 128/128 Node tests, 78 SEO cases, headers, keyboard 22/22, 191
+creative cases (the shore-channels check reads the link from `site.ts`); both homepage links
+served with the number. Gull, sound and studio-plate suites not rerun (untouched).
+
 ## Gull timing (11 October 2026)
 
 `tools/gull.test.mjs` pins `arrivalEntry`: a 390 px sky keeps its left-edge entry; 844, 1440 and

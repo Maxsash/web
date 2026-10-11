@@ -30,7 +30,7 @@ export default function Contact() {
               Copy address
             </CopyButton>
             <a href={site.links.whatsapp} className={styles.whatsapp}>
-              {`Or message ${site.whatsapp} on WhatsApp ↗`}
+              Or message on WhatsApp ↗
             </a>
           </div>
         </div>

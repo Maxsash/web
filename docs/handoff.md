@@ -14,12 +14,12 @@ since (Organization data, socials, the sea studio's own page) is unstaged on top
 **Unstaged: studio profiles, socials and `/sea`.**
 
 - Profiles (owner): LinkedIn Page `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp
-  username `@maxsash` (`https://wa.me/maxsash` opens "Chat on WhatsApp with @maxsash"; no
-  number). Founded June 2026; WhatsApp hours Monday–Friday 9–5 (the owner said "9 to 5";
+  by the business number (`https://wa.me/919183636567`, owner 12 October: usernames don't work
+  yet; `@maxsash` stays reserved). Founded June 2026; WhatsApp hours Monday–Friday 9–5 (the owner said "9 to 5";
   weekdays assumed).
 - Home graph: Organization `#studio` (logo, email, `foundingDate` 2026-06, founder `#yash`,
   `sameAs` LinkedIn Page and Instagram); WebSite publisher is the studio.
-- Socials: Contact adds "Or message @maxsash on WhatsApp ↗"; the shore lists email, WhatsApp,
+- Socials: Contact adds "Or message on WhatsApp ↗"; the shore lists email, WhatsApp,
   Instagram, LinkedIn Page plus a colophon link "The sea studio ↗"; the Notebook footer lists
   the three channels. Portfolio, personal LinkedIn and GitHub now live only in About.
 - Sea studio moved to `/sea` (owner chose this after visitors needed it explained in person).
@@ -34,7 +34,7 @@ since (Organization data, socials, the sea studio's own page) is unstaged on top
 **Brand kit (outside the repo, `../brand/`, not under git).** Owner's private page
 https://claude.ai/artifact/NcRFgKvfm9PBXGaH3ps4w1 (source `../brand/kit/index.html`, version 3):
 every LinkedIn, Instagram and WhatsApp image and field, Canva setup, voice, palette. It now has
-the real handles, founded year, 9–5 hours, `wa.me/maxsash` as Instagram link 3, and the
+the real handles, founded year, 9–5 hours, the number link as Instagram link 3 (version 4), and the
 LinkedIn Page's current state (name "Maxsash", old tagline, `maxsash.com` without www, a
 watercolour logo; read from public HTML because Claude in Chrome tools never appeared).
 
@@ -87,7 +87,7 @@ feat: give the sea studio its own page and link the studio's profiles
 Visitors needed the sea studio explained in person, so it moves from the end of the homepage
 to /sea, opening with a plain explanation and three steps; the hero, print page and shore
 link to it with the visitor's sea. Case studies and /sea share one page shell. Add WhatsApp
-(by username, no number) to Contact, and the studio's WhatsApp, Instagram and LinkedIn Page to
+(the business number's wa.me link, never shown as text) to Contact, and the studio's WhatsApp, Instagram and LinkedIn Page to
 the shore and Notebook footers; describe the studio as an Organization with its logo,
 founding date and profiles. The gull now waits 2 s and, on wide screens, drops in from above
 the top edge, so its desktop flight is 2.3 s instead of 3.9 s.

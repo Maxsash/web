@@ -4,6 +4,17 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Gull timing (11 October 2026)
+
+`tools/gull.test.mjs` pins `arrivalEntry`: a 390 px sky keeps its left-edge entry; 844, 1440 and
+1920 px skies start hidden above the top edge, fly left to right and land within 2.6 s. Measured
+on a local production build (phase timestamps from `data-gull`): wait 2.0 s at every size;
+flight 2.3 s at 1440, 1920 and 844 × 390 (was 3.9 s at 1440), 1.8 s at 390 (unchanged). A
+1440 px film at 0.33 s steps shows it hidden for about 0.9 s, then gliding down into the pill.
+Isolated Node 24 build: TypeScript, lint, format, 128/128 Node tests, 47 gull layout checks,
+78 SEO cases, headers, keyboard 22/22, sound suite, 191 creative cases, zero failures and
+runtime exceptions. Own server stopped. Not checked on a real phone.
+
 ## Sea studio page and studio channels (11 October 2026)
 
 The checks follow the studio to `/sea`: `check-studio-plate` and `e2e/sea-studio.mjs` load it;

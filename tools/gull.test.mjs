@@ -9,6 +9,7 @@ import {
 } from "../components/gull/body.ts";
 import {
   arrivalAt,
+  arrivalEntry,
   arrivalLength,
   departureAt,
   departureLength,
@@ -140,6 +141,26 @@ test("even a nearby arrival starts at its entry and brakes without reversing", (
     const landed = frames.at(-1);
     assert.ok(Math.abs(landed.x) < 0.01);
     assert.ok(Math.abs(landed.y + STANDING_LIFT * SCALE) < 0.01);
+  }
+});
+
+test("a narrow sky keeps its entry from the left edge", () => {
+  const sky = { left: 0, top: 0, height: 844 };
+  assert.deepEqual(arrivalEntry([330, 40], sky, 140), [-400, 844 * 0.1 - 40]);
+});
+
+test("a wide sky's gull drops in from above the top edge and lands in about 2.5 s", () => {
+  const side = Math.ceil(SCALE * 2.8);
+  for (const [width, perch] of [
+    [1440, [1338, 42]],
+    [1920, [1818, 44]],
+    [844, [776, 36]],
+  ]) {
+    const entry = arrivalEntry(perch, { left: 0, top: 0, height: 900 }, side);
+    assert.ok(perch[1] + entry[1] <= -side / 2, `${width}: starts hidden above the sky`);
+    const plan = planArrival(entry, SCALE);
+    assert.equal(plan.heading, 1, `${width}: still flies left to right into the wind`);
+    assert.ok(plan.flight <= 2.6, `${width}: ${plan.flight.toFixed(2)} s of flight`);
   }
 });
 

@@ -2,6 +2,7 @@ import { subscribeSound, wavesStatus } from "@/components/sound/sound";
 import { beakTip, gullFacets, lookTowards } from "./body";
 import {
   arrivalAt,
+  arrivalEntry,
   arrivalLength,
   departureAt,
   departureLength,
@@ -27,10 +28,9 @@ import { contactOffset, measurePerch } from "./placement";
 import { NIGHT_REST_AFTER, shouldRest } from "./rest";
 import { nextNoteAt, notesAt, restingNotes, singingAt, withSong, type Note } from "./song";
 
-const WAIT_MS = 3000;
+const WAIT_MS = 2000;
 const QUIET_MS = 1000;
 const ROOM_LEAD = 1.4;
-const ENTRY = { beyond: 70, down: 0.1 };
 const EXIT = { across: 0.55, down: 0.3 };
 const LOOK = { radius: 280, toward: 140, settle: 16 };
 const SETTLE_SECONDS = { mood: 0.3, ink: 0.5 };
@@ -300,8 +300,7 @@ export function visit(canvas: HTMLCanvasElement) {
     if (!welcome()) return leave();
     if (reduced.matches || visited) settle(clock());
     else {
-      const [left, top, height] = [area().left, area().top, area().height];
-      const entry = fromPerch(left - ENTRY.beyond, top + height * ENTRY.down);
+      const entry = arrivalEntry(perchPoint(), area(), side);
       phase = { kind: "arriving", plan: planArrival(entry, scale), at: clock() };
       show("arriving");
     }

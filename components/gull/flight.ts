@@ -38,6 +38,7 @@ const BRAKING_BEAT = 0.26;
 const BURST = { flap: 1.1, glide: 0.9 };
 const BRAKE = 0.9;
 const SETTLE = 1.8;
+const ENTRY = { beyond: 70, down: 0.1, run: 560 };
 const FAR = 0.6;
 const TOWARD_VIEWER = 0.3;
 const VIEW = { sky: -0.14, perch: 0.16 };
@@ -105,6 +106,17 @@ export type Arrival = {
   scale: number;
   heading: number;
 };
+
+type Sky = { left: number; top: number; height: number };
+
+// A wide sky would mean a long travelling flight, the most distracting kind of motion, so the
+// gull drops in from just above the top edge instead, still flying left to right into the wind.
+export function arrivalEntry(perch: Point, sky: Sky, side: number): Point {
+  const edge = sky.left - ENTRY.beyond;
+  if (perch[0] - edge <= ENTRY.run)
+    return [edge - perch[0], sky.top + sky.height * ENTRY.down - perch[1]];
+  return [-ENTRY.run, sky.top - side / 2 - perch[1]];
+}
 
 export function planArrival(entry: Point, scale: number): Arrival {
   const touchdown: Point = [0, -STANDING_LIFT * scale];

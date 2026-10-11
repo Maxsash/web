@@ -99,9 +99,10 @@ lands **inside** the hero's "Play waves" pill, sings, and is the only moving hin
 exists. Pressing the button, or the gull, starts the waves, and the gull takes off. The button's
 words still say what it does, for everyone who cannot see the gull.
 
-**What a visitor sees:** about 3 s after the button is fully on screen, once scrolling has been
-still for 1 s, a gull enters from the left of the sky (on a phone, above the eyebrow), flaps and
-glides across with slower wingbeats, and brakes with its legs down and tail fanned. About
+**What a visitor sees:** about 2 s after the button is fully on screen, once scrolling has been
+still for 1 s, a gull enters: on a phone from the left of the sky (above the eyebrow); on wider
+screens it drops in from just above the top edge, 560 px left of the button, so the flight takes
+about 2.3 s instead of crossing the whole hero. It flaps and glides with slower wingbeats, and brakes with its legs down and tail fanned. About
 1.4 s before it lands the pill widens by one gull's width, at its right end, to make room. The gull
 lands directly on the pill's bottom border (the button dips 1.5 px), raises and folds its wings, looks at the
 visitor, and sits beside the label, which is never covered. A beat after landing it **sings**:
@@ -133,8 +134,8 @@ The research behind these timings (one short arrival, then anchored motion; noth
 ignored) is in `../web-research/reports/Website feedback beyond sound.md`.
 
 **Change it:** timings and distances are named constants at the top of `components/gull/visit.ts`
-(`WAIT_MS`, `QUIET_MS`, `ROOM_LEAD`, `LOOK`, `DIP`) and `flight.ts` (`BEAT`, `BURST`, `BRAKE`,
-`HABITS`); the song (when, how often, how far the notes rise) in `song.ts` (`SONG`, `REACH`); the
+(`WAIT_MS`, `QUIET_MS`, `ROOM_LEAD`, `LOOK`, `DIP`) and `flight.ts` (`ENTRY`, `BEAT`, `BURST`,
+`BRAKE`, `HABITS`); the song (when, how often, how far the notes rise) in `song.ts` (`SONG`, `REACH`); the
 notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pose.ts`; seat sizing in `placement.ts`, rest policy in `rest.ts`; where it sits
 in the pill in `Gull.module.css` and `SoundControls.module.css`. To remove it, drop the `gull` prop
 from `WaveSoundControl` in `components/observatory/Hero.tsx`.

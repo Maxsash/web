@@ -281,6 +281,15 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Feedback
 
+- **The gull comes sooner and travels less** (owner, 11 October 2026, after asking whether it
+  should come sooner or later). Measured on live: it set off 3.0 s after mounting and flew 1.8 s
+  on a phone but 3.9 s on a 1440 px desktop, crossing the whole hero from the left. Now it waits
+  2 s (the research's 2–3 s range; still after the phone's 1.8 s opening and at a scroll pause),
+  and on wide skies (`arrivalEntry`, `ENTRY.run` 560 px) drops in from just above the top edge, so
+  every flight is about 2.3 s or less, still left to right into the wind. Phones are unchanged.
+  Not later: the pause and on-screen checks already keep it out of the way, and a later gull only
+  reaches fewer visitors. Not at load: it would compete with the opening.
+
 - **One table, one vocabulary** (9 October 2026). Every action's answer lives in
   `lib/feedback/vocabulary.ts`, so the owner's review turns into one-line edits. The same kind of
   action answers the same way everywhere.
@@ -321,7 +330,7 @@ each group. How the code is built: [architecture.md](architecture.md).
   herring gull in the ship's style, drawn on a small canvas inside the hero's button. Research
   (`../web-research/reports/Website feedback beyond sound.md`) shaped the rules: motion onset
   catches the eye but travelling motion distracts most, so it arrives once, after the button has
-  been in view for 3 s and scrolling has stopped, flies in under 5 s, then moves only in place,
+  been in view for 2 s and scrolling has stopped, flies in under 2.5 s, then moves only in place,
   rarely, and is still after 45 s; it leaves when the waves start and nothing about it is stored.
   **It comes on every page load while the waves are off, even for a visitor who muted the sounds
   or turned the waves off before** (owner, 10 October 2026: that visitor may be happy to hear them

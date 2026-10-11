@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { readingMinutes } from "@/lib/format";
 import { parseFrontmatter, parseMarkdown, type Block } from "@/lib/markdown";
 import { slugFromFile } from "@/lib/post-file";
 import { notebook } from "./notebook";
@@ -20,12 +21,10 @@ export type WrittenPost = {
 };
 
 export const postsDirectory = join(process.cwd(), "content", "posts");
-const WORDS_PER_MINUTE = 200;
 const showDrafts = process.env.NODE_ENV !== "production";
 
 function readPost(file: string, index: number): WrittenPost {
   const { meta, body } = parseFrontmatter(readFileSync(join(postsDirectory, file), "utf8"));
-  const words = body.split(/\s+/).filter(Boolean).length;
   return {
     slug: slugFromFile(file),
     number: String(notebook.length + index + 1).padStart(3, "0"),
@@ -36,7 +35,7 @@ function readPost(file: string, index: number): WrittenPost {
     caption: meta.caption ?? "",
     closing: meta.closing ?? "",
     date: meta.date,
-    minutes: Math.max(1, Math.round(words / WORDS_PER_MINUTE)),
+    minutes: readingMinutes(body),
     draft: meta.status !== "published",
     blocks: parseMarkdown(body),
   };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import JsonLd from "@/components/JsonLd";
 import NotebookSection from "@/components/NotebookSection";
 import Work from "@/components/Work";
 import ScrollMark from "@/components/feedback/ScrollMark";
@@ -28,12 +29,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Pag
   const edition = createSeaEdition(seed, version);
   return (
     <div className={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(studioStructuredData).replace(/</g, "\\u003c"),
-        }}
-      />
+      <JsonLd data={studioStructuredData} />
       <a className={styles.skip} href={`#${site.afterHero.id}`}>
         Skip to {site.afterHero.label}
       </a>

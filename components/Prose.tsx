@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { Block, Inline } from "@/lib/markdown";
-import styles from "./Atlas.module.css";
 
 export function InlineText({ nodes }: { nodes: Inline[] }): ReactNode {
   return nodes.map((node, index) => {
@@ -38,7 +37,7 @@ export function InlineText({ nodes }: { nodes: Inline[] }): ReactNode {
   });
 }
 
-function renderBlock(block: Block, index: number) {
+function renderBlock(block: Block, index: number, tableClassName?: string) {
   switch (block.type) {
     case "heading": {
       const Tag = block.level === 2 ? "h2" : "h3";
@@ -80,13 +79,7 @@ function renderBlock(block: Block, index: number) {
     }
     case "table":
       return (
-        <div
-          key={index}
-          className={styles.proseTable}
-          tabIndex={0}
-          role="region"
-          aria-label="Table"
-        >
+        <div key={index} className={tableClassName} tabIndex={0} role="region" aria-label="Table">
           <table>
             <thead>
               <tr>
@@ -116,6 +109,8 @@ function renderBlock(block: Block, index: number) {
   }
 }
 
-export default function Prose({ blocks }: { blocks: Block[] }) {
-  return <>{blocks.map(renderBlock)}</>;
+type Props = { blocks: Block[]; tableClassName?: string };
+
+export default function Prose({ blocks, tableClassName }: Props) {
+  return <>{blocks.map((block, index) => renderBlock(block, index, tableClassName))}</>;
 }

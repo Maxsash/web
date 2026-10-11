@@ -105,6 +105,15 @@
   margin: 0;
   font-size: 0.85rem;
 }
+.proof {
+  margin-block: 1.25rem 0.75rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--accent);
+  max-width: 30rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
 .link {
   display: inline-flex;
   align-items: center;

@@ -11,6 +11,8 @@ const paths = [
   "/blog",
   "/blog/three-waves-one-sea",
   "/blog/an-integral-under-sail",
+  "/work/velora-rights",
+  "/work/household-hub",
 ];
 const records = [];
 const attribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1];
@@ -42,11 +44,17 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
     assert.equal(meta("twitter:image"), `${origin}/images/living-atlas-day-v1.jpg`);
     assert.equal(meta("twitter:card"), "summary_large_image");
     assert.equal(meta("twitter:title"), meta("og:title"));
-    assert.equal(meta("og:type"), path.startsWith("/blog/") ? "article" : "website");
+    const article = path.startsWith("/blog/") || path.startsWith("/work/");
+    assert.equal(meta("og:type"), article ? "article" : "website");
     assert.ok(meta("robots").includes(path.startsWith("/blog") ? "noindex" : "index"));
-    if (path.startsWith("/blog/"))
-      assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
-    if (!path.startsWith("/blog")) {
+    if (article) assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
+    if (path.startsWith("/work/")) {
+      const json = JSON.parse(
+        html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
+      );
+      assert.equal(json["@type"], "Article");
+      assert.equal(json.url, `${origin}${canonicalPath}`);
+    } else if (!path.startsWith("/blog")) {
       const json = JSON.parse(
         html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
       );
@@ -67,12 +75,16 @@ assert.ok(robots.includes("Allow: /"));
 assert.ok(robots.includes("Disallow: /api/"));
 assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));
 const sitemap = await (await fetch(new URL("/sitemap.xml", base))).text();
-assert.equal([...sitemap.matchAll(/<loc>/g)].length, 1);
+assert.equal([...sitemap.matchAll(/<loc>/g)].length, 6);
 assert.ok(sitemap.includes(`<loc>${origin}/</loc>`));
+assert.ok(sitemap.includes(`<loc>${origin}/work/velora-rights</loc>`));
 const image = await fetch(new URL("/images/living-atlas-day-v1.jpg", base));
 assert.equal(image.status, 200);
 assert.equal(image.headers.get("content-type"), "image/jpeg");
 assert.equal((await fetch(new URL("/blog/not-a-post", base))).status, 404);
+assert.equal((await fetch(new URL("/work/not-a-project", base))).status, 404);
+const workIndex = await fetch(new URL("/work", base), { redirect: "manual" });
+assert.equal(new URL(workIndex.headers.get("location"), base).href, new URL("/#work", base).href);
 const postsDir = "content/posts";
 const drafts = readdirSync(postsDir).filter(
   (file) =>

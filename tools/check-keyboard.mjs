@@ -120,7 +120,7 @@ await withBrowser(
     await press("Tab");
     record(
       "the next Tab continues inside Work",
-      /velorarights\.com/.test(await evaluate("document.activeElement.innerText")),
+      (await evaluate("document.activeElement.getAttribute('href')")) === "/work/velora-rights",
     );
 
     await evaluate("document.getElementById('sea-studio').scrollIntoView()");

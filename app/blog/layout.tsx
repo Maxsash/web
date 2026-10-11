@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { sharingMetadata } from "@/lib/seo";
 import Mark from "@/components/Mark";
-import BlogNav from "./BlogNav";
+import StudioNav from "@/components/StudioNav";
 import styles from "@/components/atlas/Atlas.module.css";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         <Link prefetch={false} href="/" className={styles.harbourLink}>
           <Mark /> <span>Maxsash Studio</span>
         </Link>
-        <BlogNav />
+        <StudioNav />
       </header>
       {children}
       <footer className={styles.footer}>

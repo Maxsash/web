@@ -114,11 +114,35 @@ each group. How the code is built: [architecture.md](architecture.md).
   which also shows the email, so the end of every page has a way to write. Its compass moved
   into the home Notebook band (desktop only, 72rem and up).
 - **Work shows five projects** (owner, 9 October: "yes, definitely"). For clients: Velora
-  Rights as the lead spread, then the real-time intrusion detection platform and the
-  business-operations SaaS. Those two were backend systems with no screenshots worth showing,
-  so each is drawn as a system plate ("the drawing underneath") from its portfolio case study;
-  nothing beyond the case studies is claimed. Then "Of my own": Household Hub and the wedding
-  platform. Smaller cards fold role and stack into one line; the lead keeps a facts list.
+  Rights as the lead spread, then the business-operations SaaS and the real-time intrusion
+  detection platform (order from 10 October: off paper is closest to what a small-business
+  client buys; owner: "let's go with that order for now"). Those two were backend systems with
+  no screenshots worth showing, so each is drawn as a system plate ("the drawing underneath");
+  nothing beyond the case studies and the owner's figures is claimed. Then "Of my own": the
+  wedding platform, then Household Hub.
+- **Three cards, two rows** (owner's choice, 10 October 2026, after asking whether all five
+  belong on the homepage). The three client projects keep full cards; the two personal ones
+  are compact ruled rows (number, kicker, title, summary, proof, case-study link), so every
+  card with a picture was paid for and is in use, and all five stay one click from home. The
+  measure is the distance to Contact, not the page length: what follows Contact is extra.
+  Phone: Work 5.7 → 4.8 screens, Contact from ≈ 9 to 8.1; desktop Work 3.7 → 3.2. Rejected:
+  all work behind a click (the proof is the pitch, after 1.7 screens of sea), and lead plus
+  four rows (loses both system drawings, the only pictures of the two most senior jobs).
+  `/work` stays a redirect until there are more than about six projects.
+- **A card is a hook, the case study is the depth** (10 October 2026). Each card: plate,
+  headline, one summary, one **proof** line and one internal link (`CaseStudyLink`), "Read the case study →".
+  Role, stack, dates and demo links moved to the case-study page. Proof lines use the owner's
+  figures (10 October): Velora "five internship applications and a new client in a single
+  month, from search alone"; business operations "four businesses onboarded, teams of 2 to 12";
+  intrusion detection "five sites over a year and a half". The owner felt the numbers were
+  small next to the work; on the site they are evidence that the work is real and used, set in
+  context (a practice that may not advertise), while the headline and summary carry the scope.
+- **The website is for clients, the portfolio for recruiters** (owner, 10 October 2026). The
+  case studies on `/work/<slug>` are rewritten for a client (brief, what was built, the
+  decisions that mattered and why, the outcome; 2–5 minutes) and are not copies of the
+  portfolio's, which keep their recruiter framing and their own URLs (no cross-canonicals).
+  The Work section's "More work … in the Portfolio" footer link was removed; About and the
+  shore keep the portfolio among the owner's profiles.
 - **Desktop hero 180svh** (was 255svh; the owner agreed). Phone timings are untouched. Its
   seed label links to the sea studio ("Make your own").
 - **Every post ends with an author line**: who wrote it, what the studio builds, "See the
@@ -156,13 +180,20 @@ each group. How the code is built: [architecture.md](architecture.md).
     navigator's log, and a wave squiggle (the face did not read on this dark background).
 - **One page for the pitch, own pages for depth** (9 October 2026, after reviewing the
   evidence: NN/g attention studies, Chartbeat, long-page A/B tests, Google's handling of URL
-  fragments). The homepage stays a single scroll for one offer; case studies will move onto
-  `maxsash.com/work/<project>` later so clients stay on the site and each project can rank. The
+  fragments). The homepage stays a single scroll for one offer; case studies live on
+  `maxsash.com/work/<project>` (since 10 October 2026) so clients stay on the site and each
+  project can rank. The
   2.5-screen hero is the main attention risk; judge it with field data.
-- **Velora Rights leads Work** (9 October 2026): the one client project, with a measured outcome
-  (enquiries from organic search), is the strongest proof for a potential client. Its image is
-  a 1200 × 750 capture of the live homepage after the disclaimer; the advocate's name stays off
-  this site.
+- **Velora Rights leads Work** (9 October 2026; reconfirmed 11 October when the owner floated
+  the wedding platform): the offer itself, a paying client and a business outcome. The wedding
+  platform's strengths are engineering, which a client buys less; its story suits a Notebook
+  essay. No demo link on the personal rows (owner): the case studies carry them.
+- **Every client card is a system drawing** (owner, 11 October 2026). The live screenshot of
+  Velora was pale and large for a card that is not about looks; its drawing shows what was
+  built (owner-written Markdown, build checks, static pages, search engines and AI assistants,
+  enquiries). The screenshot (1200 × 750, after the disclaimer; the advocate's name stays off
+  this site) moved under the drawing on its case study. The Work lede says why: "I am a
+  backend engineer first, so the client work is shown as the system underneath".
 - **One name:** the publication is the **Notebook**. It appears once in the header and
   once as a home section, which shows the three newest entries: written notes first, then the
   two sample essays. The owner keeps the samples as placeholder content, to judge the look

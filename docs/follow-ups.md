@@ -6,13 +6,12 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       try a phone (a tap's press, the ripple under a finger, Android vibration, the gull landing
       and taking off) and a screen reader with the notices. What was not built is listed in
       [feedback.md](feedback.md).
-- [ ] **Phone length.** After the structure run the phone page is 15.4 screens, Work alone 6.3
-      (five projects). If it feels long on the iPhone, the four smaller cards are the place to
-      cut (a shorter summary, or the screenshots smaller).
-- [ ] **Portfolio deep links.** maxsash.com now links `velora-rights.html`,
-      `intrusion-detection.html` and `modular-saas.html` as well as the two it listed before;
-      the portfolio's `AGENTS.md` ("Links in from maxsash.com") should name all five. Another
-      repository: the owner's call.
+- [ ] **Phone length.** After three cards and two rows (10 October 2026): phone page 14.7
+      screens, Work 4.8, Contact starts at 8.1; desktop Work 3.2, Contact at 5.9. Judge it on
+      the iPhone; the remaining weight is the hero (1.7 screens) and the three plates.
+- [ ] **Portfolio's "Links in from maxsash.com".** maxsash.com no longer deep-links the
+      portfolio's case studies; it links only the portfolio's home (About and the shore). The
+      portfolio's `AGENTS.md` still lists deep links. Another repository: the owner's call.
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **A post from the feedback research and the gull** (owner, 10 October 2026: "we might be able
@@ -55,9 +54,13 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and related assets.
       Needs the owner's answers (brand name, handles, tone, first assets). Use only the three
       real projects; invent nothing.
-- [ ] **Case studies on maxsash.com** (owner agreed, 9 October 2026, as a later step).
-      `/work/<project>` pages for the five projects in Work, moved
-      from the GitHub Pages portfolio; add them to the sitemap and point the Work links there.
+- [ ] **Owner read of the five case studies** (`content/work/*.md`, 10 October 2026). Drafted
+      in the owner's first person from the portfolio case studies and his figures, nothing added;
+      edit freely into his own voice. Each must keep "The brief" first and "The outcome" last,
+      and read in 2–5 minutes (`tools/case-studies.test.mjs`).
+- [ ] **Case-study extras, if wanted:** a share image per case study (all pages use the sea
+      image today); a more detailed system drawing on the two private case studies; a second
+      screenshot for the three with public sites.
 - [ ] **Real essays and projects.** The two essays are samples (`noindex`); replace them,
       then enable indexing and add them to the sitemap.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads

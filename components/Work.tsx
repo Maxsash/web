@@ -1,27 +1,14 @@
 import { projects, type Project } from "@/content/projects";
-import { site } from "@/content/site";
 import Kicker from "./Kicker";
 import ProjectFeature from "./ProjectFeature";
+import ProjectRow from "./ProjectRow";
 import section from "./Section.module.css";
 import styles from "./Work.module.css";
 
 const [lead] = projects;
 const others = (kind: Project["kind"]) =>
   projects.filter((project) => project !== lead && project.kind === kind);
-
-function ProjectGrid({ members }: { members: Project[] }) {
-  return (
-    <div className={styles.grid}>
-      {members.map((project) => (
-        <ProjectFeature
-          key={project.slug}
-          project={project}
-          number={projects.indexOf(project) + 1}
-        />
-      ))}
-    </div>
-  );
-}
+const numberOf = (project: Project) => projects.indexOf(project) + 1;
 
 export default function Work() {
   return (
@@ -33,17 +20,23 @@ export default function Work() {
           tangible.
         </h2>
         <p className={section.lede}>
-          For clients: a law practice found through search, a security system that runs in real
-          time, and a platform that took businesses off paper. And two projects of my own.
+          I am a backend engineer first, so the client work is shown as the system underneath: a law
+          practice found through search, a platform that took businesses off paper, and a security
+          system that runs in real time. And two projects of my own.
         </p>
       </header>
       <Kicker className={styles.group}>For clients</Kicker>
       <ProjectFeature project={lead} number={1} lead />
-      <ProjectGrid members={others("client")} />
+      <div className={styles.grid}>
+        {others("client").map((project) => (
+          <ProjectFeature key={project.slug} project={project} number={numberOf(project)} />
+        ))}
+      </div>
       <Kicker className={styles.group}>Of my own</Kicker>
-      <ProjectGrid members={others("personal")} />
-      <div className={styles.footer}>
-        <a href={site.links.portfolio}>More work, experience, and background in the Portfolio ↗</a>
+      <div className={styles.rows}>
+        {others("personal").map((project) => (
+          <ProjectRow key={project.slug} project={project} number={numberOf(project)} />
+        ))}
       </div>
     </section>
   );

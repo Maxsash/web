@@ -13,7 +13,9 @@ const box = (x, y, width = 100, height = 40) => ({
 });
 const inside = (b, x, y) => x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height;
 const drawings = projects.flatMap((project) =>
-  project.visual.kind === "drawing" ? [[project.slug, project.visual.drawing]] : [],
+  project.visuals.flatMap((visual) =>
+    visual.kind === "drawing" ? [[project.slug, visual.drawing]] : [],
+  ),
 );
 
 test("stacked boxes join with a vertical line between their edges", () => {
@@ -48,8 +50,10 @@ test("an unknown node is an error, not a missing arrow", () => {
   );
 });
 
-test("project drawings were found", () => {
-  assert.equal(drawings.length, 2);
+test("every client project leads with a system drawing", () => {
+  const clients = projects.filter((project) => project.kind === "client");
+  assert.ok(clients.length > 0);
+  for (const project of clients) assert.equal(project.visuals[0].kind, "drawing", project.slug);
 });
 
 for (const [slug, drawing] of drawings) {

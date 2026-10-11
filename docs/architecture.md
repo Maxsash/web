@@ -11,9 +11,10 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
 | `/blog`, `/blog/[slug]`            | The notebook: two labelled sample essays and any written posts (`noindex`). Unknown slugs render on demand so they reach the notebook 404. |
+| `/work/[slug]`, `/work`            | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`. |
 | `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
 | `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
-| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage only.                                          |
+| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage and the five case studies.                                          |
 | Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side
@@ -281,15 +282,28 @@ origin sending JSON (so another website cannot write files while the dev server 
   email; nav; links; `profiles` for About and the shore; and `afterHero`, the section the skip
   link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),
   `contact.ts` (the three "What to expect" steps), `projects.ts` (five projects: `kind` client
-  or personal, a screenshot or a system drawing as `visual`; the first is the lead),
+  or personal; `visuals`, one or more screenshots or system drawings, each with its plate
+  title and note (the first is the card's, the case study shows all); a `proof` line; facts;
+  the first project is the lead; `caseStudyPath` and `caseStudyTitle`), `work/<slug>.md` (each case study's prose,
+  body only: the file name is the slug; loaded by `case-studies.ts` with `parseMarkdown`),
   `about.ts` (the about facts), `notebook.ts` (the sample essays' copy and captions).
 - Homepage sections are one component each: `Work` (the lead through `ProjectFeature`, then a
-  grid per kind), `About`, `Contact` (with `CopyButton`, which shares `copy-text.ts` with the
+  grid of the other client projects, then the personal ones as `ProjectRow`s; a card is plate,
+  headline, one summary, the proof line and `CaseStudyLink`; `ProjectPlate` is the figure,
+  shared with the case-study page), `About`, `Contact` (with `CopyButton`, which shares `copy-text.ts` with the
   studio's "Copy link"), `NotebookSection` (the three newest entries from `latestNotes`, and the
   compass). `components/Section.module.css` is their one copy of the section header (its size
   in `--title-size`), kicker (and its arrival), lede, a rule that draws itself (`drawnRule`),
   accent index numbers, facts list, plate (head and caption) and link; the section modules
   `composes` from it. `Kicker` is the kicker paragraph that arrives.
+- **Case studies** (`app/work/[slug]/page.tsx`, `app/work/CaseStudy.module.css`): a running head
+  (`StudioNav`, shared with the Notebook; it marks Work on `/work/*` and Notebook on `/blog*`),
+  the headline with summary, proof and facts (reading time from `readingMinutes` in
+  `lib/format.ts`, shared with posts), the plate large, the prose (`components/Prose.tsx`, shared
+  with posts; the Notebook passes its table class), next case study, the home `Contact` section,
+  then `ShoreFooter` (its sea-model line shows only where a sea is passed). They follow the
+  day/night theme; the shore's `ThemeControl` sets it on a direct load. JSON-LD comes from
+  `caseStudyStructuredData` through `components/JsonLd.tsx`, also used by the homepage.
 - **Type and colour:** `app/fonts.ts` loads Montagu Slab (display and essay text, `opsz`
   follows font size), Rethink Sans (text and labels) and Reddit Mono (data only: seeds, code,
   tables, plate notation) as `--typeface-*`; `globals.css` maps them to `--font-display`,
@@ -326,7 +340,7 @@ origin sending JSON (so another website cannot write files while the dev server 
   becomes that section's margin note, and a section called "Notes for the editor" is shown
   only on drafts. Each post's cover plate is its own sea, derived from its slug. `lib/markdown.ts` parses a small subset (headings,
   paragraphs, fenced code, tables, lists, rules, and inline code, bold, italic and links with
-  safe schemes only); `content/posts.ts` loads them; `components/atlas/Prose.tsx` and
+  safe schemes only); `content/posts.ts` loads them; `components/Prose.tsx` and
   `WrittenArticle.tsx` render them; `lib/post-structure.ts` groups the blocks.
   `ArticleParts.tsx` (header, cover, sections, and `ArticleEnd`: the author line and the next
   note) and `NoteFeature.tsx` (the big

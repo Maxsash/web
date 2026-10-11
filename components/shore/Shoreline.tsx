@@ -24,7 +24,7 @@ export default function Shoreline({
   children: ReactNode;
   version: string;
   commit: string | null;
-  seaModel: string;
+  seaModel?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pauseRef = useRef<(() => boolean) | null>(null);
@@ -206,7 +206,7 @@ export default function Shoreline({
             Release v{version}
             {commit ? ` · ${commit}` : ""}
           </span>
-          <span>Sea model v{seaModel} · WebGL2</span>
+          {seaModel && <span>Sea model v{seaModel} · WebGL2</span>}
           <span>© {new Date().getFullYear()} Yash</span>
         </div>
       </div>

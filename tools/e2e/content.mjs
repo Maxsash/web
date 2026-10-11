@@ -86,23 +86,22 @@ export async function runContentChecks(ctx) {
     ...projectContent,
     pass:
       projectContent.titles.join("|") ===
-        "Velora Rights|Real-time Intrusion Detection|Business Operations Platform|Household Hub|Wedding Photo Platform" &&
-      [
-        "https://velorarights.com",
-        "https://ctrl-alt-yash.github.io/portfolio/case-study/velora-rights.html",
-        "https://ctrl-alt-yash.github.io/portfolio/case-study/intrusion-detection.html",
-        "https://ctrl-alt-yash.github.io/portfolio/case-study/modular-saas.html",
-        "https://tenant-management-2my6.vercel.app/",
-        "https://wedding-demo-teal.vercel.app/",
-        "https://ctrl-alt-yash.github.io/portfolio/case-study/tenant-manager.html",
-        "https://ctrl-alt-yash.github.io/portfolio/case-study/wedding-site.html",
-      ].every((url) => projectContent.links.includes(url)) &&
-      !projectContent.links.includes("#"),
+        "Velora Rights|Business Operations Platform|Real-time Intrusion Detection|Wedding Photo Platform|Household Hub" &&
+      projectContent.links.join("|") ===
+        [
+          "velora-rights",
+          "business-operations",
+          "intrusion-detection",
+          "wedding-photo-platform",
+          "household-hub",
+        ]
+          .map((slug) => `/work/${slug}`)
+          .join("|"),
   });
   results.push({
     name: "approved-work-spreads",
     pass: await evaluate(
-      "(()=>{const w=document.getElementById('work'),images=[...w.querySelectorAll('img')];return images.length===3&&images.every(i=>i.getAttribute('src').includes('%2Fimages%2Fwork%2F'))&&images[0].alt.includes('Velora Rights')&&images[1].alt.includes('light theme')&&[...w.querySelectorAll('svg[role=img]')].filter(s=>s.getAttribute('aria-label').startsWith('System drawing')&&s.querySelectorAll('rect').length>=6).length===2&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===5&&!w.textContent.includes('awaiting selection');})()",
+      "(()=>{const w=document.getElementById('work');return w.querySelectorAll('img').length===0&&[...w.querySelectorAll('svg[role=img]')].filter(s=>s.getAttribute('aria-label').startsWith('System drawing')&&s.querySelectorAll('rect').length>=6).length===3&&!!w.querySelector('h2#work-heading')&&w.querySelectorAll('h3').length===5&&w.querySelectorAll('figure').length===3&&!w.textContent.includes('awaiting selection');})()",
     ),
   });
   results.push({

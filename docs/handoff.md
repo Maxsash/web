@@ -1,70 +1,87 @@
 # Handoff — start here
 
 Updated 10 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 0d76507. Font and theme sprint is implemented and **uncommitted** for owner review.
+HEAD ee14411. Case studies on maxsash.com are implemented and **uncommitted** for owner review.
 Nothing committed, pushed or deployed.
 
-## Font and theme sprint (awaiting owner review)
+## Case studies on maxsash.com (awaiting owner review)
 
-- Why: headings were hard to read (Fraunces at −0.055 to −0.08em) and the site carried the
-  stock Claude/AI look (Fraunces + Inter + JetBrains Mono, mono kickers, roman line + accent
-  italic line, bone paper + rust). Decision: decisions.md "Type and colour of their own".
-  Specimen (both rounds): https://claude.ai/artifact/FDizE3EAiy2JvQaKiBuqzJ
-- Final type ("Logbook slab", round 2): Montagu Slab (display and essay text), Rethink Sans
-  (text, labels), Reddit Mono (data only). All have next/font fallback metrics: clean build.
-  Montagu has no italic; *Math.* and essay emphasis use the browser's slanted roman.
-  Preloaded fonts 185 KB (was 206 KB with Fraunces).
-- Palette: Admiralty chart, one token layer in `globals.css` (night via
-  `html[data-studio-theme]`; fixed `--chart-*` for day-only pages); sea/hero colours untouched.
-- Also: decorative italics removed (Math. kept); project and error-page headlines are single
-  strings; kicker arrival inks headings in by opacity; Notebook masthead sized per breakpoint;
-  About name capped at 14cqi; hero section links have a 24 px minimum width; night studio
-  plate uses invert + 180° hue + screen; shore water and printable plate recoloured.
-- Owner judgement wanted: essays' paragraphs are set in Montagu Slab (wide, characterful);
-  if they feel heavy for long reading, switch `.readingCopy` text to Rethink Sans.
-- Not changed: the private `/write` editor (own cream colours); hero fallback night filter.
-- Review: http://localhost:3015/?seed=70806d5e&version=2 (worktree
-  /private/tmp/maxsash-type-review, server started this session). Screenshots in the
-  scratchpad shots/ (before-*, slab-*, slabnight-*). Servers 3000/3012/3013/3014 untouched.
+- Why: every Work card sent clients to the GitHub Pages portfolio (written for recruiters),
+  and the strongest proof sat only there. Decisions: decisions.md "A card is a hook, the case
+  study is the depth" and "The website is for clients, the portfolio for recruiters".
+- Owner answers (10 October): Velora brought 5 internship applications and 1 client from an
+  enquiry in a single month, all organic, no outreach; business operations onboarded 4
+  businesses with teams of 2 to 12; intrusion detection runs at 5 sites over 1.5 years; order
+  Velora → Business Operations → Intrusion "for now"; no cross-canonicals with the portfolio.
+- Work: Velora lead spread, then Business Operations and Intrusion as cards (plate, headline,
+  one summary, proof line, one link); "Of my own" is two compact ruled rows (Wedding, Household
+  Hub) linking to their case studies (owner's choice after the length review; decisions.md
+  "Three cards, two rows"). The Work footer's Portfolio link is gone (About and shore keep it).
+- `/work/<slug>`: head (case study number, headline, summary, proof, facts: For, Role, When,
+  Built with, Reading; live or demo link), the plate large, prose from `content/work/<slug>.md`
+  (brief, what I built, the decisions that mattered, outcome; 2–3 min), next case study, the
+  home Contact section, the shore. Follows day/night. Indexed, in the sitemap, Article JSON-LD.
+  `/work` redirects to `/#work`.
+- Refactors on the way: `StudioNav` (was `app/blog/BlogNav.tsx`), `components/Prose.tsx` (was
+  in `atlas/`, table class passed in), `ProjectPlate`, `JsonLd`, `readingMinutes`.
+- Measured on the owner's dev server: Work 3.1 desktop screens (was 3.9 before this work) and
+  4.9 on a phone (was 6.1; the drawing is taller than the screenshot on a phone); Contact now
+  starts at 5.9 desktop / 8.2 phone screens (was ≈ 9).
+- 11 October: Velora stays the lead (owner agreed); its card is now a system drawing like the
+  other two, its screenshot moved under the drawing on its case study, and the Work lede says
+  "I am a backend engineer first, so the client work is shown as the system underneath". No
+  demo links on the personal rows (owner).
+- Owner judgement wanted: the case-study prose is drafted in his first person from the
+  portfolio facts; read all five (`content/work/`) and edit into his own voice. Also the proof
+  wording on each card (`proof` in `content/projects.ts`).
+- Review: owner's dev server http://localhost:3000/#work and /work/velora-rights. Screenshots
+  in the session scratchpad (new-*.png, phone-*.png).
 
 ## Next / open items
 
-1. Owner review of the type and theme (home day/night, Notebook, an essay, phone), the
-   slashed zero, then commit. Ship review in both themes is still open too.
-2. Physical iPhone/Safari/Firefox checks: ship/gull, stage controls, studio, sound,
+1. Owner review of Work (three cards, two rows) and the five case studies (day/night, phone),
+   then commit.
+2. Owner judgement still open from the type sprint: essay paragraphs in Montagu Slab (switch
+   `.readingCopy` to Rethink Sans if heavy); the slashed zero; ship review in both themes.
+3. Physical iPhone/Safari/Firefox checks: ship/gull, stage controls, studio, sound,
    screen-reader notices and battery/GPU behaviour. Review phone page length too.
-3. Performance/hosting: rerun PageSpeed after hero changes, decide function region,
+4. Performance/hosting: rerun PageSpeed after hero changes, decide function region,
    consider a shorter static-fallback hero, and add the recorded Vercel rate limits.
-4. Search: recheck Search Console's sitemap fetch and indexing; real share previews.
-5. Content: edit/publish two drafts, replace sample essays before enabling indexing,
-   and later bring the five case studies onto `/work/<project>`.
-6. Engineering: investigate browser harness processes lingering after completion;
+5. Search: recheck Search Console's sitemap fetch and indexing (the sitemap now has six
+   entries); real share previews, perhaps an image per case study.
+6. Content: edit/publish two drafts, replace sample essays before enabling indexing.
+7. Engineering: investigate browser harness processes lingering after completion;
    add error-page browser coverage and whirlpool shader/CPU parity coverage.
-7. Optional creative backlog: Notebook treatments, night SVG colours, stars/birds,
+8. Optional creative backlog: Notebook treatments, night SVG colours, stars/birds,
    feedback refinements and Easter eggs. Code cleanup step 6 remains ideas only.
-8. Owner handles release through production; main never deploys. Current release
-   state is unknown. Full backlog: [follow-ups.md](follow-ups.md).
+9. Owner handles release through production; main never deploys. Full backlog:
+   [follow-ups.md](follow-ups.md).
 
-## Verification (font and theme sprint)
+## Verification (case studies)
 
-- Node 24 production build, no warnings; lint, types, format; 114 Node tests; 20 SEO cases;
-  headers; keyboard 20/20; ship 36/36; gull 47; software fallback; sound; creative 193
-  records, 0 exceptions, no overflow. Headline fit rechecked after the final 14cqi tweak.
-- Not verified: physical devices, screen readers, `/write`, hero fallback plate at night.
-- Logs: /private/tmp/maxsash-type-*.log. Details in testing.md.
+- Node 24 production build, no warnings (worktree /private/tmp/maxsash-cases-review, server
+  :3016 started and stopped this session), rerun after the rows change and Velora's drawing;
+  lint, types, format; 126 Node tests; 28 SEO cases;
+  headers; keyboard 20/20; creative 193 records, 129 assertions, 0 failed, 0 exceptions.
+  (The last server run failed only the old drawing count; after replacing it, the 118
+  offline tests pass and `sea-api` had passed in that run.)
+- Not run: ship, gull, software fallback, sound. Not verified: physical devices, screen
+  readers. Logs: /private/tmp/maxsash-cases-*.log. Details in testing.md.
 
 ## Suggested commit message
 
 ```
-feat: give the site its own type and Admiralty chart palette
+feat: bring the case studies onto maxsash.com
 
-Headings were hard to read (Fraunces tracked to -0.08em) and the stack,
-mono kickers, accent italics and bone-and-rust paper read as a stock AI look.
-Switch to Montagu Slab, Rethink Sans and Reddit Mono (data only), all with
-next/font fallback metrics; move every theme colour into one token layer in the
-chart palette, keep italic only for Math., refit headline sizes and ink kicker
-headings in by opacity.
+Work cards sent clients to the recruiter portfolio, and the strongest proof
+lived only there. Each card is now a hook (headline, one summary, a proof line
+from the owner's figures, one link) and each project has a case study at
+/work/<slug>, written for clients from content/work/<slug>.md, ending in
+Contact. Work shows the three client projects as system drawings, with a
+line saying why (backend first), and the two personal ones as compact rows,
+so Contact comes a screen sooner on a phone. Case studies are indexed, in the sitemap, with Article
+JSON-LD; /work redirects to /#work. The Notebook's nav and Prose are shared.
 
-Verified on a Node 24 production build: lint, types, format, 114 Node tests,
-SEO, headers, keyboard 20/20, ship 36/36, gull, fallback, sound, creative 193.
+Verified on a Node 24 production build: lint, types, format, 126 Node tests,
+SEO (28 cases), headers, keyboard 20/20, creative 193 records with 0 failed.
 ```

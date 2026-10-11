@@ -30,16 +30,41 @@
   gap: 1.5rem;
   align-content: start;
 }
+.rows {
+  padding-block: 0.5rem 4.5rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1.5fr) auto;
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: baseline;
+  padding-block: 1.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+.row h3 {
+  font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+  line-height: 1.05;
+}
+.row p:not(.rowKicker, .proof) {
+  max-width: 32rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+.row .proof {
+  margin-bottom: 0;
+}
+.rowKicker {
+  margin-bottom: 0.5rem;
+  font: 0.7rem/1.7 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
 .plate {
   composes: plate from "./Section.module.css";
 }
-.plainPlate {
-  margin: 0;
-  min-width: 0;
-}
 @media (hover: hover) {
-  .plate:hover,
-  .plainPlate:hover {
+  .plate:hover {
     translate: 0 -4px;
     box-shadow: 0 16px 26px -20px color-mix(in oklab, var(--ink) 50%, transparent);
   }
@@ -47,8 +72,7 @@
     border-bottom-color: var(--ink);
   }
 }
-.plate img,
-.plainPlate img {
+.plate img {
   display: block;
   width: 100%;
   height: auto;
@@ -70,8 +94,8 @@
   line-height: 1;
   margin-bottom: 1.25rem;
 }
-.description p:not(.kicker),
-.entry p:not(.kicker) {
+.description p:not(.kicker, .proof),
+.entry p:not(.kicker, .proof) {
   color: var(--ink-2);
   line-height: 1.7;
   max-width: 32rem;
@@ -84,24 +108,6 @@
 .entry .summary {
   color: var(--ink);
   margin-bottom: 0.75rem;
-}
-.links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  font-size: 0.9rem;
-}
-.entry .links {
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0 1.75rem;
-}
-.entry p.meta {
-  margin-block: 1rem 0.5rem;
-  font: 0.7rem/1.7 var(--font-sans);
-  letter-spacing: 0.04em;
-  color: var(--ink);
 }
 .system {
   display: block;
@@ -154,8 +160,7 @@
   stroke-dashoffset: 1;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .plate,
-  .plainPlate {
+  .plate {
     transition:
       translate 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
       box-shadow 320ms ease;
@@ -175,20 +180,6 @@
 .system marker path {
   fill: var(--accent);
 }
-.footer {
-  border-top: 1px solid var(--rule);
-  padding-top: 1.5rem;
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  line-height: 1.7;
-  letter-spacing: 0.02em;
-  color: var(--ink-2);
-}
-.footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
 @media (max-width: 48rem) {
   .feature,
   .grid {
@@ -198,6 +189,13 @@
   }
   .grid {
     gap: 3.5rem;
+  }
+  .row {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+  .row > :not(:first-child) {
+    grid-column: 2;
   }
   .feature .description {
     max-width: 34rem;

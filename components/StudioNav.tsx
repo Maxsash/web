@@ -4,25 +4,24 @@ import NotebookLink from "@/components/NotebookLink";
 import { site } from "@/content/site";
 import { usePathname } from "next/navigation";
 
+const pagesOf: Record<string, string> = { "#work": "/work", "/blog": "/blog" };
+
 const items = site.nav.map(({ label, href }) => ({
   label,
   href: href.startsWith("#") ? `/${href}` : href,
+  pages: pagesOf[href],
 }));
 
-export default function BlogNav() {
+export default function StudioNav() {
   const pathname = usePathname();
   return (
     <nav aria-label="Studio">
-      {items.map(({ label, href }) => (
+      {items.map(({ label, href, pages }) => (
         <NotebookLink
           key={href}
           href={href}
           aria-current={
-            href === "/blog" && pathname.startsWith("/blog")
-              ? pathname === "/blog"
-                ? "page"
-                : "true"
-              : undefined
+            pages && pathname.startsWith(pages) ? (pathname === href ? "page" : "true") : undefined
           }
         >
           {label}

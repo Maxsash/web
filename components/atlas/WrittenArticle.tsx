@@ -4,7 +4,7 @@ import { createSeaEdition } from "@/lib/sea/edition";
 import { seaSeedForName } from "@/lib/sea/presets";
 import { ArticleCover, ArticleHead, ArticleTop, ArticleEnd, ReadingSection } from "./ArticleParts";
 import PostPlate from "./PostPlate";
-import Prose, { InlineText } from "./Prose";
+import Prose, { InlineText } from "@/components/Prose";
 import styles from "./Atlas.module.css";
 
 export default function WrittenArticle({ post }: { post: WrittenPost }) {
@@ -27,7 +27,7 @@ export default function WrittenArticle({ post }: { post: WrittenPost }) {
           ) : null}
           {intro.length ? (
             <div className={`${styles.readingCopy} ${styles.introCopy}`}>
-              <Prose blocks={intro} />
+              <Prose blocks={intro} tableClassName={styles.proseTable} />
             </div>
           ) : null}
           {sections.map((section, index) => (
@@ -37,7 +37,7 @@ export default function WrittenArticle({ post }: { post: WrittenPost }) {
               title={<InlineText nodes={section.title} />}
               marginNote={section.marginNote ? <InlineText nodes={section.marginNote} /> : null}
             >
-              <Prose blocks={section.blocks} />
+              <Prose blocks={section.blocks} tableClassName={styles.proseTable} />
             </ReadingSection>
           ))}
           {post.closing ? <p className={styles.closing}>{post.closing}</p> : null}
@@ -45,7 +45,7 @@ export default function WrittenArticle({ post }: { post: WrittenPost }) {
             <aside className={styles.draftNotes} aria-label="Notes for the editor">
               <span className={styles.overline}>Notes for the editor · drafts only</span>
               <div className={styles.readingCopy}>
-                <Prose blocks={editorNotes} />
+                <Prose blocks={editorNotes} tableClassName={styles.proseTable} />
               </div>
             </aside>
           ) : null}

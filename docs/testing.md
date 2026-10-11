@@ -4,6 +4,18 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Case studies (10 October 2026)
+
+Rerun after the three-cards-two-rows change and again after Velora's drawing (126 Node tests: the drawing count became "every client project leads with a system drawing"), same results otherwise. Node 24 production build with no
+warnings (detached worktree `/private/tmp/maxsash-cases-review`, server :3016, stopped), lint, types, format, 125 Node tests (11 new in `case-studies.test.mjs`),
+28 SEO cases (now with two case studies, the six-entry sitemap, `/work/<unknown>` 404 and the
+`/work` redirect), headers, keyboard 20/20 (the first Tab inside Work now reaches the Velora case
+study link), and the creative suite (193 records, 129 assertions, 0 failed, 0 exceptions, no
+overflow). Screenshots of `/` Work and two case studies at 1440 and 390, and a phone case study
+at night, were inspected on the owner's dev server. Not run this time: ship, gull, software
+fallback and sound (no code they cover changed except the shore's sea-model line). Not
+verified: physical devices, screen readers, a case study's plate draw-in at night.
+
 ## Font and theme sprint (10 October 2026)
 
 Final fonts: Montagu Slab, Rethink Sans, Reddit Mono. Node 24 production build with no
@@ -135,8 +147,8 @@ before the gull sleeps, notes rise from the beak and fade in and out, the head l
 the takeoff stands first, climbs and fades out at
 the exit, departure begins at the current pose during flight/hover, night gets one phrase,
 fewer quiet habits and rests unless engaged, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded
-wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
-| `check-seo.mjs`             | 20 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data; discovery files; unknown-article 404. |
+wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), every project's case study (one file per project, opens with the brief, ends with the outcome, 2–5 minutes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
+| `check-seo.mjs`             | 28 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data (Article on case studies); discovery files; unknown-article and unknown-case-study 404; `/work` redirect. |
 | `check-headers.mjs`         | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.             |
 | `check-ship.mjs`             | Rendered ship triangles versus visible text and viewport bounds: six sizes, day/night, Drawing, 150% text, live rotation, paused/reduced-motion cloth and native mobile reveal/return. Outputs to `tools/.out/ship/`. |
 | `check-gull.mjs`            | Live portrait/landscape resize matrix, DPR 1/1.25/2/3, larger text, day/night, standing/sleeping/drawing: pixel contact with the pill border, label clearance, no clipped bird/control, no visible text/control overlap and refreshed canvas density. Outputs to `tools/.out/gull/`. |

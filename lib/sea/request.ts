@@ -29,11 +29,15 @@ export function resolvePageSea(query: PageSeaQuery, freshSeed: () => string): Se
   return seed && version ? { seed, version } : null;
 }
 
+function queryParam(url: URL, name: string): SeaParam {
+  const values = url.searchParams.getAll(name);
+  return values.length > 1 ? values : values[0];
+}
+
 export function resolveApiSea(url: URL): SeaRequest | { error: string } {
-  const seeds = url.searchParams.getAll("seed");
-  const seed = parseSeedParam(seeds.length > 1 ? seeds : seeds[0]);
+  const seed = parseSeedParam(queryParam(url, "seed"));
   if (seed === null) return { error: SEED_ERROR };
-  const version = parseVersionParam(url.searchParams.get("version"), "1");
+  const version = parseVersionParam(queryParam(url, "version"), "1");
   if (version === null) return { error: VERSION_ERROR };
   return { seed, version };
 }

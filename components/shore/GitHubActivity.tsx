@@ -14,7 +14,7 @@ const dayName = new Intl.DateTimeFormat("en-GB", {
   weekday: "short",
   day: "numeric",
   month: "short",
-  timeZone: "UTC",
+  timeZone: "Asia/Kolkata",
 });
 
 export function ActivityFallback({ loading = false }: { loading?: boolean }) {
@@ -104,7 +104,7 @@ export default async function GitHubActivity() {
         ))}
       </ol>
       <p className={styles.activityNote}>
-        Latest public commits to this site · dates in UTC · refreshed hourly
+        Latest public commits to this site · dates in IST · refreshed hourly
       </p>
     </>
   );

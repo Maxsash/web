@@ -46,7 +46,7 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
         </header>
         <OceanScene key={edition.seed} edition={edition} />
         <div className={styles.intro}>
-          <p className={styles.eyebrow}>A place for things worth making</p>
+          <p className={styles.eyebrow}>Backend & real-time systems</p>
           <h1>
             <span>Sea.</span>
             <span>Ship.</span>

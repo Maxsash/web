@@ -5,13 +5,28 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Show private systems through their real boundaries** (owner, 11 October 2026). The business
+  platform explains selectable modules, adaptable insights, privacy and accessible workflows. The
+  intrusion platform explains local LAN computing, a minimum-data notification boundary and the
+  RTSP-to-browser video service. Do not infer encryption, protocols, metrics or other details the
+  owner did not supply.
+
+- **Make backend credibility explicit** (owner, 11 October 2026). Hero/metadata name
+  backend and real-time systems. Show mechanisms, tradeoffs and known production evidence;
+  do not add superlatives or invent operational metrics. Preserve the agreed client order.
+
+- **GitHub log dates use IST** (owner, 11 October 2026). The owner is based in India;
+  group and label commit dates in Asia/Kolkata rather than UTC.
+
 - **Report private-system build durations** (owner, 11 October 2026): business operations
   took about six months; intrusion detection about eight. Show Build time, with no invented
   calendar range; intrusion detection’s deployment history remains a separate proof line.
 
 - **Publish the two approved essays** (owner, 11 October 2026). Keep their existing URLs
   and authored layouts; label them Essay, index them and the Notebook listing, and include
-  all three in the sitemap. Markdown drafts remain development-only.
+  all three in the sitemap. Published Notebook articles expose only their visible title,
+  summary, topic, author, URL and publication date as BlogPosting JSON-LD; drafts remain
+  development-only.
 
 - **Deliver the studio drawing progressively** (11 October 2026). The complete inline
   SVG below the fold made initial HTML large. Start with a lazy image of the existing

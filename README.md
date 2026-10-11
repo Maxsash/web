@@ -18,8 +18,6 @@ Requires Node 24 (see `.nvmrc`) and pnpm.
 nvm use
 pnpm install
 pnpm dev          # http://localhost:3000
-pnpm build
-pnpm start
 pnpm lint
 pnpm format       # Prettier; `pnpm format:check` verifies without writing
 ```
@@ -31,6 +29,17 @@ preview of the real page. It exists only in development; a production build has 
 Optional environment variables: `NEXT_PUBLIC_SITE_URL` (canonical origin),
 `GITHUB_TOKEN` (server-only, raises GitHub's rate limit for the commit-log card),
 `NEXT_PUBLIC_BUILD_SHA` (short commit shown in the footer when the host gives none).
+
+## Engineering contracts
+
+The sea model is shared by WebGL, the JSON API and printable SVG. Version 1 is pinned
+by a digest so old links stay reproducible; new editions use version 2. Both API routes
+validate seed/version parameters, serve deterministic output and support ETag responses.
+Pure model/parsing modules are tested apart from rendering. The local editor is excluded
+from production, and its writes require same-origin localhost requests.
+
+Builds and tests run in an isolated worktree; see [docs/testing.md](docs/testing.md) for
+the production verification procedure.
 
 ## Release
 

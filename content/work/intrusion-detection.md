@@ -6,44 +6,50 @@ act on, for critical infrastructure. It was a new project, with nothing to build
 
 ## What I built
 
-Small computers on site watch the sensor data and catch anomalies where they happen. A backend
-on AWS records every reading and event, alerts the right people on WhatsApp, Telegram, email and
-ntfy, and drives a monitoring screen: each event at its exact place on a live map, with the CCTV
-feed beside it.
+Two servers with different jobs. A local Raspberry Pi server runs the detection work and keeps
+private site data on the LAN. An admin server receives only the information needed to notify site
+owners and managers on WhatsApp, Telegram, email and ntfy.
+
+The monitoring screen puts each event on a live map beside the relevant camera. A separate video
+service converts the RTSP feeds into something the browser can show, lets an operator switch
+between cameras or choose one for the monitor, and can take webcam inputs too.
 
 ## The decisions that mattered
 
-### Detect on site, coordinate in the cloud
+### Compute on site; notify from one place
 
-Anomaly detection runs on Raspberry Pi nodes at each site, close to the sensors, so it reacts
-quickly. Storage, alerts and the dashboard run on AWS, where they grow with the number of sites.
+The local Raspberry Pi server does the detection work beside the sensors. Sensor and other
+private operational data stay on the site's LAN. The admin server has a narrower job: it receives
+enough alert information to notify the right owner or manager through the channel they use.
 
-### Two kinds of data, two databases
+### Keep two kinds of data useful
 
 Sensor readings arrive continuously and are stored in InfluxDB, a database made for time series.
 Events, users and alerts are records that people look up and audit, so they live in PostgreSQL.
 
-### Alerts that reach people, without burying them
+### Turn RTSP into a usable monitoring view
 
-Alerts go out on several channels at once, with throttling and escalation built in, so the right
-people hear about an event without being flooded with messages.
+The CCTV hardware exposed RTSP feeds, which browsers do not play directly. Converting a feed for
+the web introduces delay, so I built a dedicated service around that boundary rather than mixing
+video conversion into alert processing. Operators can switch among cameras, select the camera
+shown in the monitor and use webcam inputs when needed.
 
-### Context with every alarm
+### Put context beside every alarm
 
 An alert on its own says that something happened. The monitoring screen shows where, on a live
 map, with the site's CCTV stream playing beside it, so whoever is watching can judge it at once.
 
-### Secure for sensitive sites
+### Treat the network as part of access control
 
-Sign-in, role-based access, deployments restricted by network address and careful handling of
-credentials were part of the first version, not added later.
+The Raspberry Pi deployment operates only on defined networks. Sign-in, role-based access and
+careful handling of credentials were part of the first version, not added later.
 
 ## My part
 
 I was the founding engineer and led the work: the architecture and technology choices, a team of
 backend and frontend developers, and the link between the hardware engineers and the software. I
-wrote about 60% of the code, across the backend, infrastructure and deployment, then deployed and
-configured the system on site and trained the people who use it.
+worked across the backend, infrastructure and deployment, then deployed and configured the system
+on site and trained the people who use it.
 
 ## The outcome
 

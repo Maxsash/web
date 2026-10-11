@@ -19,7 +19,7 @@ printed on every page so you can try everything.
 
 ## The decisions that mattered
 
-### No accounts, still secure
+### Shared PINs, enforced on the server
 
 Instead of accounts there are two shared PINs: one to see private details, one to change things.
 Both are checked on the server, not just hidden on screen. Without a PIN the app still opens and
@@ -45,6 +45,21 @@ reads the photograph into draft rows, using the household's own list of items so
 and it is told the date convention, so 3.7.26 means the third of July. Nothing is saved until a
 person reviews the rows: uncertain readings are flagged, and the slip's written total is checked
 against the lines. Typing an entry by hand stays quick for anyone who prefers it.
+
+### Insights for the next decision
+
+The point of recording rent and spending is to make the next decision easier, not to produce a
+chart for its own sake. The insights page turns the reviewed entries into practical monthly
+summaries and upcoming household needs. It carries over the same question-first approach I used
+in the business operations platform: show what is useful to act on, rather than make analytics an
+extra layer over data entry.
+
+### Designed for the people who use it
+
+The people using the app have very different comfort with software. I iterated on the wording,
+iconography, colour and flow until everyday tasks were easy to recognise and complete. The goal is
+not to make someone learn a system; it is to let them run the household without the system getting
+in the way.
 
 ### Tested where mistakes are expensive
 

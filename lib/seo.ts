@@ -84,3 +84,24 @@ export const caseStudyStructuredData = (project: Project) => ({
   author: { "@type": "Person", "@id": absoluteUrl("/#yash"), name: site.owner },
   isPartOf: { "@id": absoluteUrl("/#website") },
 });
+
+type PublishedNotebookArticle = {
+  slug: string;
+  title: string;
+  summary: string;
+  topic: string;
+  date: string;
+};
+
+export const blogPostingStructuredData = (article: PublishedNotebookArticle) => ({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: article.title,
+  description: article.summary,
+  url: absoluteUrl(`/blog/${article.slug}`),
+  inLanguage: "en",
+  datePublished: article.date,
+  articleSection: article.topic,
+  author: { "@type": "Person", "@id": absoluteUrl("/#yash"), name: site.owner },
+  isPartOf: { "@id": absoluteUrl("/#website") },
+});

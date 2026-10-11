@@ -2,6 +2,42 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+## Backend credibility review (11 October 2026)
+
+- Hero and metadata now name backend/real-time specialism using existing evidence.
+  Project order/layout remain the owner-approved client sequence.
+- Tightened absolutes: shared PINs describe server enforcement, not blanket security;
+  offline ML stays out of request path, rather than claiming no computation on visits;
+  enquiry drafting no longer claims measured revenue gains.
+- [x] Add concrete mechanisms and tradeoffs for private projects (owner, 11 October): modular
+      analytics works with intentionally absent data; local detection keeps private data on the
+      LAN while notifications receive only what they need; RTSP conversion is isolated because it
+      adds delay. The case studies and drawings now show these boundaries.
+- [x] Replace the private case studies' “60% of code” claim with specific ownership: module and
+      data architecture, reporting/insights, local deployment and the hardware/software boundary.
+- [ ] Add measured operational evidence when it is available: a verified invariant, load/latency,
+      incident or recovery path, and the resulting observed behaviour. Do not invent it.
+- [ ] Consider leading Work with business operations if backend clients become the main
+      audience. Current Velora lead was explicitly approved; no reorder made in this review.
+- [ ] Technical follow-up: ETag helper only matches one exact tag; review list/weak/wildcard
+      conditional requests separately. API repeated-version ambiguity is fixed in this work.
+- [ ] Physical-phone/site reliability and release discovery fixes stay higher priority
+      than adding decorative interactions. Current review is source-based, not a live demo audit.
+
+## AI discovery priorities (review, 11 October 2026)
+
+- [ ] Release verified publication work: live listing/essays still noindex, sitemap seven
+      URLs vs ten locally. Inspect all public pages after release.
+- [ ] Bing Webmaster Tools: sitemap/URL inspection and AI Performance report.
+- [x] Bingbot and OAI-SearchBot coverage asserts substantial initial HTML, metadata and schema
+      on every public route in the local production harness.
+- [ ] Check real crawler logs/WAF after release; a locally supplied user-agent string does not
+      prove genuine crawler-IP access.
+- [x] Published Notebook BlogPosting JSON-LD uses source title, summary, topic, author, URL and
+      visible publication date; it emits only for indexable articles.
+- [ ] Firsthand writing on actual client questions, tied to case-study evidence.
+      Review details/sources: [seo-and-sharing.md](seo-and-sharing.md).
+
 ## Before applying to freelance listings (review, 11 October 2026)
 
 A review of the live site as a talent-directory reviewer or client would read it (Freelance
@@ -104,13 +140,14 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       memory, `ghost-photo-yash.png`); only the headshot in About is approved for the repo.
 - [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
       exploration, parked for a hidden moment (the owner's suggestion). Not built.
-- [ ] **Stars at night, birds by day (owner's plan).** The gull now exists (`components/gull/`, on
+- [ ] **Stars at night, birds by day and moon phases (owner's plan).** The gull now exists (`components/gull/`, on
       "Play waves"), and its model can fly in any sky: `gullFacets` with the flying poses, or three
       to nine boids hanging in the wind (the research's calmest ambient motion). Where a sky shows:
       the hero (day birds; night stars inside the WebGL pass), the 404's open horizon (birds fit),
       the notebook 404 and the half-drawn plate (maybe, as drawings), the crash and storm pages
-      (no: overcast). Stars should twinkle slowly, far below three flashes a second; the real moon
-      phase needs only the date.
+      (no: overcast). Stars should twinkle slowly, far below three flashes a second. Moon phases
+      are a hero-only visual follow-up, derived from the India calendar date rather than visitor
+      location; the error scenes remain fixed until separately decided.
 - [ ] **Ideas from the feedback research** (`../web-research/reports/Website feedback beyond
       sound.md`, 10 October 2026; nothing built). Cheapest first: scroll speed as one shader
       uniform (foam and ink bleed that dry back at rest) and a `scrollend` settle (the compass

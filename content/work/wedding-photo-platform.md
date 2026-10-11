@@ -19,8 +19,8 @@ couple and 1,004 of the photographs in eight albums, every face frosted.
 
 Hosted face recognition bills per image, which at this volume was out of the question. So
 everything heavy happens on a laptop before anything is published: removing duplicates, resizing,
-finding faces and grouping them by person. Nothing is computed when a guest visits, and there is
-no recurring bill.
+finding faces and grouping them by person. Face recognition and image processing stay out of
+the request path, with no per-image recognition bill.
 
 ### Keep the best frame of every burst
 

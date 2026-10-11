@@ -346,3 +346,30 @@ full creative result predates only that final copy shortening.
 Logs: `/private/tmp/maxsash-publication-*.log`; screenshots/reports: worktree `tools/.out/`.
 No live, social-app or physical-device review. Accidental main-folder build interrupted;
 all reported passing builds/checks above ran in isolated worktree.
+
+AI discovery review (11 October): read-only live OAI-SearchBot user-agent requests pass
+200 for robots/sitemap/home/listing/wave essay/business-operations. Live listing/essay
+remain noindex and sitemap seven URLs: latest publication changes unreleased. These
+requests do not prove genuine crawler-IP access, WAF settings, indexing or AI citations.
+No fresh build/browser/Node suite in this review; prior verification remains above.
+
+GitHub IST change (11 October): isolated Node 24 rendered-component check passes across
+18:29:59/18:30 UTC (India midnight), same-local-day grouping and IST label. First scratch
+assertion assumed a comma in en-GB output; corrected expected formatting and reran. Types,
+targeted ESLint and format pass. No fresh production build/full browser suite for this edit.
+
+Backend credibility and IST review (11 October): final isolated Node 24.21.0 production build,
+lint, TypeScript and format pass in `/private/tmp/maxsash-publication-check`. The full suite passes:
+126 Node tests with `SEA_TEST_BASE`, 44 crawler/page SEO cases, headers/CSP, keyboard 20/20 and
+193 creative records with no runtime exceptions. This includes hero/metadata, repeated-version
+rejection, IST grouping, and current business/intrusion system drawings and prose. The sandbox
+could not resolve Google Fonts or reach its own local server; the successful build/checks used
+narrowly enabled network/localhost access. Focused 390 px headless captures after the drawing
+arrival were inspected: both updated private system plates have legible, unclipped labels, boxes
+and arrows. No live, social-app or physical-device claim follows.
+
+BlogPosting and crawler addition (11 October): source and crawler harness cover factual
+BlogPosting fields plus Bingbot/OAI-SearchBot initial HTML. The focused local production rerun
+passes 66 crawler/page cases; format, lint and TypeScript pass. The same production build had
+already passed the 126 Node tests, headers/CSP, keyboard 20/20 and 193-record creative matrix
+before this test-only crawler expansion. No live crawler-IP, WAF or citation claim follows.

@@ -27,4 +27,6 @@ test("api requests default to the version 1 default sea and reject ambiguity", (
   assert.deepEqual(api("?seed=27c4b901&seed=5ea5cafe"), { error: SEED_ERROR });
   assert.deepEqual(api("?seed=nope"), { error: SEED_ERROR });
   assert.deepEqual(api("?seed=27c4b901&version=3"), { error: VERSION_ERROR });
+  for (const versions of ["version=1&version=2", "version=2&version=1", "version=2&version=2"])
+    assert.deepEqual(api(`?seed=27c4b901&${versions}`), { error: VERSION_ERROR });
 });

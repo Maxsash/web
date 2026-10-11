@@ -120,7 +120,7 @@ export const projects: Project[] = [
     headline: "Off paper, into one system.",
     kicker: "A client's SaaS product",
     summary:
-      "Takes traditional businesses off paper and spreadsheets: the modules each one needs, one data model, a dashboard for every role, and AI that drafts replies to every enquiry.",
+      "Modular operations software for teams moving off paper: clients choose and pay for what they need, their data stays separate, and practical insights adapt to the modules they use.",
     proof: "Four businesses onboarded, with teams of 2 to 12.",
     role: "CTO, founding engineer",
     duration: "About six months",
@@ -131,47 +131,56 @@ export const projects: Project[] = [
         drawing: {
           bands: [
             {
-              label: "Enquiries",
+              label: "Modules chosen by the business",
               nodes: [
-                { id: "email", label: "Email enquiries", note: "inbound leads" },
-                { id: "triage", label: "AI triage", note: "classify · draft replies" },
-              ],
-            },
-            {
-              label: "Modules, switched on per business",
-              nodes: [
+                { id: "sales", label: "Sales", span: 1 },
                 { id: "purchasing", label: "Purchasing", span: 1 },
                 { id: "inventory", label: "Inventory", span: 1 },
-                { id: "analytics", label: "Analytics", span: 1 },
-                { id: "sales", label: "Sales", span: 1 },
+                { id: "enquiries", label: "Enquiries", span: 1 },
               ],
             },
             {
-              label: "One data model",
+              label: "Private business data",
               nodes: [
-                { id: "data", label: "PostgreSQL", note: "each business kept apart", span: 4 },
+                {
+                  id: "data",
+                  label: "PostgreSQL",
+                  note: "each business kept apart",
+                  span: 4,
+                },
               ],
             },
             {
-              label: "For each role",
+              label: "Insights that adapt",
               nodes: [
+                { id: "insights", label: "Insights", note: "adapt to selected modules" },
                 { id: "dashboards", label: "Dashboards", note: "owner · manager · worker" },
-                { id: "forecasts", label: "Forecasts", note: "segments · ROI" },
+              ],
+            },
+            {
+              label: "Made for the people using it",
+              nodes: [
+                {
+                  id: "interface",
+                  label: "Bilingual/multilingual UI",
+                  note: "icons · colour",
+                  span: 4,
+                },
               ],
             },
           ],
           links: [
-            ["email", "triage"],
-            ["triage", "sales"],
             ["purchasing", "data"],
             ["inventory", "data"],
-            ["analytics", "data"],
             ["sales", "data"],
+            ["enquiries", "data"],
             ["data", "dashboards"],
-            ["data", "forecasts"],
+            ["data", "insights"],
+            ["dashboards", "interface"],
+            ["insights", "interface"],
           ],
         },
-        alt: "System drawing. Email enquiries pass through AI triage into sales. Purchasing, inventory, analytics and sales modules, switched on per business, share one PostgreSQL data model that keeps each business apart. Dashboards for each role and forecasts read from it.",
+        alt: "System drawing. A business chooses sales, purchasing, inventory and enquiry modules. They share one PostgreSQL data model that keeps each business apart. Insights adapt to the selected modules, dashboards support owners, managers and workers, and bilingual or multilingual interface options use icons and colour.",
         title: "System drawing",
         note: "Private: no screenshots",
       },
@@ -184,7 +193,7 @@ export const projects: Project[] = [
     headline: "A cable that raises the alarm.",
     kicker: "A client's security system",
     summary:
-      "Fibre-optic sensing hardware, turned into live security alerts for critical infrastructure: anomalies caught on site, people alerted on WhatsApp, Telegram and email, every event on a live map beside the CCTV.",
+      "Fibre-optic sensing turned into live security alerts: Raspberry Pis detect anomalies on private LANs; only alert details reach the notification server, while operators see events beside switchable CCTV and webcam video.",
     proof: "Deployed at five sites over a year and a half.",
     role: "Founding engineer, lead developer",
     duration: "About eight months",
@@ -195,36 +204,35 @@ export const projects: Project[] = [
         drawing: {
           bands: [
             {
-              label: "On site",
+              label: "Private site LAN",
               nodes: [
                 { id: "sensors", label: "Fibre-optic sensors", note: "high-frequency data" },
-                { id: "edge", label: "Edge node", note: "Raspberry Pi · anomalies" },
+                { id: "local", label: "Local server", note: "Raspberry Pi · anomalies" },
               ],
             },
             {
-              label: "Cloud · AWS",
+              label: "Separate services",
               nodes: [
-                { id: "storage", label: "Storage", note: "InfluxDB · PostgreSQL" },
-                { id: "backend", label: "Backend", note: "Spring Boot · events" },
+                { id: "admin", label: "Admin server", note: "minimum alert data" },
+                { id: "video", label: "Video service", note: "RTSP → browser" },
               ],
             },
             {
-              label: "To people",
+              label: "To people and monitoring",
               nodes: [
-                { id: "alerts", label: "Alerts", note: "WhatsApp · Telegram · email" },
-                { id: "map", label: "Live map", note: "React · CCTV video" },
+                { id: "alerts", label: "Owners & managers", note: "four channels" },
+                { id: "monitor", label: "Monitoring screen", note: "map · cameras · webcams" },
               ],
             },
           ],
           links: [
-            ["sensors", "edge"],
-            ["edge", "backend"],
-            ["backend", "storage"],
-            ["backend", "alerts"],
-            ["backend", "map"],
+            ["sensors", "local"],
+            ["local", "admin"],
+            ["admin", "alerts"],
+            ["video", "monitor"],
           ],
         },
-        alt: "System drawing. On site, fibre-optic sensors feed an edge node that finds anomalies. In the cloud, on AWS, a Spring Boot backend keeps sensor readings in InfluxDB and events in PostgreSQL, sends alerts to people and drives a live map with CCTV video.",
+        alt: "System drawing. In the private site LAN, fibre-optic sensors feed a local Raspberry Pi server that detects anomalies. Only the alert details needed for four channels reach a separate admin server. A video service converts RTSP CCTV for the browser; the monitoring screen combines a live map, selectable cameras and webcam inputs.",
         title: "System drawing",
         note: "Private: no screenshots",
       },

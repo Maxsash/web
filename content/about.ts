@@ -3,7 +3,7 @@ export const aboutFacts = [
   {
     term: "Experience",
     detail:
-      "Java, then full-stack developer at a product SaaS company, 2021–2026. Founding engineer on two freelance platforms.",
+      "Java developer, then full-stack developer at a product SaaS company, 2021–2026. Founding engineer on two freelance platforms.",
   },
   {
     term: "Works with",

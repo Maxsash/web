@@ -304,8 +304,12 @@ origin sending JSON (so another website cannot write files while the dev server 
   `lib/format.ts`, shared with posts), the plate large, the prose (`components/Prose.tsx`, shared
   with posts; the Notebook passes its table class), next case study, the home `Contact` section,
   then `ShoreFooter` (its sea-model line shows only where a sea is passed). They follow the
-  day/night theme; the shore's `ThemeControl` sets it on a direct load. JSON-LD comes from
-  `caseStudyStructuredData` through `components/JsonLd.tsx`, also used by the homepage.
+  day/night theme; the shore's `ThemeControl` sets it on a direct load. Article JSON-LD comes
+  from `caseStudyStructuredData` through `components/JsonLd.tsx`, also used by the homepage.
+- **Notebook articles** (`app/blog/[slug]/page.tsx`, `components/atlas/`): the original essays
+  and published Markdown notes share `ArticleHead`, their plate and their reading layout. The
+  route passes source facts to `blogPostingStructuredData` through `components/JsonLd.tsx`;
+  development-only drafts never emit it.
 - **Type and colour:** `app/fonts.ts` loads Montagu Slab (display and essay text, `opsz`
   follows font size), Rethink Sans (text and labels) and Reddit Mono (data only: seeds, code,
   tables, plate notation) as `--typeface-*`; `globals.css` maps them to `--font-display`,
@@ -395,7 +399,17 @@ and Reddit Mono use `preload: false`; their self-hosted faces still load when us
 
 ## Client-facing polish (11 October 2026)
 
-GitHub log failures keep only the repository link; the loading state retains its label.
+GitHub log dates group in Asia/Kolkata and are labelled IST. Failures keep only the repository link; the loading state retains its label.
 `projectShareImage` selects the first screenshot from the existing project visuals for
 Open Graph/Twitter (1200 × 750); drawing-only projects retain the sea until cards exist.
 Household Hub uses “Less to remember” as its headline.
+
+## Backend positioning review (11 October 2026)
+
+Hero eyebrow and site description explicitly name backend/real-time systems. Approved
+project order/layout stay fixed. The business system drawing follows selected modules into a
+business-separated PostgreSQL model, adaptable insights and a bilingual or multilingual UI.
+The intrusion drawing shows private-LAN Raspberry Pi compute, a minimum-alert-data notification
+boundary and a separate RTSP-to-browser video service. Case studies describe bounded mechanisms
+rather than absolute security, revenue or request-computation claims. API parameter extraction
+uses one queryParam helper: duplicate seed/version values are rejected by shared parsing.

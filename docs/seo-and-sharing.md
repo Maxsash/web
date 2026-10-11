@@ -23,8 +23,9 @@ What is in place, and what only the owner can do. The crawler checks are in
   copy, canonical URL and structured data.
 - **Structured data.** The home page describes the website, Yash, verified external
   profiles (LinkedIn, GitHub, portfolio), the headshot and five real projects, using the visible descriptions. Case studies have
-  Article JSON-LD and self-canonicals. It invents no
-  ratings, credentials or business claims, and it is escaped for HTML embedding.
+  Article JSON-LD and published Notebook articles have BlogPosting JSON-LD derived from their
+  visible title, summary, topic, author, URL and publication date. It invents no ratings,
+  credentials, modified dates or business claims, and it is escaped for HTML embedding.
 
 ## AI discovery
 
@@ -56,20 +57,39 @@ description and the shared sea image; existing message cards may remain cached.
 **Notebook policy:** the listing and approved essays are indexed; published markdown
 posts are indexed, while drafts stay development-only. The SEO harness
 derives every essay, case study and published post from source content and asserts exact sitemap
-membership, canonical URLs, cards and robots directives across four crawler agents.
+membership, canonical URLs, cards, BlogPosting fields and robots directives across Google,
+social, Bing and OAI-SearchBot user agents. Bingbot and OAI-SearchBot also receive a substantial
+server-rendered `<main>` in the local harness.
 
 Not tested: the real WhatsApp app preview, a schema validator run, Search Console and
 indexing outcomes, and AI citations.
 
-## Review — 11 October 2026
+## AI discovery review — 11 October 2026
 
-Owner PageSpeed report: mobile performance 85, LCP 3.5 s, FCP 1.8 s, TBT 190 ms,
-CLS 0; desktop performance 97, LCP 0.7 s, FCP 0.4 s, TBT 50 ms, CLS 0. Both:
-accessibility 97 (contrast), best practices/SEO 100; no field data. Investigate document
-latency first (estimated 680–740 ms savings). Follow-up details identify the shared
-30%-opacity heading arrival as the contrast cause; corrected locally with 128 passing
-contrast checks, awaiting owner release and a fresh PageSpeed audit. The supplied latency
-audit passes redirects/compression and reports server response 835 ms. LCP element is
-Math text: TTFB 780 ms + render delay 1610 ms (2.39 s total; differs from summary 3.5 s).
-Unattributed reflow 52 ms and hashed long-task chunks still need trace attribution.
-These are supplied lab results, not a fresh run by this session.
+Read-only live requests using OAI-SearchBot user agent returned 200 for robots, sitemap,
+home, Notebook listing, wave essay and business-operations case study. This checks a
+user-agent string from our network, not verified crawler IP access or Vercel WAF policy.
+Live robots allows all public pages and excludes `/api/`. Live sitemap still has seven
+URLs; listing/wave essay still noindex with sample labels. Latest publication work is
+unreleased; its verified local sitemap has ten URLs. No indexing/citation outcome verified.
+
+Priority todos:
+
+1. Owner release publication changes; inspect all ten URLs in Google Search Console.
+2. Set up Bing Webmaster Tools, submit sitemap and inspect pages. Its AI Performance
+   report can measure citations: [official announcement](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/).
+3. Inspect hosting logs/WAF for genuine Bingbot and OAI-SearchBot access after release. The local
+   matrix covers their supplied user-agent strings and server-rendered initial HTML, but not
+   crawler-IP access. Search permission and training permission are separate:
+   [OpenAI crawler guidance](https://developers.openai.com/api/docs/bots).
+4. Publish firsthand material around actual client questions: decisions behind modules vs
+   off-the-shelf software, edge vs cloud alerts, and concrete deployment tradeoffs. Link to
+   existing case studies; owner-approved evidence only. Current essays establish craft;
+   business-specific material can broaden relevant coverage. Keep structure/layout approved.
+5. Monitor indexed pages, relevant enquiries and AI referrals/citations. IndexNow optional
+   later for update notification; not needed to make this small site crawlable.
+
+[Google guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+confirms normal SEO and useful original content remain the foundation; Google does not
+use llms.txt. Keep the existing no-llms.txt decision. No special AI schema or markdown
+mirror is required for Google AI features; other systems may differ.

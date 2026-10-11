@@ -16,6 +16,10 @@ const published = posts.filter((post) => post.fields.status === "published");
 const draftPosts = posts.filter((post) => post.fields.status !== "published");
 const publishedPaths = published.map((post) => `/blog/${post.slug}`);
 const essayPaths = notebook.map(({ slug }) => `/blog/${slug}`);
+const blogArticles = new Map([
+  ...notebook.map((post) => [post.slug, post]),
+  ...published.map((post) => [post.slug, { slug: post.slug, ...post.fields }]),
+]);
 const indexedPaths = [
   "/",
   "/blog",
@@ -29,8 +33,30 @@ assert.ok(["localhost", "127.0.0.1"].includes(base.hostname), "Use a local produ
 const origin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.maxsash.com").origin;
 const paths = ["/", "/?seed=27c4b901", ...indexedPaths.filter((path) => path !== "/")];
 const records = [];
+const crawlerAgents = [
+  "WhatsApp",
+  "facebookexternalhit",
+  "Twitterbot",
+  "Googlebot",
+  "bingbot",
+  "OAI-SearchBot",
+];
 const attribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1];
-for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot"]) {
+const structuredData = (html) => {
+  const match = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s);
+  assert.ok(match, "Expected JSON-LD");
+  return JSON.parse(match[1]);
+};
+const serverRenderedMain = (html) => {
+  const match = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/);
+  assert.ok(match, "Expected a server-rendered main element");
+  assert.match(match[1], /<h1\b/);
+  return match[1]
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+for (const agent of crawlerAgents) {
   for (const path of paths) {
     const response = await fetch(new URL(path, base), { headers: { "User-Agent": agent } });
     assert.equal(response.status, 200);
@@ -71,9 +97,31 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
     assert.ok(!directives.includes(shouldIndex ? "noindex" : "index"));
     assert.ok(directives.includes("follow"));
     if (article) assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
+    if (agent === "bingbot" || agent === "OAI-SearchBot") {
+      assert.ok(
+        serverRenderedMain(html).length > 200,
+        `${agent} must receive substantial server-rendered content`,
+      );
+    }
     if (canonicalPath.startsWith("/blog")) {
       assert.ok(!html.includes("Sample essay"));
       assert.ok(!meta("og:description").includes("Sample studies"));
+      if (canonicalPath !== "/blog") {
+        const article = blogArticles.get(canonicalPath.slice("/blog/".length));
+        assert.ok(article, `${canonicalPath} must have source content`);
+        const json = structuredData(html);
+        assert.equal(json["@context"], "https://schema.org");
+        assert.equal(json["@type"], "BlogPosting");
+        assert.equal(json.headline, article.title);
+        assert.equal(json.description, article.summary);
+        assert.equal(json.datePublished, article.date);
+        assert.equal(json.articleSection, article.topic);
+        assert.equal(json.url, `${origin}${canonicalPath}`);
+        assert.equal(json.inLanguage, "en");
+        assert.equal(json.author["@id"], `${origin}/#yash`);
+        assert.equal(json.author.name, "Yash Shrivastava");
+        assert.equal(json.isPartOf["@id"], `${origin}/#website`);
+      }
     }
     if (path.startsWith("/work/")) {
       if (project.duration) {
@@ -81,15 +129,11 @@ for (const agent of ["WhatsApp", "facebookexternalhit", "Twitterbot", "Googlebot
         assert.ok(html.includes(project.duration));
       }
       assert.ok(!meta("og:title").includes("Household Hub: Household Hub"));
-      const json = JSON.parse(
-        html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
-      );
+      const json = structuredData(html);
       assert.equal(json["@type"], "Article");
       assert.equal(json.url, `${origin}${canonicalPath}`);
     } else if (!path.startsWith("/blog")) {
-      const json = JSON.parse(
-        html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
-      );
+      const json = structuredData(html);
       assert.equal(
         json["@graph"].find((item) => item["@type"] === "Person").name,
         "Yash Shrivastava",

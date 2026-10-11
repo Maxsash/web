@@ -82,3 +82,15 @@ Sizing/night rules share one SVG/image selector; comparison tool now supports wa
 Original essays keep their existing source/layout. Sitemap and crawler checks read the
 Notebook catalog; share images derive from project visuals through `projectShareImage`.
 No duplicated screenshot catalog, new asset or dependency.
+
+Backend review (11 October): shared API query extraction removes inconsistent handling
+of repeated version parameters; seed/version parsing remains pure. Security/README scope
+now reflects dynamic read-only APIs and the development-only writer.
+
+Private-project case studies keep their mechanisms in content data and Markdown: one source for
+the prose, project card and system plate. They state supplied architecture boundaries and avoid
+inventing operational metrics, protocols or security properties.
+
+Notebook BlogPosting uses one pure helper over source article facts; the crawler harness derives
+its expected fields from the same Notebook catalog and post frontmatter, including Bingbot and
+OAI-SearchBot initial-HTML coverage.

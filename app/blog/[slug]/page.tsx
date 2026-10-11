@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { sharingMetadata } from "@/lib/seo";
+import JsonLd from "@/components/JsonLd";
+import { blogPostingStructuredData, sharingMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import { notebook, findPost } from "@/content/notebook";
 import { findWrittenPost, nextEntry, writtenPosts } from "@/content/posts";
@@ -55,7 +56,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AtlasArticle({ params }: Props) {
   const slug = (await params).slug;
   const written = findWrittenPost(slug);
-  if (written) return <WrittenArticle post={written} />;
+  if (written) {
+    return (
+      <>
+        {!written.draft ? <JsonLd data={blogPostingStructuredData(written)} /> : null}
+        <WrittenArticle post={written} />
+      </>
+    );
+  }
   const post = findPost(slug);
   if (!post) notFound();
 
@@ -63,49 +71,52 @@ export default async function AtlasArticle({ params }: Props) {
   const next = nextEntry(post.slug);
 
   return (
-    <main id="atlas-content" className={styles.article}>
-      <ArticleTop number={post.number} status="Essay" />
-      <article>
-        <ArticleHead {...post} status="Essay" />
-        <ArticleCover number={post.number} caption={post.plateCaption}>
-          {waves ? <OceanPlate /> : <MarkPlate detail />}
-        </ArticleCover>
-        <div className={styles.articleBody}>
-          <p className={styles.opening}>{post.opening}</p>
-          {post.sections.map((section, index) => (
-            <ReadingSection
-              key={section.title}
-              index={index}
-              title={section.title}
-              marginNote={section.marginNote}
-              aside={
-                waves && index === 1 ? (
-                  <figure className={styles.sectionPlate}>
-                    <div className={styles.equation}>
-                      <span>
-                        h = ∑ Aᵢ sin θᵢ<small>Height, from six components</small>
-                      </span>
-                      <span>
-                        n ∝ (−hₓ, 1, −h𝓏)<small>Direction, from the derivatives</small>
-                      </span>
-                    </div>
-                    <figcaption>
-                      The geometric field is shared. Fine normal ripples, lighting, and the wake
-                      remain authored rendering choices.
-                    </figcaption>
-                  </figure>
-                ) : null
-              }
-            >
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </ReadingSection>
-          ))}
-          <p className={styles.closing}>{post.closing}</p>
-          <ArticleEnd next={next} />
-        </div>
-      </article>
-    </main>
+    <>
+      <JsonLd data={blogPostingStructuredData(post)} />
+      <main id="atlas-content" className={styles.article}>
+        <ArticleTop number={post.number} status="Essay" />
+        <article>
+          <ArticleHead {...post} status="Essay" />
+          <ArticleCover number={post.number} caption={post.plateCaption}>
+            {waves ? <OceanPlate /> : <MarkPlate detail />}
+          </ArticleCover>
+          <div className={styles.articleBody}>
+            <p className={styles.opening}>{post.opening}</p>
+            {post.sections.map((section, index) => (
+              <ReadingSection
+                key={section.title}
+                index={index}
+                title={section.title}
+                marginNote={section.marginNote}
+                aside={
+                  waves && index === 1 ? (
+                    <figure className={styles.sectionPlate}>
+                      <div className={styles.equation}>
+                        <span>
+                          h = ∑ Aᵢ sin θᵢ<small>Height, from six components</small>
+                        </span>
+                        <span>
+                          n ∝ (−hₓ, 1, −h𝓏)<small>Direction, from the derivatives</small>
+                        </span>
+                      </div>
+                      <figcaption>
+                        The geometric field is shared. Fine normal ripples, lighting, and the wake
+                        remain authored rendering choices.
+                      </figcaption>
+                    </figure>
+                  ) : null
+                }
+              >
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </ReadingSection>
+            ))}
+            <p className={styles.closing}>{post.closing}</p>
+            <ArticleEnd next={next} />
+          </div>
+        </article>
+      </main>
+    </>
   );
 }

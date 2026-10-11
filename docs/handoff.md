@@ -1,75 +1,74 @@
 # Handoff — start here
 
 Updated 11 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD be20ef1. Work is uncommitted; owner commits/releases, production only deploys.
-Existing docs edits retained. No commit, push or release by this agent.
+HEAD be20ef1. Work is uncommitted; the owner commits and releases; only `production` deploys.
 
-## Current work — approved essays and client-facing polish
+## Current work — published writing, discovery and backend evidence
 
-- Owner approved both original essays: Essay labels, indexed pages and Notebook listing,
-  three sitemap additions, current share descriptions. Existing URLs/layouts preserved.
-  Two unfinished markdown drafts remain development-only.
-- Footer GitHub-log failure now shows only the repository link; loading label retained.
-  Hosting token/rate-limit cause was not diagnosed.
-- Household Hub headline: “Less to remember.” Shortened after phone screenshot showed
-  an orphaned full stop with the first version. Final title build and phone screenshot pass.
-- Owner supplied approximate build durations: business operations six months, intrusion
-  detection eight months. Displayed as Build time; no invented calendar dates.
-  Intrusion detection’s deployment history remains separate.
-- Three screenshot-backed case studies use their own existing 1200 × 750 covers for
-  Open Graph/Twitter. Two private-system drawing cards remain open. No new assets/deps.
-- Metadata/sitemap implementation follows local Next guides; SEO and creative harnesses
-  updated for publication. Docs/README updated.
+- Both owner-approved essays are indexable, listed in Notebook and sitemap, with their authored
+  URLs/layouts unchanged. Two Markdown drafts remain development-only.
+- Screenshot-backed case studies now use their existing 1200 × 750 covers for social cards.
+  Private-system cards retain the fallback sea until drawing-card artwork is made.
+- GitHub commit dates group in Asia/Kolkata and display IST. Footer failures show only the
+  repository link. Household Hub's headline is “Less to remember.”
+- Business Operations shows an approximate six-month build; Intrusion Detection shows eight
+  months. No calendar ranges were invented.
+- Hero/metadata name the backend and real-time focus. The sea API rejects repeated seed and
+  version parameters through shared parsing. README and security wording reflect the read-only API.
+- Published Notebook articles now emit factual BlogPosting JSON-LD from their source title,
+  summary, topic, author, URL and visible publication date. Drafts do not emit it.
+- The local crawler harness now covers Bingbot and OAI-SearchBot metadata, schema and substantial
+  initial HTML across 66 crawler/page cases.
 
-## Verification this session
+## Owner-supplied project details now reflected
 
-- Isolated worktree: `/private/tmp/maxsash-publication-check`, Node 24.21.0.
-- Production build, lint/types/format pass; 126 Node tests, 44 crawler/page cases, exact
-  sitemap, two drafts excluded, screenshot responses, headers/CSP, keyboard 20/20 pass.
-- Full creative rerun: 193 records/129 assertions, zero failures/exceptions. First run’s
-  three failures were obsolete noindex expectations; corrected and rerun successfully.
-- Direct rendered footer checks pass: network failure, non-OK response, loading state.
-- Six case-study duration/layout checks pass at 390/1440; no horizontal overflow.
-  Notebook phone and case-study phone screenshots inspected. Final shortened title
-  rebuild, 44 SEO cases and six layout checks pass; phone screenshot inspected. Full
-  creative suite predates only that final copy shortening.
-- Logs: `/private/tmp/maxsash-publication-*.log`; reports/screenshots: worktree `tools/.out/`.
-- Own production server stopped after verification. No other servers touched.
-- An accidental main-folder build was promptly interrupted (exit 130). An isolated
-  dependency symlink failed Turbopack; replaced with copied dependencies. No checks
-  claimed from failed/interrupted builds. Successful builds needed font network access.
-- No live deployment, social-app previews or physical-device checks this session.
+- Business Operations: clients choose and pay for modules; selected modules share private,
+  business-separated data; insights adapt when data is intentionally absent; accessible workflows
+  use iteration, iconography, colour and bilingual or multilingual options. Its approach informs
+  Household Hub's tenant/expense insights.
+- Intrusion Detection: local Raspberry Pi compute stays on the private LAN; the admin server gets
+  only the alert detail needed for notifications; a separate service converts RTSP video for the
+  browser, selectable cameras and webcam inputs; deployments work only on defined networks.
+- System drawings and case-study prose use these facts, not invented metrics, protocols or blanket
+  security claims. The intrusion plate keeps its LAN-to-notification and video-to-monitor paths
+  separate instead of implying an unverified event-feed route. Moon phases are a documented visual
+  follow-up, not part of either project.
 
-## Released performance baseline
+## Verification
 
-- Owner released progressive StudioPlate preview and hero-only font preload.
-  Studio initially uses a lazy image from the existing print SVG endpoint, then hydrates
-  to the same live inline drawing. Model/API/font assets and no-JS drawing preserved.
-- Owner’s latest mobile runs: performance 87/96/95; LCP 2.6 s throughout; FCP median
-  1.7 s, CLS 0, other scores 100. First run TBT 330 ms vs 50/140; trace before tuning.
-- Body font preloads and experimental inline CSS rejected by measurements. Details in
-  decisions/testing docs. No further performance changes in this publication work.
-- Owner confirms Mumbai bom1 deployment, sitemap success and homepage indexing.
+- Final isolated production verification passed on Node 24.21.0: build, lint, TypeScript, format,
+  126 Node tests, 66 crawler/page cases, headers/CSP, keyboard 20/20, and 193 creative records
+  with no runtime exceptions. The final Bingbot/OAI coverage changed only the crawler harness;
+  its 66-case rerun plus lint, TypeScript and format passed after the full browser/test suite.
+- The default build needed network access for the configured Google Fonts. The sandbox-only
+  fallback failed DNS lookup; the network-enabled Node 24 build completed successfully. Localhost
+  access was likewise enabled only for production-server checks.
+- Focused 390 px headless captures after scroll-arrival were inspected for both updated private
+  system plates. The labels, boxes and arrows are legible and unclipped.
+- The local production server used for verification was stopped. No live release, social-app
+  preview or physical-device check happened in this work.
+- Local dependencies were restored after an incomplete `node_modules` install. Under Node 24,
+  `pnpm dev` reached Next 16.3.8 and became ready on localhost before being stopped. Run
+  `nvm use` before normal development; the prior Node 22 shell only produced an engine warning.
 
-## Next / open items
+## Next
 
-1. Owner review/commit/release; test real WhatsApp/LinkedIn previews and request indexing
-   for approved essays/listing after release. Three screenshot covers are wired.
-2. Two private-system drawing share cards; owner review of case-study prose.
-3. Physical iPhone/Safari/Firefox, screen readers, sound, battery/GPU and phone length.
-4. Edit two markdown drafts; startup consistency only with trace-confirmed evidence.
-5. Vercel rate limits; optional shorter fallback hero; browser harness cleanup, error-page
-   browser coverage and whirlpool shader/CPU parity. Full backlog: follow-ups.md.
-6. A remains main site, B Notebook, C optional/unbuilt. No new review/sample routes.
+1. Owner review/commit/release; then inspect the ten published URLs and social cards, request
+   indexing, and set up Bing Webmaster Tools/AI Performance.
+2. Gather measurable production evidence for private systems when available; do not invent it.
+3. Real phone/Safari/Firefox/screen-reader checks, Vercel rate limits, and the full backlog in
+   follow-ups.md. A is the main site, B Notebook, C remains optional/unbuilt.
 
 ## Suggested commit message
 
 ```
-feat: publish approved essays and polish project discovery
+feat: publish essays and clarify backend case studies
 
-Index approved essays and Notebook, add sitemap entries and remove sample labels.
-Use project screenshot share cards, simplify log failures and add owner build durations.
-Refine Household Hub headline; keep unfinished drafts development-only.
-Verified production build, lint/types/format, 126 tests, 44 SEO cases, headers,
-20 keyboard checks, 193 creative records and targeted footer/case-study checks.
+Publish the approved Notebook essays and expose them to discovery. Strengthen project evidence
+with the owner-supplied module, privacy, local-compute and video-service architecture details.
+Use IST in the commit log, reject duplicate sea API versions consistently, and add truthful
+BlogPosting schema for published Notebook articles.
+
+Verified in an isolated Node 24 production build: lint, TypeScript, format, 126 Node tests,
+66 crawler/page cases, headers/CSP, 20 keyboard checks and 193 creative records.
 ```

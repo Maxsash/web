@@ -28,7 +28,10 @@ What is in place, and what only the owner can do. The crawler checks are in
   request (`private, no-store`); crawlers see varying artwork but identical headings,
   copy, canonical URL and structured data.
 - **Structured data.** The home page describes the website, Yash, verified external
-  profiles (LinkedIn, GitHub, portfolio), the headshot and five real projects, using the visible descriptions. Case studies have
+  profiles (LinkedIn, GitHub, portfolio), the headshot and five real projects, using the visible descriptions.
+  Maxsash Studio is an Organization (`#studio`): logo `/icon-512.png`, email, Yash as founder,
+  publisher of the website, and `sameAs` its LinkedIn Page (`/company/maxsash`) and Instagram
+  (`@maxsashstudio`), both checked to resolve on 11 October 2026. Case studies have
   Article JSON-LD and published Notebook articles have BlogPosting JSON-LD derived from their
   visible title, summary, topic, author, URL and publication date. It invents no ratings,
   credentials, modified dates or business claims, and it is escaped for HTML embedding.

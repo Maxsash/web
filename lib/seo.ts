@@ -43,6 +43,17 @@ export const studioStructuredData = {
       sameAs: [site.links.linkedin, site.links.github, site.links.portfolio],
     },
     {
+      "@type": "Organization",
+      "@id": absoluteUrl("/#studio"),
+      name: site.name,
+      url: absoluteUrl("/"),
+      logo: absoluteUrl(site.logo),
+      description: site.description,
+      email: site.email,
+      founder: { "@id": absoluteUrl("/#yash") },
+      sameAs: [site.links.studioLinkedin, site.links.instagram],
+    },
+    {
       "@type": "WebSite",
       "@id": absoluteUrl("/#website"),
       name: site.name,
@@ -50,6 +61,7 @@ export const studioStructuredData = {
       description: site.description,
       inLanguage: "en",
       creator: { "@id": absoluteUrl("/#yash") },
+      publisher: { "@id": absoluteUrl("/#studio") },
     },
     {
       "@type": "ProfilePage",

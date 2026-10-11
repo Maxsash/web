@@ -151,6 +151,11 @@ for (const agent of crawlerAgents) {
         json["@graph"].find((item) => item["@type"] === "ProfilePage").hasPart.length,
         5,
       );
+      const studio = json["@graph"].find((item) => item["@type"] === "Organization");
+      assert.equal(studio.name, site.name);
+      assert.equal(studio.logo, `${origin}${site.logo}`);
+      assert.equal(studio.founder["@id"], `${origin}/#yash`);
+      assert.deepEqual(studio.sameAs, [site.links.studioLinkedin, site.links.instagram]);
     }
     records.push({ agent, path, title: meta("og:title"), passed: true });
   }

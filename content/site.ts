@@ -21,6 +21,7 @@ export const site = {
     alt: "Maxsash Studio. Sea. Ship. Math. Websites and web apps, built end to end, beside a gaff cutter on the Living Atlas sea.",
   },
   colors: { paper: "#eef0ea", night: "#0b1c26" },
+  logo: "/icon-512.png",
 
   description:
     `Maxsash Studio is Yash Shrivastava's one-person studio: ${offer} ${promise}, ` +
@@ -34,6 +35,8 @@ export const site = {
     portfolio: "https://ctrl-alt-yash.github.io/portfolio/",
     github: "https://github.com/ctrl-alt-yash",
     linkedin: "https://www.linkedin.com/in/maxsash",
+    studioLinkedin: "https://www.linkedin.com/company/maxsash/",
+    instagram: "https://www.instagram.com/maxsashstudio/",
     repo: "https://github.com/maxsash/web",
     email: `mailto:${email}`,
   },

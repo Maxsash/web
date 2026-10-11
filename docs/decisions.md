@@ -14,7 +14,10 @@ each group. How the code is built: [architecture.md](architecture.md).
   no phone number. The kit lives beside the public repo in `../brand/`; profile URLs go into the
   site's structured data once the owner confirms them. `public/mark.svg` was unreferenced since
   11 September and was deleted (the kit holds mark files); the manifest uses `display: browser`
-  because the site is a website, not an installable app.
+  because the site is a website, not an installable app. The studio's profiles (LinkedIn Page
+  `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp username `@maxsash`) are named in the
+  home page's Organization data; the WhatsApp number stays off the site. They are not yet
+  visible links on the page (an owner choice, see handoff).
 
 - **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
   drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four

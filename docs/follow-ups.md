@@ -55,9 +55,16 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
 - [ ] **Phone check before applying.** Open the home page and one case study on a real phone
       (and a slow one if possible): the WebGL sea, scroll length and the gull. Reviewers often
       click a profile link on mobile. See **Phone length** and **Feedback on real devices**.
-- [ ] **Per-project share images:** screenshot-backed case studies now use their own
-      covers in code. Business operations and intrusion detection still need drawing cards.
+- [x] **Per-project share images:** screenshot-backed case studies use their covers; the two
+      private systems and all three Notebook articles now use 1200 × 630 cards captured from
+      their own drawings (`public/images/work/*-drawing.webp`, `public/images/notebook/`).
       Real WhatsApp/LinkedIn previews remain an owner check after release.
+- [x] **Article titles:** Notebook article tabs now end "| Maxsash Studio" like the rest.
+- [x] **“Purchasing” overflow fixed in source** (11 October): drawing label is now “Buying”.
+      All three system drawings' labels and notes fit with at least 3 units of side clearance
+      in local production Chrome at 390/1440 px. Release remains the owner's action.
+- [x] Recaptured `public/images/work/business-operations-drawing.webp` with the “Buying”
+      label from a local production build (11 October); every label fits its box.
 
 - [ ] **Feedback on real devices.** Built and kept; listen on real speakers and headphones, and
       try a phone (a tap's press, the ripple under a finger, Android vibration, the gull landing

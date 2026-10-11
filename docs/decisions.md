@@ -5,6 +5,11 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
+  drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four
+  modules and shared drawing typography; leave its social capture for recapture after release.
+
+
 - **Show private systems through their real boundaries** (owner, 11 October 2026). The business
   platform explains selectable modules, adaptable insights, privacy and accessible workflows. The
   intrusion platform explains local LAN computing, a minimum-data notification boundary and the

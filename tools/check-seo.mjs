@@ -4,6 +4,7 @@ import { writeFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 
 import { projects, caseStudyPath, projectShareImage } from "../content/projects.ts";
 import { notebook } from "../content/notebook.ts";
+import { noteShareImage } from "../lib/note-share.ts";
 import { parsePostText, slugFromFile } from "../lib/post-file.ts";
 
 const posts = readdirSync("content/posts")
@@ -78,7 +79,10 @@ for (const agent of crawlerAgents) {
     assert.ok(meta("og:title"));
     assert.ok(meta("og:description"));
     const project = projects.find(({ slug }) => caseStudyPath(slug) === canonicalPath);
-    const shareImage = project && projectShareImage(project);
+    const noteSlug = canonicalPath.startsWith("/blog/") ? canonicalPath.slice(6) : undefined;
+    const shareImage = project
+      ? projectShareImage(project)
+      : noteSlug && noteShareImage(noteSlug, "");
     const imagePath = shareImage?.url ?? "/images/living-atlas-day-v1.jpg";
     assert.equal(meta("og:image"), `${origin}${imagePath}`);
     assert.equal(meta("og:image:width"), "1200");
@@ -97,6 +101,8 @@ for (const agent of crawlerAgents) {
     assert.ok(!directives.includes(shouldIndex ? "noindex" : "index"));
     assert.ok(directives.includes("follow"));
     if (article) assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
+    if (article)
+      assert.match(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "", / \| Maxsash Studio$/);
     if (agent === "bingbot" || agent === "OAI-SearchBot") {
       assert.ok(
         serverRenderedMain(html).length > 200,
@@ -156,8 +162,10 @@ assert.deepEqual(sitemapUrls.sort(), indexedPaths.map((path) => `${origin}${path
 const image = await fetch(new URL("/images/living-atlas-day-v1.jpg", base));
 assert.equal(image.status, 200);
 assert.equal(image.headers.get("content-type"), "image/jpeg");
-for (const project of projects) {
-  const shareImage = projectShareImage(project);
+for (const shareImage of [
+  ...projects.map(projectShareImage),
+  ...[...blogArticles.keys()].map((slug) => noteShareImage(slug, "")),
+]) {
   if (!shareImage) continue;
   const response = await fetch(new URL(shareImage.url, base));
   assert.equal(response.status, 200);

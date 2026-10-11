@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { blogPostingStructuredData, sharingMetadata } from "@/lib/seo";
+import { noteShareImage } from "@/lib/note-share";
 import { notFound } from "next/navigation";
 import { notebook, findPost } from "@/content/notebook";
 import { findWrittenPost, nextEntry, writtenPosts } from "@/content/posts";
@@ -27,13 +28,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const written = findWrittenPost(slug);
   if (written) {
     return {
-      title: written.title,
+      title: { absolute: `${written.title} | Maxsash Studio` },
       description: written.summary,
       ...sharingMetadata(
         `${written.title} | Maxsash Studio`,
         written.summary,
         `/blog/${written.slug}`,
         "article",
+        noteShareImage(written.slug, written.caption || written.summary),
       ),
       robots: { index: !written.draft, follow: true },
     };
@@ -41,13 +43,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = findPost(slug);
   if (!post) notFound();
   return {
-    title: post.title,
+    title: { absolute: `${post.title} | Maxsash Studio` },
     description: post.summary,
     ...sharingMetadata(
       `${post.title} | Maxsash Studio`,
       post.summary,
       `/blog/${post.slug}`,
       "article",
+      noteShareImage(post.slug, post.plateCaption),
     ),
     robots: { index: true, follow: true },
   };

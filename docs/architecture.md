@@ -324,6 +324,8 @@ origin sending JSON (so another website cannot write files while the dev server 
   straight where two boxes overlap horizontally or vertically and diagonally otherwise, clipped
   to the box edges. `components/SystemPlate.tsx` draws it in the section's ink, paper and accent
   (night colours follow the palette); the drawing is one `role="img"` with the project's `alt`.
+  `tools/check-drawing-labels.mjs` measures loaded-font labels and notes against their boxes
+  on home and all drawing case studies at 390/1440 px (3-unit side clearance).
   `tools/system-drawing.test.mjs` checks that every project drawing fits, overlaps nothing and
   routes no arrow through a box.
 - `components/portrait/`: `engraving.ts` (pure) turns the photo's shade into 72 closed row

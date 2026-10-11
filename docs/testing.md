@@ -4,6 +4,17 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## System drawing labels (11 October 2026)
+
+`node tools/check-drawing-labels.mjs http://localhost:3035` measures SVG text bounds
+with loaded production fonts on `/` and all three drawing case studies at 390/1440 px.
+The “Buying” label replaces overflowing “Purchasing”; labels and notes have at least
+3 SVG units of side clearance. Captured WebP unchanged; recapture after owner release.
+Isolated Node 24 webpack build, lint/types/format, 126 Node tests, 66 SEO cases, headers,
+keyboard 20/20 and 193 creative cases pass with zero runtime exceptions. Turbopack failed
+on sandbox worker-port binding; webpack succeeds with the configured Google fonts.
+Own production server stopped. No live or physical-device check.
+
 ## Owner live preview-release results (11 October 13:44–13:50 IST)
 
 Three mobile runs: performance 87/96/95; LCP 2.6 s throughout; FCP 1.8/1.7/1.7 s;

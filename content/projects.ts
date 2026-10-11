@@ -28,8 +28,15 @@ export const caseStudyTitle = ({ title, headline }: Project) =>
 
 export const projectShareImage = (project: Project) => {
   const screenshot = project.visuals.find((visual) => visual.kind === "image");
-  return screenshot
-    ? { url: screenshot.src, width: 1200, height: 750, alt: screenshot.alt }
+  if (screenshot) return { url: screenshot.src, width: 1200, height: 750, alt: screenshot.alt };
+  const drawing = project.visuals.find((visual) => visual.kind === "drawing");
+  return drawing
+    ? {
+        url: `/images/work/${project.slug}-drawing.webp`,
+        width: 1200,
+        height: 630,
+        alt: drawing.alt,
+      }
     : undefined;
 };
 
@@ -134,7 +141,7 @@ export const projects: Project[] = [
               label: "Modules chosen by the business",
               nodes: [
                 { id: "sales", label: "Sales", span: 1 },
-                { id: "purchasing", label: "Purchasing", span: 1 },
+                { id: "purchasing", label: "Buying", span: 1 },
                 { id: "inventory", label: "Inventory", span: 1 },
                 { id: "enquiries", label: "Enquiries", span: 1 },
               ],

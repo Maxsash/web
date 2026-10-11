@@ -8,7 +8,9 @@ HEAD be20ef1. Work is uncommitted; the owner commits and releases; only `product
 - Both owner-approved essays are indexable, listed in Notebook and sitemap, with their authored
   URLs/layouts unchanged. Two Markdown drafts remain development-only.
 - Screenshot-backed case studies now use their existing 1200 × 750 covers for social cards.
-  Private-system cards retain the fallback sea until drawing-card artwork is made.
+  Private-system and Notebook article cards now use 1200 × 630 captures of their own
+  drawings (separate session, 11 October; check-seo 66 cases and case-study tests pass on a
+  local production build with npm copies of the same fonts). Article tabs end "| Maxsash Studio".
 - GitHub commit dates group in Asia/Kolkata and display IST. Footer failures show only the
   repository link. Household Hub's headline is “Less to remember.”
 - Business Operations shows an approximate six-month build; Intrusion Detection shows eight
@@ -50,6 +52,20 @@ HEAD be20ef1. Work is uncommitted; the owner commits and releases; only `product
 - Local dependencies were restored after an incomplete `node_modules` install. Under Node 24,
   `pnpm dev` reached Next 16.3.8 and became ready on localhost before being stopped. Run
   `nvm use` before normal development; the prior Node 22 shell only produced an engine warning.
+
+## Drawing label fix
+
+- Business module label shortened to “Buying”; module identity and prose unchanged.
+- All three drawings measured with loaded fonts on home and case studies at 390/1440;
+  all labels/notes have 3-unit side clearance. New check: tools/check-drawing-labels.mjs.
+- Captured business drawing WebP stays unchanged; recapture after owner release.
+- Isolated Node 24 webpack build, lint, TypeScript, format, 126 Node tests, 66 SEO cases,
+  headers, keyboard 20/20 and 193 creative cases (zero runtime exceptions) passed.
+  Own production server stopped. Turbopack hit sandbox port restrictions. Main-folder builds
+  were accidentally invoked and stopped/failed; passing build is isolated.
+- Suggested focused commit: `fix: fit business module label inside its drawing box`
+  Body: Shorten purchasing to Buying while preserving module identity and row layout.
+  Measure labels and notes across all system drawings with loaded production fonts.
 
 ## Next
 

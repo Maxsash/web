@@ -9,7 +9,9 @@ What is in place, and what only the owner can do. The crawler checks are in
   metadata, canonical URLs, discovery files and JSON-LD (`lib/seo.ts`).
 - **Per-page cards.** The home page, notebook pages and five case studies have their own
   Open Graph and Twitter title, description and URL; approved essays carry their own summaries. Screenshot-backed case studies use their
-  existing 1200 × 750 covers. Other pages use the static 1200 × 630 daytime JPEG `/images/living-atlas-day-v1.jpg`,
+  existing 1200 × 750 covers; the two private case studies and the Notebook articles use
+  1200 × 630 cards captured from their own drawings (`lib/note-share.ts`,
+  `projectShareImage`). Recapture a card when its drawing changes. Other pages use the static 1200 × 630 daytime JPEG `/images/living-atlas-day-v1.jpg`,
   with dimensions and alternative text. It was captured from the real renderer; the
   capture script was removed, and the versioned filename makes crawlers fetch it fresh.
 - **WhatsApp, Facebook and Twitter** are recognised by Next.js as HTML-limited bots, so

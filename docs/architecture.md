@@ -377,3 +377,10 @@ camera, microphone, geolocation and similar. API routes set their own headers.
 No device tilt, no real ocean data or forecasts, no observation ingestion, no fluid
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies
 any of these.
+
+## Font loading
+
+`app/fonts.ts` preloads Montagu Slab for the hero title. Rethink Sans (normal and italic)
+and Reddit Mono use `preload: false`; their self-hosted faces still load when used, with
+`display: swap` and Next fallback metrics. Compare cold production loads with
+`tools/compare-font-loading.mjs <baseline URL> <candidate URL>` in isolated worktrees.

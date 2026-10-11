@@ -63,3 +63,9 @@ Sitemap uses the existing published-post loader; sample routes stay excluded.
 Deleted the shared heading-dimming rule and its now-unused transition. Kicker reveal
 remains the one source; the browser check reads real computed CSS, opacity and backgrounds
 in both themes and arrival states rather than pinning palette strings.
+
+## Font request priority (11 October 2026)
+
+Two next/font options change request priority; no new face, CSS override or dependency.
+The comparison harness reuses the browser lifecycle and alternates cleared-cache loads
+with a fixed sea; output stays ignored under tools/.out/.

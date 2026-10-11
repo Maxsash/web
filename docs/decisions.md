@@ -5,6 +5,12 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Preload the hero font only** (11 October 2026 measured optimisation). Keep Montagu
+  Slab eager; Rethink Sans (both styles) and Reddit Mono load when used. The four early
+  font files competed with CSS in an uncached phone trace. Five alternating local cold
+  pairs improved median LCP 2.884 → 1.552 s; all font descriptors/assets match. This
+  prioritises requests without changing typefaces or approved sea timing. Live gain awaits release.
+
 - **Headings keep full contrast during arrivals** (11 October 2026 correction). The
   kicker still reveals, but its following heading no longer dims to 30% opacity. The
   PageSpeed failures matched that shared rule; readable text takes priority over its fade.

@@ -4,6 +4,67 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Font preload experiment (11 October 2026)
+
+Baseline `/private/tmp/maxsash-contrast-check` :3021 versus candidate
+`/private/tmp/maxsash-font-check` :3022. Five alternating pairs, fixed seed, 390×844 /
+DPR 2, 4× CPU, 180 KB/s and 562.5 ms latency, disabled GPU (static fallback), cleared
+and disabled cache. Median LCP/FCP 2884 → 1552 ms; final CSS 2814 → 1467 ms.
+Four eager font links become one. Font descriptors (13) and unique woff2 content hashes
+(10) match both builds. This is a local controlled experiment, not a predicted live PSI
+score or device qualification. An extra cold pair measured layout-shift sum
+0.000884 baseline / 0.000925 candidate (both about 0.0009); these are raw sums, not
+field CLS. Node 24 build/lint/types/format, 126 tests, 44 SEO and 128 contrast checks pass.
+Headers, keyboard 20/20 and creative 193 records/129 assertions pass with zero
+failures or exceptions. Servers :3021/:3022 stopped; creative process lingered after
+writing its completed report and was stopped. Ship/gull/sound-specific suites not rerun;
+physical devices and fresh live PageSpeed not checked.
+Reports: candidate `tools/.out/font-loading/five-pairs*.json`; log
+`/private/tmp/maxsash-font-comparison.log`. Reproduce:
+`node tools/compare-font-loading.mjs http://localhost:3021 http://localhost:3022`.
+
+## Owner uncached mobile trace (11 October 12:19 IST)
+
+`Trace-20261011T121919.json.gz`: 4× CPU, Slow 4G, viewport settles to 390×844,
+zero cached requests. CSS requests +623 ms; last/main stylesheet finishes +2347 ms.
+Initial style/layout 127 ms starts +2348 ms (style 32 ms, layout 83 ms); FCP/LCP
++2504 ms. Fonts finish after LCP (four preloaded faces +2897–3643 ms; another
+Montagu subset +4715 ms). Later React/engine long tasks cannot explain this LCP.
+Embedded CSS maps preloads to Montagu normal, Rethink normal/italic and Reddit Mono.
+Trace analysis only; no code or fresh tests. Next: controlled preload/CSS experiment.
+
+## Owner exported trace (11 October 12:14 IST)
+
+`Trace-20261011T121438.json.gz` (Downloads, not copied into public repo): CPU 4×,
+Slow 4G, viewport 1245×1043 / DPR 2. Primary navigation response event +587 ms,
+FCP +704 ms, text LCP +738 ms. Four CSS files and five fonts explicitly marked cached;
+22 cached requests within first 2 s. This verifies a warm desktop load, not PageSpeed
+first mobile load. Main-thread 65 ms task at +1480 ms is after LCP. Corrected capture
+requires phone viewport and Disable cache; no code/build/tests from this review.
+
+## Owner production response baseline (11 October 2026)
+
+Five direct-www curl GETs: TTFB 976/675/618/628/394 ms, median 628 ms; all HTTP 200.
+Gzip, private/no-store and CDN MISS in all; x-vercel-id bom1::iad1 throughout. Dashboard
+confirms iad1. First request has higher DNS/TLS costs. These are owner measurements,
+not pure server durations or proof of cold starts. Owner then moved function to Mumbai: five headers bom1::bom1, TTFB
+1164/660/625/556/539 ms (median 625 ms), median post-TLS wait 400 ms (previous 544 ms),
+median total 742 ms (previous 1374 ms). All 200/gzip/no-store/MISS. Region change confirmed;
+small separate batches do not isolate its performance effect. New owner mobile PageSpeed reports at 11:59:03/11:59:46/12:00:51 IST:
+performance 91/91/91; LCP 3.2/3.2/3.3 s; TBT 90/90/50 ms; CLS 0; other scores 100.
+TTFB breakdown 380 ms throughout; document-latency warning absent. First two reports
+have identical supplied metrics/details; independence uncertain. CSS savings 320/320/340
+ms; Math render delays 1190/1190/520 ms; unattributed reflow 45/45/50 ms. Owner evidence
+only, no fresh tests or profiling trace this review.
+
+## Owner live PageSpeed reruns (11 October 2026)
+
+Three mobile reports at 11:16:57, 11:18:28 and 11:21:36 IST: performance 85/92/91,
+LCP 3.8/3.2/3.2 s, FCP 1.6/1.5/1.6 s, TBT 120/70/120 ms, CLS 0.
+Accessibility, best practices and SEO 100 throughout; contrast failure absent. Median
+performance 91, LCP 3.2 s. No field data or desktop reruns supplied. These are owner
+reports, not this agent running PageSpeed; no fresh tests during report review.
+
 ## Heading contrast (11 October 2026)
 
 `tools/check-heading-contrast.mjs <local production URL>` tests pending/arrived headings,

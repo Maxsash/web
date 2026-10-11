@@ -11,11 +11,13 @@ const text = Rethink_Sans({
   variable: "--typeface-text",
   subsets: ["latin"],
   style: ["normal", "italic"],
+  preload: false,
   display: "swap",
 });
 
 const mono = Reddit_Mono({
   variable: "--typeface-mono",
+  preload: false,
   subsets: ["latin"],
   display: "swap",
 });

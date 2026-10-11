@@ -30,18 +30,24 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
   5. **Reading ribbon:** a bookmark ribbon that fills as a post is read.
   6. **Hand-drawn marginalia:** small ink arrows and underlines beside the margin notes.
   7. **A share card per post:** an Open Graph image made from each post's own sea.
-- [ ] **Function region.** The home page renders in Vercel's `iad1` (US East) while the
-      owner and likely audience are in India (`bom1` edge). Decide on a region, then compare
-      first-byte time. See [decisions.md](decisions.md).
-- [ ] **PageSpeed** (owner report, 11 October 10:00 IST): desktop 97, mobile 85,
-      accessibility 97, SEO/best practices 100. Mobile LCP 3.5 s, TBT 190 ms, CLS 0;
-      desktop LCP 0.7 s, TBT 50 ms. No field data. Investigate document latency
-      (estimated 680–740 ms savings) and verify heading-opacity correction against a fresh PageSpeed audit.
-- [ ] **PageSpeed investigation order** (11 October): verify contrast fix (heading fade); supplied audit passes redirects/compression
-      and reports server response 835 ms; measure cold/warm HTML response and actual function region before
-      choosing hosting changes; LCP is Math text (780 ms TTFB + 1610 ms render delay, differs from earlier
-      3.5 s summary); trace fonts/CSS/startup before changing the hero. Then trace forced reflow/long tasks and the 54 KiB unused JS.
-      The 14 KiB legacy-JS warning is lower priority. Estimated savings are not additive.
+- [ ] **Region follow-up.** Owner moved iad1 → Mumbai bom1 and redeployed (11 October);
+      all five new response headers show bom1::bom1. Median curl TTFB 625 vs 628 ms;
+      post-TLS wait 400 vs 544 ms, total 742 vs 1374 ms. Small separate batches, no isolated
+      causal conclusion. Post-move PageSpeed TTFB 380 ms and document-latency warning absent.
+      LCP median stays 3.2 s; proceed to CSS/font trace.
+- [ ] **PageSpeed** (three owner mobile runs, 11 October 11:17–11:21 IST):
+      post-Mumbai performance 91/91/91; median LCP 3.2 s, TBT 90 ms; CLS 0. Accessibility,
+      best practices and SEO 100; contrast fixed in live audits. No field data.
+- [ ] **Release font preload change and remeasure.** Local five-pair cold comparison:
+      median LCP 2.884 → 1.552 s with only Montagu preloaded, text/mono loaded on use.
+      Font faces/assets match; no material change in the extra layout-shift pair. Owner
+      release and three fresh PageSpeed runs needed to establish live benefit.
+- [ ] **PageSpeed investigation order:** CSS/font/LCP trace now that Mumbai is active
+      and the server-latency warning is absent (TTFB breakdown 380 ms). Four blocking CSS files
+      total 23 KiB (estimated 310–410 ms savings); Math render delay varies 620–1630 ms.
+      Keep trace/observed timings separate from simulated summary metrics. Defer changes
+      to SVG draw-in and rule reveals unless profiling proves a visitor problem. Unused JS
+      54 KiB and legacy JS 14 KiB remain lower priority. Estimates are not additive.
 - [ ] **Hero length without WebGL.** The hero is 180svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in

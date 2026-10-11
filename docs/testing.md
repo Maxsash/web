@@ -4,6 +4,18 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Heading contrast (11 October 2026)
+
+`tools/check-heading-contrast.mjs <local production URL>` tests pending/arrived headings,
+day/night, 390/1440 px, normal/reduced motion using rendered CSS and ancestor opacity.
+It reproduces the old 0.3-opacity failure on the previous production build. Corrected
+Node 24 production build in `/private/tmp/maxsash-contrast-check` passes all 128 heading
+checks (lowest ratio 10.33:1), 126 Node tests, 44 SEO cases, lint, types and format.
+Headers, keyboard 20/20 and creative (193 records, 129 assertions, zero failures and
+exceptions) pass. Servers :3019/:3020 stopped. Completed keyboard/creative processes
+lingered and were stopped. Not a full axe audit or fresh
+PageSpeed run; no field performance claim.
+
 ## SEO expansion (11 October 2026)
 
 Node 24 production build in `/private/tmp/maxsash-seo-check`, server :3018 (stopped):

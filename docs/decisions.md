@@ -5,6 +5,10 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Headings keep full contrast during arrivals** (11 October 2026 correction). The
+  kicker still reveals, but its following heading no longer dims to 30% opacity. The
+  PageSpeed failures matched that shared rule; readable text takes priority over its fade.
+
 - **Index real published writing** (owner, 11 October 2026). Published real posts enter
   search and the sitemap; drafts and sample essays remain excluded. The notebook listing
   stays noindex while it mixes real writing and samples.

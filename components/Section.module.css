@@ -23,15 +23,9 @@
 :global(html[data-feedback]) .kicker[data-arrive]:not([data-arrived]) {
   clip-path: inset(0 100% 0 0);
 }
-:global(html[data-feedback]) .kicker[data-arrive]:not([data-arrived]) + :is(h2, h3) {
-  opacity: 0.3;
-}
 @media (prefers-reduced-motion: no-preference) {
   .kicker[data-arrive] {
     transition: clip-path 760ms steps(22, end);
-  }
-  .kicker[data-arrive] + :is(h2, h3) {
-    transition: opacity 1.2s steps(3, end);
   }
 }
 .drawnRule {

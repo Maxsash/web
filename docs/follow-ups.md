@@ -36,7 +36,12 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **PageSpeed** (owner report, 11 October 10:00 IST): desktop 97, mobile 85,
       accessibility 97, SEO/best practices 100. Mobile LCP 3.5 s, TBT 190 ms, CLS 0;
       desktop LCP 0.7 s, TBT 50 ms. No field data. Investigate document latency
-      (estimated 680–740 ms savings) and obtain contrast failing elements before fixing.
+      (estimated 680–740 ms savings) and verify heading-opacity correction against a fresh PageSpeed audit.
+- [ ] **PageSpeed investigation order** (11 October): verify contrast fix (heading fade); supplied audit passes redirects/compression
+      and reports server response 835 ms; measure cold/warm HTML response and actual function region before
+      choosing hosting changes; LCP is Math text (780 ms TTFB + 1610 ms render delay, differs from earlier
+      3.5 s summary); trace fonts/CSS/startup before changing the hero. Then trace forced reflow/long tasks and the 54 KiB unused JS.
+      The 14 KiB legacy-JS warning is lower priority. Estimated savings are not additive.
 - [ ] **Hero length without WebGL.** The hero is 180svh tall because its text changes with
       scroll. When the static plate is shown (slow or software-rendered devices) that is a
       lot of scrolling for little change. Consider a shorter hero when the scene is in

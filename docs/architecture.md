@@ -208,6 +208,8 @@ Every action gets a small answer; the brief and the full map are in [feedback.md
   `data-arrive-cue`; a swell when a section crosses the middle of the screen; re-run per path),
   and `presence.ts` (idle levels, the hidden tab's title and anchor icon, offline and online).
   `Announcer` is the one visible, polite status line for notices.
+- Section kickers reveal with clip-path; adjacent headings stay fully opaque in both
+  pending and arrived states so scrolling is never needed for readable contrast.
 - Styling a response before arrival uses `html[data-feedback] …:not([data-arrived])`, so without
   JavaScript everything is simply shown. `app/feedback.css` holds the site-wide visual responses;
   section responses sit in their modules. `ScrollMark` is the depth line (home) and the reading

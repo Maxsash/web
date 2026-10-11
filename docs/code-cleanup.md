@@ -57,3 +57,9 @@ composition rules. No dependencies or assets added.
 Crawler checks read the project catalog and parse post files with the existing pure
 frontmatter/slug helpers. No duplicate project URL list or separate status parser.
 Sitemap uses the existing published-post loader; sample routes stay excluded.
+
+## Heading contrast (11 October 2026)
+
+Deleted the shared heading-dimming rule and its now-unused transition. Kicker reveal
+remains the one source; the browser check reads real computed CSS, opacity and backgrounds
+in both themes and arrival states rather than pinning palette strings.

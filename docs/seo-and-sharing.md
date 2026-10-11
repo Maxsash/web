@@ -66,5 +66,10 @@ indexing outcomes, and AI citations.
 Owner PageSpeed report: mobile performance 85, LCP 3.5 s, FCP 1.8 s, TBT 190 ms,
 CLS 0; desktop performance 97, LCP 0.7 s, FCP 0.4 s, TBT 50 ms, CLS 0. Both:
 accessibility 97 (contrast), best practices/SEO 100; no field data. Investigate document
-latency first (estimated 680–740 ms savings); contrast needs the failing element details.
+latency first (estimated 680–740 ms savings). Follow-up details identify the shared
+30%-opacity heading arrival as the contrast cause; corrected locally with 128 passing
+contrast checks, awaiting owner release and a fresh PageSpeed audit. The supplied latency
+audit passes redirects/compression and reports server response 835 ms. LCP element is
+Math text: TTFB 780 ms + render delay 1610 ms (2.39 s total; differs from summary 3.5 s).
+Unattributed reflow 52 ms and hashed long-task chunks still need trace attribution.
 These are supplied lab results, not a fresh run by this session.

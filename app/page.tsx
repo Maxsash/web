@@ -8,7 +8,6 @@ import Work from "@/components/Work";
 import ScrollMark from "@/components/feedback/ScrollMark";
 import Hero from "@/components/observatory/Hero";
 import ShoreFooter from "@/components/shore/ShoreFooter";
-import SeaStudio from "@/components/studio/SeaStudio";
 import { site } from "@/content/site";
 import { sharingMetadata, studioStructuredData } from "@/lib/seo";
 import { createSeaEdition } from "@/lib/sea/edition";
@@ -42,7 +41,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<Pag
         <Contact />
 
         <NotebookSection />
-        <SeaStudio seed={seed} version={version} />
       </main>
       <ShoreFooter seaModel={edition.version} />
     </div>

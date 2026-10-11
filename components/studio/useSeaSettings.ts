@@ -46,7 +46,6 @@ export function useSeaSettings(seed: string, version: "1" | "2") {
     shown,
     edition,
     words: describeSea(edition.settings!),
-    sailing: version === "2" && seed === current,
     query: `seed=${current}&version=2`,
     apply,
     update: (key: keyof SeaSettings, value: number) => apply({ ...settings, [key]: value }),

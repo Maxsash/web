@@ -5,7 +5,7 @@ import PageLink from "@/components/PageLink";
 import { respond } from "@/components/feedback/respond";
 import { MuteControl, WaveSoundControl, Waves } from "@/components/sound/SoundControls";
 import ThemeControl from "@/components/observatory/ThemeControl";
-import { profiles, site } from "@/content/site";
+import { site, studioChannels } from "@/content/site";
 import { FootTrail } from "./footprints";
 import { shorePalette } from "./palette";
 import { paintSand } from "./sand";
@@ -181,9 +181,9 @@ export default function Shoreline({
               <li>
                 <a href={site.links.email}>{site.email}</a>
               </li>
-              {profiles.map((profile) => (
-                <li key={profile.label}>
-                  <a href={profile.href}>{`${profile.label} ↗`}</a>
+              {studioChannels.map((channel) => (
+                <li key={channel.label}>
+                  <a href={channel.href}>{`${channel.label} ↗`}</a>
                 </li>
               ))}
             </ul>
@@ -202,6 +202,7 @@ export default function Shoreline({
         </div>
         <div className={styles.colophon}>
           <PageLink href="/">Maxsash Studio ↗</PageLink>
+          <PageLink href="/sea">The sea studio ↗</PageLink>
           <span>
             Release v{version}
             {commit ? ` · ${commit}` : ""}

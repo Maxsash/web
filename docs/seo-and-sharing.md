@@ -21,15 +21,16 @@ What is in place, and what only the owner can do. The crawler checks are in
 - **WhatsApp, Facebook and Twitter** are recognised by Next.js as HTML-limited bots, so
   metadata stays in the head.
 - **`/robots.txt`** allows public crawling, excludes the API and points at
-  `/sitemap.xml`. **The sitemap lists home, the Notebook listing, two approved essays, five case studies
-  and published markdown posts**. Drafts do not ship.
+  `/sitemap.xml`. **The sitemap lists home, the Notebook listing, the sea studio (`/sea`), two approved essays,
+  five case studies and published markdown posts**. `/sea?seed=…` canonicalises to `/sea`. Drafts do not ship.
 - **Seeds.** `/?seed=…&version=2` canonicalises to `/`. `/plate` is `noindex, nofollow`
   and not in the sitemap. The home page without a seed shows a different sea on every
   request (`private, no-store`); crawlers see varying artwork but identical headings,
   copy, canonical URL and structured data.
 - **Structured data.** The home page describes the website, Yash, verified external
   profiles (LinkedIn, GitHub, portfolio), the headshot and five real projects, using the visible descriptions.
-  Maxsash Studio is an Organization (`#studio`): logo `/icon-512.png`, email, Yash as founder,
+  Maxsash Studio is an Organization (`#studio`): logo `/icon-512.png`, email, founding date
+  (`2026-06`), Yash as founder,
   publisher of the website, and `sameAs` its LinkedIn Page (`/company/maxsash`) and Instagram
   (`@maxsashstudio`), both checked to resolve on 11 October 2026. Case studies have
   Article JSON-LD and published Notebook articles have BlogPosting JSON-LD derived from their

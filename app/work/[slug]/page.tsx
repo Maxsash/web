@@ -3,12 +3,10 @@ import { notFound } from "next/navigation";
 import Contact from "@/components/Contact";
 import JsonLd from "@/components/JsonLd";
 import Kicker from "@/components/Kicker";
-import Mark from "@/components/Mark";
 import PageLink from "@/components/PageLink";
+import PageShell from "@/components/PageShell";
 import ProjectPlate from "@/components/ProjectPlate";
 import Prose from "@/components/Prose";
-import StudioNav from "@/components/StudioNav";
-import ShoreFooter from "@/components/shore/ShoreFooter";
 import { readCaseStudy } from "@/content/case-studies";
 import { caseStudyPath, caseStudyTitle, projects, projectShareImage } from "@/content/projects";
 import { formatIndex, sentenceCase } from "@/lib/format";
@@ -57,67 +55,54 @@ export default async function CaseStudy({ params }: Props) {
     ["Reading", `${minutes} min`],
   ];
   return (
-    <div className={styles.page}>
+    <PageShell skip="Skip to the case study">
       <JsonLd data={caseStudyStructuredData(project)} />
-      <a className={styles.skip} href="#main">
-        Skip to the case study
-      </a>
-      <header className={styles.top}>
-        <PageLink href="/" className={styles.brand}>
-          <Mark />
-          <span>Maxsash Studio</span>
+      <article className={styles.study} aria-labelledby="study-title">
+        <header className={styles.head}>
+          <div>
+            <Kicker>{`Case study ${label} / ${project.title}`}</Kicker>
+            <h1 id="study-title">{project.headline}</h1>
+            <p className={styles.summary}>{project.summary}</p>
+            <p className={section.proof}>{project.proof}</p>
+          </div>
+          <div>
+            <dl className={section.facts}>
+              {facts.map(([term, detail]) => (
+                <div key={term}>
+                  <dt>{term}</dt>
+                  <dd>{detail}</dd>
+                </div>
+              ))}
+            </dl>
+            {project.demo && (
+              <a className={section.link} href={project.demo.href}>
+                {`${project.demo.label} ↗`}
+              </a>
+            )}
+          </div>
+        </header>
+        <div className={styles.visuals}>
+          {project.visuals.map((visual, order) => (
+            <ProjectPlate
+              key={visual.title}
+              id={`${project.slug}-${order}`}
+              visual={visual}
+              label={label}
+            />
+          ))}
+        </div>
+        <div className={styles.prose}>
+          <Prose blocks={blocks} />
+        </div>
+      </article>
+      <nav className={styles.onward} aria-label="More work">
+        <PageLink href="/#work">← All work</PageLink>
+        <PageLink href={caseStudyPath(next.slug)}>
+          <span className={styles.nextLabel}>Next case study</span>
+          {`${next.title} →`}
         </PageLink>
-        <StudioNav />
-      </header>
-      <main id="main">
-        <article className={styles.study} aria-labelledby="study-title">
-          <header className={styles.head}>
-            <div>
-              <Kicker>{`Case study ${label} / ${project.title}`}</Kicker>
-              <h1 id="study-title">{project.headline}</h1>
-              <p className={styles.summary}>{project.summary}</p>
-              <p className={section.proof}>{project.proof}</p>
-            </div>
-            <div>
-              <dl className={section.facts}>
-                {facts.map(([term, detail]) => (
-                  <div key={term}>
-                    <dt>{term}</dt>
-                    <dd>{detail}</dd>
-                  </div>
-                ))}
-              </dl>
-              {project.demo && (
-                <a className={section.link} href={project.demo.href}>
-                  {`${project.demo.label} ↗`}
-                </a>
-              )}
-            </div>
-          </header>
-          <div className={styles.visuals}>
-            {project.visuals.map((visual, order) => (
-              <ProjectPlate
-                key={visual.title}
-                id={`${project.slug}-${order}`}
-                visual={visual}
-                label={label}
-              />
-            ))}
-          </div>
-          <div className={styles.prose}>
-            <Prose blocks={blocks} />
-          </div>
-        </article>
-        <nav className={styles.onward} aria-label="More work">
-          <PageLink href="/#work">← All work</PageLink>
-          <PageLink href={caseStudyPath(next.slug)}>
-            <span className={styles.nextLabel}>Next case study</span>
-            {`${next.title} →`}
-          </PageLink>
-        </nav>
-        <Contact />
-      </main>
-      <ShoreFooter />
-    </div>
+      </nav>
+      <Contact />
+    </PageShell>
   );
 }

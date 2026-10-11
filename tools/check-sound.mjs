@@ -127,15 +127,6 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
     (await lengthsSince(heard)).includes(0.03),
     `${await lengthsSince(heard)}`,
   );
-  heard = (await sound()).starts.length;
-  await click('#sea-studio [data-press="dice"]');
-  await delay(300);
-  check(
-    "the dice rattle",
-    (await lengthsSince(heard)).includes(0.6),
-    `${await lengthsSince(heard)}`,
-  );
-
   await click("[data-wave-sound]");
   check(
     "Play waves starts the waves",
@@ -269,6 +260,18 @@ await withBrowser({ name: "sound" }, async ({ send, evaluate }) => {
       (await label()) === "Play waves" &&
       (await sound()).starts.some(({ seconds }) => seconds === 0.12),
     `${await lengthsSince(0)}`,
+  );
+
+  await open("/sea");
+  await click("h1");
+  await waitFor("__audio?.state === 'running'");
+  heard = (await sound()).starts.length;
+  await click('#sea-studio [data-press="dice"]');
+  await delay(300);
+  check(
+    "the dice rattle in the sea studio",
+    (await lengthsSince(heard)).includes(0.6),
+    `${await lengthsSince(heard)}`,
   );
 });
 

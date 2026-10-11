@@ -1,77 +1,66 @@
 # Handoff — start here
 
-Updated 11 October 2026, evening. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 73fa720, which is also `production` (the owner released the essays and drawing-label work).
-The owner staged the icons/card step; the Organization data below is unstaged on top of it.
+Updated 11 October 2026, night. Read AGENTS.md, architecture.md, decisions.md and testing.md.
+HEAD 73fa720, which is also `production`. The owner staged the icons/card step; everything
+since (Organization data, socials, the sea studio's own page) is unstaged on top of it.
 
-## Current work — brand, icons, share card and social profiles
+## Current work
 
-The owner asked for on-brand icons, metadata and share image, and images and copy for the
-LinkedIn Page, Instagram and WhatsApp Business, as a brand identity to carry into Canva.
+**Staged: icons and share card.** Icons recoloured to chart ink `#10303A` + cream `#F5F0DF`
+(same geometry); default card `public/images/studio-card-v1.jpg` (live hero, 117 KB) in
+`site.shareImage`; `app/manifest.ts` with 192/512/maskable icons; `theme-color` from
+`site.colors`; unreferenced `public/mark.svg` deleted; `check-seo` checks card size and manifest.
 
-**Website (staged by the owner)**
+**Unstaged: studio profiles, socials and `/sea`.**
 
-- `app/icon.svg`, `app/favicon.ico` (64/48/32/16), `app/apple-icon.png`, `public/at-anchor.svg`:
-  same geometry, recoloured from the old `#0C3D55`/`#F7EFDF` to chart ink `#10303A` + cream `#F5F0DF`.
-- Default share card `public/images/studio-card-v1.jpg` (1200 × 630, 117 KB) replaces
-  `living-atlas-day-v1.jpg`, which still had the old type, ship and "Software, games, and
-  experiments" copy. One source: `site.shareImage` (used by `lib/seo.ts` and `check-seo`).
-- `app/manifest.ts` + `public/icon-192.png`, `icon-512.png`, `icon-maskable-512.png`;
-  `theme-color` now `site.colors` (chart paper / night) instead of old-palette blues.
-- `public/mark.svg` deleted (unreferenced since 11 September).
-- `check-seo.mjs`: card under WhatsApp's 600 KB limit; manifest names the studio; icons are PNG.
+- Profiles (owner): LinkedIn Page `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp
+  username `@maxsash` (`https://wa.me/maxsash` opens "Chat on WhatsApp with @maxsash"; no
+  number). Founded June 2026; WhatsApp hours Monday–Friday 9–5 (the owner said "9 to 5";
+  weekdays assumed).
+- Home graph: Organization `#studio` (logo, email, `foundingDate` 2026-06, founder `#yash`,
+  `sameAs` LinkedIn Page and Instagram); WebSite publisher is the studio.
+- Socials: Contact adds "Or message @maxsash on WhatsApp ↗"; the shore lists email, WhatsApp,
+  Instagram, LinkedIn Page plus a colophon link "The sea studio ↗"; the Notebook footer lists
+  the three channels. Portfolio, personal LinkedIn and GitHub now live only in About.
+- Sea studio moved to `/sea` (owner chose this after visitors needed it explained in person).
+  `components/PageShell.tsx` (header, main, shore; `--page-gutter`) now frames case studies and
+  `/sea`. Studio heading "Make your own sea." with a plain paragraph and three steps; the
+  "sailing" pill is gone; "Sail this sea →" opens home with the seed. Hero "Make your own →",
+  plate links and sitemap point to `/sea`. Checks moved with it (testing.md).
 
-**Brand kit (outside the repo, `../brand/`, not under git)**
-
-- Live-sea captures + HTML templates in the site's fonts → `export/` per platform (README there).
-- Owner's private page https://claude.ai/artifact/NcRFgKvfm9PBXGaH3ps4w1 (source
-  `../brand/kit/index.html`, Save buttons via `downloads`): brand lines, logos, palette, type,
-  voice; every LinkedIn, Instagram and WhatsApp image and field (counts within limits); Canva
-  setup and backgrounds. Copy reuses site lines and approved figures; no phone number.
-
-**Profiles (owner, 11 October):** LinkedIn Page `linkedin.com/company/maxsash`, Instagram
-`@maxsashstudio`, WhatsApp Business username `@maxsash`. Both web URLs resolve. The kit page now
-uses them (version 2).
-
-- **Organization data (unstaged):** `site.links.studioLinkedin`, `site.links.instagram` and
-  `site.logo` in `content/site.ts`; the home graph gains an Organization `#studio` (logo, email,
-  founder `#yash`, `sameAs` both profiles) and the WebSite names it publisher; the manifest's
-  512 icon reads `site.logo`; `check-seo` asserts the Organization.
-- **LinkedIn Page today** (public HTML, since Claude in Chrome tools never appeared here): name
-  "Maxsash", tagline "Independent software studio.", website `https://maxsash.com`, a watercolour
-  beach logo, no overview, specialties, founded year or cover. Industry, 1 employee and Self-Owned
-  are right. The kit lists the changes; renaming the Page to Maxsash Studio is the owner's call.
+**Brand kit (outside the repo, `../brand/`, not under git).** Owner's private page
+https://claude.ai/artifact/NcRFgKvfm9PBXGaH3ps4w1 (source `../brand/kit/index.html`, version 3):
+every LinkedIn, Instagram and WhatsApp image and field, Canva setup, voice, palette. It now has
+the real handles, founded year, 9–5 hours, `wa.me/maxsash` as Instagram link 3, and the
+LinkedIn Page's current state (name "Maxsash", old tagline, `maxsash.com` without www, a
+watercolour logo; read from public HTML because Claude in Chrome tools never appeared).
 
 ## Verification
 
-- Twice (icons/card, then with the Organization), each in a fresh scratchpad worktree with
-  `rsync --delete`: Node 24 webpack build, TypeScript, lint, format, 126/126 Node tests, 66 SEO
-  cases (new assertions included), headers/CSP, keyboard 20/20, 193 creative cases with zero
-  runtime exceptions. Own server :3019 stopped both times; worktrees removed.
-- Served head and home graph inspected: theme colours, manifest, card, icons, Organization.
-- Every exported image was inspected; profile field counts computed with the page's own
-  normalisation, all within limits.
-- Not checked: real WhatsApp/LinkedIn/Facebook previews (need the release), phone home-screen
-  install, Save/zip buttons inside the claude.ai viewer (needs a viewer click), Canva font
-  availability, handle availability.
+- Final isolated Node 24 build of the full working tree: TypeScript, lint, format, 126/126 Node
+  tests, 78 SEO cases, headers/CSP, keyboard 22/22, 8 studio-plate cases, sound suite, 191
+  creative cases, zero failures and runtime exceptions. Own server :3019 stopped; worktree removed.
+- Looked at `/sea` (1440 and 390), Contact, shore and Notebook footer; the case-study header is
+  pixel-identical to live after the PageShell extraction.
+- Not checked: `/sea` on a real phone or Safari, real WhatsApp/LinkedIn previews (need the
+  release), Save/zip buttons inside the claude.ai viewer, Canva font availability.
 
 ## Next
 
-1. Owner: review, commit, release. Then Facebook Sharing Debugger (Scrape Again), LinkedIn Post
-   Inspector and a WhatsApp message to self for the home page.
-2. Owner: fill the profiles from the kit page. Open decisions there: rename the LinkedIn Page to
-   Maxsash Studio, founded year, WhatsApp hours, whether the number may show on Instagram.
-3. Optional, owner's call: visible links to the LinkedIn Page and Instagram (the shore is the
-   natural place; About's links belong to Yash). Not done, as it changes the approved layout.
-4. After release: Rich Results Test on the home page (Organization, ProfilePage), then the
-   SEO / LLM-SEO step in seo-and-sharing.md. Claude in Chrome (`/chrome`) would allow checking
-   the profiles directly.
+1. Owner: review, commit, release. Then Facebook Sharing Debugger, LinkedIn Post Inspector and a
+   WhatsApp message to self for the home page and `/sea`; Rich Results Test on the home page.
+2. Owner: fill the profiles from the kit page; renaming the LinkedIn Page to Maxsash Studio is
+   recommended for one name everywhere (the URL stays).
+3. Then the SEO / LLM-SEO and content step (seo-and-sharing.md).
+4. Gull timing (owner asked, measured on live 11 October): it starts 3.0 s after mounting
+   (`WAIT_MS`), then flies 1.8 s on a 390 px phone but 3.9 s on 1440 px desktop (it enters
+   from the hero's far left), plus 1.8 s settling; phone perched at 8.3 s from navigation.
+   Recommended, awaiting the owner: `WAIT_MS` 3000 → 2000 (the research's 2–3 s range) and cap
+   the desktop flight near 2.5 s. Not later; not at load.
 5. Recapture `public/images/work/business-operations-drawing.webp` now that "Buying" is live.
-6. Still open from before: Search Console inspections, Bing Webmaster Tools, production evidence
-   for private systems, real phone/Safari/Firefox/screen-reader checks, Vercel rate limits,
-   and follow-ups.md.
-7. Housekeeping: 11 old detached worktrees under `/private/tmp/maxsash-*` from earlier sessions
-   (`git worktree list`); remove them when no longer needed.
+6. Still open: Search Console inspections, Bing Webmaster Tools, production evidence for private
+   systems, real phone/Safari/Firefox/screen-reader checks, Vercel rate limits, follow-ups.md.
+7. Housekeeping: 11 old detached worktrees under `/private/tmp/maxsash-*` from earlier sessions.
 
 ## Suggested commit messages
 
@@ -91,17 +80,19 @@ Verified in an isolated Node 24 production build: TypeScript, lint, format, 126 
 headers/CSP, 20 keyboard checks and 193 creative records with no runtime exceptions.
 ```
 
-For the unstaged Organization data:
+For the unstaged set:
 
 ```
-feat: describe the studio and its profiles in structured data
+feat: give the sea studio its own page and link the studio's profiles
 
-Add Maxsash Studio as an Organization on the home page, with its logo, email, Yash as founder,
-publisher of the website, and its LinkedIn Page and Instagram as sameAs profiles, so search
-engines can tie the site to the new profiles. Keep the logo path in one place for the
-manifest and the check.
+Visitors needed the sea studio explained in person, so it moves from the end of the homepage
+to /sea, opening with a plain explanation and three steps; the hero, print page and shore
+link to it with the visitor's sea. Case studies and /sea share one page shell. Add WhatsApp
+(by username, no number) to Contact, and the studio's WhatsApp, Instagram and LinkedIn Page to
+the shore and Notebook footers; describe the studio as an Organization with its logo,
+founding date and profiles.
 
 Verified in an isolated Node 24 production build: TypeScript, lint, format, 126 Node tests,
-66 crawler/page cases (asserting the Organization), headers/CSP, 20 keyboard checks and 193
-creative records with no runtime exceptions.
+78 crawler/page cases, headers/CSP, 22 keyboard checks, studio plate and sound suites, and
+191 creative records with no failures or runtime exceptions.
 ```

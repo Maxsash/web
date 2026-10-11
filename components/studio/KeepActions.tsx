@@ -4,12 +4,11 @@ import styles from "./SeaStudio.module.css";
 
 type Props = {
   query: string;
-  sailing: boolean;
   copied: boolean;
   onCopied: (copied: boolean) => void;
 };
 
-export default function KeepActions({ query, sailing, copied, onCopied }: Props) {
+export default function KeepActions({ query, copied, onCopied }: Props) {
   return (
     <div className={styles.keep}>
       <h3>Keep it</h3>
@@ -27,13 +26,9 @@ export default function KeepActions({ query, sailing, copied, onCopied }: Props)
         <a href={`/api/sea-edition/print?${query}&download=1`} download>
           Save as SVG
         </a>
-        {sailing ? (
-          <span className={styles.sailing}>You are sailing this sea</span>
-        ) : (
-          <Link prefetch={false} href={`/?${query}`} data-press="sail">
-            Sail this sea <span aria-hidden="true">↑</span>
-          </Link>
-        )}
+        <Link prefetch={false} href={`/?${query}`} data-press="sail">
+          Sail this sea <span aria-hidden="true">→</span>
+        </Link>
         <button
           type="button"
           data-press="none"

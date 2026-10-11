@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { sharingMetadata } from "@/lib/seo";
 import Mark from "@/components/Mark";
+import { studioChannels } from "@/content/site";
 import StudioNav from "@/components/StudioNav";
 import styles from "@/components/atlas/Atlas.module.css";
 
@@ -34,9 +35,20 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
           Sea. Ship. <em>Math.</em>
         </div>
         <p>A notebook for looking closer.</p>
-        <Link prefetch={false} href="/">
-          Return to the studio <span aria-hidden="true">↗</span>
-        </Link>
+        <ul className={styles.footerLinks} aria-label="Maxsash Studio">
+          <li>
+            <Link prefetch={false} href="/">
+              Return to the studio <span aria-hidden="true">↗</span>
+            </Link>
+          </li>
+          {studioChannels.map((channel) => (
+            <li key={channel.label}>
+              <a href={channel.href}>
+                {channel.label} <span aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </footer>
     </div>
   );

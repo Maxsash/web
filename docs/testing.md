@@ -4,6 +4,23 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Sea studio page and studio channels (11 October 2026)
+
+The checks follow the studio to `/sea`: `check-studio-plate` and `e2e/sea-studio.mjs` load it;
+`check-keyboard` sweeps it (desktop forward, phone backward over the pinned drawing), operates
+the studio there and reloads home for the hero focus ring; `check-sound` rolls the dice on `/sea`
+after a first click; `e2e/content.mjs` asserts home order work, about, contact, notebook with no
+studio and one "Make your own" link to `/sea?seed=`, the studio's controls on `/sea`, About's
+portfolio and the shore's email plus WhatsApp, Instagram and LinkedIn Page; `check-seo` adds
+`/sea` and `/sea?seed=…` (canonical `/sea`) for six crawlers and the Organization's founding
+date. The rotation case now asserts one column with the preview first and focus clear: on a
+phone the pinned drawing may cover the top of the form while editing, by design.
+Final isolated Node 24 build: TypeScript, lint, format, 126/126 Node tests, 78 SEO cases,
+headers/CSP, keyboard 22/22, 8 studio-plate cases, sound suite, 191 creative cases (two fewer
+home snapshots) with zero failures and runtime exceptions. Own server stopped. Looked at `/sea`
+(1440, 390), Contact, shore and Notebook footer (390); case-study header pixel-identical to live.
+Not checked: `/sea` on a real phone, Safari, a screen reader.
+
 ## Brand icons, share card and manifest (11 October 2026)
 
 `check-seo.mjs` now reads the default card from `site.shareImage`, asserts it is a JPEG under

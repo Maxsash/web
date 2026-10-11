@@ -1,17 +1,20 @@
+import { site, studioChannels } from "../../content/site.ts";
 import { delay } from "../lib/browser.mjs";
 
 export async function runContentChecks(ctx) {
   const { articlePaths, evaluate, load, results } = ctx;
   await load("/");
   const homepage = await evaluate(
-    `(()=>{const anchors=['work','about','contact','notebook','sea-studio'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {order:[...document.querySelectorAll('main > section[id]')].map(s=>s.id).join(),anchors,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
+    `(()=>{const anchors=['work','about','contact','notebook'].map(id=>({id,targets:document.querySelectorAll('[id="'+id+'"]').length,links:document.querySelectorAll('a[href="#'+id+'"]').length}));return {order:[...document.querySelectorAll('main > section[id]')].map(s=>s.id).join(),anchors,studio:!!document.getElementById('sea-studio'),makeYourOwn:[...document.querySelectorAll('a[href^="/sea?seed="]')].length,robots:[...document.querySelectorAll('meta[name="robots"]')].map(e=>e.content).join(',')};})()`,
   );
   const linkedSections = ["work", "about", "contact"];
   results.push({
     name: "public-homepage-content",
     ...homepage,
     pass:
-      homepage.order === "work,about,contact,notebook,sea-studio" &&
+      homepage.order === "work,about,contact,notebook" &&
+      !homepage.studio &&
+      homepage.makeYourOwn === 1 &&
       homepage.anchors.every(
         (a) => a.targets === 1 && (!linkedSections.includes(a.id) || a.links > 0),
       ) &&
@@ -33,7 +36,8 @@ export async function runContentChecks(ctx) {
     homeNotes,
     pass: homeNotes.length === 3 && /^Note · /.test(homeNotes[0]),
   });
-  // The sea studio: four real controls, a live plate, and every way to keep the result.
+  // The sea studio, on its own page: four real controls, a live plate, and every way to keep it.
+  await load("/sea");
   const studio = await evaluate(`(async()=>{
  const root=document.getElementById('sea-studio');const sliders=[...root.querySelectorAll('input[type=range]')];
  const plateOf=()=>root.querySelector('figure svg')?.innerHTML.length+':'+root.querySelector('figure svg')?.querySelector('polyline')?.getAttribute('points').slice(0,80);
@@ -61,6 +65,7 @@ export async function runContentChecks(ctx) {
       studio.print &&
       studio.save,
   });
+  await load("/");
   // The workbench: live commit log, or an honest fallback. Never raw errors, and only GitHub links.
   const workbench = await evaluate(
     `(()=>{const section=document.getElementById('activity-title').closest('section');const entries=[...section.querySelectorAll('ol a')];const links=[...section.querySelectorAll('a')];return {entries:entries.length,short:entries.filter(a=>a.getBoundingClientRect().height<43).length,hosts:[...new Set(links.map(a=>new URL(a.href).host))],repoLink:!!section.querySelector('a[href="https://github.com/maxsash/web"]'),text:section.innerText.slice(0,200),counts:/\bcommits? in the last\b/.test(section.innerText)};})()`,
@@ -115,10 +120,11 @@ export async function runContentChecks(ctx) {
     "(()=>{const p=document.querySelector('#about [data-engraved]');return !!p&&p.querySelectorAll('[data-engraving] path').length===72&&p.querySelector('img').alt==='Portrait of Yash Shrivastava';})()";
   for (let i = 0; i < 80 && !(await evaluate(engraved)); i++) await delay(50);
   results.push({ name: "about-portrait-engraved-in-waves", pass: await evaluate(engraved) });
+  const shoreLinks = [site.links.email, ...studioChannels.map((channel) => channel.href)];
   results.push({
-    name: "profiles-and-email-in-about-and-shore",
+    name: "profiles-in-about-studio-channels-in-shore",
     pass: await evaluate(
-      "['#about','[data-shore]'].every(scope=>!!document.querySelector(scope+' a[href=\"https://ctrl-alt-yash.github.io/portfolio/\"]')) && !!document.querySelector('[data-shore] a[href=\"mailto:yash@maxsash.com\"]') && !document.querySelector('a[href=\"/resume.pdf\"]')",
+      `!!document.querySelector('#about a[href="${site.links.portfolio}"]') && ${JSON.stringify(shoreLinks)}.every(href=>!!document.querySelector('[data-shore] a[href="'+href+'"]')) && !document.querySelector('a[href="/resume.pdf"]')`,
     ),
   });
 

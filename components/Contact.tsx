@@ -29,6 +29,9 @@ export default function Contact() {
             <CopyButton text={site.email} done="Address copied." className={styles.copy}>
               Copy address
             </CopyButton>
+            <a href={site.links.whatsapp} className={styles.whatsapp}>
+              {`Or message ${site.whatsapp} on WhatsApp ↗`}
+            </a>
           </div>
         </div>
         <Kicker id="expectations">What to expect</Kicker>

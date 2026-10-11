@@ -19,7 +19,7 @@ await withBrowser(
         mobile: width < 760,
       });
       await send("Emulation.setScriptExecutionDisabled", { value: true });
-      await send("Page.navigate", { url: new URL("/?seed=f532e107&version=2", base).href });
+      await send("Page.navigate", { url: new URL("/sea?seed=f532e107&version=2", base).href });
       await delay(1200);
       await evaluate(
         "document.querySelector('#sea-studio figure').scrollIntoView({behavior:'instant'})",
@@ -53,7 +53,7 @@ await withBrowser(
         writeFileSync(`${out}/no-script-${width}-${theme}.png`, Buffer.from(shot.data, "base64"));
       }
       await send("Emulation.setScriptExecutionDisabled", { value: false });
-      await send("Page.navigate", { url: new URL("/?seed=f532e107&version=2", base).href });
+      await send("Page.navigate", { url: new URL("/sea?seed=f532e107&version=2", base).href });
       for (let attempt = 0; attempt < 100; attempt++) {
         if (await evaluate("Boolean(document.querySelector('#sea-studio figure svg'))")) break;
         await delay(50);

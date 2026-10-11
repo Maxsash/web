@@ -5,7 +5,7 @@ const layout = `(()=>{
   const box=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
   const matrix=svg.getScreenCTM(),view=svg.viewBox.baseVal;
   const origin=new DOMPoint(view.x,view.y).matrixTransform(matrix),end=new DOMPoint(view.x+view.width,view.y+view.height).matrixTransform(matrix);
-  return {intro:box(studio.querySelector('h2').parentElement),figure:box(figure),form:box(studio.querySelector('form')),
+  return {intro:box(studio.querySelector('h1').parentElement),figure:box(figure),form:box(studio.querySelector('form')),
     art:{left:origin.x,top:origin.y,right:end.x,bottom:end.y,height:end.y-origin.y},
     overflow:document.documentElement.scrollWidth>innerWidth+1,seed:figure.querySelector('code').textContent,
     drawing:svg.querySelector('polyline').getAttribute('points').slice(0,120)};
@@ -38,7 +38,7 @@ export async function runSeaStudioLayout(ctx) {
       deviceScaleFactor: 1,
       mobile: true,
     });
-    await load("/?seed=70806d5e&version=2");
+    await load("/sea?seed=70806d5e&version=2");
     await evaluate(
       `document.documentElement.dataset.studioTheme=${JSON.stringify(theme)};window.dispatchEvent(new Event('studio-theme'))`,
     );
@@ -116,7 +116,8 @@ export async function runSeaStudioLayout(ctx) {
     name: "studio-rotation-restores-portrait-preview-and-clear-focus",
     ...portrait,
     pass:
-      portrait.figure.bottom <= portrait.form.top + 1 &&
+      Math.abs(portrait.figure.left - portrait.form.left) <= 1 &&
+      portrait.figure.top <= portrait.form.top &&
       portrait.art.height <= 844 * 0.32 + 1 &&
       portraitFocus.visible &&
       portraitFocus.uncovered &&

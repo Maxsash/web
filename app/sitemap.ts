@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: absoluteUrl("/") },
     { url: absoluteUrl("/blog") },
+    { url: absoluteUrl("/sea") },
     ...notebook.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`) })),
     ...writtenPosts()
       .filter((post) => !post.draft)

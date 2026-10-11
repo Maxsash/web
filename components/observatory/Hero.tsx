@@ -62,12 +62,16 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
             Open to freelance work. By Yash.
           </p>
         </div>
-        <a className={styles.sceneMeta} href="#sea-studio" data-press="rope">
+        <PageLink
+          className={styles.sceneMeta}
+          href={`/sea?seed=${edition.seed}&version=${edition.version}`}
+          data-press="rope"
+        >
           Authored sea / {edition.seed}
           <span>
-            Make your own <span aria-hidden="true">↓</span>
+            Make your own <span aria-hidden="true">→</span>
           </span>
-        </a>
+        </PageLink>
         <div className={styles.end}>
           <h2>
             Look closer. <br />

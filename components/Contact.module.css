@@ -59,8 +59,17 @@
   color: inherit;
   cursor: copy;
 }
+.whatsapp {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 0.8rem/1.6 var(--font-sans);
+  letter-spacing: 0.02em;
+  text-underline-offset: 0.35em;
+}
 .email:focus-visible,
-.copy:focus-visible {
+.copy:focus-visible,
+.whatsapp:focus-visible {
   outline: 2px solid var(--band-accent);
   outline-offset: 5px;
 }

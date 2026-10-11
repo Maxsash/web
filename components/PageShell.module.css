@@ -1,0 +1,64 @@
+.page {
+  --page-gutter: clamp(1.25rem, 6vw, 7rem);
+  color: var(--ink);
+  background: var(--paper);
+}
+.page main::before {
+  display: none;
+}
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 40;
+  padding: 0.8rem;
+  background: var(--paper);
+  color: var(--ink);
+  translate: 0 -180%;
+}
+.skip:focus-visible {
+  translate: 0 0;
+}
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 75px;
+  margin-inline: var(--page-gutter);
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: 0.8rem;
+}
+.top a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+}
+.top nav {
+  display: flex;
+  gap: 2rem;
+}
+.top nav a[aria-current] {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+.brand {
+  gap: 0.6rem;
+  font-weight: 550;
+}
+.brand svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+@media (max-width: 48rem) {
+  .top {
+    min-height: 62px;
+  }
+  .top nav {
+    gap: 1rem;
+  }
+  .top nav a:nth-child(2) {
+    display: none;
+  }
+}

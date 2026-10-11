@@ -46,7 +46,7 @@ export default async function PlatePage({ searchParams }: Props) {
           <Link prefetch={false} href={`/?${encoded}`}>
             Sail this sea ↑
           </Link>
-          <Link prefetch={false} href="/#sea-studio">
+          <Link prefetch={false} href={`/sea?${encoded}`}>
             Back to the sea studio
           </Link>
         </div>

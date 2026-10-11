@@ -1,5 +1,6 @@
 const title = "Founding engineer";
 const email = "yash@maxsash.com";
+const whatsapp = "maxsash";
 const offer = "websites and web apps";
 const promise = "built end to end";
 
@@ -14,6 +15,8 @@ export const site = {
   portrait: "/images/yash-shrivastava.webp",
   home: "Tikamgarh · 24.74° N, 78.83° E",
   email,
+  whatsapp: `@${whatsapp}`,
+  founded: "2026-06",
   shareImage: {
     url: "/images/studio-card-v1.jpg",
     width: 1200,
@@ -37,6 +40,7 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/maxsash",
     studioLinkedin: "https://www.linkedin.com/company/maxsash/",
     instagram: "https://www.instagram.com/maxsashstudio/",
+    whatsapp: `https://wa.me/${whatsapp}`,
     repo: "https://github.com/maxsash/web",
     email: `mailto:${email}`,
   },
@@ -55,4 +59,10 @@ export const profiles = [
   { label: "Portfolio", href: site.links.portfolio },
   { label: "LinkedIn", href: site.links.linkedin },
   { label: "GitHub", href: site.links.github },
+] as const;
+
+export const studioChannels = [
+  { label: "WhatsApp", href: site.links.whatsapp },
+  { label: "Instagram", href: site.links.instagram },
+  { label: "LinkedIn", href: site.links.studioLinkedin },
 ] as const;

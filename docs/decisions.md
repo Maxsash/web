@@ -16,8 +16,19 @@ each group. How the code is built: [architecture.md](architecture.md).
   11 September and was deleted (the kit holds mark files); the manifest uses `display: browser`
   because the site is a website, not an installable app. The studio's profiles (LinkedIn Page
   `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp username `@maxsash`) are named in the
-  home page's Organization data; the WhatsApp number stays off the site. They are not yet
-  visible links on the page (an owner choice, see handoff).
+  home page's Organization data, with the founding date (June 2026); the WhatsApp number stays
+  off the site, which links the username (`wa.me/maxsash`) instead.
+- **The shore holds the studio's channels, About holds the person's** (owner: "put in socials on
+  the website wherever it makes sense", 11 October 2026). Contact offers WhatsApp beside the
+  email; the shore and the Notebook footer list WhatsApp, Instagram and the LinkedIn Page; the
+  shore lists the email too. Portfolio, personal LinkedIn and GitHub stay in About only.
+- **The sea studio has its own page, `/sea`** (owner, after real visitors needed it explained
+  in person, 11 October 2026: "this playground is adding confusion to the homepage"). The
+  homepage ends Notebook → shore. `/sea` opens with "Make your own sea.", a plain paragraph
+  (the sea is drawn, not filmed; six waves, four settings) and three numbered steps that match
+  the controls. The hero's "Make your own →" and the print page link to it with the current
+  seed, and the shore's colophon links it on every page; "Sail this sea →" opens the homepage with it. The in-page "You are sailing this sea" pill
+  went with the move. The studio's layouts, presets and drawing are unchanged.
 
 - **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
   drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four
@@ -164,7 +175,7 @@ each group. How the code is built: [architecture.md](architecture.md).
   asking for trust before any proof, the strongest work missing from Work, Elsewhere repeating
   About's links, and the real post missing from the home Notebook. The owner answered its
   questions and the page was rebuilt. **Order:** Hero → Work → About → Contact → Notebook →
-  Sea studio → shore (the sea studio sits last so the sea ends at the shore). **Nav:** Work,
+  shore (the sea studio, once last, moved to `/sea` on 11 October). **Nav:** Work,
   About, Notebook, Contact; the blog's nav is derived from it. Section kickers are named, not
   numbered; numbers appear only inside lists. Measured after: 11.1 desktop screens, 15.4 on a
   phone (Work grew from three projects to five).
@@ -173,8 +184,8 @@ each group. How the code is built: [architecture.md](architecture.md).
   will work for the client's business, not what looks fancy or costs too much. Contact also
   holds the backend and real-time line and a "Copy address" button (a `mailto:` link does
   nothing without a mail app).
-- **Elsewhere is gone.** Its links live in About (they belong to the person) and in the shore,
-  which also shows the email, so the end of every page has a way to write. Its compass moved
+- **Elsewhere is gone.** Its links live in About (they belong to the person); the shore shows
+  the email and the studio's channels, so the end of every page has a way to write. Its compass moved
   into the home Notebook band (desktop only, 72rem and up).
 - **Work shows five projects** (owner, 9 October: "yes, definitely"). For clients: Velora
   Rights as the lead spread, then the business-operations SaaS and the real-time intrusion
@@ -204,10 +215,10 @@ each group. How the code is built: [architecture.md](architecture.md).
   case studies on `/work/<slug>` are rewritten for a client (brief, what was built, the
   decisions that mattered and why, the outcome; 2–5 minutes) and are not copies of the
   portfolio's, which keep their recruiter framing and their own URLs (no cross-canonicals).
-  The Work section's "More work … in the Portfolio" footer link was removed; About and the
-  shore keep the portfolio among the owner's profiles.
+  The Work section's "More work … in the Portfolio" footer link was removed; About keeps the
+  portfolio among the owner's profiles.
 - **Desktop hero 180svh** (was 255svh; the owner agreed). Phone timings are untouched. Its
-  seed label links to the sea studio ("Make your own").
+  seed label opens the sea studio at `/sea` with that seed ("Make your own →").
 - **Every post ends with an author line**: who wrote it, what the studio builds, "See the
   work" and the email, so a reader arriving at a post can find the offer.
 - **Links within a page glide; nothing else does** (owner, 9 October 2026). Section links and
@@ -299,7 +310,7 @@ each group. How the code is built: [architecture.md](architecture.md).
   compact copy, without changing the approved sea timing. Resize/DPR changes refit the gull;
   an arrival interrupted by rotation settles rather than jumping across the new layout.
   On short screens (620 px or less), hide the secondary seed link to keep the
-  offer and controls clear; the sea studio remains in the page.
+  offer and controls clear; the shore's colophon links the sea studio (`/sea`) on every page.
 - **Refine the gull at button size** (owner, 10 October 2026): fuller chest and crown,
   hooked bill with red mark, visible eyes and white primary spots on black wingtips. More
   inset space separates it from the label and the pill's curved end. Wingbeats are slower;
@@ -437,8 +448,6 @@ Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
 - **Forced reflow (168 ms in the report)** is the initial hero layout (about 130 ms at 4×
   CPU throttle locally). `content-visibility: auto` on the sections below changed it by
   under 10%, so it is not worth doing.
-- The "sailing" pill used `opacity: 0.65` and failed contrast; it now uses the muted ink
-  colour (5.2:1 day, 7.8:1 night).
 
 ## Security and hosting
 

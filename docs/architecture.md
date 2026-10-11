@@ -7,14 +7,15 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 
 | Route                              | What it is                                                                                     |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/`                                | Hero sea, Work, About, Contact, notebook, sea studio, shoreline footer. Dynamic: a fresh sea per visit. |
+| `/`                                | Hero sea, Work, About, Contact, notebook, shoreline footer. Dynamic: a fresh sea per visit. |
+| `/sea`, `/sea?seed=…&version=2`    | The sea studio on its own page (indexed; seeds canonicalise to `/sea`). The hero's "Make your own" opens it with the visitor's sea. |
 | `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
 | `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
 | `/blog`, `/blog/[slug]`            | The notebook: two approved essays and written posts (published indexed, drafts dev-only); listing indexed. Unknown slugs render on demand so they reach the notebook 404. |
 | `/work/[slug]`, `/work`            | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`. |
 | `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
 | `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
-| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, the Notebook listing, two essays, five case studies and published markdown posts.                                          |
+| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, the Notebook listing, the sea studio, two essays, five case studies and published markdown posts. |
 | Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side
@@ -271,7 +272,10 @@ origin sending JSON (so another website cannot write files while the dev server 
 
 ## Studio and content
 
-- `components/studio/`: `SeaStudio` composes `SettingSlider`, `SeedField`, `KeepActions`,
+- `components/PageShell.tsx` is the paper page frame shared by case studies and `/sea`: skip
+  link, brand and `StudioNav` header, `main`, shore footer; its `--page-gutter` sets the side
+  margins for both.
+- `components/studio/`: `SeaStudio` (rendered by `app/sea/page.tsx`) composes `SettingSlider`, `SeedField`, `KeepActions`,
   `Die` (the dice button's drawn die) and the `useSeaSettings` hook. The starting seas are the
   presets plus Home water, and the chip for the current sea is pressed. The drawing it redraws is
   the same `renderSeaPlate` that prints. In landscape viewports 560–960 px wide and ≤620 px

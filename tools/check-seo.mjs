@@ -27,6 +27,7 @@ const blogArticles = new Map([
 const indexedPaths = [
   "/",
   "/blog",
+  "/sea",
   ...essayPaths,
   ...projects.map(({ slug }) => caseStudyPath(slug)),
   ...publishedPaths,
@@ -35,7 +36,12 @@ const indexedPaths = [
 const base = new URL(process.argv[2] ?? "http://127.0.0.1:3010");
 assert.ok(["localhost", "127.0.0.1"].includes(base.hostname), "Use a local production server");
 const origin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.maxsash.com").origin;
-const paths = ["/", "/?seed=27c4b901", ...indexedPaths.filter((path) => path !== "/")];
+const paths = [
+  "/",
+  "/?seed=27c4b901",
+  "/sea?seed=27c4b901",
+  ...indexedPaths.filter((path) => path !== "/"),
+];
 const records = [];
 const crawlerAgents = [
   "WhatsApp",
@@ -141,7 +147,7 @@ for (const agent of crawlerAgents) {
       const json = structuredData(html);
       assert.equal(json["@type"], "Article");
       assert.equal(json.url, `${origin}${canonicalPath}`);
-    } else if (!path.startsWith("/blog")) {
+    } else if (canonicalPath === "/") {
       const json = structuredData(html);
       assert.equal(
         json["@graph"].find((item) => item["@type"] === "Person").name,
@@ -155,6 +161,7 @@ for (const agent of crawlerAgents) {
       assert.equal(studio.name, site.name);
       assert.equal(studio.logo, `${origin}${site.logo}`);
       assert.equal(studio.founder["@id"], `${origin}/#yash`);
+      assert.equal(studio.foundingDate, site.founded);
       assert.deepEqual(studio.sameAs, [site.links.studioLinkedin, site.links.instagram]);
     }
     records.push({ agent, path, title: meta("og:title"), passed: true });

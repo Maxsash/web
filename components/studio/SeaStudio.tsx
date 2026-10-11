@@ -34,15 +34,19 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
         <span>Make it · See it · Keep it</span>
       </div>
       <div className={styles.lead}>
-        <h2 id="sea-studio-title">
-          Make a sea. <br />
-          Keep the drawing.
-        </h2>
-        <p>
-          The sea above is built from six waves and a seed, eight characters long. Those eight
-          characters are four settings written in hexadecimal. Change a setting and the sea changes,
-          along with the drawing of it below: the very drawing that gets printed.
-        </p>
+        <h1 id="sea-studio-title">Make your own sea.</h1>
+        <div>
+          <p>
+            The sea at the top of the homepage is not a video. It is drawn as you watch, from six
+            waves added together, and four settings decide their shape. Change the settings here and
+            the drawing of your sea changes with them.
+          </p>
+          <ol className={styles.steps}>
+            <li>Start from one of the seas, or roll the dice.</li>
+            <li>Shape it with the four sliders.</li>
+            <li>Keep it: print the drawing, save it, or sail it on the homepage.</li>
+          </ol>
+        </div>
       </div>
 
       <div className={styles.workbench}>
@@ -133,12 +137,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
             </figcaption>
           </figure>
 
-          <KeepActions
-            query={sea.query}
-            sailing={sea.sailing}
-            copied={sea.copied}
-            onCopied={sea.setCopied}
-          />
+          <KeepActions query={sea.query} copied={sea.copied} onCopied={sea.setCopied} />
         </div>
       </div>
 

@@ -50,6 +50,7 @@ export const studioStructuredData = {
       logo: absoluteUrl(site.logo),
       description: site.description,
       email: site.email,
+      foundingDate: site.founded,
       founder: { "@id": absoluteUrl("/#yash") },
       sameAs: [site.links.studioLinkedin, site.links.instagram],
     },

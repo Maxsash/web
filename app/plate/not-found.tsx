@@ -16,7 +16,7 @@ export default function PlateNotFound() {
           <Link prefetch={false} href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>
             Draw the default sea
           </Link>
-          <Link prefetch={false} href="/#sea-studio">
+          <Link prefetch={false} href="/sea">
             Back to the sea studio
           </Link>
         </>

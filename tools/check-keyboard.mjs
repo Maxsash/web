@@ -77,10 +77,13 @@ await withBrowser(
     };
 
     const seed = "/?seed=70806d5e&version=2";
+    const studio = "/sea?seed=70806d5e&version=2";
     await sweep("home desktop forward", seed, 1280, 800, false, false, 50);
     await sweep("home desktop backward", seed, 1280, 800, false, true, 50);
     await sweep("home phone forward", seed, 390, 844, true, false, 50);
-    await sweep("home phone backward (sticky drawing)", seed, 390, 844, true, true, 50);
+    await sweep("home phone backward", seed, 390, 844, true, true, 50);
+    await sweep("sea studio desktop forward", studio, 1280, 800, false, false, 30);
+    await sweep("sea studio phone backward (sticky drawing)", studio, 390, 844, true, true, 50);
     await sweep("notebook", "/blog", 1280, 800, false, false, 14);
     await sweep("essay", "/blog/three-waves-one-sea", 1280, 800, false, false, 14);
     await sweep("print page", "/plate?seed=f532e107&version=2", 1280, 800, false, false, 8);
@@ -123,6 +126,7 @@ await withBrowser(
       (await evaluate("document.activeElement.getAttribute('href')")) === "/work/velora-rights",
     );
 
+    await load(studio, 1280, 800);
     await evaluate("document.getElementById('sea-studio').scrollIntoView()");
     await focus("#sea-studio input[type=range]");
     const before = Number(await value("#sea-studio input[type=range]"));
@@ -194,8 +198,7 @@ await withBrowser(
         await evaluate("document.querySelector('[data-shore-pause]').textContent"),
       ),
     );
-    await evaluate("window.scrollTo(0,0)");
-    await delay(300);
+    await load(seed, 1280, 800);
     await focus("nav[aria-label=Studio] a");
     await delay(350);
     const ring = await evaluate(

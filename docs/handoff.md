@@ -1,26 +1,42 @@
 # Handoff — start here
 
 Updated 11 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 17d2647. Owner committed/released the case studies, note indexing and contrast fixes.
+HEAD 1004feb. Owner committed/released case studies, indexing, contrast and font preloads.
 This agent never commits, pushes or releases. Existing docs changes retained.
+Site review for freelance listings added to follow-ups.md (11 October, docs only).
 
-## Active: font-loading experiment
+## Progressive studio drawing — verified, uncommitted
 
-- Owner authorised work after uncached mobile trace identified CSS as first-paint gate.
-- Candidate `app/fonts.ts`: only Montagu Slab preloads; Rethink Sans (normal/italic) and
-  Reddit Mono have `preload: false`. Same fonts/styles, display swap, no hero timing changes.
-- Why: four eager font files competed with blocking CSS; italic/mono need no early preload.
-- `tools/compare-font-loading.mjs`: alternating baseline/candidate cold loads, 390×844,
-  4× CPU, 180 KB/s / 562.5 ms network latency, disabled GPU for consistent static fallback;
-  fixed sea seed, cache disabled and cleared each run. Reports LCP/FCP/CSS/font timing.
-- Isolated candidate `/private/tmp/maxsash-font-check` built, :3022 stopped; baseline production build
-  `/private/tmp/maxsash-contrast-check`, server :3021 now stopped (started by this session).
-- Five-pair median LCP/FCP 2.884 → 1.552 s; last CSS 2.814 → 1.467 s.
-  Four eager fonts become one; 13 font descriptors and 10 unique font hashes match.
-  Candidate accepted: extra cold pair layout-shift sum ≈0.0009 in both builds.
-  Build/lint/types/format, 126 Node tests, 44 SEO and 128 contrast checks pass.
-  Headers, keyboard 20/20 and creative 193 records/129 assertions pass, no failures
-  or exceptions. Baseline/candidate servers stopped. No live claim.
+- Rejected body-font preloading and experimental inline CSS after three Lighthouse rounds.
+- Adopted StudioPlate: initial studio drawing is lazy image of existing print SVG; after
+  hydration it becomes the same inline SVG for live editing. No print API/model/font changes.
+- Lighthouse 13.5.0 simulated mobile (three alternating rounds): median FCP 2555 → 2105 ms,
+  LCP 4203 → 3754 ms, score 82 → 87. Transferred HTML ~168 → 84 KiB locally.
+  Scores are local comparison, not a live PageSpeed prediction. Raw reports `/private/tmp/maxsash-lh-preview-*.json`.
+- `useSeaSettings` exposes edition; StudioPlate alone generates preview markup. Shared
+  SVG/image sizing and object-fit preserve aspect ratio/night filter and no-JS drawing.
+- `tools/check-studio-plate.mjs`: no-JS image load/label/ratio in day/night at 390/1440;
+  hydrated lines equal print endpoint, including actual keyboard slider edit.
+- Final build `/private/tmp/maxsash-loading-text` passes; all own experiment servers stopped. Eight targeted no-JS/hydrated cases pass; phone day
+  and desktop night screenshots inspected. Native cold median LCP 1548 → 1500 ms; warm LCP 740 → 740 ms, FCP
+  622 → 626 ms (noise-level difference). Node 24 build/lint/types/format, 126 tests, 44 SEO, 128 contrast, headers,
+  keyboard 20/20 and creative 193 records/129 assertions pass (zero failures/exceptions).
+- Final Lighthouse confirmation: FCP 2104 ms, LCP 3753 ms, score 87, CLS 0, no runtime error.
+- Two options stay isolated/rejected. No new dependency added to repo (Lighthouse in tmp).
+- An unintended main-folder build was interrupted promptly; verification builds isolated.
+
+## Latest live PageSpeed (11 October 13:06–13:07 IST)
+
+- Owner reports: performance 90/90/90, LCP 3.0/3.0/3.3 s, FCP 2.0 s throughout,
+  TBT 170/170/30 ms, CLS 0; accessibility/best practices/SEO 100.
+- Before preload change: median performance 91, LCP 3.2 s, FCP 1.6 s, TBT 90 ms.
+  Modest median LCP gain (0.2 s), FCP and score worse; local gain not reproduced at scale.
+- Runs 1/2 share identical metrics and Captured at 13:06, possibly cached/duplicate.
+  Do not treat them as three independent runs or a conclusive causal regression.
+- TTFB breakdown 390 ms, latency warning absent. Blocking CSS estimate 930–1130 ms;
+  same four CSS files total 23 KiB. Normal Rethink/Mono now follow CSS in critical tree.
+- Next engineering experiment: compare CSS critical-path optimisation and font priority
+  variants with controlled cold loads plus Lighthouse simulated metrics. That led to the adopted preview above. No additional user capture needed before release.
 
 ## Evidence behind the experiment
 
@@ -50,8 +66,11 @@ This agent never commits, pushes or releases. Existing docs changes retained.
 
 ## Next / open items
 
-1. Complete preload experiment and production checks; owner reviews/releases accepted result.
-2. Trace CSS reduction only if needed after experiment. Preserve drawing reveals without
+0. Site review for freelance listings (11 October, docs only, no code changed): Notebook
+   "Sample essay" labels, workbench log failing, missing case-study dates, Household Hub
+   title, phone check, per-project share images. Details: follow-ups.md, *Before applying*.
+1. Owner reviews/releases progressive preview, then three independent mobile PageSpeed runs.
+2. Further CSS reduction only if live remeasurement warrants it. Preserve drawing reveals without
    measured visitor benefit. Unattributed reflow/unused-JS diagnostics remain lower priority.
 3. Owner Work/case-study prose, Montagu reading text/slashed-zero and both-theme ship review.
 4. Physical iPhone/Safari/Firefox, screen readers, sound, battery/GPU; phone page length.
@@ -64,13 +83,14 @@ This agent never commits, pushes or releases. Existing docs changes retained.
 ## Suggested commit message
 
 ```
-perf: prioritize the hero font during initial loading
+perf: defer the studio drawing from initial HTML
 
-Defer text and mono font preloads so initial bandwidth serves the hero font
-and blocking CSS. Preserve the font faces and existing rendering choices.
-Verified Node 24 production build, lint/types/format, 126 tests, 44 SEO,
-128 contrast checks, headers, keyboard 20/20 and creative 193 records
-with no failures/exceptions. Five alternating cold pairs: median LCP
-2.884 → 1.552 s; font descriptors/assets match; negligible shift in both.
-Local throttled evidence; live PageSpeed awaits owner release.
+The complete below-fold SVG inflated initial HTML. Start with a lazy image
+of the existing print SVG, then hydrate to that exact drawing for editing.
+Preserve no-JS access, aspect ratio, night treatment and the print model.
+Three local Lighthouse rounds improve median FCP/LCP by about 450 ms and
+halve HTML transfer; native cold loads improve slightly, warm LCP unchanged.
+Verified isolated Node 24 build/lint/types/format, 126 tests, 44 SEO,
+128 contrast, headers, keyboard 20/20, creative 193 records/129 assertions
+with zero failures/exceptions, and eight no-JS/live preview cases.
 ```

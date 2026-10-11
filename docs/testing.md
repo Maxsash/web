@@ -4,6 +4,41 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Progressive studio preview (11 October 2026)
+
+Lighthouse 13.5.0 installed only in `/private/tmp/maxsash-lighthouse`, disabled GPU,
+default simulated mobile throttling, fixed seed, fresh Chrome per audit. Three rounds:
+current median FCP/LCP 2555/4203 ms (score 82); body-font preload 2407/4415 (82);
+inline CSS 2253/4203 (84), +47 KiB HTML. Rejected both alternatives.
+Final-build confirmation after aspect-containment styling: FCP 2104 ms, LCP 3753 ms,
+score 87, CLS 0, no runtime error (`/private/tmp/maxsash-lh-preview-final.json`).
+Three new alternating baseline/preview rounds: median FCP 2555 → 2105 ms,
+LCP 4203 → 3754 ms, score 82 → 87; HTML transfer ~168 → 84 KiB. Local comparison,
+not predicted live scores. Reports `/private/tmp/maxsash-lh-preview-*.json`.
+
+Final isolated build `/private/tmp/maxsash-loading-text` :3024.
+`tools/check-studio-plate.mjs` passes eight cases: no-JS real vector image loads at
+390/1440 in day/night, has seed/label/containment and no overflow; hydrated SVG
+polylines equal print endpoint before/after a real keyboard slider edit. Phone day
+and desktop night screenshots inspected under `tools/.out/studio-plate/`.
+Native cold three-pair median LCP/FCP 1548 → 1500 ms, last CSS 1465 → 1381 ms.
+Warm two-pair median LCP 740 → 740 ms, FCP 622 → 626 ms; no material warm regression.
+Both use disabled GPU, 390×844, 4× CPU and request-level Slow 4G. Reports in candidate
+`tools/.out/font-loading{,-warm}/`; comparison harness accepts `--warm`.
+Node 24 build/lint/types/format, 126 Node tests, 44 SEO cases, 128 contrast, headers,
+keyboard 20/20 and creative 193 records/129 assertions pass with zero failures/exceptions.
+Completed creative process lingered and was stopped. All own experiment servers stopped. Ship/gull/sound-specific suites not
+rerun. Physical devices, real screen readers and fresh live PageSpeed not verified.
+
+## Owner post-preload PageSpeed (11 October 13:06–13:07 IST)
+
+Performance 90/90/90; LCP 3.0/3.0/3.3 s; FCP 2.0 s throughout; TBT 170/170/30 ms;
+CLS 0; accessibility/best practices/SEO 100. Median LCP improves 3.2 → 3.0 s while
+FCP worsens 1.6 → 2.0 s and performance 91 → 90. First two files share identical
+metrics and capture time (13:06); independence uncertain. TTFB breakdown 390 ms, no
+latency warning. Blocking CSS estimates 930–1130 ms; normal text/mono fonts follow CSS
+in critical tree. Owner evidence only: no fresh local checks or changes for this review.
+
 ## Font preload experiment (11 October 2026)
 
 Baseline `/private/tmp/maxsash-contrast-check` :3021 versus candidate

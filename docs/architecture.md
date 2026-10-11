@@ -378,6 +378,14 @@ No device tilt, no real ocean data or forecasts, no observation ingestion, no fl
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies
 any of these.
 
+## Studio preview delivery
+
+`StudioPlate` initially renders a lazy, unoptimized image from `/api/sea-edition/print`
+with the same seed/version. After hydration it renders the SVG locally for editing.
+`useSeaSettings` supplies the edition, not drawing markup. Both elements share sizing,
+aspect containment and the night filter. No-JavaScript visitors retain the actual printable
+drawing; the large SVG is excluded from initial HTML. The print model/API are unchanged.
+
 ## Font loading
 
 `app/fonts.ts` preloads Montagu Slab for the hero title. Rethink Sans (normal and italic)

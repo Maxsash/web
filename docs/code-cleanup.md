@@ -69,3 +69,10 @@ in both themes and arrival states rather than pinning palette strings.
 Two next/font options change request priority; no new face, CSS override or dependency.
 The comparison harness reuses the browser lifecycle and alternates cleared-cache loads
 with a fixed sea; output stays ignored under tools/.out/.
+
+## Progressive studio preview (11 October 2026)
+
+StudioPlate owns hydration and rendering; useSeaSettings supplies edition/settings.
+One renderSeaPlate implementation still generates both print and live preview; the
+initial image uses its existing endpoint. No new API, font asset or dependency.
+Sizing/night rules share one SVG/image selector; comparison tool now supports warm loads.

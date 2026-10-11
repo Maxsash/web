@@ -5,6 +5,14 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Deliver the studio drawing progressively** (11 October 2026). The complete inline
+  SVG below the fold made initial HTML large. Start with a lazy image of the existing
+  print SVG; hydrate to the same inline drawing for editing. Three local Lighthouse
+  mobile rounds improve median FCP 2.555 → 2.105 s, LCP 4.203 → 3.754 s, halve
+  transferred HTML. Keep all visible content/geometry and no-JS drawing. Restoring body
+  font preloads did not help; experimental CSS inlining added 47 KiB without reliable
+  LCP benefit, so neither is adopted. Live improvement awaits owner release.
+
 - **Preload the hero font only** (11 October 2026 measured optimisation). Keep Montagu
   Slab eager; Rethink Sans (both styles) and Reddit Mono load when used. The four early
   font files competed with CSS in an uncached phone trace. Five alternating local cold

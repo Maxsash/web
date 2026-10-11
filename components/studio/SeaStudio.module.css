@@ -204,10 +204,11 @@
   padding: 1rem;
   box-shadow: 8px 18px 0 color-mix(in oklab, var(--ink) 4%, transparent);
 }
-.plateFrame svg {
+.plateFrame :is(svg, img) {
   display: block;
   width: 100%;
   height: auto;
+  object-fit: contain;
 }
 .plate figcaption {
   border-top: 1px solid var(--rule-strong);
@@ -338,7 +339,7 @@
   .keep {
     order: 2;
   }
-  .plateFrame svg {
+  .plateFrame :is(svg, img) {
     max-height: 32svh;
   }
   .studio :is(button, a, input, summary) {
@@ -410,7 +411,7 @@
     top: 0.75rem;
     order: 0;
   }
-  .plateFrame svg {
+  .plateFrame :is(svg, img) {
     max-height: calc(100svh - 7.5rem);
   }
   .seedLine code {
@@ -466,7 +467,7 @@
     translate: 0 -0.6rem;
   }
 }
-:global(html[data-studio-theme="night"]) .plateFrame svg {
+:global(html[data-studio-theme="night"]) .plateFrame :is(svg, img) {
   filter: invert(1) hue-rotate(180deg);
   mix-blend-mode: screen;
 }

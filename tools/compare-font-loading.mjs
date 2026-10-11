@@ -7,14 +7,15 @@ assert.equal(bases.length, 2, "Provide baseline and candidate production URLs");
 assert.ok(bases.every(isLocal), "Use isolated local production servers");
 const rounds = Number(process.argv[4] ?? 5);
 assert.ok(Number.isInteger(rounds) && rounds > 0 && rounds <= 10);
-const out = "tools/.out/font-loading";
+const warm = process.argv.includes("--warm");
+const out = `tools/.out/font-loading${warm ? "-warm" : ""}`;
 mkdirSync(out, { recursive: true });
 const records = [];
 await withBrowser({ name: "font-loading", flags: NO_GPU_FLAGS }, async ({ send, evaluate }) => {
   await send("Page.enable");
   await send("Runtime.enable");
   await send("Network.enable");
-  await send("Network.setCacheDisabled", { cacheDisabled: true });
+  await send("Network.setCacheDisabled", { cacheDisabled: !warm });
   await send("Network.emulateNetworkConditions", {
     offline: false,
     latency: 562.5,
@@ -39,10 +40,13 @@ await withBrowser({ name: "font-loading", flags: NO_GPU_FLAGS }, async ({ send, 
   });
   for (let round = 0; round < rounds; round++) {
     for (const index of round % 2 ? [1, 0] : [0, 1]) {
-      await send("Network.clearBrowserCache");
-      await send("Page.navigate", {
-        url: new URL("/?seed=f532e107&version=2", bases[index]).href,
-      });
+      const url = new URL("/?seed=f532e107&version=2", bases[index]).href;
+      if (warm && round === 0) {
+        await send("Page.navigate", { url });
+        await delay(12000);
+      }
+      if (!warm) await send("Network.clearBrowserCache");
+      await send("Page.navigate", { url });
       await delay(12000);
       const measurement = await evaluate(`(() => {
         const resources = performance.getEntriesByType("resource");
@@ -54,6 +58,7 @@ await withBrowser({ name: "font-loading", flags: NO_GPU_FLAGS }, async ({ send, 
           layoutShiftSum: window.__fontLoadShifts.reduce((sum, value) => sum + value, 0),
           fcp: performance.getEntriesByName("first-contentful-paint")[0]?.startTime,
           ttfb: navigation.responseStart,
+          htmlBytes: navigation.encodedBodySize,
           lastStylesheet: Math.max(...styles.map(entry => entry.responseEnd)),
           fontPreloads: [...document.querySelectorAll('link[rel="preload"][as="font"]')].map(link => link.href),
           fonts: fonts.map(entry => ({ name: entry.name.split("/").at(-1), start: entry.startTime, end: entry.responseEnd, transferred: entry.transferSize })),

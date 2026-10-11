@@ -2,6 +2,38 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+## Before applying to freelance listings (review, 11 October 2026)
+
+A review of the live site as a talent-directory reviewer or client would read it (Freelance
+India Club profile links here). The site is good enough to apply with; these are what a careful
+reviewer could notice, most visible first. Content was read; nothing was tested on a phone.
+
+- [ ] **Notebook still reads as a template.** Two of its three posts show "Sample essay"
+      (`app/blog/page.tsx`, `app/blog/[slug]/page.tsx`, `content/posts.ts`), and the notebook's
+      share description says "Sample studies in sea, ship, and mathematics" (`app/blog/layout.tsx`).
+      A reviewer who opens Notebook sees placeholder work. Either relabel them ("Essay", "Study")
+      once you approve their text, or hide them until real writing replaces them; the WebGL field
+      note is real and should stay. Ties in with **Sample essays** below.
+- [ ] **"From the workbench" log fails on some loads.** Seen on 11 October: one page showed
+      "Loading the log…" and another "The log is unavailable right now." (`components/shore/GitHubActivity.tsx`).
+      It is in the footer of every page. Likely cause: GitHub's 60 requests an hour limit for
+      unauthenticated calls from shared Vercel addresses; check that `GITHUB_TOKEN` is set in
+      Vercel. Either way, when the fetch fails, show only the repo link (or nothing) instead of
+      an error.
+- [ ] **Missing "When" on two case studies.** `business-operations` and `intrusion-detection`
+      have no `period` in `content/projects.ts`; the other three do. Add the dates.
+- [ ] **Household Hub's title repeats.** Its `headline` is "Household Hub." so the page title
+      reads "Household Hub: Household Hub | Maxsash Studio". Give it a subtitle-style headline
+      like the others ("Built to be found.", "Off paper, into one system.").
+- [ ] **Phone check before applying.** Open the home page and one case study on a real phone
+      (and a slow one if possible): the WebGL sea, scroll length and the gull. Reviewers often
+      click a profile link on mobile. See **Phone length** and **Feedback on real devices**.
+- [ ] **Per-project share images.** Every case study shares the sea image, so a case study link
+      pasted in WhatsApp or LinkedIn does not show the project. Use each project's own cover
+      (the Freelance India Club samples already use `/images/work/wedding-platform.webp` and
+      `/images/work/household-insights-light.webp`). Same item as the share image in
+      **Case-study extras** below.
+
 - [ ] **Feedback on real devices.** Built and kept; listen on real speakers and headphones, and
       try a phone (a tap's press, the ripple under a finger, Android vibration, the gull landing
       and taking off) and a screen reader with the notices. What was not built is listed in
@@ -38,10 +70,11 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 - [ ] **PageSpeed** (three owner mobile runs, 11 October 11:17–11:21 IST):
       post-Mumbai performance 91/91/91; median LCP 3.2 s, TBT 90 ms; CLS 0. Accessibility,
       best practices and SEO 100; contrast fixed in live audits. No field data.
-- [ ] **Release font preload change and remeasure.** Local five-pair cold comparison:
-      median LCP 2.884 → 1.552 s with only Montagu preloaded, text/mono loaded on use.
-      Font faces/assets match; no material change in the extra layout-shift pair. Owner
-      release and three fresh PageSpeed runs needed to establish live benefit.
+- [ ] **Release progressive studio preview and remeasure.** Font-preload live result was
+      mixed; restoring body preload and inlining CSS failed to give reliable simulated LCP
+      gains. Lazy initial print image halves HTML transfer and improves local Lighthouse
+      median FCP/LCP by about 450 ms; editing remains exact SVG. Await production checks
+      and owner release, then compare fresh independent PageSpeed mobile reports.
 - [ ] **PageSpeed investigation order:** CSS/font/LCP trace now that Mumbai is active
       and the server-latency warning is absent (TTFB breakdown 380 ms). Four blocking CSS files
       total 23 KiB (estimated 310–410 ms savings); Math render delay varies 620–1630 ms.
@@ -73,10 +106,11 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
       edit freely into his own voice. Each must keep "The brief" first and "The outcome" last,
       and read in 2–5 minutes (`tools/case-studies.test.mjs`).
 - [ ] **Case-study extras, if wanted:** a share image per case study (all pages use the sea
-      image today); a more detailed system drawing on the two private case studies; a second
+      image today; now also listed under *Before applying* above); a more detailed system drawing on the two private case studies; a second
       screenshot for the three with public sites.
 - [ ] **Sample essays.** The two samples remain `noindex`; replace them with approved real
-      writing before indexing. Real published posts now enter the sitemap automatically.
+      writing before indexing. Their visible "Sample essay" labels are now a reviewer-facing issue
+      (see *Before applying* above). Real published posts now enter the sitemap automatically.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
 - [ ] **Ghost photos (Easter egg idea).** Metal Gear Solid style "ghost" photos of the dev team,

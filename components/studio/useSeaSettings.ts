@@ -1,7 +1,6 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import { describeSea } from "@/lib/sea/describe";
 import { createSeaEdition } from "@/lib/sea/edition";
-import { renderSeaPlate } from "@/lib/sea/plate";
 import {
   DEFAULT_SEA_SEED_V2,
   normaliseSeaSeed,
@@ -33,7 +32,6 @@ export function useSeaSettings(seed: string, version: "1" | "2") {
   const current = seedFromSettings(settings);
   const shown = useDeferredValue(current);
   const edition = useMemo(() => createSeaEdition(shown, "2"), [shown]);
-  const plate = useMemo(() => renderSeaPlate(edition), [edition]);
   const typed = draft ?? current;
 
   const apply = (next: SeaSettings) => {
@@ -46,7 +44,7 @@ export function useSeaSettings(seed: string, version: "1" | "2") {
     settings,
     current,
     shown,
-    plate,
+    edition,
     words: describeSea(edition.settings!),
     sailing: version === "2" && seed === current,
     query: `seed=${current}&version=2`,

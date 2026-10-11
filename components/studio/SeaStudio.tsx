@@ -6,6 +6,7 @@ import { HOME_WATER, SEA_PRESETS } from "@/lib/sea/presets";
 import { seedFromSettings } from "@/lib/sea/seed";
 import type { SeaSettings } from "@/lib/sea/types";
 import Die, { dieFace } from "./Die";
+import StudioPlate from "./StudioPlate";
 import KeepActions from "./KeepActions";
 import SeedField from "./SeedField";
 import SettingSlider, { CONTROLS } from "./SettingSlider";
@@ -110,13 +111,11 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
 
         <div className={styles.result}>
           <figure className={styles.plate}>
-            <div
+            <StudioPlate
               key={drawn}
-              className={styles.plateFrame}
-              data-inked={drawn > 0 || undefined}
-              role="img"
-              aria-label={`Engraved drawing of the sea with seed ${sea.shown}: ${sea.words.sentence}.`}
-              dangerouslySetInnerHTML={{ __html: sea.plate }}
+              edition={sea.edition}
+              inked={drawn > 0}
+              label={`Engraved drawing of the sea with seed ${sea.shown}: ${sea.words.sentence}.`}
             />
             <figcaption>
               <p className={styles.seedLine}>

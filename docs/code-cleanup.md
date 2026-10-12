@@ -114,3 +114,8 @@ subscription/lifecycle, ThemeControl and the sky button render controls. Pure th
 sky-control geometry stay independent of DOM/React. Existing text measurements and ripple
 shader are reused. One frame loop still draws; the canvas records actual blend/ripple counts
 for integration checks. No new route, dependency or asset.
+
+## Navigation feedback (13 October 2026)
+
+PageLink is the shared public navigation wrapper. NavigationStatus alone renders the
+pending badge; no click timers, global DOM listeners or duplicate per-page loading UI.

@@ -3,6 +3,7 @@
 import type { ComponentProps, MouseEvent } from "react";
 import Link from "next/link";
 import { glideNextScroll } from "@/components/SmoothLinks";
+import NavigationStatus from "@/components/NavigationStatus";
 
 export const isPlainClick = (event: MouseEvent) =>
   event.button === 0 && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
@@ -17,7 +18,7 @@ function returnToTop(href: string) {
   scrollTo({ top: 0 });
 }
 
-export default function PageLink({ onClick, ...props }: ComponentProps<typeof Link>) {
+export default function PageLink({ onClick, children, ...props }: ComponentProps<typeof Link>) {
   return (
     <Link
       prefetch={false}
@@ -30,6 +31,9 @@ export default function PageLink({ onClick, ...props }: ComponentProps<typeof Li
         event.preventDefault();
         returnToTop(href);
       }}
-    />
+    >
+      {children}
+      <NavigationStatus />
+    </Link>
   );
 }

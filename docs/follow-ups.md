@@ -2,6 +2,20 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+## Owner device report (13 October 2026)
+
+Deployment includes 3261a8d; iPhone Air/iOS 27 Safari bars, Notebook, touch/gull,
+scrolling, sounds, case studies and sea studio reported good. VoiceOver and Reduce
+Motion remain untested; page length is somewhat long and still under review.
+Owner reports supplied links work on WhatsApp. LinkedIn description-length warning
+remains (both original essay summaries under 100 characters); copy polish pending.
+Google screenshot: integral essay unknown/no crawl. Live sitemap has all 11 public
+URLs; both essays are indexable with self-canonicals. Live test/request indexing and
+sitemap last-read/count check next. Bing not configured. Vercel draft values match,
+but path grouping review, publishing and normal-use/enforcement checks remain.
+- [ ] Release and phone-check new navigation pending badge (implemented after report).
+- [ ] Explore softer wooden taps for controls if requested; paper turns suit Notebook.
+
 ## Backend credibility review (11 October 2026)
 
 - Hero and metadata now name backend/real-time specialism using existing evidence.
@@ -52,9 +66,9 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       business operations and eight months for intrusion detection. Shown as Build time;
       calendar dates were not supplied.
 - [x] **Household Hub title:** uses “Less to remember.” as its headline.
-- [ ] **Phone check before applying.** Open the home page and one case study on a real phone
-      (and a slow one if possible): the WebGL sea, scroll length and the gull. Reviewers often
-      click a profile link on mobile. See **Phone length** and **Feedback on real devices**.
+- [x] **iPhone check before applying** (owner, 13 October): iPhone Air/iOS 27 home,
+      Notebook, case studies and studio work well; scrolling/touch/gull smooth. A slow
+      device, VoiceOver and Reduce Motion remain untested; see **Phone length**.
 - [x] **Per-project share images:** screenshot-backed case studies use their covers; the two
       private systems and all three Notebook articles now use 1200 × 630 cards captured from
       their own drawings (`public/images/work/*-drawing.webp`, `public/images/notebook/`).

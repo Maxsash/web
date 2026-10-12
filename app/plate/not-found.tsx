@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import DriftPage from "@/components/drift/DriftPage";
 import { DEFAULT_SEA_SEED_V2 } from "@/lib/sea/seed";
 
@@ -13,12 +13,12 @@ export default function PlateNotFound() {
       title="That sea can't be drawn."
       actions={
         <>
-          <Link prefetch={false} href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>
+          <PageLink prefetch={false} href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>
             Draw the default sea
-          </Link>
-          <Link prefetch={false} href="/sea">
+          </PageLink>
+          <PageLink prefetch={false} href="/sea">
             Back to the sea studio
-          </Link>
+          </PageLink>
         </>
       }
     >

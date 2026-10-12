@@ -1,4 +1,4 @@
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import type { Metadata } from "next";
 import { sharingMetadata } from "@/lib/seo";
 import Mark from "@/components/Mark";
@@ -24,9 +24,9 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         Skip to the notebook
       </a>
       <header className={styles.runningHead}>
-        <Link prefetch={false} href="/" className={styles.harbourLink}>
+        <PageLink prefetch={false} href="/" className={styles.harbourLink}>
           <Mark /> <span>Maxsash Studio</span>
-        </Link>
+        </PageLink>
         <StudioNav />
       </header>
       {children}
@@ -37,9 +37,9 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         <p>A notebook for looking closer.</p>
         <ul className={styles.footerLinks} aria-label="Maxsash Studio">
           <li>
-            <Link prefetch={false} href="/">
+            <PageLink prefetch={false} href="/">
               Return to the studio <span aria-hidden="true">↗</span>
-            </Link>
+            </PageLink>
           </li>
           {studioChannels.map((channel) => (
             <li key={channel.label}>

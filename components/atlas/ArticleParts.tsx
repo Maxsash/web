@@ -1,4 +1,4 @@
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import type { ReactNode } from "react";
 import NotebookLink from "@/components/NotebookLink";
 import ScrollMark from "@/components/feedback/ScrollMark";
@@ -121,9 +121,9 @@ export function ArticleEnd({ next }: { next: { slug: string; title: string } }) 
           Written by {site.owner}, who builds {site.offer} end to end at {site.name}.
         </p>
         <p>
-          <Link prefetch={false} href={`/#${site.afterHero.id}`}>
+          <PageLink prefetch={false} href={`/#${site.afterHero.id}`}>
             See the work
-          </Link>
+          </PageLink>
           <a href={site.links.email}>{site.email}</a>
         </p>
       </aside>

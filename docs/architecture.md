@@ -509,6 +509,12 @@ origin sending JSON (so another website cannot write files while the dev server 
   (`site.shareImage`, `public/images/studio-card-v1.jpg`) are rendered from it and the live sea by
   the brand kit beside the repo (`../brand/`, see its README). `app/manifest.ts` and the
   theme colour read `site.colors`.
+- **Navigation feedback:** PageLink renders NavigationStatus inside Next Link;
+  useLinkStatus supplies the actual pending state. Only pending links portal a fixed,
+  pointer-transparent “Opening page…” status to body, outside transformed/sticky link
+  ancestors. It does not shift layout or take focus; CSS honours Reduce Motion and print.
+  Public Next links share PageLink, including NotebookLink and error/print return links.
+  No loading route boundary is added, preserving missing-route HTTP status behaviour.
 - **Links:** `SmoothLinks` (root layout) sets `html[data-glide]` (`scroll-behavior: smooth`)
   for the one scroll a click on a `#` link starts, until `scrollend` or 1.5 s. `PageLink` wraps
   `Link`: pointing at the page already open (path and query), a plain click scrolls to the top

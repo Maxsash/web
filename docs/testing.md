@@ -1,8 +1,42 @@
 # Testing
 
+## Owner iPhone report (13 October 2026)
+
+Owner tested the deployment including 3261a8d on iPhone Air, iOS 27. Safari day/night
+scrolling and Notebook look good; no exact bar-colour measurement or missing-URL result
+was supplied. Touch interactions, gull, rotation and scrolling reported smooth and working.
+Sounds behave as expected. Case-study pages and sea studio reported working well.
+Page length feels somewhat too long, though not clearly bad. Homepage sharing preview
+reported good; owner subsequently reports the supplied links work on WhatsApp. LinkedIn
+reports a description-length warning. Google screenshot for `an-integral-under-sail`
+shows URL unknown/no crawl, not an indexed result; Bing remains unconfigured.
+VoiceOver and Reduce Motion explicitly not tested. No battery/thermal measurements,
+Android or other physical-browser qualification follows from this report.
+
+Navigation feedback was implemented after this report and remains unreleased.
+`node tools/check-navigation.mjs http://127.0.0.1:3041` holds actual RSC requests:
+keyboard Notebook/day and touch case-study/night show one body-portalled status, retain
+link dimensions and keyboard focus, fit the viewport and clear on arrival. Reduce Motion
+keeps the icon still. Captures are generated under ignored `tools/.out/navigation/`.
+Isolated Node 24 production build, lint, types, format, 145 Node tests, 78 SEO cases and
+headers/CSP and keyboard 22/22 pass. Desktop/day and phone/night badge captures
+inspected and deleted. Creative report: 191 records, zero failures/runtime exceptions.
+After printing the finished report, its Node process lingered; stopped after reading
+report.json. Own server stopped; temporary build/check output removed at completion.
+The new badge has no physical-device or VoiceOver qualification yet.
+
 What exists, how to run it, and what has never been checked. Rules: never build or test
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
+
+## Live discovery check (13 October 2026)
+
+Read-only public HTTP check: sitemap 200 and 11 public URLs, including all three
+published articles and five case studies. Both original essays return 200 with
+index/follow and self-canonical www URLs. Their descriptions are below 100 characters,
+consistent with the owner's LinkedIn warning. No metadata changed. Screenshot of
+Vercel draft shows 100/60 s/IP/429; publication/enforcement unverified. No genuine
+Googlebot/Bingbot-IP access or account changes performed. No new build/test run.
 
 ## Browser bars (12 October 2026)
 
@@ -535,21 +569,20 @@ covers the error pages yet, and no parity test compares the whirlpool shader wit
 
 ## Never checked
 
-Everything above runs in headless Chrome on a Mac. Not covered, so do not claim it:
+Automated browser checks run in headless Chrome on a Mac. Owner physical-device
+evidence is recorded above. Remaining coverage gaps:
 
 - a real screen reader (VoiceOver on Mac and iPhone, NVDA, TalkBack) and Reader mode;
-- physical phones beyond the owner's own report that the staged mobile sea is smooth on
-  an iPhone, and battery, thermal or GPU qualification;
+- physical devices beyond the owner-reported iPhone Air/iOS 27 checks above, and
+  battery, thermal or GPU measurements;
 - field Web Vitals and the Vercel runtime (headers and the sea API are tested locally);
 - a printed plate on paper, and the real WhatsApp app's preview;
-- how the sounds sound on real speakers and headphones, and audio in Safari, Firefox or on an
-  iPhone (its silent switch mutes Web Audio);
-- the feedback run on a real phone: vibration on Android, a tap's press sound, the sea's ripple
-  under a finger, and the notices with a screen reader;
-- the gull on a real iPhone and in Safari or Firefox (it was watched only in headless Chrome: desktop
-  and phone sizes, day, night, the drawing chapters, reduced motion, hover, keyboard focus, the
-  pointer, a press on the button and on the gull, arrival with the waves and sounds remembered
-  off), and how often visitors actually press it;
+- separate speaker/headphone listening results and Firefox audio; owner reports iPhone
+  sounds working as expected, without separate measurements;
+- vibration on Android and notices with a screen reader; owner iPhone touch/ripple
+  and sound behaviour are reported good;
+- physical-browser gull behaviour beyond the owner-reported iPhone Safari pass, and
+  how often visitors actually press it;
 - the hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
   idle and offline beyond headless Chrome's emulation;
 - Search Console, indexing and AI citation outcomes.

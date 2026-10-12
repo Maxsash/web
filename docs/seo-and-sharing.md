@@ -53,6 +53,25 @@ Hosting is Vercel; `maxsash.com` redirects to `www.maxsash.com` (reported as 308
 dashboard path is Project → Settings → Domains → Edit `maxsash.com` → redirect to
 `www.maxsash.com` with **308 Permanent Redirect**; verify with `curl -sI https://maxsash.com`).
 
+**Sea rate limit (pending owner setup, 13 October 2026):** Project → Firewall →
+Configure → New Rule. Match Request Path starts with `/api/sea-edition` OR equals
+`/plate` (not AND). Rate Limit → Fixed Window; proposed starting budget 100 requests
+per 60 seconds keyed by IP; default 429 on excess. Review the pricing dialog, save,
+Review Changes → Publish; then filter Firewall traffic by the rule and check normal
+studio/print usage. This is a proposal, not a traffic-qualified threshold. Owner screenshot shows the proposed limit/IP/429 and OR path rows, but
+publication/enforcement remains unconfirmed. To remove grouping ambiguity, use one
+Request Path “Is any of” condition with `/api/sea-edition`, `/api/sea-edition/print`,
+`/plate`, AND the rate limiter. These are the three current intended endpoints. Hobby permits one rate-limit rule, so combine the paths.
+[Official rate-limit guide](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
+
+**13 October live/report checkpoint:** live sitemap 200 with all 11 public URLs;
+both original essays 200, index/follow, self-canonical. Owner's integral essay URL
+inspection says unknown to Google/no crawl; use Test Live URL then Request Indexing,
+and check submitted sitemap Success, last-read date and discovered count. Bing is not
+set up: import the verified Google Search Console property, then confirm the sitemap.
+Owner reports supplied WhatsApp links work; LinkedIn warns on short descriptions.
+Both original essay summaries are under 100 characters; metadata polish pending.
+
 **Search Console:** owner confirms sitemap success on 11 October 2026. The supplied
 screenshot confirms home is indexed, HTTPS and one valid ProfilePage. Inspect each case
 study: successful fetch, crawling/indexing allowed, self-canonical and Google-selected
@@ -72,8 +91,8 @@ membership, canonical URLs, cards, BlogPosting fields and robots directives acro
 social, Bing and OAI-SearchBot user agents. Bingbot and OAI-SearchBot also receive a substantial
 server-rendered `<main>` in the local harness.
 
-Not tested: the real WhatsApp app preview, a schema validator run, Search Console and
-indexing outcomes, and AI citations.
+Not verified: schema validator results, indexing beyond supplied Search Console
+evidence, real crawler-IP/WAF access and AI citations. WhatsApp previews are owner-reported.
 
 ## AI discovery review — 11 October 2026
 

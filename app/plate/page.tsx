@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import { notFound } from "next/navigation";
 import { describeSea } from "@/lib/sea/describe";
 import { createSeaEdition } from "@/lib/sea/edition";
@@ -43,12 +43,12 @@ export default async function PlatePage({ searchParams }: Props) {
           <a href={`/api/sea-edition/print?${encoded}&download=1`} download>
             Save as SVG
           </a>
-          <Link prefetch={false} href={`/?${encoded}`}>
+          <PageLink prefetch={false} href={`/?${encoded}`}>
             Sail this sea ↑
-          </Link>
-          <Link prefetch={false} href={`/sea?${encoded}`}>
+          </PageLink>
+          <PageLink prefetch={false} href={`/sea?${encoded}`}>
             Back to the sea studio
-          </Link>
+          </PageLink>
         </div>
       </header>
       <figure className={styles.sheet}>

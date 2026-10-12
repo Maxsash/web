@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageLink from "@/components/PageLink";
 import DriftPage from "@/components/drift/DriftPage";
 
 export const metadata: Metadata = { title: "This note was torn out" };
@@ -13,12 +13,12 @@ export default function NoteNotFound() {
       title="This note was torn out."
       actions={
         <>
-          <Link prefetch={false} href="/blog">
+          <PageLink prefetch={false} href="/blog">
             Open the notebook
-          </Link>
-          <Link prefetch={false} href="/">
+          </PageLink>
+          <PageLink prefetch={false} href="/">
             Back to the studio
-          </Link>
+          </PageLink>
         </>
       }
     >

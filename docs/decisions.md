@@ -5,6 +5,15 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study
+  clicks sometimes wait several seconds without feedback. Shared PageLink uses Next's
+  useLinkStatus for a fixed “Opening page…” badge, with no layout shift or fake progress.
+  Reduce Motion keeps the icon still. Keep current prefetch policy and route status codes.
+- **Phone length remains a review item** (owner iPhone Air/iOS 27, 13 October). Smooth
+  and working, but somewhat long; no shortening or approved stage-timing change yet.
+- **Wooden feedback is an idea** (owner, 13 October). Consider restrained plank/wood
+  taps on controls; keep Notebook paper turns. No sound change made or approved yet.
+
 - **One brand everywhere, from the site's own sources** (owner asked for on-brand icons, share
   images and social profiles, 11 October 2026). Icons keep the mark's geometry and move from the
   old navy/cream to chart ink `#10303A` and hero cream `#F5F0DF`. The default share card is the

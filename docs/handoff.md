@@ -1,98 +1,62 @@
 # Handoff — start here
 
-Updated 11 October 2026, night. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 73fa720, which is also `production`. The owner staged the icons/card step; everything
-since (Organization data, socials, the sea studio's own page) is unstaged on top of it.
+Updated 12 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
+HEAD d686843 on main; tree was clean when this session started. Do not commit or release.
 
 ## Current work
 
-**Staged: icons and share card.** Icons recoloured to chart ink `#10303A` + cream `#F5F0DF`
-(same geometry); default card `public/images/studio-card-v1.jpg` (live hero, 117 KB) in
-`site.shareImage`; `app/manifest.ts` with 192/512/maskable icons; `theme-color` from
-`site.colors`; unreferenced `public/mark.svg` deleted; `check-seo` checks card size and manifest.
+Owner requested factually correct moon phases in night mode, if no higher-priority work is
+ready. Priorities remain owner release/social previews, physical-phone/accessibility checks,
+and search-console/Bing inspections; no identified urgent source fix blocks the moon work.
+The previous handoff's staged/unstaged account is obsolete: those changes are committed.
 
-**Unstaged: studio profiles, socials and `/sea`.**
+The night hero now shows a factually dated phase on a complete lunar surface. Pure orbital
+calculation supplies the noon-IST phase for the date; sphere normals and phase-derived sunlight
+supply the lit/unlit boundary. One subtly marked material continues through lunar night, revealed
+by dim viewer-facing Earthshine, with atmospheric sky beneath both sides. It no longer reads as
+a black cover over the bright portion. Markings/brightness are authored, not a lunar map or
+calibrated photometry. Material work is limited to pixels inside the night disc.
 
-- Profiles (owner): LinkedIn Page `/company/maxsash`, Instagram `@maxsashstudio`, WhatsApp
-  by the business number (`https://wa.me/919183636567`, owner 12 October: usernames don't work
-  yet; `@maxsash` stays reserved). Founded June 2026; WhatsApp hours Monday–Friday 9–5 (the owner said "9 to 5";
-  weekdays assumed).
-- Home graph: Organization `#studio` (logo, email, `foundingDate` 2026-06, founder `#yash`,
-  `sameAs` LinkedIn Page and Instagram); WebSite publisher is the studio.
-- Socials: Contact adds "Or message on WhatsApp ↗"; the shore lists email, WhatsApp,
-  Instagram, LinkedIn Page plus a colophon link "The sea studio ↗"; the Notebook footer lists
-  the three channels. Portfolio, personal LinkedIn and GitHub now live only in About.
-- Sea studio moved to `/sea` (owner chose this after visitors needed it explained in person).
-  `components/PageShell.tsx` (header, main, shore; `--page-gutter`) now frames case studies and
-  `/sea`. Studio heading "Make your own sea." with a plain paragraph and three steps; the
-  "sailing" pill is gone; "Sail this sea →" opens home with the seed. Hero "Make your own →",
-  plate links and sitemap point to `/sea`. Checks moved with it (testing.md).
-- Gull (owner approved after a measured check): waits 2 s instead of 3; on skies wider than a
-  phone it drops in from just above the top edge (`arrivalEntry` in `flight.ts`), so desktop
-  flight is 2.3 s instead of 3.9 s. Phones unchanged. See decisions.md, Feedback.
-
-**Brand kit (outside the repo, `../brand/`, not under git).** Owner's private page
-https://claude.ai/artifact/NcRFgKvfm9PBXGaH3ps4w1 (source `../brand/kit/index.html`, version 3):
-every LinkedIn, Instagram and WhatsApp image and field, Canva setup, voice, palette. It now has
-the real handles, founded year, 9–5 hours, the number link as Instagram link 3 (version 4), and the
-LinkedIn Page's current state (name "Maxsash", old tagline, `maxsash.com` without www, a
-watercolour logo; read from public HTML because Claude in Chrome tools never appeared).
+Still/reduced-motion scenes refresh the date after India midnight; visible draws refresh on
+return from a hidden tab. Fixed size/position/orientation and sea lighting. No location, remote
+request, dependency or asset. Shared error shader bytes/fallback remain fixed. Docs are current.
+Work is uncommitted. Sun/moon click-to-toggle was discussed, not requested for implementation.
 
 ## Verification
 
-- Final isolated Node 24 build of the full working tree: TypeScript, lint, format, 128/128 Node
-  tests, 47 gull layout checks, 78 SEO cases, headers/CSP, keyboard 22/22, sound suite, 191
-  creative cases, zero failures and runtime exceptions (studio-plate's 8 cases passed on the
-  previous build; the gull change does not touch it). Own server :3019 stopped; worktree removed.
-- Looked at `/sea` (1440 and 390), Contact, shore and Notebook footer; the case-study header is
-  pixel-identical to live after the PageShell extraction.
-- Not checked: `/sea` on a real phone or Safari, real WhatsApp/LinkedIn previews (need the
-  release), Save/zip buttons inside the claude.ai viewer, Canva font availability.
+Final isolated Node 24 webpack build, lint, TypeScript, format and 132/132 Node tests pass.
+USNO phase fixtures agree within 0.2 degrees / 0.5% illumination; India-date rollover is pinned.
+Moon browser check passes 14 supersampled lit-area cases within 1.5 percentage points,
+Earthshine/night-surface RGB above equivalent sky (no black overlay), spherical shading,
+unchanged daylight and dated hero/reduced-motion midnight redraw. Inspected final desktop
+crescent/quarters/full and phone crescent. 78 SEO cases, headers/CSP, keyboard 22/22 and creative
+191 records pass with zero failed assertions/runtime exceptions. Own :3041 server stopped;
+latest captures/report saved in tools/.out/moon/. Own isolated worktree removed.
+Not checked: physical devices, Safari/Firefox, real screen reader, production release.
 
 ## Next
 
-1. Owner: review, commit, release. Then Facebook Sharing Debugger, LinkedIn Post Inspector and a
-   WhatsApp message to self for the home page and `/sea`; Rich Results Test on the home page.
-2. Owner: fill the profiles from the kit page; renaming the LinkedIn Page to Maxsash Studio is
-   recommended for one name everywhere (the URL stays).
-3. Then the SEO / LLM-SEO and content step (seo-and-sharing.md).
-4. Recapture `public/images/work/business-operations-drawing.webp` now that "Buying" is live.
-5. Still open: Search Console inspections, Bing Webmaster Tools, production evidence for private
-   systems, real phone/Safari/Firefox/screen-reader checks, Vercel rate limits, follow-ups.md.
-6. Housekeeping: 11 old detached worktrees under `/private/tmp/maxsash-*` from earlier sessions.
+Owner: review the main site's night mode; commit/release remain the owner's actions.
+Optional preview: tools/.out/moon/crescent.png and phone-crescent.png.
 
-## Suggested commit messages
+## Open items
 
-For the staged set:
+- Owner: review/release, then real social previews and crawler/indexing inspections.
+- Physical phone, Safari/Firefox, screen reader, audio and field performance checks.
+- Private-system production evidence, Vercel rate limits, and remaining follow-ups.md items.
+- Old detached worktrees belong to prior sessions; leave them alone.
+
+## Suggested commit
 
 ```
-feat: bring icons and the share card onto the current brand
+feat: show date-correct phases on a continuous lunar surface
 
-Recolour the favicon, SVG, Apple and away icons from the old navy and cream to chart ink
-and cream, keeping the mark's geometry. Replace the default share card, which still showed
-the old type, ship and copy, with the live hero's sea, cutter, headline and offer. Add a web
-manifest with 192, 512 and maskable icons, set theme-color to chart paper and night, and keep
-the default card in one place (site.shareImage). Delete the unreferenced mark.svg.
+Calculate lunar illumination locally at noon IST. Shade one marked lunar surface with
+phase-derived sunlight and dim Earthshine so its night face continues around the bright
+portion. Refresh the date in still scenes and preserve fixed error-page skies.
 
-Verified in an isolated Node 24 production build: TypeScript, lint, format, 126 Node tests,
-66 crawler/page cases (now with the card's 600 KB WhatsApp limit and the manifest icons),
-headers/CSP, 20 keyboard checks and 193 creative records with no runtime exceptions.
-```
-
-For the unstaged set:
-
-```
-feat: give the sea studio its own page and link the studio's profiles
-
-Visitors needed the sea studio explained in person, so it moves from the end of the homepage
-to /sea, opening with a plain explanation and three steps; the hero, print page and shore
-link to it with the visitor's sea. Case studies and /sea share one page shell. Add WhatsApp
-(the business number's wa.me link, never shown as text) to Contact, and the studio's WhatsApp, Instagram and LinkedIn Page to
-the shore and Notebook footers; describe the studio as an Organization with its logo,
-founding date and profiles. The gull now waits 2 s and, on wide screens, drops in from above
-the top edge, so its desktop flight is 2.3 s instead of 3.9 s.
-
-Verified in an isolated Node 24 production build: TypeScript, lint, format, 128 Node tests,
-47 gull layout checks, 78 crawler/page cases, headers/CSP, 22 keyboard checks, studio plate
-and sound suites, and 191 creative records with no failures or runtime exceptions.
+Verified in an isolated Node 24 production build: types, lint, format, 132 Node tests,
+USNO fixtures, moon surface/area/shading/date/midnight checks, 78 SEO cases, headers/CSP,
+keyboard 22/22 and creative 191 records with no failures/runtime exceptions.
+Desktop/phone phase captures inspected.
 ```

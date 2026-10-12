@@ -2,8 +2,15 @@ import type { SeaEdition } from "@/lib/sea/types";
 import { cameraAt, seaPointAt } from "./camera";
 import { GlResources } from "./gl-resources";
 import { lookAt, multiply, perspective } from "./matrices";
+import { indiaMoonDay, moonForIndiaDay } from "./moon-phase";
 import { seaLightDirection } from "./ocean-light";
-import { seaVertex, seaFragmentSource, rippleGLSL, skyVertex, skyFragment } from "./ocean-shaders";
+import {
+  seaVertex,
+  seaFragmentSource,
+  rippleGLSL,
+  skyVertex,
+  skyFragmentSource,
+} from "./ocean-shaders";
 import {
   compilePrograms,
   openSeaContext,
@@ -28,7 +35,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
         surface: surveyWakeGLSL + rippleGLSL,
       }),
     ],
-    sky: [skyVertex, skyFragment],
+    sky: [skyVertex, skyFragmentSource({ moonPhase: true })],
     boat: [surveyShipVertex, surveyShipFragment],
   });
   const surface = seaSurface(resources, gl, compact);
@@ -52,7 +59,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     "uShip",
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight", "uTime"]),
-    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect"]);
+    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon"]);
   gl.useProgram(sea);
   setWaves(gl, su, edition);
   let aspect = 1,
@@ -61,8 +68,21 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     ripple: [number, number, number] = [0, 0, -1e4];
   let placement = { x: 4.5, z: -5.5, scale: 1 };
   let framing = cameraAt(1, 1, [0, 0]);
+  let moonDay = NaN;
+  let moon = moonForIndiaDay(indiaMoonDay(Date.now()));
+  const refreshMoon = () => {
+    const day = indiaMoonDay(Date.now());
+    if (day === moonDay) return false;
+    moonDay = day;
+    moon = moonForIndiaDay(day);
+    canvas.dataset.moonCycle = String(moon.cycle);
+    canvas.dataset.moonIllumination = String(moon.illumination);
+    return true;
+  };
+  refreshMoon();
   canvas.dataset.triangles = String(surface.triangles);
   return {
+    refreshMoon,
     resize(width: number, height: number, ratio: number, composition?: ShipComposition) {
       aspect = resizeCanvas(canvas, gl, width, height, ratio);
       if (composition) {
@@ -76,6 +96,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       return Boolean(point);
     },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
+      refreshMoon();
       camera = cameraAt(reveal, aspect, pointer, framing);
       const { eye, target } = camera;
       const vp = multiply(perspective(aspect), lookAt(eye, target));
@@ -89,6 +110,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.uniform1f(ku.uReveal, reveal);
       gl.uniform1f(ku.uNight, night);
       gl.uniform1f(ku.uAspect, aspect);
+      gl.uniform2f(ku.uMoon, moon.illumination, moon.cycle < 0.5 ? 1 : -1);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       gl.enable(gl.DEPTH_TEST);
       gl.useProgram(sea);

@@ -124,6 +124,20 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **The hero moon follows the India calendar date** (owner, 12 October 2026). Calculate
+  solar/lunar orbits and illumination locally, sampling noon IST for the whole date; refresh
+  when the date changes, including a still scene. Use conventional northern-hemisphere diagram
+  orientation (waxing right, waning left), with the existing authored size and sky position.
+  This is a date-correct phase, not a local sky observation: no location, rise/set, horizon tilt
+  or weather is read. Owner follow-up: keep the complete disc, shade its spherical surface from
+  the phase-derived sunlight direction and leave the unlit portion faintly legible; a crescent
+  is its illuminated area, not the Moon's silhouette. Further owner direction: the night side
+  should look unlit, with the same subtly marked material and faint earthshine continuing
+  across the boundary, instead of a black cover. Surface markings are stylised, not a mapped
+  lunar photograph. This models the day/night boundary, not an Earth-shadow eclipse.
+  Fallback plate and error-page moons stay fixed. Stars remain a follow-up.
+
+
 - **An authored survey cutter** (design interpretation, 10 October 2026). The owner asked for a
   unique ship, refined motion and placement that reflect the whole website. The
   resulting model is a gaff cutter in ink, rust, brass and bone canvas:

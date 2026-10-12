@@ -167,6 +167,9 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     const requestFrame = () => {
       if (!frame && !disposed) frame = requestAnimationFrame(render);
     };
+    const moonClock = window.setInterval(() => {
+      if (engine?.refreshMoon()) requestFrame();
+    }, 60_000);
     const restart = () => {
       cancelAnimationFrame(frame);
       frame = 0;
@@ -409,6 +412,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       });
     return () => {
       disposed = true;
+      window.clearInterval(moonClock);
       events.abort();
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();

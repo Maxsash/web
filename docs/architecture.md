@@ -95,6 +95,29 @@ behind a server-rendered SVG plate, which is also the fallback.
   exports builders; shared defaults are pinned byte for byte by `tools/drift.test.mjs`.
   The homepage supplies its moving ship wake; error seas keep their own surfaces.
 
+### Date-correct hero moon
+
+`moon-phase.ts` is pure: Schlyter's solar/lunar orbital elements, Kepler solution and lunar
+perturbations produce geocentric cycle and distance-corrected illuminated fraction.
+[Algorithm source](https://stjarnhimlen.se/comp/ppcomp.html), sections 3–9 and 15.
+`indiaMoonDay` chooses the calendar day; `moonForIndiaDay` samples noon IST.
+`ocean-engine` caches that day's result and supplies `uMoon` (fraction, waxing/waning side)
+to `skyFragmentSource({ moonPhase: true })`. The shader reconstructs the visible sphere's
+surface normals inside a complete antialiased disc. A phase-derived sunlight vector gives the
+lit/unlit boundary; normal/light incidence supplies spherical shading. The unlit surface stays
+dimly legible with viewer-facing earthshine. Both sides share restrained procedural surface
+markings; their colour is atmospheric sky plus reflected light, avoiding a black overlay.
+Surface lighting/markings run only inside the night disc. Brightness response/earthshine contrast are authored,
+not calibrated photometry. Ordinary phases are sunlight geometry, not an Earth-shadow eclipse
+([NASA](https://science.nasa.gov/moon/moon-phases/)).
+Default shader strings remain byte-identical for error scenes. No dependency, request or asset.
+
+The normal frame refreshes the date cheaply; `OceanScene` checks once a minute so reduced-motion
+and paused scenes redraw after India midnight too. Its effect clears the timer on unmount.
+Hidden/offscreen scenes still do not draw; the next visible draw refreshes the date.
+Orientation, size, position and sea lighting are authored; only the illuminated shape is dated.
+The static fallback contains no astronomical sky. This is not a local visibility forecast.
+
 ### Error-page seas (`components/drift/`)
 
 Each error page is `DriftFrame` (message on top, sea below; `DriftPage` adds the

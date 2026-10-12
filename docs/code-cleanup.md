@@ -94,3 +94,15 @@ inventing operational metrics, protocols or security properties.
 Notebook BlogPosting uses one pure helper over source article facts; the crawler harness derives
 its expected fields from the same Notebook catalog and post frontmatter, including Bingbot and
 OAI-SearchBot initial-HTML coverage.
+
+## Moon phases (12 October 2026)
+
+Astronomy is pure and separate from lifecycle/GL rendering. Only the hero opts into the
+phase shader; shared default strings/error scenes are unchanged. The existing scene effect
+owns the minute timer and cleanup. No dependency, remote request, new route or bitmap asset.
+The browser harness reuses `tools/lib/browser.mjs`, reads real shader pixels and exercises
+reduced-motion date rollover; tests use published USNO dates, not a mean-month approximation.
+The follow-up reconstructs sphere normals in the same sky pass: one complete disc, with
+phase-derived sunlight and a dim unlit surface. One albedo supplies both sides; a shared
+basin function gives restrained surface markings, evaluated only inside the night disc.
+No separate crescent geometry or downloaded texture.

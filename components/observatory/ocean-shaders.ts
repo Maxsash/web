@@ -106,26 +106,54 @@ precision highp float;
 out vec2 vUv;
 void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));vUv=p;gl_Position=vec4(p*2.-1.,.9999,1.);}`;
 
+const moonDeclarations = `
+uniform vec2 uMoon;
+float moonBasin(vec2 face,vec2 centre,vec2 shape){
+  vec2 distance=(face-centre)*shape;
+  return exp(-dot(distance,distance));
+}`;
+
 export function skyFragmentSource({
   declarations = "",
   finish = "",
   weather = "",
   orbScale = "",
-}: ShaderAdditions & { weather?: string; orbScale?: string } = {}) {
+  moonPhase = false,
+}: ShaderAdditions & { weather?: string; orbScale?: string; moonPhase?: boolean } = {}) {
   return `#version 300 es
 precision highp float;
 in vec2 vUv;
 uniform float uReveal;
 uniform float uNight;
 uniform float uAspect;
-out vec4 outColor;${declarations}
+out vec4 outColor;${declarations}${moonPhase ? moonDeclarations : ""}
 void main(){
   vec3 daylight=mix(vec3(.76,.86,.83),vec3(.36,.65,.76),smoothstep(.1,1.,vUv.y));
   float sun=1.-smoothstep(.022,.028,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
   daylight=mix(daylight,vec3(1.,.92,.70),sun${orbScale});
   vec3 midnight=mix(vec3(.10,.20,.25),vec3(.012,.028,.07),smoothstep(.1,1.,vUv.y));
   float moon=1.-smoothstep(.017,.021,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
-  midnight+=vec3(.65,.75,.8)*moon${orbScale};
+  ${
+    moonPhase
+      ? `vec2 disc=(vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)/.019;
+  float radius=length(disc);
+  float edge=max(fwidth(radius),.001);
+  moon=1.-smoothstep(1.-edge*.5,1.+edge*.5,radius);
+  if(moon>0. && uNight>0.){
+    vec3 normal=vec3(disc,sqrt(max(0.,1.-dot(disc,disc))));
+    float lightZ=2.*uMoon.x-1.;
+    vec3 sunlight=vec3(uMoon.y*sqrt(max(0.,1.-lightZ*lightZ)),0.,lightZ);
+    float incidence=max(dot(normal,sunlight),0.);
+    float daylightOnMoon=pow(incidence,.35);
+    float earthshine=.035*pow(1.-uMoon.x,2.)*pow(normal.z,.4);
+    float albedo=1.-.22*moonBasin(normal.xy,vec2(-.28,.28),vec2(2.4,3.))
+      -.16*moonBasin(normal.xy,vec2(.31,.12),vec2(3.,2.4))
+      -.12*moonBasin(normal.xy,vec2(-.08,-.43),vec2(3.8,3.));
+    vec3 surface=midnight+vec3(.65,.75,.8)*albedo*(earthshine+daylightOnMoon);
+    midnight=mix(midnight,surface,moon);
+  }`
+      : `midnight+=vec3(.65,.75,.8)*moon${orbScale};`
+  }
   vec3 color=mix(daylight,midnight,uNight);
   color=mix(color,mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight),smoothstep(.05,.8,uReveal));${weather}
   outColor=vec4(color,1.);${finish}

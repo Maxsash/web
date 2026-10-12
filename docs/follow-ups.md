@@ -147,14 +147,13 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       memory, `ghost-photo-yash.png`); only the headshot in About is approved for the repo.
 - [ ] **Capsized sea (Easter egg idea).** The red, upside-down sea from the error-page
       exploration, parked for a hidden moment (the owner's suggestion). Not built.
-- [ ] **Stars at night, birds by day and moon phases (owner's plan).** The gull now exists (`components/gull/`, on
+- [ ] **Stars at night and birds by day (owner's plan).** The gull now exists (`components/gull/`, on
       "Play waves"), and its model can fly in any sky: `gullFacets` with the flying poses, or three
       to nine boids hanging in the wind (the research's calmest ambient motion). Where a sky shows:
       the hero (day birds; night stars inside the WebGL pass), the 404's open horizon (birds fit),
       the notebook 404 and the half-drawn plate (maybe, as drawings), the crash and storm pages
-      (no: overcast). Stars should twinkle slowly, far below three flashes a second. Moon phases
-      are a hero-only visual follow-up, derived from the India calendar date rather than visitor
-      location; the error scenes remain fixed until separately decided.
+      (no: overcast). Stars should twinkle slowly, far below three flashes a second. Hero moon phases are now
+      implemented from the India calendar date (12 October); error scenes remain fixed.
 - [ ] **Ideas from the feedback research** (`../web-research/reports/Website feedback beyond
       sound.md`, 10 October 2026; nothing built). Cheapest first: scroll speed as one shader
       uniform (foam and ink bleed that dry back at rest) and a `scrollend` settle (the compass

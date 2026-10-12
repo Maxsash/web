@@ -4,6 +4,33 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Moon phases (12 October 2026)
+
+`tools/moon-phase.test.mjs` compares six published
+[USNO October/November 2026 primary phases](https://aa.usno.navy.mil/calculated/moon/phases?date=2026-10-01&format=p&nump=6)
+with computed longitude phase (within 0.2 degrees) and illuminated fraction (within 0.5%).
+It pins the 18:30 UTC India-date boundary, noon-IST sampling, waxing/full/waning progression
+and finite/bounded weekly samples across 2000–2100. This is not an ephemeris certification.
+
+`node tools/check-moon.mjs http://localhost:3041` compiles the actual hero sky shader and
+reads supersampled GL pixels: 14 illuminated fractions/sides, new/full limits, right waxing/left
+waning and illuminated area within 1.5 percentage points. Surface checks assert faint Earthshine
+raises the complete night face above equivalent sky RGB (no opaque black cover), quarter
+light/dark contrast, full centre/limb shading and pixel-identical daylight across phase extremes.
+Supersampling avoids counting a tiny feather pixel as a complete illuminated pixel.
+It mocks the production hero clock, checks four dated phases and triggers the minute callback
+across India midnight under reduced motion to verify a fresh draw. Real-size desktop phase and
+phone crescent captures go to `tools/.out/moon/`; inspect them separately from the geometry pass.
+Actual timer throttling, lunar geography and calibrated reflectance/earthshine are not tested.
+
+Continuous-surface Node 24 production build: lint/types/format and 132 Node tests pass.
+Moon material/shading/area/date/midnight checks pass. Inspected desktop crescent/quarters/full
+and phone crescent; both sides use one surface with procedural markings and phase-derived
+light. Final build with the disc-only shader guard passes 78 SEO cases, headers/CSP, keyboard 22/22
+and creative 191 records with zero failures/runtime exceptions. Own :3041 server stopped;
+latest captures copied to the main working tree's ignored tools/.out/moon/.
+No physical-phone/Safari/Firefox or live-release claim follows. Source remains uncommitted.
+
 ## WhatsApp by number (12 October 2026)
 
 `wa.me/919183636567` resolves to a phone-number chat (`send/?phone=…`). The old username check

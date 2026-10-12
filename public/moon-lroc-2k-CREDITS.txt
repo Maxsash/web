@@ -1,0 +1,18 @@
+Moon color map: lroc_color_2k.jpg (2025 version), cropped to the near side
+Source: NASA Scientific Visualization Studio, CGI Moon Kit
+https://svs.gsfc.nasa.gov/4720/
+Visualization: Ernie Wright (USRA)
+Underlying data: Lunar Reconnaissance Orbiter Camera Wide Angle Camera mosaic and Lunar Orbiter Laser Altimeter polar albedo data.
+
+The map was made for visual rendering from LRO data and is not a live telescope image or a scientific measurement in this site. It is presented here as a phase-shaded lunar surface. NASA is acknowledged as the source; no NASA endorsement is implied.
+
+Original filename: lroc_color_2k.jpg
+Original dimensions: 2048 x 1024
+Original SHA-256: f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170
+
+This site's file: moon-lroc-2k-near-side.jpg
+Dimensions: 1024 x 1024 (longitudes 90 W to 90 E, all latitudes)
+Lossless crop: jpegtran -crop 1024x1024+512+0 -copy none -optimize
+SHA-256: a08617b249675903bfa52d65d7cac1e498c8eee488186be006d19971b489930b
+
+NASA media usage guidelines: https://www.nasa.gov/nasa-brand-center/images-and-media/

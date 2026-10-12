@@ -4,6 +4,37 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Mapped Moon (12 October 2026)
+
+`tools/moon-detail.test.mjs` checks near-side projection, waxing/waning light reversal,
+mapped unlit terrain and that `moonVisibility` matches the sky shader's paper fade.
+`tools/check-moon.mjs` also checks that the sky shader leaves only sky in the disc at
+`uMoonMap = 1`. `tools/check-moon-detail.mjs` checks an isolated production build: no map
+request on a daytime visit; at night, overlay opacity equal to night × crossfade on every
+frame of the theme switch, with the shader Moon crossfading into the map; one low-priority
+request per rendered day; four dated phases with mapped pixel readings; original disc
+diameter and centre at 1440 px, retina, 390 px phone and 3× pinch; click-through theme
+switching; no refetch on a day/night round trip; scroll-away and WebGL context loss hiding
+it; reduced motion swapping without a fade; and a blocked map leaving the shader Moon.
+Captures/report: ignored `tools/.out/moon-detail/`. The unit test also pins the cropped
+map's edges to the west and east limbs.
+
+Near-side crop: decoded with ImageMagick, the 1024×1024 crop matches the original's middle
+half byte for byte. After the switch, the four phases' pixel readings moved by at most
+one level and zoomed captures match the uncropped build (RMSE under 1% except a
+full-Moon frame at 3.1% from moving waves; the Moon itself is unchanged by eye).
+
+Turbopack (`pnpm build`) Node 24 isolated production build with the crop: 145 Node tests,
+lint, TypeScript, format, 78 SEO cases, headers/CSP, keyboard 22/22, creative 191 captures
+with no runtime exceptions; Moon, Moon-sea, sky-theme, star, software-fallback and planet
+checks pass (planets alone: 37 samples, median 0.168 ms). Before the crop,
+`check-dev-sky.mjs` passed on `next dev`, where the preview's Full and New also redraw the
+mapped Moon; it was not rerun after the crop. A throttled (4×
+CPU, 390 px) probe found no main-thread long task from the map; all were in the first
+0.5 s with or without it. Chrome emulation only: no physical phone, Safari or Firefox
+check of `plus-lighter` or the worker. The map is a visualization, not compared with a
+calibrated telescope image.
+
 ## Phase-aware sea light (12 October 2026)
 
 `tools/check-moon-sea.mjs` samples the isolated production hero with one sea seed at
@@ -186,17 +217,17 @@ No field data or physical-device qualification. Released HEAD be20ef1.
 
 ## Progressive studio preview (11 October 2026)
 
-Lighthouse 13.5.0 installed only in `/private/tmp/maxsash-lighthouse`, disabled GPU,
+Lighthouse 13.5.0 installed outside the repo, disabled GPU,
 default simulated mobile throttling, fixed seed, fresh Chrome per audit. Three rounds:
 current median FCP/LCP 2555/4203 ms (score 82); body-font preload 2407/4415 (82);
 inline CSS 2253/4203 (84), +47 KiB HTML. Rejected both alternatives.
 Final-build confirmation after aspect-containment styling: FCP 2104 ms, LCP 3753 ms,
-score 87, CLS 0, no runtime error (`/private/tmp/maxsash-lh-preview-final.json`).
+score 87, CLS 0, no runtime error.
 Three new alternating baseline/preview rounds: median FCP 2555 → 2105 ms,
 LCP 4203 → 3754 ms, score 82 → 87; HTML transfer ~168 → 84 KiB. Local comparison,
-not predicted live scores. Reports `/private/tmp/maxsash-lh-preview-*.json`.
+not predicted live scores.
 
-Final isolated build `/private/tmp/maxsash-loading-text` :3024.
+Final isolated build:
 `tools/check-studio-plate.mjs` passes eight cases: no-JS real vector image loads at
 390/1440 in day/night, has seed/label/containment and no overflow; hydrated SVG
 polylines equal print endpoint before/after a real keyboard slider edit. Phone day
@@ -221,8 +252,7 @@ in critical tree. Owner evidence only: no fresh local checks or changes for this
 
 ## Font preload experiment (11 October 2026)
 
-Baseline `/private/tmp/maxsash-contrast-check` :3021 versus candidate
-`/private/tmp/maxsash-font-check` :3022. Five alternating pairs, fixed seed, 390×844 /
+Baseline :3021 versus candidate :3022, separate isolated builds. Five alternating pairs, fixed seed, 390×844 /
 DPR 2, 4× CPU, 180 KB/s and 562.5 ms latency, disabled GPU (static fallback), cleared
 and disabled cache. Median LCP/FCP 2884 → 1552 ms; final CSS 2814 → 1467 ms.
 Four eager font links become one. Font descriptors (13) and unique woff2 content hashes
@@ -234,8 +264,7 @@ Headers, keyboard 20/20 and creative 193 records/129 assertions pass with zero
 failures or exceptions. Servers :3021/:3022 stopped; creative process lingered after
 writing its completed report and was stopped. Ship/gull/sound-specific suites not rerun;
 physical devices and fresh live PageSpeed not checked.
-Reports: candidate `tools/.out/font-loading/five-pairs*.json`; log
-`/private/tmp/maxsash-font-comparison.log`. Reproduce:
+Reproduce:
 `node tools/compare-font-loading.mjs http://localhost:3021 http://localhost:3022`.
 
 ## Owner uncached mobile trace (11 October 12:19 IST)
@@ -285,7 +314,7 @@ reports, not this agent running PageSpeed; no fresh tests during report review.
 `tools/check-heading-contrast.mjs <local production URL>` tests pending/arrived headings,
 day/night, 390/1440 px, normal/reduced motion using rendered CSS and ancestor opacity.
 It reproduces the old 0.3-opacity failure on the previous production build. Corrected
-Node 24 production build in `/private/tmp/maxsash-contrast-check` passes all 128 heading
+Node 24 isolated production build passes all 128 heading
 checks (lowest ratio 10.33:1), 126 Node tests, 44 SEO cases, lint, types and format.
 Headers, keyboard 20/20 and creative (193 records, 129 assertions, zero failures and
 exceptions) pass. Servers :3019/:3020 stopped. Completed keyboard/creative processes
@@ -294,7 +323,7 @@ PageSpeed run; no field performance claim.
 
 ## SEO expansion (11 October 2026)
 
-Node 24 production build in `/private/tmp/maxsash-seo-check`, server :3018 (stopped):
+Node 24 isolated production build, server :3018 (stopped):
 126 Node tests, 44 SEO cases, headers, keyboard 20/20, lint, types and format pass.
 Creative report: 193 records, zero failed assertions and zero runtime exceptions. The
 creative process lingered after writing its completed report and was stopped. Expanded
@@ -307,7 +336,7 @@ These are owner evidence; no fresh PageSpeed or Search Console access by this se
 ## Case studies (10 October 2026)
 
 Rerun after the three-cards-two-rows change and again after Velora's drawing (126 Node tests: the drawing count became "every client project leads with a system drawing"), same results otherwise. Node 24 production build with no
-warnings (detached worktree `/private/tmp/maxsash-cases-review`, server :3016, stopped), lint, types, format, 125 Node tests (11 new in `case-studies.test.mjs`),
+warnings (detached worktree, server :3016, stopped), lint, types, format, 125 Node tests (11 new in `case-studies.test.mjs`),
 28 SEO cases (now with two case studies, the six-entry sitemap, `/work/<unknown>` 404 and the
 `/work` redirect), headers, keyboard 20/20 (the first Tab inside Work now reaches the Velora case
 study link), and the creative suite (193 records, 129 assertions, 0 failed, 0 exceptions, no
@@ -319,7 +348,7 @@ verified: physical devices, screen readers, a case study's plate draw-in at nigh
 ## Font and theme sprint (10 October 2026)
 
 Final fonts: Montagu Slab, Rethink Sans, Reddit Mono. Node 24 production build with no
-warnings (detached worktree `/private/tmp/maxsash-type-review`, server :3015), lint, types,
+warnings (detached worktree, server :3015), lint, types,
 format, 114 Node tests, 20 SEO cases, headers, keyboard 20/20, ship 36/36, gull 47, software
 fallback, sound and 193 creative records pass, with no runtime exceptions or overflow.
 Scratchpad checks: no headline word wider than its box on six pages at 1440/1100/820/600/
@@ -349,9 +378,7 @@ The ship harness uses SwiftShader; the full creative suite uses the Mac GPU.
 Its 30-second desktop sample delivered 1,801 frames, p95 16.7 ms, zero long tasks,
 high quality. This is headless Chrome evidence, not a physical-device qualification.
 
-Evidence: `/private/tmp/maxsash-ship-review/tools/.out/ship/` and
-`tools/.out/creative-home/` in that worktree. Logs: `/private/tmp/maxsash-ship-*.log`.
-All builds/tests ran in that detached worktree; no main-folder test/build was run.
+All builds/tests ran in a detached worktree; no main-folder test/build was run.
 Physical iPhone/Safari/Firefox, screen readers and battery/GPU qualification remain
 unverified. Gull and sound-specific browser suites were not rerun for this ship work.
 
@@ -377,6 +404,10 @@ node tools/check-gull.mjs http://localhost:3012
 node tools/check-software-fallback.mjs http://localhost:3012
 node tools/check-sound.mjs http://localhost:3012
 node tools/check-creative-v2.mjs http://localhost:3012
+
+# Clean up at once: keep only captures the owner still has to review.
+lsof -ti tcp:3012 -sTCP:LISTEN | xargs kill
+cd - && git worktree remove --force "$CHECK_DIR/wt" && rm -rf "$CHECK_DIR"
 ```
 
 Landscape studio (10 October 2026): 43 browser assertions pass across 568 × 320,
@@ -387,8 +418,7 @@ scroll rounding (observed 0.28–0.35 px). Screenshots inspected at 568 × 320 a
 Also checked the 844 × 390 night view. The seed and actual drawing geometry both change
 with edits. Node 24 production build, lint, types, format, 109 Node tests, 20 SEO cases,
 headers, 20/20 keyboard checks and all 193 creative records pass, without failed assertions,
-overflow or runtime exceptions. Reports/screenshots: worktree
-`tools/.out/creative-home/`; initial targeted evidence `/private/tmp/maxsash-landscape/`.
+overflow or runtime exceptions.
 `tools/e2e/sea-studio.mjs` is part of the creative suite. The existing keyboard sweeps
 continue to cover portrait and desktop studio focus.
 
@@ -503,7 +533,7 @@ Everything above runs in headless Chrome on a Mac. Not covered, so do not claim 
 
 ## Approved essays and client-facing polish (11 October 2026)
 
-Node 24.21.0 production build in `/private/tmp/maxsash-publication-check`, lint/types/format,
+Node 24.21.0 isolated production build, lint/types/format,
 126 Node tests, 44 crawler/page cases, headers/CSP and 20/20 keyboard checks pass.
 Full creative rerun passes 193 records/129 assertions with no failures/exceptions. Initial
 three failures expected obsolete noindex policy; corrected harness then rerun.
@@ -514,7 +544,6 @@ Six case-study duration/layout checks pass at 390/1440 with no horizontal overfl
 Notebook phone and case-study phone screenshots inspected. Final shortened Household Hub
 headline rebuild, 44 SEO cases and six layout checks pass, with phone screenshot inspected;
 full creative result predates only that final copy shortening.
-Logs: `/private/tmp/maxsash-publication-*.log`; screenshots/reports: worktree `tools/.out/`.
 No live, social-app or physical-device review. Accidental main-folder build interrupted;
 all reported passing builds/checks above ran in isolated worktree.
 
@@ -530,7 +559,7 @@ assertion assumed a comma in en-GB output; corrected expected formatting and rer
 targeted ESLint and format pass. No fresh production build/full browser suite for this edit.
 
 Backend credibility and IST review (11 October): final isolated Node 24.21.0 production build,
-lint, TypeScript and format pass in `/private/tmp/maxsash-publication-check`. The full suite passes:
+lint, TypeScript and format pass. The full suite passes:
 126 Node tests with `SEA_TEST_BASE`, 44 crawler/page SEO cases, headers/CSP, keyboard 20/20 and
 193 creative records with no runtime exceptions. This includes hero/metadata, repeated-version
 rejection, IST grouping, and current business/intrusion system drawings and prose. The sandbox

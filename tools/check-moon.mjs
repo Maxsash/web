@@ -58,8 +58,9 @@ await withBrowser({ name: "moon", flags: SWIFTSHADER_FLAGS }, async ({ send, eva
     gl.linkProgram(program); if(!gl.getProgramParameter(program,gl.LINK_STATUS)) throw Error(gl.getProgramInfoLog(program));
     gl.useProgram(program); gl.bindVertexArray(gl.createVertexArray()); gl.viewport(0,0,4000,4000);
     gl.uniform1f(gl.getUniformLocation(program,'uAspect'),1);
-    const render=(fraction,side,night=1)=>{
+    const render=(fraction,side,night=1,mapped=0)=>{
       gl.uniform1f(gl.getUniformLocation(program,'uNight'),night);
+      gl.uniform1f(gl.getUniformLocation(program,'uMoonMap'),mapped);
       gl.uniform2f(gl.getUniformLocation(program,'uMoon'),fraction,side);
       gl.drawArrays(gl.TRIANGLES,0,3);
       const pixels=new Uint8Array(164*164*4); gl.readPixels(2958,2878,164,164,gl.RGBA,gl.UNSIGNED_BYTE,pixels); return [...pixels];
@@ -84,10 +85,13 @@ await withBrowser({ name: "moon", flags: SWIFTSHADER_FLAGS }, async ({ send, eva
     const shadedSide= pixel(half,3004,2960), litSide=pixel(half,3076,2960);
     const centre= pixel(full,3040,2960), limb=pixel(full,3110,2960);
     const dayUnchanged=JSON.stringify(render(0,1,0))===JSON.stringify(render(1,-1,0));
+    const yielded=render(1,1,1,1);
+    const yieldsToMap=pixel(yielded,3040,2960)===pixel(yielded,2958,2960);
     gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return {samples,dayUnchanged,darkDisc,unlitCentre,background,shadedSide,litSide,centre,limb};
+    return {samples,dayUnchanged,yieldsToMap,darkDisc,unlitCentre,background,shadedSide,litSide,centre,limb};
   })()`);
   assert.ok(rendered.dayUnchanged);
+  assert.ok(rendered.yieldsToMap, "the shader leaves only sky where the mapped Moon is drawn");
   assert.ok(rendered.darkDisc);
   assert.ok(
     rendered.unlitCentre.every((value, i) => value > rendered.background[i]),

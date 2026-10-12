@@ -1,8 +1,9 @@
 # Night sky — implementation brief
 
 Research and phased build, 12 October 2026. The transition was committed as d21757f;
-stars, planets and the temporary preview are committed through 54290fe. Phase 3 sea
-lighting is built in the working tree for review.
+stars, planets and the temporary preview are committed through 54290fe; phase 3 sea
+lighting is committed as 5654e61. Phase 4, the always-on mapped Moon, is built in the
+working tree for review.
 
 ## Direction
 
@@ -15,9 +16,9 @@ local visibility forecast. A public town-junction coordinate is documented by th
 
 The owner has now asked to build in reviewable phases, with the darkest and most populated
 star field near new Moon, progressively less visible at full Moon, phase-aware sea light,
-and an actual mapped lunar surface in the optional detail view. Native zoom toward the
-Moon should quietly reveal the extra detail, without an explicit telescope prompt.
-The fixed Moon and authored horizon remain the agreed framing.
+and an actual mapped lunar surface in the Moon's original disc. The owner then chose to show
+it whenever the night sky shows the Moon, so native zoom reveals its resolution in place,
+without a swap or telescope prompt. The fixed Moon and authored horizon remain the framing.
 
 ## Delivery phases
 
@@ -36,16 +37,16 @@ The fixed Moon and authored horizon remain the agreed framing.
    taper reflection around the Moon's direction, and use only a little diffuse star
    ambient. Check black/new, quarters and full so moonless water stays readable and
    the existing day/night fade remains continuous. Avoid individual star glints.
-4. **Lunar detail.** Load a credited real lunar map only on demand, shade its sphere
-   from the same daily phase, preserve the mapped unlit hemisphere with faint
-   Earthshine and leave normal page zoom intact. Provide a keyboard-accessible way
-   into and out of the detail. Validate texture orientation and memory disposal.
+4. **Mapped Moon.** Load a credited real lunar map only once the night Moon shows,
+   shade its sphere from the same daily phase, preserve the mapped unlit hemisphere with
+   faint Earthshine and leave normal page zoom intact. Keep its work off the main thread.
+   Validate texture orientation, crossfade and memory disposal.
 5. **Water motion review.** Preserve the owner's chosen wind-wave recipe across lunar
    phases. Confirm the coupled light reads naturally without implying that this scene
    predicts local tide height.
 
-Each phase gets its own review point and isolated production verification. Phase 3 sea
-lighting is the current review target. Phone-width captures are desktop emulation, not
+Each phase gets its own review point and isolated production verification. Phase 4, the
+mapped Moon, is the current review target. Phone-width captures are desktop emulation, not
 physical phone performance measurements.
 
 The visibility curve is perceptual rather than an exact naked-eye limiting magnitude:
@@ -128,30 +129,41 @@ full numbers: ignored tools/.out/sky-feasibility/report.json. Scratch benchmark 
 - No network parsing/startup profile, physical-device, battery, integrated sky/sea, atmosphere,
   actual catalogue, browser zoom gesture or visual realism qualification follows.
 
-## Zoom Easter egg
+## Mapped Moon
 
-Moon first. Use a real surface map from [NASA's CGI Moon Kit](https://svs.gsfc.nasa.gov/4720/),
-shade it for the same daily phase and retain the unlit face. This is mapped imagery, not a
-live telescope photograph. Include source credit and retain per-asset third-party notices
-([NASA usage guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/)).
+The Moon uses the 2025 2K surface map from [NASA's CGI Moon Kit](https://svs.gsfc.nasa.gov/4720/),
+shaded for the same daily phase with faintly mapped unlit terrain. This is mapped imagery,
+not a live telescope photograph. The footer credits NASA SVS; the asset has a separate
+[credit notice](../public/moon-lroc-2k-CREDITS.txt) following
+[NASA usage guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
 
-The current 2K JPEG is 2048×1024 and measured 457,942 bytes (~447 KiB). Decoded RGBA takes
-8 MiB, ~10.7 MiB with a full mip chain. A small separate detail surface (e.g. capped at
-512×512) can become sharp without raising the entire sea canvas's pixel budget. Lazy-load
-only after a targeted zoom/detail trigger, cache while needed and release optional resources.
-Full 4K/8K scientific TIFFs and detailed terrain meshes are unnecessary for this effect.
+Only the near side is ever drawn, so the site ships a lossless `jpegtran` crop of the 2K
+map: 1024×1024 (longitudes ±90°), 215,631 bytes (~211 KiB) instead of 457,942, decoded
+pixels identical to the original's middle half. It is requested at low priority only
+after the night sky first shows the Moon, never in daytime. Decoding (4 MiB RGBA) and
+shading happen in a worker that is terminated after each render; the page keeps only the
+512×512 canvas (1 MiB), which does not raise the sea canvas's pixel budget. Browser HTTP
+cache serves later days and visits.
 
-Do not take over normal page scroll or accessibility zoom. The surprise is a targeted
-detail upgrade as the visitor zooms toward the Moon, without a visible instruction.
-Native pinch exposes
-[VisualViewport.scale](https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport/scale);
-desktop page zoom changes [devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio),
-which also changes across monitors. There is no single reliable cross-device “user zoomed
-this object” signal. Observe targeted native zoom for an in-place detail upgrade where
-reliable. Keyboard/browser zoom must be considered in the prototype; do not add a visible
-telescope button unless native zoom proves insufficient and the owner revisits the design.
-Avoid double-click (conflicts with the new reversible theme click) and a page-wide pinch trap.
+Sizing: the disc is 0.038 × stage height, about 32–41 CSS px (70–110 device px at rest).
+Mobile pinch reaches about 5×, about 480 device px on a phone, so a 512 px canvas fits.
+At the disc centre one canvas pixel spans about 1.3 map pixels: the 2K source matches,
+1K would soften at full zoom, and 4K/8K maps or terrain meshes would be wasted.
+
+A zoom-triggered reveal was built first and dropped: there is no reliable cross-device
+"zoomed at this object" signal, few visitors would find it, and it still swapped one Moon
+for another. Now the shader's Moon crossfades once into the map. Pinch zoom then magnifies
+the same disc, whose 512 px backing store holds the detail. Normal scroll and accessibility
+zoom are untouched; there is no key shortcut, panel or instruction.
+
+Production check: a daytime visit makes no request; at night the overlay's opacity equals
+night × crossfade on every frame through the theme switch; four dated phases shade
+correctly; geometry matches the original disc at desktop, retina, phone and 3× pinch.
+Theme clicks pass through, scroll-away and context loss hide it, reduced motion swaps
+without a fade, and a blocked map leaves the shader's Moon. Under 4× CPU throttling at phone
+size, the map added no main-thread long task (all long tasks were in the first 0.5 s,
+with or without the map). No physical iPhone/Safari, `plus-lighter` support survey or exact
+lunar libration/terrain relief qualification follows.
 
 Next: Jupiter/Saturn detail only on demand with credited source imagery. Most stars should
 remain points or reveal catalogue information, not invented resolved surface photographs.
-Gesture, loading/failure, resource disposal and keyboard escape/focus need a dedicated prototype.

@@ -1,4 +1,4 @@
-import { SEA_LIGHT_SCREEN } from "./ocean-light.ts";
+import { MOON_SCREEN_RADIUS, SEA_LIGHT_SCREEN, SKY_PAPER_FADE } from "./ocean-light.ts";
 
 export const fieldGLSL = `
 uniform vec4 uWaveVectors[6];
@@ -132,6 +132,7 @@ void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));vUv=p;gl
 
 const moonDeclarations = `
 uniform vec2 uMoon;
+uniform float uMoonMap;
 float moonBasin(vec2 face,vec2 centre,vec2 shape){
   vec2 distance=(face-centre)*shape;
   return exp(-dot(distance,distance));
@@ -159,10 +160,10 @@ void main(){
   float moon=1.-smoothstep(.017,.021,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
   ${
     moonPhase
-      ? `vec2 disc=(vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)/.019;
+      ? `vec2 disc=(vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)/${MOON_SCREEN_RADIUS};
   float radius=length(disc);
   float edge=max(fwidth(radius),.001);
-  moon=1.-smoothstep(1.-edge*.5,1.+edge*.5,radius);
+  moon=(1.-smoothstep(1.-edge*.5,1.+edge*.5,radius))*(1.-uMoonMap);
   if(moon>0. && uNight>0.){
     vec3 normal=vec3(disc,sqrt(max(0.,1.-dot(disc,disc))));
     float lightZ=2.*uMoon.x-1.;
@@ -179,7 +180,7 @@ void main(){
       : `midnight+=vec3(.65,.75,.8)*moon${orbScale};`
   }
   vec3 color=mix(daylight,midnight,uNight);
-  color=mix(color,mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight),smoothstep(.05,.8,uReveal));${weather}
+  color=mix(color,mix(vec3(.91,.9,.84),vec3(.075,.13,.16),uNight),smoothstep(${SKY_PAPER_FADE[0]},${SKY_PAPER_FADE[1]},uReveal));${weather}
   outColor=vec4(color,1.);${finish}
 }`;
 }

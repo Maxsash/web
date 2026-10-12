@@ -209,6 +209,11 @@ export default function Shoreline({
           </span>
           {seaModel && <span>Sea model v{seaModel} · WebGL2</span>}
           {seaModel && <a href="/stars-hyg-v41-LICENSE.txt">Star positions: HYG v4.1 ↗</a>}
+          {seaModel && (
+            <a href="https://svs.gsfc.nasa.gov/4720/" target="_blank" rel="noreferrer">
+              Moon map: NASA SVS ↗
+            </a>
+          )}
           <span>© {new Date().getFullYear()} Yash</span>
         </div>
       </div>

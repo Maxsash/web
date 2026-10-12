@@ -124,6 +124,16 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Show the mapped Moon whenever the night sky shows the Moon** (phase 4, owner choice,
+  12 October 2026). A zoom-gated reveal still swapped one Moon for another, so the owner
+  chose always on: the 2025 NASA SVS 2K LRO colour map replaces the shader's Moon at its
+  original size and position, and zooming only reveals the resolution already there.
+  Ship only its lossless near-side crop (211 KiB), which is all that is drawn. A
+  daytime sea never requests it. A worker shades it off the main thread; the shader's Moon
+  crossfades into it and stays as the fallback. The map adds light to the sky, so the
+  unlit side shows faint Earthshine and is never darker than the sky. No zoom detection,
+  key shortcut or panel. Preserve the theme click and credit the source in the footer.
+
 - **Let the Moon light the sea, not drive the waves** (phase 3, 12 October 2026).
   The hero's night specular path follows the dated illuminated fraction with an authored
   nonlinear brightness curve and a soft column beneath the framed Moon. Keep moonless
@@ -133,29 +143,28 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 - **Development sky preview is temporary** (owner, 12 October 2026). In `next dev`, a
   small collapsible control selects any date from 1800–2050 or one of eight nearby
-  lunar phases and switches the scene to night. Live date restores the real India day.
-  It is excluded from the production experience and can be removed after sky review.
+  lunar phases and switches the scene to night, including the mapped Moon. Live date
+  restores the real India day. It is excluded from the production experience and can be removed after sky review.
 
 - **Build the night sky in phases** (owner, 12 October 2026). First dated stars with
   Moon-dependent visibility, then dated planets, phase-dependent sea light, a mapped
-  high-resolution Moon detail, and a review of water motion. The most stars should show
-  near new Moon; bright stars/planets still show near full Moon. The detail view must
-  shade both the real mapped lit and unlit surface to match the current daily phase.
+  high-resolution Moon, and a review of water motion. The most stars should show
+  near new Moon; bright stars/planets still show near full Moon. The mapped Moon must
+  shade both the real lit and unlit surface to match the current daily phase.
   The owner chose to keep the wind-wave recipe independent of lunar phase because
   a larger tidal range near both new and full Moon does not set wind-wave height. Delivery gates
   and evidence are in [night-sky.md](night-sky.md).
 
-- **Reference Tikamgarh and let zoom reveal Moon detail** (owner, 12 October 2026).
-  Use a fixed approximately 21:00 IST daily sky for Tikamgarh, keeping the Moon framed
-  even when it would be below the actual horizon. Native zoom toward the Moon should
-  quietly expose the high-resolution mapped, phase-shaded surface, with no visible
-  telescope instruction. Prototype detection without intercepting page zoom or scroll.
+- **Reference Tikamgarh** (owner, 12 October 2026). Use a fixed approximately 21:00 IST
+  daily sky for Tikamgarh, keeping the Moon framed even when it would be below the
+  actual horizon. Native zoom toward the Moon reveals the mapped surface's detail with no
+  visible telescope instruction and without intercepting page zoom or scroll.
 
 - **Next sky uses a daily snapshot and a framed Moon** (owner clarification, 12 October 2026).
   Accuracy is day-wise; roughly 21:00 IST, not a live ticking sky. Keep the Moon composed in
   its current place and draw the dated surrounding sky around it; modest shifts are acceptable.
   Fixed Tikamgarh was then confirmed. The authored horizon cannot always match
-  real local visibility. Implementation/performance/zoom brief: [night-sky.md](night-sky.md).
+  real local visibility. Implementation and performance brief: [night-sky.md](night-sky.md).
 
 
 - **Touch the sun/moon to change the sea** (owner approved, 12 October 2026). A click/tap

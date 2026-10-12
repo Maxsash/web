@@ -29,6 +29,15 @@ important that exists only in the conversation or in memory is lost.
 - Keep documents small. Delete what is no longer true or no longer useful instead of
   appending to it; the handoff stays under about 100 lines.
 
+# Clean up immediately
+
+Delete anything as soon as it is no longer needed, whether or not git tracks it:
+temporary worktrees, build and test output, scratch scripts, backups, downloads, logs
+and screenshots. Stop the servers you started. Before reporting a step, remove what the
+step created. Anything that must stay for now (for example, captures awaiting the
+owner's review) goes in `docs/handoff.md` with when to delete it. Leftovers that are not
+dealt with at once are lost track of and go stale.
+
 # Git and deployment
 
 Never commit or push unless the user explicitly asks in the current session. Leave

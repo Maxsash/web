@@ -10,6 +10,7 @@ import { ratchet } from "@/lib/sound/dial";
 import type { SeaEdition } from "@/lib/sea/types";
 import { clamp01 } from "./clamp";
 import { DevSkyPreview } from "./DevSkyPreview";
+import MoonDetail from "./MoonDetail";
 import {
   FrameGovernor,
   LOW_QUALITY_RATIO,
@@ -18,12 +19,12 @@ import {
   renderRatio,
   scheduleNextDraw,
 } from "./frame-governor";
-import { SEA_LIGHT_SCREEN, SEA_REFLECTION_SCREEN } from "./ocean-light";
+import { MOON_SCREEN_RADIUS, SEA_LIGHT_SCREEN, SEA_REFLECTION_SCREEN } from "./ocean-light";
 import { boundsOverlap, skyControlBounds } from "./sky-control";
 import { nightTheme, toggleTheme } from "./theme";
 import { themeBlendAt, type ThemeBlend } from "./theme-blend";
 import { useStudioTheme } from "./useStudioTheme";
-import { layerOpacities } from "./layer-opacity";
+import { layerOpacities, moonVisibility } from "./layer-opacity";
 import { chapterFor, revealFor } from "./reveal-mapping";
 import { easePace, paceTarget } from "./sea-pace";
 import { STAGES, planMove, progressAt, stepStage, type StageMove } from "./stage-director";
@@ -31,23 +32,31 @@ import { beginGesture, swipeDirection, trackGesture, type TouchGesture } from ".
 import styles from "./Observatory.module.css";
 
 const INK_STEPS = 60;
+const MOON_POSITION = {
+  left: `${SEA_LIGHT_SCREEN[0] * 100}%`,
+  top: `${(1 - SEA_LIGHT_SCREEN[1]) * 100}%`,
+};
 
 export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const moonMapRef = useRef<HTMLDivElement>(null);
   const pauseRef = useRef<(() => boolean) | null>(null);
   const stageRef = useRef<((direction: number) => void) | null>(null);
   const previewDayRef = useRef<number | null>(null);
   const previewSceneRef = useRef<((day: number | null) => void) | null>(null);
+  const moonDrawnRef = useRef<(() => void) | null>(null);
   const night = useStudioTheme();
   const [skyClear, setSkyClear] = useState(true);
   const [paused, setPaused] = useState(false);
   const [ready, setReady] = useState(false);
   const [activeStage, setActiveStage] = useState(0);
+  const [mappedMoonDay, setMappedMoonDay] = useState<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current;
     const scene = canvas?.closest<HTMLElement>("[data-observatory]");
     const stage = canvas?.parentElement;
-    if (!canvas || !scene || !stage) return;
+    const moonMap = moonMapRef.current;
+    if (!canvas || !scene || !stage || !moonMap) return;
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const compact = matchMedia("(pointer: coarse)").matches || stage.clientWidth < 760;
     const staged = matchMedia("(pointer: coarse)").matches;
@@ -74,6 +83,18 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       target: [number, number] = [0, 0];
     let nightValue = nightTheme() ? 1 : 0;
     let themeBlend: ThemeBlend | null = null;
+    let moonMapBlend: ThemeBlend | null = null,
+      moonMapValue = 0,
+      lastMoonOpacity = -1,
+      mappedDay: number | null = null;
+    const blendsInstantly = () =>
+      !engine || !visible || document.hidden || stopped || media.matches;
+    const advance = (blend: ThemeBlend | null, value: number, now: number) => {
+      if (!blend) return { blend, value };
+      const step = themeBlendAt(blend, now);
+      if (step.finished || media.matches || stopped) return { blend: null, value: blend.target };
+      return { blend, value: step.value };
+    };
     const governor = new FrameGovernor();
     let scrollDirty = true,
       lastScrollY = -1;
@@ -133,11 +154,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         if (stageMove && visible && !document.hidden) frame = requestAnimationFrame(render);
         return;
       }
-      if (themeBlend) {
-        const blend = themeBlendAt(themeBlend, now);
-        nightValue = media.matches || stopped ? themeBlend.target : blend.value;
-        if (blend.finished || media.matches || stopped) themeBlend = null;
-      }
+      ({ blend: themeBlend, value: nightValue } = advance(themeBlend, nightValue, now));
+      ({ blend: moonMapBlend, value: moonMapValue } = advance(moonMapBlend, moonMapValue, now));
       const interval = lastTime ? (now - lastTime) / 1000 : 0;
       const delta = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0;
       const travelled = Math.abs(window.scrollY - paceScrollY) / Math.max(1, height);
@@ -155,7 +173,17 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           ];
       const reveal = revealFor(progress, { reducedMotion: media.matches, staged });
       ink(reveal);
-      engine.draw(elapsed, reveal, pointer, nightValue);
+      engine.draw(elapsed, reveal, pointer, nightValue, moonMapValue);
+      const moonVisible = moonVisibility(nightValue, reveal);
+      const moonOpacity = moonVisible * moonMapValue;
+      if (moonOpacity !== lastMoonOpacity) {
+        lastMoonOpacity = moonOpacity;
+        moonMap.style.opacity = String(moonOpacity);
+      }
+      if (moonVisible > 0 && engine.moonDay() !== mappedDay) {
+        mappedDay = engine.moonDay();
+        setMappedMoonDay(mappedDay);
+      }
       nextDraw = scheduleNextDraw(nextDraw, now, { active, scrollChanged, low: governor.low });
       if (!presented) {
         presented = true;
@@ -275,6 +303,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       start = bounds.top + scrollY;
       width = stage.clientWidth;
       height = stage.clientHeight;
+      stage.style.setProperty("--moon-disc-size", `${height * MOON_SCREEN_RADIUS * 2}px`);
       distance = Math.max(1, scene.offsetHeight - height);
       ratio = renderRatio({ devicePixelRatio, compact, width, height, low: governor.low });
       const origin = stage.getBoundingClientRect();
@@ -391,7 +420,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         const now = performance.now();
         const target = nightTheme() ? 1 : 0;
         const current = themeBlend ? themeBlendAt(themeBlend, now).value : nightValue;
-        const immediate = !engine || !visible || document.hidden || stopped || media.matches;
+        const immediate = blendsInstantly();
         themeBlend =
           immediate || current === target ? null : { from: current, target, started: now };
         nightValue = immediate ? target : current;
@@ -423,6 +452,12 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       },
       { signal: events.signal },
     );
+    moonDrawnRef.current = () => {
+      if (moonMapValue > 0 || moonMapBlend) return;
+      if (blendsInstantly()) moonMapValue = 1;
+      else moonMapBlend = { from: 0, target: 1, started: performance.now() };
+      requestFrame();
+    };
     pauseRef.current = () => {
       stopped = !stopped;
       if (stopped) scene.dataset.still = "";
@@ -466,6 +501,9 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       pauseRef.current = null;
       stageRef.current = null;
       previewSceneRef.current = null;
+      moonDrawnRef.current = null;
+      setMappedMoonDay(null);
+      stage.style.removeProperty("--moon-disc-size");
       delete scene.dataset.staged;
       delete scene.dataset.stage;
       delete scene.dataset.still;
@@ -474,6 +512,17 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   return (
     <>
       <canvas ref={canvasRef} className={styles.canvas} data-ocean aria-hidden="true" />
+      <div
+        ref={moonMapRef}
+        className={styles.moonDetail}
+        style={MOON_POSITION}
+        data-moon-map
+        hidden={!ready}
+      >
+        {mappedMoonDay !== null && (
+          <MoonDetail day={mappedMoonDay} onDrawn={() => moonDrawnRef.current?.()} />
+        )}
+      </div>
       {process.env.NODE_ENV === "development" && (
         <DevSkyPreview
           onDay={(day) => {
@@ -484,10 +533,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       )}
       <button
         className={styles.skyTheme}
-        style={{
-          left: `${SEA_LIGHT_SCREEN[0] * 100}%`,
-          top: `${(1 - SEA_LIGHT_SCREEN[1]) * 100}%`,
-        }}
+        style={MOON_POSITION}
         type="button"
         data-sky-theme
         data-press="none"

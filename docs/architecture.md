@@ -55,7 +55,7 @@ and draws variation freely. Nothing about the visitor is read.
 
 ## Rendering
 
-Native WebGL2, no 3D library, no downloaded model or texture. The deferred engine sits
+Native WebGL2, no 3D library or downloaded model. The deferred engine sits
 behind a server-rendered SVG plate, which is also the fallback.
 
 - `components/observatory/OceanScene.tsx` owns lifecycle only (events, observers, frame
@@ -183,6 +183,29 @@ colours keep the water legible near new Moon. Daylight and the wave geometry are
 the default shader path used by error seas remains byte-identical. The existing `uNight`
 blend applies to the phase-aware night colours and glint, so the theme transition uses the
 same frame loop. This is a visual response, not calibrated illumination or a tide model.
+
+### Mapped Moon
+
+The first frame that shows the night sky's Moon mounts `MoonDetail` inside a `data-moon-map`
+overlay at the shader Moon's position and diameter (`MOON_SCREEN_RADIUS`, shared with the
+sky shader). It fetches the near-side crop of the 2025 NASA SVS 2K LRO colour map at low
+fetch priority and hands the blob to `moon-detail.worker.ts`. The worker decodes it, shades
+it for the engine's India day with the pure `moon-detail.ts` (longitudes ±90° span the
+crop) and transfers back a 512 px image, then is terminated, so the 4 MiB decoded map
+never stays in memory. A daytime sea
+never requests it. A new India day (or dev preview day) repeats the round trip from the
+HTTP cache.
+
+The overlay is composited with `plus-lighter`: it adds lunar light to the WebGL sky, so
+the unlit side is sky plus faint Earthshine. Once drawn, the frame loop crossfades the
+shader's Moon (`uMoonMap`) into the map with the theme blend's timing, then the shader draws
+only sky inside the disc. Every frame, the overlay's opacity is night × map blend × the
+sky's paper fade (`moonVisibility`, whose GLSL literals are shared through
+`SKY_PAPER_FADE`). If the map or worker fails, the shader's Moon simply stays. The overlay
+has no hit target, so the Moon theme button still responds to clicks; it hides with the
+WebGL scene in fallback. The sea canvas keeps its pixel budget: native pinch zoom
+magnifies the 512 px backing store, which supplies the detail within the same disc. The
+[source credit](../public/moon-lroc-2k-CREDITS.txt) is linked in the footer.
 
 ### Error-page seas (`components/drift/`)
 
@@ -477,10 +500,10 @@ camera, microphone, geolocation and similar. API routes set their own headers.
 
 ## Not implemented
 
-The dated star field, planets and sea light coupling are built; lazy mapped lunar detail
-and the water-motion review remain planned. [night-sky.md](night-sky.md) records the phased
+The dated star field, planets, sea light coupling and the mapped Moon are built;
+the water-motion review remains planned. [night-sky.md](night-sky.md) records the phased
 direction, source choices, measured microbenchmarks and proposed budgets. A compact HYG
-catalogue ships; no ephemeris library or lunar imagery ships yet.
+catalogue and a night-only lunar map ship; no ephemeris library ships.
 
 No device tilt, no real ocean data or forecasts, no observation ingestion, no fluid
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies

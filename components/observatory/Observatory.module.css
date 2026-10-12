@@ -774,3 +774,19 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+.moonDetail {
+  position: absolute;
+  z-index: 1;
+  width: var(--moon-disc-size);
+  height: var(--moon-disc-size);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+}
+.moonDetailDisc {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

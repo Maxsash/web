@@ -1,5 +1,8 @@
 export const SEA_LIGHT_SCREEN = [0.76, 0.74] as const;
 export const SEA_REFLECTION_SCREEN = [SEA_LIGHT_SCREEN[0], 0.44] as const;
+export const MOON_SCREEN_RADIUS = 0.019;
+// GLSL literals, so the error-page sky shaders pinned in drift.test.mjs keep their bytes.
+export const SKY_PAPER_FADE = [".05", ".8"] as const;
 export const SEA_HALF_FOV = Math.PI / 7;
 type Vector = [number, number, number];
 const normalize = (v: Vector): Vector => {

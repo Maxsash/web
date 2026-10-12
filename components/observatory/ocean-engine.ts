@@ -70,7 +70,7 @@ export function createOceanEngine(
     "uShip",
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight", "uTime"]),
-    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon"]);
+    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon", "uMoonMap"]);
   gl.useProgram(sea);
   setWaves(gl, su, edition);
   let aspect = 1,
@@ -170,6 +170,7 @@ export function createOceanEngine(
   canvas.dataset.triangles = String(surface.triangles);
   return {
     refreshMoon,
+    moonDay: () => moonDay,
     setPreviewDay(day: number | null) {
       previewDay = day;
       return refreshMoon();
@@ -189,7 +190,7 @@ export function createOceanEngine(
       }
       return Boolean(point);
     },
-    draw(time: number, reveal: number, pointer: [number, number], night = 0) {
+    draw(time: number, reveal: number, pointer: [number, number], night = 0, moonMap = 0) {
       refreshMoon();
       if (night > 0) {
         loadStars();
@@ -209,6 +210,7 @@ export function createOceanEngine(
       gl.uniform1f(ku.uNight, night);
       gl.uniform1f(ku.uAspect, aspect);
       gl.uniform2f(ku.uMoon, moon.illumination, moon.cycle < 0.5 ? 1 : -1);
+      gl.uniform1f(ku.uMoonMap, moonMap);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (starCount && starsProgram && starsVAO && starsUniforms && night > 0 && reveal < 0.8) {
         gl.useProgram(starsProgram);
@@ -265,6 +267,7 @@ export function createOceanEngine(
       gl.uniform3fv(bu.uLight, light);
       gl.drawArrays(gl.TRIANGLES, 0, ship.count);
       canvas.dataset.nightBlend = String(night);
+      canvas.dataset.moonMapBlend = String(moonMap);
       canvas.dataset.frameCount = String(++frames);
     },
     dispose: () => {

@@ -4,6 +4,26 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Sun/moon theme interaction (12 October 2026)
+
+`tools/theme-blend.test.mjs` pins the 1,000 ms duration, endpoints/monotonic interpolation,
+continuous reversal, actual disc coordinates and 44 px targets at five viewport sizes, and
+finite ripple projection onto the sea mesh across portrait/landscape.
+`node tools/check-sky-theme.mjs http://localhost:3041` uses native mouse/touch/Enter/Space:
+one sky ripple, intermediate/final blend, continuous reversal, current labels, saved choice
+across reload and OS changes, focus ring, immediate paused/reduced changes with no ripple,
+phone tap staying in Sea, Drawing hiding the target, viewport alignment and a live reduced-motion
+preference change settling an active fade. A separate no-GPU
+browser checks fallback hiding the target while keeping the labelled toggle. Captures/report:
+`tools/.out/sky-theme/`. This is not a physical-device or real screen-reader qualification.
+
+Final isolated Node 24 webpack production build: lint/types/format, 136 Node tests, 12 native
+sky cases and the lunar surface/area/date/midnight check pass. 78 SEO cases, headers/CSP,
+keyboard 22/22 and creative 191 records pass with zero failures/runtime exceptions. Header
+browser startup once read an empty Chrome DevTools port file; clean rerun passed.
+Desktop transition/night and phone day captures inspected. Own :3041 server stopped; captures
+copied to the main working tree's ignored tools/.out/sky-theme/. No physical-device claim.
+
 ## Moon phases (12 October 2026)
 
 `tools/moon-phase.test.mjs` compares six published

@@ -1,7 +1,7 @@
 # Handoff — start here
 
 Updated 12 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD d686843 on main; tree was clean when this session started. Do not commit or release.
+HEAD d83de8b on main; owner committed the moon work before this turn. Owner authorizes committing the verified transition in this turn; no push/release.
 
 ## Current work
 
@@ -10,34 +10,36 @@ ready. Priorities remain owner release/social previews, physical-phone/accessibi
 and search-console/Bing inspections; no identified urgent source fix blocks the moon work.
 The previous handoff's staged/unstaged account is obsolete: those changes are committed.
 
-The night hero now shows a factually dated phase on a complete lunar surface. Pure orbital
-calculation supplies the noon-IST phase for the date; sphere normals and phase-derived sunlight
-supply the lit/unlit boundary. One subtly marked material continues through lunar night, revealed
-by dim viewer-facing Earthshine, with atmospheric sky beneath both sides. It no longer reads as
-a black cover over the bright portion. Markings/brightness are authored, not a lunar map or
-calibrated photometry. Material work is limited to pixels inside the night disc.
+Implemented the approved sky interaction: native mouse/touch/keyboard activation of the sun or
+moon gives one sea ripple beneath its reflection column and a one-second day/night palette fade.
+Rapid clicks reverse continuously. Shared theme authority keeps the sky and labelled shore
+control synchronized; manual choices persist and override OS changes. Dated lunar surface stays.
 
-Still/reduced-motion scenes refresh the date after India midnight; visible draws refresh on
-return from a hidden tab. Fixed size/position/orientation and sea lighting. No location, remote
-request, dependency or asset. Shared error shader bytes/fallback remain fixed. Docs are current.
-Work is uncommitted. Sun/moon click-to-toggle was discussed, not requested for implementation.
+44 px minimum transparent sky target matches the rendered disc, with hover-device-only feedback
+and a focus ring. It hides in Drawing/fallback and if it would cover copy/header/meta. Still,
+reduced-motion, initial/hidden/offscreen scenes snap; a live reduced preference settles a fade.
+One existing frame loop and ripple shader; no new route, dependency, asset or sound.
+Architecture/decisions/testing/cleanup are current. Transition source matches the verified
+version; committing only this set now on the owner's explicit request.
 
 ## Verification
 
-Final isolated Node 24 webpack build, lint, TypeScript, format and 132/132 Node tests pass.
-USNO phase fixtures agree within 0.2 degrees / 0.5% illumination; India-date rollover is pinned.
-Moon browser check passes 14 supersampled lit-area cases within 1.5 percentage points,
-Earthshine/night-surface RGB above equivalent sky (no black overlay), spherical shading,
-unchanged daylight and dated hero/reduced-motion midnight redraw. Inspected final desktop
-crescent/quarters/full and phone crescent. 78 SEO cases, headers/CSP, keyboard 22/22 and creative
-191 records pass with zero failed assertions/runtime exceptions. Own :3041 server stopped;
-latest captures/report saved in tools/.out/moon/. Own isolated worktree removed.
-Not checked: physical devices, Safari/Firefox, real screen reader, production release.
+Final isolated Node 24 webpack build, lint, TypeScript, format and 136/136 Node tests pass.
+12 native sky cases pass: mouse/touch/Enter/Space, one ripple, intermediate/final/reversed fade,
+saved/OS choice, live reduced preference, still/reduced immediate changes, phone stage,
+viewport alignment, Drawing hiding and no-GPU fallback with the labelled toggle working.
+Moon surface/area/date/midnight checks pass. 78 SEO cases, headers/CSP, keyboard 22/22 and
+creative 191 records pass with zero failed assertions/runtime exceptions. Header browser first
+hit a transient empty Chrome DevTools port file (localhost:80); clean rerun passed.
+Inspected desktop transition/night and phone day captures. Own :3041 server stopped; previews
+saved in tools/.out/sky-theme/. Own isolated worktree removed.
+Not checked: physical phone, Safari/Firefox, real screen reader or production release.
 
 ## Next
 
-Owner: review the main site's night mode; commit/release remain the owner's actions.
-Optional preview: tools/.out/moon/crescent.png and phone-crescent.png.
+After the transition commit: research a realistic sky (stars/planets), fixed Tikamgarh location,
+clock/view-direction compromises, rendering budgets and a lazy high-resolution lunar Easter
+egg. No new sky implementation approved yet; source/performance research next.
 
 ## Open items
 
@@ -49,14 +51,13 @@ Optional preview: tools/.out/moon/crescent.png and phone-crescent.png.
 ## Suggested commit
 
 ```
-feat: show date-correct phases on a continuous lunar surface
+feat: switch the sea between day and night by touching the sky
 
-Calculate lunar illumination locally at noon IST. Shade one marked lunar surface with
-phase-derived sunlight and dim Earthshine so its night face continues around the bright
-portion. Refresh the date in still scenes and preserve fixed error-page skies.
+Make the rendered sun/moon a keyboard-accessible 44 px target. Each activation creates
+one sea ripple and a one-second interruptible palette fade. Share saved/manual theme
+tracking with the labelled shore control; respect pauses, reduced motion and fallback.
 
-Verified in an isolated Node 24 production build: types, lint, format, 132 Node tests,
-USNO fixtures, moon surface/area/shading/date/midnight checks, 78 SEO cases, headers/CSP,
-keyboard 22/22 and creative 191 records with no failures/runtime exceptions.
-Desktop/phone phase captures inspected.
+Verified in an isolated Node 24 production build: types, lint, format, 136 Node tests,
+12 native sky interaction cases, lunar checks, 78 SEO cases, headers/CSP, keyboard 22/22
+and creative 191 records with no failures/runtime exceptions. Desktop/phone captures inspected.
 ```

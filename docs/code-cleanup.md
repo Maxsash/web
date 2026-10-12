@@ -106,3 +106,11 @@ The follow-up reconstructs sphere normals in the same sky pass: one complete dis
 phase-derived sunlight and a dim unlit surface. One albedo supplies both sides; a shared
 basin function gives restrained surface markings, evaluated only inside the night disc.
 No separate crescent geometry or downloaded texture.
+
+## Sky theme interaction (12 October 2026)
+
+Theme authority/persistence/OS tracking lives once in theme.ts; useStudioTheme owns React
+subscription/lifecycle, ThemeControl and the sky button render controls. Pure theme-blend and
+sky-control geometry stay independent of DOM/React. Existing text measurements and ripple
+shader are reused. One frame loop still draws; the canvas records actual blend/ripple counts
+for integration checks. No new route, dependency or asset.

@@ -17,6 +17,11 @@ import {
   renderRatio,
   scheduleNextDraw,
 } from "./frame-governor";
+import { SEA_LIGHT_SCREEN, SEA_REFLECTION_SCREEN } from "./ocean-light";
+import { boundsOverlap, skyControlBounds } from "./sky-control";
+import { nightTheme, toggleTheme } from "./theme";
+import { themeBlendAt, type ThemeBlend } from "./theme-blend";
+import { useStudioTheme } from "./useStudioTheme";
 import { layerOpacities } from "./layer-opacity";
 import { chapterFor, revealFor } from "./reveal-mapping";
 import { easePace, paceTarget } from "./sea-pace";
@@ -30,6 +35,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pauseRef = useRef<(() => boolean) | null>(null);
   const stageRef = useRef<((direction: number) => void) | null>(null);
+  const night = useStudioTheme();
+  const [skyClear, setSkyClear] = useState(true);
   const [paused, setPaused] = useState(false);
   const [ready, setReady] = useState(false);
   const [activeStage, setActiveStage] = useState(0);
@@ -62,6 +69,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       ratio = 1;
     let pointer: [number, number] = [0, 0],
       target: [number, number] = [0, 0];
+    let nightValue = nightTheme() ? 1 : 0;
+    let themeBlend: ThemeBlend | null = null;
     const governor = new FrameGovernor();
     let scrollDirty = true,
       lastScrollY = -1;
@@ -121,6 +130,11 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         if (stageMove && visible && !document.hidden) frame = requestAnimationFrame(render);
         return;
       }
+      if (themeBlend) {
+        const blend = themeBlendAt(themeBlend, now);
+        nightValue = media.matches || stopped ? themeBlend.target : blend.value;
+        if (blend.finished || media.matches || stopped) themeBlend = null;
+      }
       const interval = lastTime ? (now - lastTime) / 1000 : 0;
       const delta = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0;
       const travelled = Math.abs(window.scrollY - paceScrollY) / Math.max(1, height);
@@ -138,12 +152,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           ];
       const reveal = revealFor(progress, { reducedMotion: media.matches, staged });
       ink(reveal);
-      engine.draw(
-        elapsed,
-        reveal,
-        pointer,
-        document.documentElement.dataset.studioTheme === "night" ? 1 : 0,
-      );
+      engine.draw(elapsed, reveal, pointer, nightValue);
       nextDraw = scheduleNextDraw(nextDraw, now, { active, scrollChanged, low: governor.low });
       if (!presented) {
         presented = true;
@@ -268,6 +277,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       const origin = stage.getBoundingClientRect();
       const readCopy = (selector: string) => {
         const copy = { right: 0, bottom: 0 };
+        const rects: ReturnType<typeof skyControlBounds>[] = [];
         const root = scene.querySelector(selector);
         if (root) {
           const text = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -275,12 +285,18 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
           while (text.nextNode()) {
             range.selectNodeContents(text.currentNode);
             for (const rect of range.getClientRects()) {
+              rects.push({
+                left: rect.left - origin.left,
+                right: rect.right - origin.left,
+                top: rect.top - origin.top,
+                bottom: rect.bottom - origin.top,
+              });
               copy.right = Math.max(copy.right, rect.right - origin.left);
               copy.bottom = Math.max(copy.bottom, rect.bottom - origin.top);
             }
           }
         }
-        return copy;
+        return { ...copy, rects };
       };
       const readReserved = (names: string[]) =>
         names.flatMap((name) => {
@@ -297,11 +313,19 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
             },
           ];
         });
+      const intro = readCopy("." + styles.intro);
+      const skyBounds = skyControlBounds(width, height);
+      stage.style.setProperty("--sky-target-size", `${skyBounds.right - skyBounds.left}px`);
+      setSkyClear(
+        ![...intro.rects, ...readReserved([styles.nav, styles.sceneMeta])].some((bounds) =>
+          boundsOverlap(skyBounds, bounds),
+        ),
+      );
       const controls = [styles.pause, styles.stageControls, styles.chapterRail];
       engine?.resize(width, height, ratio, {
         width,
         height,
-        copy: readCopy("." + styles.intro),
+        copy: intro,
         drawing: readCopy("." + styles.end),
         reserved: readReserved([...controls, styles.sceneMeta]),
         drawingReserved: readReserved(controls),
@@ -360,7 +384,21 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
     );
     window.addEventListener(
       "studio-theme",
-      () => {
+      (event) => {
+        const now = performance.now();
+        const target = nightTheme() ? 1 : 0;
+        const current = themeBlend ? themeBlendAt(themeBlend, now).value : nightValue;
+        const immediate = !engine || !visible || document.hidden || stopped || media.matches;
+        themeBlend =
+          immediate || current === target ? null : { from: current, target, started: now };
+        nightValue = immediate ? target : current;
+        const origin = (event as CustomEvent<{ origin?: string }>).detail?.origin;
+        if (origin === "sky" && !immediate) {
+          engine?.ripple(
+            [SEA_REFLECTION_SCREEN[0] * 2 - 1, SEA_REFLECTION_SCREEN[1] * 2 - 1],
+            elapsed,
+          );
+        }
         scrollDirty = true;
         requestFrame();
       },
@@ -428,6 +466,20 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   return (
     <>
       <canvas ref={canvasRef} className={styles.canvas} data-ocean aria-hidden="true" />
+      <button
+        className={styles.skyTheme}
+        style={{
+          left: `${SEA_LIGHT_SCREEN[0] * 100}%`,
+          top: `${(1 - SEA_LIGHT_SCREEN[1]) * 100}%`,
+        }}
+        type="button"
+        data-sky-theme
+        data-press="none"
+        hidden={!ready || !skyClear}
+        aria-label={night ? "Moon: switch to day sea" : "Sun: switch to night sea"}
+        title={night ? "Switch to day sea" : "Switch to night sea"}
+        onClick={() => toggleTheme("sky")}
+      />
       <button
         className={styles.pause}
         type="button"

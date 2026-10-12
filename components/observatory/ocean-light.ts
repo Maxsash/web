@@ -1,4 +1,5 @@
 export const SEA_LIGHT_SCREEN = [0.76, 0.74] as const;
+export const SEA_REFLECTION_SCREEN = [SEA_LIGHT_SCREEN[0], 0.44] as const;
 export const SEA_HALF_FOV = Math.PI / 7;
 type Vector = [number, number, number];
 const normalize = (v: Vector): Vector => {

@@ -124,6 +124,15 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Touch the sun/moon to change the sea** (owner approved, 12 October 2026). A click/tap
+  or keyboard activation starts one restrained ripple beneath the light's reflection column
+  and blends the existing sky/water/ship palettes over one second. Sun and moon keep their
+  position; the real lunar phase remains. Keep the labelled shore control and its saved choice.
+  Reduced motion or a stilled sea changes immediately without a ripple. The sky target is at
+  least 44 px, keyboard accessible and hidden in Drawing/fallback or when it would cover text.
+  Hover feedback appears only on devices that actually hover. Rapid clicks reverse continuously.
+
+
 - **The hero moon follows the India calendar date** (owner, 12 October 2026). Calculate
   solar/lunar orbits and illumination locally, sampling noon IST for the whole date; refresh
   when the date changes, including a still scene. Use conventional northern-hemisphere diagram
@@ -294,8 +303,8 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **The commit-log card** shows the three newest commits and no counts or charts: a
   14-day strip and "24 commits in the last 14 days" reads as neglect once the site is
   stable. It publishes commit messages by design.
-- **Theme follows the system** until the visitor picks day or night in the
-  footer.
+- **Theme follows the system** until the visitor picks day or night using the
+  footer control or the hero sun/moon.
 
 ## Feedback
 

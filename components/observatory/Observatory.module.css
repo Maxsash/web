@@ -746,3 +746,31 @@
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
+
+.skyTheme {
+  position: absolute;
+  z-index: 5;
+  width: var(--sky-target-size, 44px);
+  height: var(--sky-target-size, 44px);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: #f5f0df;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+@media (hover: hover) {
+  .skyTheme:hover {
+    border-color: color-mix(in srgb, currentColor 45%, transparent);
+  }
+}
+.skyTheme:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+.story:not([data-chapter="sea"]) .skyTheme {
+  visibility: hidden;
+  pointer-events: none;
+}

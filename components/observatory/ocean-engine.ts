@@ -92,7 +92,10 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     },
     ripple(ndc: [number, number], time: number) {
       const point = camera && seaPointAt(ndc, camera.eye, camera.target, aspect);
-      if (point) ripple = [point[0], point[1], time];
+      if (point) {
+        ripple = [point[0], point[1], time];
+        canvas.dataset.rippleCount = String(Number(canvas.dataset.rippleCount ?? 0) + 1);
+      }
       return Boolean(point);
     },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
@@ -134,6 +137,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.uniform1f(bu.uNight, night);
       gl.uniform3fv(bu.uLight, light);
       gl.drawArrays(gl.TRIANGLES, 0, ship.count);
+      canvas.dataset.nightBlend = String(night);
       canvas.dataset.frameCount = String(++frames);
     },
     dispose: () => resources.dispose(),

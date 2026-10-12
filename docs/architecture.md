@@ -95,6 +95,25 @@ behind a server-rendered SVG plate, which is also the fallback.
   exports builders; shared defaults are pinned byte for byte by `tools/drift.test.mjs`.
   The homepage supplies its moving ship wake; error seas keep their own surfaces.
 
+### Sky theme interaction
+
+`theme.ts` is the shared theme authority: applies `html[data-studio-theme]`, persists manual
+choices, emits `studio-theme` with an origin and follows OS changes until a manual choice.
+`useStudioTheme` supplies the React snapshot and reference-counted lifecycle used by the shore's
+`ThemeControl` and hero. Neither control duplicates persistence or owns a separate manual flag.
+
+`OceanScene` places a native, labelled `data-sky-theme` button over `SEA_LIGHT_SCREEN`, using
+`sky-control.ts` for its 44 px minimum square hit area. Its existing text measurements hide it
+where copy/header/meta overlap; Drawing and renderer fallback hide it too. Its transparent hit
+area leaves the shader's real disc visible. Hover ring is hover-device-only; focus is explicit.
+
+A sky activation uses the existing `engine.ripple` at `SEA_REFLECTION_SCREEN` beneath the disc
+and does not trigger the canvas pointer ripple (buttons are excluded). `theme-blend.ts` samples
+an interruptible 1,000 ms smootherstep blend in the existing frame loop. Sky, sea and ship receive
+one floating `uNight`; global theme semantics/labels update immediately. Initial loads,
+offscreen/hidden scenes, reduced motion and paused seas snap. A preference/pause change during
+blending settles on the next draw. No extra animation loop, renderer, sound or asset.
+
 ### Date-correct hero moon
 
 `moon-phase.ts` is pure: Schlyter's solar/lunar orbital elements, Kepler solution and lunar
@@ -164,8 +183,8 @@ screens use one header row and put the offer beside the title. Approved sea timi
 sand and shells, `tide` the shore line, wet sand and surf, `footprints` the mouse-only
 fading tracks, `palette` the day and night colours. Budgets: 30 Hz, 420,000 pixels, paused
 when hidden or offscreen, still under reduced motion. `<Waves />` holds the wave sound while the
-shore is mounted (see Sound). Theme follows the system until the footer switch saves an
-override (`ThemeControl`).
+shore is mounted (see Sound). Theme follows the system until the footer switch or hero sky control saves an
+override through the shared theme authority.
 
 `GitHubActivity` shows this site's three newest commits (`maxsash/web`, public),
 fetched on the server, cached for an hour, with a 2.5 s timeout and a plain link as

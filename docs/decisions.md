@@ -124,6 +124,11 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Development sky preview is temporary** (owner, 12 October 2026). In `next dev`, a
+  small collapsible control selects any date from 1800–2050 or one of eight nearby
+  lunar phases and switches the scene to night. Live date restores the real India day.
+  It is excluded from the production experience and can be removed after sky review.
+
 - **Build the night sky in phases** (owner, 12 October 2026). First dated stars with
   Moon-dependent visibility, then dated planets, phase-dependent sea light, a mapped
   high-resolution Moon detail, and a review of water motion. The most stars should show

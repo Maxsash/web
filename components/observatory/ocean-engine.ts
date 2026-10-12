@@ -4,6 +4,8 @@ import { GlResources } from "./gl-resources";
 import { lookAt, multiply, perspective } from "./matrices";
 import { indiaMoonDay, moonForIndiaDay } from "./moon-phase";
 import { seaLightDirection } from "./ocean-light";
+import { planetFrameAt } from "./planet-sky";
+import { planetFragment, planetVertex } from "./planet-shaders";
 import {
   seaVertex,
   seaFragmentSource,
@@ -76,6 +78,7 @@ export function createOceanEngine(
   let placement = { x: 4.5, z: -5.5, scale: 1 };
   let framing = cameraAt(1, 1, [0, 0]);
   let moonDay = NaN;
+  let previewDay: number | null = null;
   let moon = moonForIndiaDay(indiaMoonDay(Date.now()));
   let catalogue: Star[] | null = null;
   let starCount = 0;
@@ -85,6 +88,31 @@ export function createOceanEngine(
   let starsBuffer: WebGLBuffer | null = null;
   let starsUniforms: ReturnType<GlResources["uniforms"]> | null = null;
   const starsAbort = new AbortController();
+  let planetCount = 0;
+  let planetsProgram: WebGLProgram | null = null;
+  let planetsVAO: WebGLVertexArrayObject | null = null;
+  let planetsBuffer: WebGLBuffer | null = null;
+  let planetsUniforms: ReturnType<GlResources["uniforms"]> | null = null;
+  const refreshPlanets = () => {
+    if (!planetsProgram) {
+      planetsProgram = resources.program(planetVertex, planetFragment);
+      planetsVAO = resources.vertexArray();
+      planetsBuffer = resources.buffer(gl.ARRAY_BUFFER, new Float32Array(0));
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0);
+      planetsUniforms = resources.uniforms(planetsProgram, [
+        "uAspect",
+        "uNight",
+        "uReveal",
+        "uMoonIllumination",
+      ]);
+    }
+    const frame = planetFrameAt(moonDay);
+    gl.bindBuffer(gl.ARRAY_BUFFER, planetsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, frame.points, gl.DYNAMIC_DRAW);
+    planetCount = frame.points.length / 4;
+    canvas.dataset.planets = frame.names.join(",");
+  };
   const refreshStars = () => {
     if (!catalogue) return;
     if (!starsProgram) {
@@ -126,19 +154,24 @@ export function createOceanEngine(
       });
   };
   const refreshMoon = () => {
-    const day = indiaMoonDay(Date.now());
+    const day = previewDay ?? indiaMoonDay(Date.now());
     if (day === moonDay) return false;
     moonDay = day;
     moon = moonForIndiaDay(day);
     canvas.dataset.moonCycle = String(moon.cycle);
     canvas.dataset.moonIllumination = String(moon.illumination);
     refreshStars();
+    if (planetsProgram) refreshPlanets();
     return true;
   };
   refreshMoon();
   canvas.dataset.triangles = String(surface.triangles);
   return {
     refreshMoon,
+    setPreviewDay(day: number | null) {
+      previewDay = day;
+      return refreshMoon();
+    },
     resize(width: number, height: number, ratio: number, composition?: ShipComposition) {
       aspect = resizeCanvas(canvas, gl, width, height, ratio);
       if (composition) {
@@ -156,7 +189,10 @@ export function createOceanEngine(
     },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
       refreshMoon();
-      if (night > 0) loadStars();
+      if (night > 0) {
+        loadStars();
+        if (!planetsProgram) refreshPlanets();
+      }
       camera = cameraAt(reveal, aspect, pointer, framing);
       const { eye, target } = camera;
       const vp = multiply(perspective(aspect), lookAt(eye, target));
@@ -182,6 +218,25 @@ export function createOceanEngine(
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.drawArrays(gl.POINTS, 0, starCount);
+        gl.disable(gl.BLEND);
+      }
+      if (
+        planetCount &&
+        planetsProgram &&
+        planetsVAO &&
+        planetsUniforms &&
+        night > 0 &&
+        reveal < 0.8
+      ) {
+        gl.useProgram(planetsProgram);
+        gl.bindVertexArray(planetsVAO);
+        gl.uniform1f(planetsUniforms.uAspect, aspect);
+        gl.uniform1f(planetsUniforms.uNight, night);
+        gl.uniform1f(planetsUniforms.uReveal, reveal);
+        gl.uniform1f(planetsUniforms.uMoonIllumination, moon.illumination);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.drawArrays(gl.POINTS, 0, planetCount);
         gl.disable(gl.BLEND);
       }
       gl.enable(gl.DEPTH_TEST);

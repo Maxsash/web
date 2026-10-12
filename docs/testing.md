@@ -4,6 +4,31 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Dated planets and development sky preview (12 October 2026)
+
+`tools/planet-sky.test.mjs` compares Mercury–Saturn J2000 equatorial positions against
+independent Astronomy Engine 2.1.15 geocentric samples on three dates; all 15 positions
+are within 0.15°. It checks finite apparent magnitudes/elongation and date-varying
+Moon-centred frames. `tools/phase-preview.test.mjs` checks eight distinct nearby phase
+dates, date conversion and invalid input. Astronomy Engine was downloaded to temporary
+scratch space solely for reference figures; the visitor bundle has no such dependency.
+
+`tools/check-planets.mjs` tests the production hero on new/full/later dates and a phone
+width, confirms the actual planet WebGL point call, night pixels/day hiding, dated
+planet lists and no development control. The 37-query actual Metal planet draw measured
+median 0.166 ms in the final run; short-run p95 varied from 0.20 to 1.65 ms across runs.
+This is desktop GPU evidence, not a phone budget. `tools/check-dev-sky.mjs` uses a
+separate `next dev` worktree and `localhost` origin: Full, custom date, Live date and
+night activation pass, with desktop and phone captures inspected. `127.0.0.1` is blocked
+for Next dev resources by its cross-origin policy; use `localhost` for this check.
+
+Final isolated Node 24 webpack production build passes 142 Node tests, lint, TypeScript,
+format, 78 SEO cases, headers/CSP, keyboard 22/22 and creative 191 captures with no
+runtime exceptions. The focused star regression also passes. Browser captures/report:
+ignored `tools/.out/planets/` and `tools/.out/dev-sky/` (copied to the main workspace).
+No physical-phone GPU, Safari/Firefox, atmospheric brightness, exact horizon or
+post-2050 ephemeris qualification.
+
 ## Night-sky feasibility (12 October 2026)
 
 Phase 1 dated stars are built. `tools/star-sky.test.mjs` checks the compact HYG v4.1

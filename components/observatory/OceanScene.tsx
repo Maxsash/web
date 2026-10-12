@@ -9,6 +9,7 @@ import { FEEDBACK } from "@/lib/feedback/vocabulary";
 import { ratchet } from "@/lib/sound/dial";
 import type { SeaEdition } from "@/lib/sea/types";
 import { clamp01 } from "./clamp";
+import { DevSkyPreview } from "./DevSkyPreview";
 import {
   FrameGovernor,
   LOW_QUALITY_RATIO,
@@ -35,6 +36,8 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pauseRef = useRef<(() => boolean) | null>(null);
   const stageRef = useRef<((direction: number) => void) | null>(null);
+  const previewDayRef = useRef<number | null>(null);
+  const previewSceneRef = useRef<((day: number | null) => void) | null>(null);
   const night = useStudioTheme();
   const [skyClear, setSkyClear] = useState(true);
   const [paused, setPaused] = useState(false);
@@ -433,6 +436,10 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
         if (disposed) return;
         try {
           engine = createOceanEngine(canvas, edition, compact, requestFrame);
+          engine.setPreviewDay(previewDayRef.current);
+          previewSceneRef.current = (day) => {
+            if (engine?.setPreviewDay(day)) requestFrame();
+          };
           resize();
           cancelAnimationFrame(frame);
           frame = 0;
@@ -458,6 +465,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       engine?.dispose();
       pauseRef.current = null;
       stageRef.current = null;
+      previewSceneRef.current = null;
       delete scene.dataset.staged;
       delete scene.dataset.stage;
       delete scene.dataset.still;
@@ -466,6 +474,14 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
   return (
     <>
       <canvas ref={canvasRef} className={styles.canvas} data-ocean aria-hidden="true" />
+      {process.env.NODE_ENV === "development" && (
+        <DevSkyPreview
+          onDay={(day) => {
+            previewDayRef.current = day;
+            previewSceneRef.current?.(day);
+          }}
+        />
+      )}
       <button
         className={styles.skyTheme}
         style={{

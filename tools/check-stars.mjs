@@ -141,7 +141,7 @@ await withBrowser({ name: "stars" }, async ({ send, evaluate, onMessage }) => {
       }
     };
     gl.drawArrays=(mode,first,count)=>{
-      if(mode!==gl.POINTS){original(mode,first,count);return;}
+      if(mode!==gl.POINTS || count<10){original(mode,first,count);return;}
       collect();
       if(++draws%4!==0 || samples.length+pending.length>=40){original(mode,first,count);return;}
       const query=gl.createQuery();gl.beginQuery(ext.TIME_ELAPSED_EXT,query);

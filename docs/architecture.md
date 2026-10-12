@@ -156,6 +156,23 @@ follows `uNight` and `uReveal`, so day/night fading and Drawing need no separate
 Midnight refresh rebuilds the dated buffer. Fetch failure leaves the sea intact. This is a
 Moon-centred composition, not an exact local horizon, weather or limiting-magnitude model.
 
+### Dated planets and temporary preview
+
+`planet-sky.ts` uses [JPL's 1800–2050 orbital elements](https://ssd.jpl.nasa.gov/planets/approx_pos.html)
+to place Mercury through Saturn at the same daily 21:00 IST instant, with geocentric J2000
+equatorial coordinates. Apparent brightness includes Sun/observer distance and phase angle;
+Saturn includes a simple ring-tilt term. `skyProjectionAt` keeps planets and catalogue stars
+in one Moon-centred orientation. Planets below 12° solar elongation or fainter than magnitude
+5 are omitted; the authored horizon is still not a real visibility filter. The sparse planet
+point pass allocates only on first night draw, refreshes after India midnight, does not
+twinkle and obeys the existing day/reveal blend. Approximate orbital elements omit full
+light-time, atmospheric and topocentric corrections.
+
+`DevSkyPreview` appears only under `process.env.NODE_ENV === "development"`. It chooses a
+date or one of eight nearby phase dates, calls the engine's preview-day setter and activates
+night. The control is absent from the production DOM and bundle. The engine otherwise
+follows the real India day, including after the preview is reset to Live date.
+
 ### Error-page seas (`components/drift/`)
 
 Each error page is `DriftFrame` (message on top, sea below; `DriftPage` adds the

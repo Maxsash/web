@@ -49,7 +49,7 @@ export function decodeStarCatalogue(buffer: ArrayBuffer): Star[] {
   });
 }
 
-export function starFrameAt(day: number, stars: readonly Star[]) {
+export function skyProjectionAt(day: number) {
   const timestamp = day * DAY_MS + INDIA_EVENING_UTC_MS;
   const julianDay = timestamp / DAY_MS + 2_440_587.5;
   const century = (julianDay - 2_451_545) / 36_525;
@@ -75,16 +75,25 @@ export function starFrameAt(day: number, stars: readonly Star[]) {
     towardsUp[2] - forward[2] * dot(towardsUp, forward),
   ]);
   const right = cross(up, forward);
+  return (rightAscension: number, declination: number) => {
+    const vector = direction(rightAscension * RAD, declination * RAD);
+    const depth = dot(vector, forward);
+    if (depth < 0.25) return null;
+    const x = dot(vector, right) / depth;
+    const y = dot(vector, up) / depth;
+    if (Math.abs(x) > 3 || Math.abs(y) > 2) return null;
+    return { x, y };
+  };
+}
+
+export function starFrameAt(day: number, stars: readonly Star[]) {
+  const project = skyProjectionAt(day);
   const visible = new Float32Array(stars.length * 4);
   let count = 0;
   for (const star of stars) {
-    const vector = direction(star.rightAscension * RAD, star.declination * RAD);
-    const depth = dot(vector, forward);
-    if (depth < 0.25) continue;
-    const x = dot(vector, right) / depth;
-    const y = dot(vector, up) / depth;
-    if (Math.abs(x) > 3 || Math.abs(y) > 2) continue;
-    visible.set([x, y, star.magnitude, star.colorIndex], count * 4);
+    const point = project(star.rightAscension, star.declination);
+    if (!point) continue;
+    visible.set([point.x, point.y, star.magnitude, star.colorIndex], count * 4);
     count++;
   }
   return visible.subarray(0, count * 4);

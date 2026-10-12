@@ -1,0 +1,47 @@
+.preview {
+  position: fixed;
+  z-index: 30;
+  right: 1.25rem;
+  bottom: 5.5rem;
+  width: min(18rem, calc(100vw - 2.5rem));
+  color: #f5f0df;
+  background: #10303aee;
+  border: 1px solid #f5f0df66;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  font: 0.7rem/1.5 var(--font-sans);
+  box-shadow: 0 0.5rem 2rem #05171e55;
+}
+.preview summary {
+  cursor: pointer;
+}
+.body {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.7rem;
+}
+.body input,
+.body button {
+  min-height: 36px;
+  border: 1px solid #f5f0df88;
+  border-radius: 0.2rem;
+  padding: 0.25rem 0.5rem;
+  background: #173f49;
+  color: inherit;
+  font: inherit;
+}
+.body button {
+  cursor: pointer;
+}
+.phases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+.body p {
+  margin: 0;
+}
+.preview :focus-visible {
+  outline: 2px solid #f5f0df;
+  outline-offset: 2px;
+}

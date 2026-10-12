@@ -1,7 +1,7 @@
 # Night sky — implementation brief
 
-Research and phased build, 12 October 2026. Star phase built and verified; later phases are not
-implemented. Transition committed as d21757f; current work is uncommitted.
+Research and phased build, 12 October 2026. Stars are committed as 12a73f3; the planet
+phase is built and verified. Transition committed as d21757f; planet work is uncommitted.
 
 ## Direction
 
@@ -44,7 +44,7 @@ The fixed Moon and authored horizon remain the agreed framing.
    predicts local tide height.
 
 Each phase gets its own review point, isolated production verification and measured
-desktop/phone rendering where available. Phase 1 is ready for review; planets are next.
+desktop/phone rendering where available. Phase 2 planets are the current review target.
 
 The visibility curve is perceptual rather than an exact naked-eye limiting magnitude:
 sky brightness also depends on the Moon's actual altitude, haze and artificial light,
@@ -74,11 +74,12 @@ this an exact local sky view. Align lunar phase/detail to the same daily timesta
 - One sparse WebGL point/sprite pass in the existing context/loop. Do not loop over a star
   array in the full-screen fragment shader. Tiny circles, subdued brightness/colour, no DOM
   node per star or additional renderer. Mask stars behind the Moon and soften near the horizon.
-- Mercury through Saturn use actual dated positions/brightness when in the composed field,
-  rendered as steady points. No giant planets/rings in the normal sky. Stars may twinkle weakly
+- Mercury through Saturn use JPL's 1800–2050 fitted elements and Schlyter's visual-magnitude
+  approximations, rendered as steady points. No giant planets/rings in the normal sky.
+  Stars may twinkle weakly
   and slowly; planets stay steady ([NASA explanation](https://imagine.gsfc.nasa.gov/ask_astro/night_sky.html)).
-- Compute the daily snapshot once, cache it and send a small position packet. Prefer build/server
-  ephemeris generation; do not add the full library to initial browser JS. No per-frame orbit maths.
+- Compute the daily snapshot once and upload a tiny point buffer. No full ephemeris library
+  is shipped and no per-frame orbit maths runs.
 - Keep current 360k/1.5m pixel caps, frame governor, pause, hidden/offscreen and reduced-motion
   policy. Defer dense Milky Way textures, weather/cloud simulation, satellites and meteor showers.
 - Proposed acceptance: ≤0.3 ms median added desktop GPU cost after warmup, record p95 and
@@ -86,9 +87,17 @@ this an exact local sky view. Align lunar phase/detail to the same daily timesta
   No initial high-resolution downloads and no material startup/scroll regression. These
   budgets are not qualifications or guarantees; compare integrated builds and real devices.
 
-[ Astronomy Engine ](https://github.com/cosinekitty/astronomy) provides planet positions,
-horizon transforms and lunar libration. It is MIT-licensed and tested against reference
-models. Library version/source must be pinned if adopted; no dependency is installed yet.
+[Astronomy Engine](https://github.com/cosinekitty/astronomy) 2.1.15 was used only as an
+independent temporary test reference for three five-planet samples; it is not installed in
+the visitor app. JPL's table is fitted only from 1800–2050. Solar conjunction filtering and
+the authored horizon mean this scene is a composed evening sky, not an observing forecast.
+
+Phase 2 production verification: 15 planet positions agree with Astronomy Engine within
+0.15°; the actual renderer draws at most five steady point sprites in a separate night-only
+pass. Day, date rollover, new/full dates and phone-width scene checks pass. A short desktop
+Metal timer-query run measured a 0.166 ms median for the planet draw; p95 varied between
+0.20 and 1.65 ms across short runs. The temporary development control exposes eight phases
+and arbitrary dates in JPL's fit interval; production has no control or extra ephemeris asset.
 
 ## Measurement evidence
 

@@ -1,9 +1,8 @@
 # Handoff — start here
 
 Updated 12 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 5654e61 on main: the owner committed phases 1–3 and the temporary dev preview.
-No push or release. Phase 4, the always-on mapped Moon, is built, verified and ready
-to commit.
+HEAD ff92a4b on main: the owner committed phases 1–4 (phase 4 is the always-on mapped
+Moon) and the temporary dev preview. No push or release.
 
 ## Current state
 
@@ -48,8 +47,10 @@ battery, calibrated brightness, exact libration; dev preview after the crop.
 
 ## Next
 
-Owner reviews the Moon on the main site and commits; then phase 5, the water-motion
-review, keeping wind waves independent of lunar phase.
+Phase 5, the water-motion review, keeping wind waves independent of lunar phase. Then
+decide the dev sky preview's removal (it was for sky review). Priorities across the repo
+are in [follow-ups.md](follow-ups.md): real-phone checks, release and discovery come
+before new decorative work.
 
 ## Open items
 
@@ -67,14 +68,7 @@ review, keeping wind waves independent of lunar phase.
 ## Suggested commit
 
 ```
-feat: show NASA's mapped Moon in the night sky
-
-Replace the shader Moon with NASA SVS's LRO map whenever the night sky shows it, at
-the same size, so zoom reveals real detail instead of swapping images. Ship only a
-lossless near-side crop (211 KiB). A worker shades it off the main thread; it
-crossfades in, adds light to the sky for Earthshine and falls back to the shader
-Moon. Add the clean-up-immediately rule. Verified on an isolated Node 24 production
-build: unit, SEO, headers, keyboard, creative and focused Moon/sky checks.
+docs: record the committed Moon work in the handoff
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 ```

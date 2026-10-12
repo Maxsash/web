@@ -1,3 +1,7 @@
+/* The night theme is set on every page; browsers tint their bars and overscroll from the body. */
+:global(body):has(.page) {
+  background-color: var(--chart-paper);
+}
 .page {
   min-height: 100svh;
   background: var(--chart-paper);

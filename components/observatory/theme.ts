@@ -1,4 +1,5 @@
 import { respond } from "@/components/feedback/respond";
+import { applyInitialTheme } from "./initial-theme";
 
 type ThemeOrigin = "sky" | "control" | "system";
 let manual = false;
@@ -30,12 +31,8 @@ export function toggleTheme(origin: "sky" | "control" = "control") {
 export function followTheme() {
   if (followers++ === 0) {
     const media = matchMedia("(prefers-color-scheme: dark)");
-    let saved: string | null = null;
-    try {
-      saved = localStorage.getItem("studio-theme");
-    } catch {}
-    manual = saved === "night" || saved === "day";
-    applyTheme(manual ? saved === "night" : media.matches, "system");
+    manual = applyInitialTheme();
+    applyTheme(nightTheme(), "system");
     const followSystem = () => {
       if (!manual) applyTheme(media.matches, "system");
     };

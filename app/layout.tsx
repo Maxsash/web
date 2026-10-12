@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import SmoothLinks from "@/components/SmoothLinks";
+import ThemeColor from "@/components/ThemeColor";
+import { applyInitialTheme } from "@/components/observatory/initial-theme";
 import Feedback from "@/components/feedback/Feedback";
 import PageTurns from "@/components/sound/PageTurns";
 import { site } from "@/content/site";
@@ -39,11 +41,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `(${applyInitialTheme})()` }} />
+      </head>
       <body>
         {children}
         <PageTurns />
         <SmoothLinks />
+        <ThemeColor />
         <Feedback />
       </body>
     </html>

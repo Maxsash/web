@@ -17,7 +17,8 @@ What is in place, and what only the owner can do. The crawler checks are in
   under 600 KB (`check-seo` asserts it). Bump the version in the filename when it changes so
   crawlers fetch it fresh. The old `living-atlas-day-v1.jpg` (earlier type, ship and copy) is gone.
 - **Icons and manifest.** SVG, ICO (16–64), Apple 180 and manifest 192/512/maskable icons are
-  the mark in cream on chart ink; `theme-color` is chart paper by day and night by night.
+  the mark in cream on chart ink; `theme-color` starts as chart paper and then follows the
+  page (architecture.md, Browser bars).
 - **WhatsApp, Facebook and Twitter** are recognised by Next.js as HTML-limited bots, so
   metadata stays in the head.
 - **`/robots.txt`** allows public crawling, excludes the API and points at

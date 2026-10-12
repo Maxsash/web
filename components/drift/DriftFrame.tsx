@@ -38,7 +38,7 @@ export default function DriftFrame({
   torn = false,
 }: DriftFrameProps) {
   return (
-    <main id={id} className={`${styles.page} ${styles[scene]}`}>
+    <main id={id} className={`${styles.page} ${styles[scene]}`} data-bar-tint>
       <div className={styles.sea} data-rendering="fallback">
         {plate ? (
           <div className={styles.fallback} aria-hidden="true">

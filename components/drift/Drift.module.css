@@ -4,7 +4,8 @@
   --drift-accent: #135a72;
   --drift-ground: var(--chart-sheet);
   --drift-plate: #cfe0dc;
-  --drift-sky: linear-gradient(#5ca6c2, #a9cfd4 48%, #24525c 52%, #0d3a44);
+  --bar-top: #5ca6c2;
+  --drift-sky: linear-gradient(var(--bar-top), #a9cfd4 48%, #24525c 52%, #0d3a44);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -15,12 +16,19 @@
   color: var(--drift-ink);
 }
 
+/* Safari 26+ tints its bars from a stuck element's background edges. */
+:global(body) > .page {
+  position: sticky;
+  top: 0;
+}
+
 .notebook {
   --drift-ink: #131f27;
   --drift-kicker: var(--chart-magenta);
   --drift-accent: var(--chart-magenta);
   --drift-ground: #f2f3ee;
-  --drift-sky: linear-gradient(#f2f3ee 50%, #1c4c55 50%, #0f3a43);
+  --bar-top: #f2f3ee;
+  --drift-sky: linear-gradient(var(--bar-top) 50%, #1c4c55 50%, #0f3a43);
 }
 
 .plate {
@@ -29,7 +37,8 @@
   --drift-accent: var(--chart-magenta);
   --drift-ground: var(--chart-paper);
   --drift-plate: var(--chart-ink);
-  --drift-sky: linear-gradient(#cfd8d0, #e4e8e2 48%, var(--chart-paper));
+  --bar-top: #bcd1d0;
+  --drift-sky: linear-gradient(var(--bar-top), #e4e8e2 48%, var(--chart-paper));
 }
 
 .squall {
@@ -37,7 +46,8 @@
   --drift-kicker: #ffb454;
   --drift-accent: #ffb454;
   --drift-ground: #1b1206;
-  --drift-sky: linear-gradient(#050608, #11161a 48%, #1a2622 52%, #07100e);
+  --bar-top: #050608;
+  --drift-sky: linear-gradient(var(--bar-top), #11161a 48%, #1a2622 52%, #07100e);
 }
 
 .storm {
@@ -45,7 +55,8 @@
   --drift-kicker: #a8d8d0;
   --drift-accent: #a8d8d0;
   --drift-ground: #0b1114;
-  --drift-sky: linear-gradient(#141a1d, #252c2f 44%, #0f2b30 46%, #061418);
+  --bar-top: #1d272f;
+  --drift-sky: linear-gradient(var(--bar-top), #252c2f 44%, #0f2b30 46%, #061418);
 }
 
 .sea {

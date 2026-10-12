@@ -16,10 +16,12 @@ export default function Hero({ edition }: { edition: SeaEdition }) {
       data-observatory
       aria-label="From open water to its mathematical construction"
     >
-      <div className={styles.stage} data-gull-sky>
+      <div className={styles.stage} data-gull-sky data-bar-tint>
         <div className={styles.fallback} aria-hidden="true">
           <OceanPlate edition={edition} />
         </div>
+        <span className={styles.barTop} aria-hidden="true" />
+        <span className={styles.barBottom} aria-hidden="true" />
         <div className={styles.shade} />
         <div className={styles.paperVeil} />
         <header className={styles.nav}>

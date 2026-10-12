@@ -223,6 +223,11 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Mobile hero
 
+- **Browser bars match the page** (owner, 12 October 2026: the area in the phone's top bar
+  "should ideally match website colors"). The hero's bars take the sky above and the sea
+  below; other pages take their own paper or sky. The colours were measured from the render,
+  not invented, and verified in iOS 26.5/27 Safari simulators and headless Chrome.
+
 - **Mobile stages tolerate scroll offsets** (10 October 2026 bug fix). A 5 px offset
   previously bypassed the transition. Swipes work while most of the hero is visible,
   and a confirmed stage change aligns it to the top. Back's enabled state belongs to
@@ -533,6 +538,9 @@ Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
 - **Next.js 16.3.8** (16.2.9 had critical advisories; the site used none of the affected
   features). `pnpm audit --prod` reports no known vulnerabilities.
 - **Node 24** is the target (`engines.node`, `.nvmrc`, `@types/node`).
+- **No admin panel in production** (owner, 12 October 2026: "too much for a public repo").
+  Test, debugging and performance tooling stays local or in CI; production keeps no
+  accounts, sessions or cookies.
 - **Production CSP and hardening headers**, no `X-Powered-By`, `security.txt` and
   `SECURITY.md`. No secrets, source maps or third-party client calls.
 - **Open:** rate-limit `/api/sea-edition*` and `/plate` with a Vercel Firewall rule (a

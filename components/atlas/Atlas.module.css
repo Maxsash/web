@@ -1,5 +1,10 @@
-.atlas {
+/* The night theme is set on every page; browsers tint their bars and overscroll from the body. */
+:global(body):has(.atlas) {
   --atlas-paper: #f2f3ee;
+  background-color: var(--atlas-paper);
+}
+
+.atlas {
   --atlas-ink: #131f27;
   --atlas-muted: #56656c;
   --atlas-accent: var(--chart-magenta);

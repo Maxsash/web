@@ -4,6 +4,29 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Browser bars (12 October 2026)
+
+`node tools/check-browser-bars.mjs http://localhost:3041` (390 px touch phone, fixed Home
+water sea) computes the colour Safari 26+ takes for each bar and checks that theme-color
+equals it and that it matches the rendered top row (and the hero's bottom row) within 8
+levels: hero day and night, the drawing stage, below the hero, the Notebook after a
+client-side navigation from a night page, the 404, Notebook 404 and plate 404, a night
+load from the OS preference (theme set before the body is parsed; hero and `/plate`), and
+a no-GPU fallback hero. Edge colours were measured across 360–430 px, new and full Moon and
+eight seas; the day sea bottom ranges `#0c3942`–`#1d474e` by sea (Squall is the outlier).
+
+Real Safari behaviour was checked by hand in temporary iOS 26.5 and 27 simulators
+(created and deleted for the check): the hero's bars took the sky above and the sea below
+on a day load, the 404 its sky and sea, the Notebook its paper. Throwaway test pages
+established the rule in architecture.md, including that Safari kept its load-time colours
+through later style changes and programmatic scrolls. With the theme applied before the
+first paint, two OS-dark loads gave night sky `#030b15` above and sea `#06141a` below.
+Full suite on the isolated Node 24 build: format, lint, TypeScript, 145 Node tests, bars,
+12 sky-theme cases, keyboard 22/22, 78 SEO cases, headers/CSP, software fallback, creative
+191 captures with no runtime exceptions. Not verified: real finger scrolls (whether
+leaving the hero restores the body colour), the theme switch and drawing stage updating
+Safari's bars, Chrome on a real Android device.
+
 ## Mapped Moon (12 October 2026)
 
 `tools/moon-detail.test.mjs` checks near-side projection, waxing/waning light reversal,

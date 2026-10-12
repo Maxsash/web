@@ -99,6 +99,9 @@ behind a server-rendered SVG plate, which is also the fallback.
 
 `theme.ts` is the shared theme authority: applies `html[data-studio-theme]`, persists manual
 choices, emits `studio-theme` with an origin and follows OS changes until a manual choice.
+`initial-theme.ts` (the saved choice, else the OS preference) runs inline in the root
+layout's `<head>`, so the first paint has the visitor's theme, and again in `followTheme`;
+`<html>` carries `suppressHydrationWarning` for the attribute it sets.
 `useStudioTheme` supplies the React snapshot and reference-counted lifecycle used by the shore's
 `ThemeControl` and hero. Neither control duplicates persistence or owns a separate manual flag.
 
@@ -246,6 +249,33 @@ clear of the pause/stage controls and hides below 620 px viewport height; the st
 is still available in the page. Mobile title sizing also accommodates larger text. Narrow headers place the brand
 and wave pill in the first row, navigation in the second; the name can wrap. Short wide
 screens use one header row and put the offer beside the title. Approved sea timings stay.
+
+### Browser bars
+
+Phone browsers paint a band above the page (Safari 26+ also below). One rule serves both
+kinds of browser: the colour of a stuck `[data-bar-tint]` element's `--bar-top` (and
+`--bar-bottom`), else the body's background.
+
+- **Safari 26+** ignores `theme-color`. It hit-tests 8 px inside each viewport edge, walks
+  up to the first fixed or sticky ancestor and uses the first plain `background-color` on
+  the way (never a gradient or canvas), else snapshots the edge once, else uses the body.
+  In the iOS 26.5 and 27 simulators it decided when the page loaded and kept that through
+  later style changes and programmatic scrolls; real finger scrolls were not tested.
+- **Other browsers** (Chrome on Android, Safari 15–18) read `theme-color`.
+  `components/ThemeColor.tsx` applies the rule to it and resyncs on theme, rendering and
+  chapter attribute changes, when Next swaps head tags, and when the tinted element stops
+  being stuck (an `IntersectionObserver`, no scroll listener). The server default follows
+  the OS preference, as the first paint does without a saved choice.
+- **Hero:** `.barTop`/`.barBottom` declare the stage's `--bar-top`/`--bar-bottom` without
+  painting (an empty content box); the stage itself can't be sampled because `.shade`
+  darkens its edge unevenly. The values are the rendered sky top and sea bottom at phone
+  width (`--sky-edge`, `--sea-edge` per theme; constant across width and Moon phase; the
+  day sea bottom varies by starting sea and matches Home water and Trade wind), the plate's
+  on renderer fallback, and paper in the drawing chapters.
+- **Error pages:** a drift page that is the whole page is sticky, so Safari snapshots its
+  sky gradient; each scene's `--bar-top` is the rendered sky top and the gradient's first stop.
+- **Notebook and `/plate`:** `body:has(…)` keeps their paper, because the night attribute is
+  set on every page.
 
 ## Shoreline footer
 
@@ -433,7 +463,7 @@ origin sending JSON (so another website cannot write files while the dev server 
   (`--paper`, `--sheet`, `--water`, `--ink`, `--ink-2/3`, `--accent`, `--buff`, `--gold`,
   `--band*`, rules) switch with `html[data-studio-theme="night"]`. Day-only pages (the
   Notebook, `/plate`, error pages) read the fixed `--chart-*` constants, because the night
-  attribute survives client-side navigation. The Notebook's `--atlas-*` palette in
+  attribute is set on every page. The Notebook's `--atlas-*` palette in
   `Atlas.module.css` is built from them. The hero's colours over the sea are its own.
 - **System drawings:** `lib/system-drawing.ts` (pure) lays a drawing out on a 340 × 330 plate:
   labelled bands, each a four-column grid of boxes (span 1, 2 or 4), and arrows that run

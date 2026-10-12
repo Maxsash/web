@@ -124,6 +124,13 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Let the Moon light the sea, not drive the waves** (phase 3, 12 October 2026).
+  The hero's night specular path follows the dated illuminated fraction with an authored
+  nonlinear brightness curve and a soft column beneath the framed Moon. Keep moonless
+  water readable through restrained sky and diffuse ambient light. Preserve daytime
+  water, wind-wave motion and the error-page shader path. This is visual lighting, not
+  a measured local moonlight or tide prediction.
+
 - **Development sky preview is temporary** (owner, 12 October 2026). In `next dev`, a
   small collapsible control selects any date from 1800–2050 or one of eight nearby
   lunar phases and switches the scene to night. Live date restores the real India day.

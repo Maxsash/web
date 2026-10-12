@@ -51,7 +51,8 @@ export function seaFragmentSource({
   declarations = rippleDeclarations,
   surface = shipWakeGLSL + rippleGLSL,
   finish = "",
-}: ShaderAdditions & { field?: string; surface?: string } = {}) {
+  moonlight = false,
+}: ShaderAdditions & { field?: string; surface?: string; moonlight?: boolean } = {}) {
   return `#version 300 es
 precision highp float;
 in vec3 vWorld;
@@ -62,7 +63,7 @@ uniform float uReveal;
 uniform float uNight;
 uniform vec3 uLight;
 out vec4 outColor;
-${field}${declarations}
+${field}${declarations}${moonlight ? "\nuniform float uMoonIllumination;" : ""}
 float rule(float value,float width) {
   float d=abs(fract(value-.5)-.5);
   return 1.-smoothstep(width,width+fwidth(value)*1.25,d);
@@ -77,13 +78,36 @@ void main() {
   vec3 light=normalize(uLight);
   float fresnel=.035+.965*pow(1.-max(dot(n,view),0.),4.);
   vec3 sky=mix(vec3(.81,.77,.66),vec3(.16,.29,.35),pow(clamp(reflected.y,0.,1.),.55));
-  sky=mix(vec3(.70,.82,.82),sky,uNight);
+  sky=mix(vec3(.70,.82,.82),sky,uNight);${
+    moonlight
+      ? `
+  float lunarFlux=pow(clamp(uMoonIllumination,0.,1.),2.8);
+  float starAmbient=.015*(1.-lunarFlux);
+  float moonColumn=exp(-pow((gl_FragCoord.x/uResolution.x-${SEA_LIGHT_SCREEN[0]})/.21,2.));
+  vec3 nightSky=mix(vec3(.04,.09,.11),vec3(.11,.20,.25),pow(clamp(reflected.y,0.,1.),.55));
+  nightSky=nightSky*(.68+.32*lunarFlux)+vec3(.04,.065,.085)*lunarFlux*moonColumn;
+  sky=mix(sky,nightSky,uNight);`
+      : ""
+  }
   vec3 deep=mix(vec3(.025,.23,.28),vec3(.004,.035,.07),uNight);
-  vec3 body=mix(deep,vec3(.045,.26,.27),clamp(vWorld.y*.3+.35,0.,1.));
+  vec3 body=mix(deep,vec3(.045,.26,.27),clamp(vWorld.y*.3+.35,0.,1.));${
+    moonlight
+      ? `
+  vec3 nightBody=mix(vec3(.012,.045,.065),vec3(.028,.09,.11),clamp(vWorld.y*.3+.35,0.,1.));
+  nightBody=nightBody*(.95+.25*lunarFlux)+vec3(starAmbient*.35,starAmbient*.65,starAmbient);
+  body=mix(body,nightBody,uNight);`
+      : ""
+  }
   vec3 color=mix(body,sky,fresnel*.84);
   float glint=pow(max(dot(reflect(-light,n),view),0.),110.);
   float broad=pow(max(dot(reflect(-light,n),view),0.),18.);
-  color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);${surface}
+  ${
+    moonlight
+      ? `vec3 dayGlint=vec3(1.,.86,.60)*(glint*.95+broad*.04);
+  vec3 nightGlint=vec3(.64,.80,1.)*(glint*.72+broad*.028)*lunarFlux*moonColumn;
+  color+=mix(dayGlint,nightGlint,uNight);`
+      : "color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);"
+  }${surface}
   float dist=length(uEye-vWorld);
   float fog=1.-exp(-dist*.007);
   color=mix(color,mix(vec3(.60,.73,.72),vec3(.07,.13,.21),uNight),fog*fog);

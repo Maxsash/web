@@ -42,6 +42,7 @@ export function createOceanEngine(
       seaFragmentSource({
         declarations: "uniform vec3 uRipple;\nuniform vec4 uShip;",
         surface: surveyWakeGLSL + rippleGLSL,
+        moonlight: true,
       }),
     ],
     sky: [skyVertex, skyFragmentSource({ moonPhase: true })],
@@ -64,6 +65,7 @@ export function createOceanEngine(
     "uReveal",
     "uNight",
     "uLight",
+    "uMoonIllumination",
     "uRipple",
     "uShip",
   ]);
@@ -247,6 +249,7 @@ export function createOceanEngine(
       gl.uniform1f(su.uReveal, reveal);
       gl.uniform1f(su.uNight, night);
       gl.uniform3fv(su.uLight, light);
+      gl.uniform1f(su.uMoonIllumination, moon.illumination);
       gl.uniform3fv(su.uEye, eye);
       gl.uniform2f(su.uResolution, canvas.width, canvas.height);
       gl.uniform3fv(su.uRipple, ripple);

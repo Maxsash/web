@@ -134,7 +134,7 @@ Default shader strings remain byte-identical for error scenes. No dependency, re
 The normal frame refreshes the date cheaply; `OceanScene` checks once a minute so reduced-motion
 and paused scenes redraw after India midnight too. Its effect clears the timer on unmount.
 Hidden/offscreen scenes still do not draw; the next visible draw refreshes the date.
-Orientation, size, position and sea lighting are authored; only the illuminated shape is dated.
+Orientation, size and position are authored; the sea light now follows the dated illumination.
 The static fallback contains no astronomical sky. This is not a local visibility forecast.
 
 ### Dated star field
@@ -172,6 +172,17 @@ light-time, atmospheric and topocentric corrections.
 date or one of eight nearby phase dates, calls the engine's preview-day setter and activates
 night. The control is absent from the production DOM and bundle. The engine otherwise
 follows the real India day, including after the preview is reset to Live date.
+
+### Phase-aware sea light
+
+The hero opts into `seaFragmentSource({ moonlight: true })` and supplies the same daily
+illuminated fraction used by the Moon and star field. Its night path applies an authored
+nonlinear brightness curve to the existing specular glint, then confines that glint to a
+soft column under `SEA_LIGHT_SCREEN`. A small diffuse dark-sky baseline and subdued sky/body
+colours keep the water legible near new Moon. Daylight and the wave geometry are unchanged;
+the default shader path used by error seas remains byte-identical. The existing `uNight`
+blend applies to the phase-aware night colours and glint, so the theme transition uses the
+same frame loop. This is a visual response, not calibrated illumination or a tide model.
 
 ### Error-page seas (`components/drift/`)
 
@@ -466,9 +477,10 @@ camera, microphone, geolocation and similar. API routes set their own headers.
 
 ## Not implemented
 
-The dated star field is the first built phase; planets, sea light coupling and lazy
-lunar detail remain planned. [night-sky.md](night-sky.md) records the phased direction, source choices,
-measured microbenchmarks and proposed budgets. No catalogue, ephemeris library or imagery ships yet.
+The dated star field, planets and sea light coupling are built; lazy mapped lunar detail
+and the water-motion review remain planned. [night-sky.md](night-sky.md) records the phased
+direction, source choices, measured microbenchmarks and proposed budgets. A compact HYG
+catalogue ships; no ephemeris library or lunar imagery ships yet.
 
 No device tilt, no real ocean data or forecasts, no observation ingestion, no fluid
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies

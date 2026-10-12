@@ -1,8 +1,8 @@
 # Handoff — start here
 
 Updated 12 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 12a73f3 on main: owner committed phase 1 dated stars after transition commit d21757f.
-No push or release. Phase 2 planet and dev-preview work is uncommitted for review.
+HEAD 54290fe on main: the owner committed phases 1 and 2 and the temporary dev preview.
+No push or release. Phase 3 sea-light work is uncommitted for review.
 
 ## Current state
 
@@ -17,14 +17,15 @@ horizon/enlarged Moon remain a composition, not a local visibility forecast.
 The owner also requested a temporary development-only sky preview. In `next dev`, the
 collapsible control offers eight nearby Moon phases, a date input and Live date. A choice
 activates night and changes Moon, stars and planets together. Production has no control.
-The existing star catalogue and lunar phase rendering are unchanged. Phase 3 remains
-Moon-dependent sea reflection/ambient light: new-Moon sea light is currently too bright.
-Later: mapped lunar zoom detail, then water-motion review; wind waves stay independent
-of lunar phase.
+The phase 3 shader is built: the hero sea now receives the Moon's daily illuminated
+fraction. A nonlinear lunar brightness curve scales specular glints, and a column beneath
+the Moon focuses the reflection; a small diffuse night baseline keeps dark water legible.
+New/quarter/full and phone-width production frames were inspected. Wave motion and
+error-scene shaders stay unchanged. Later: mapped lunar zoom detail, then water-motion review.
 
 ## Verification
 
-Final isolated Node 24 webpack production build passes lint, TypeScript, format check,
+Phase 2's final isolated Node 24 webpack production build passed lint, TypeScript, format check,
 142 Node tests, 78 SEO cases, headers/CSP, keyboard 22/22, creative 191 captures with no
 runtime exceptions, the existing star regression and `check-planets.mjs`. All 15 sampled
 planet positions match independent Astronomy Engine 2.1.15 within 0.15°. The production
@@ -36,14 +37,24 @@ Actual desktop Metal planet draw, final 37-query run: median 0.166 ms, p95 0.201
 other short runs had similar median and p95 as high as 1.65 ms. This is not phone GPU
 evidence. No physical-phone, Safari/Firefox, battery, calibrated sky-brightness or exact
 horizon claim. Captures/reports: ignored `tools/.out/planets/` and `tools/.out/dev-sky/`.
-Both own servers were stopped. Older detached worktrees belong to prior sessions.
+Phase 3's isolated Node 24 webpack production build passes 142 Node tests, lint,
+TypeScript, format, 78 SEO cases, headers/CSP, keyboard 22/22 and creative 191 captures
+with no runtime exceptions. Nine drift tests preserve the default/error sea shader digest.
+The focused browser check passes new/quarter/full coupling, a directional full-Moon path,
+exact day parity and no runtime exceptions. `check-moon`, `check-sky-theme`,
+`check-planets` and `check-stars` pass. Desktop and phone-width captures were inspected;
+the latter are desktop Chrome emulation. A repeated 37-query desktop Metal star draw
+measured 0.191 ms median, 1.21 ms p95; a prior short run was noisier. No physical-phone,
+Safari/Firefox, battery or calibrated sky-brightness evidence. Captures/report are in
+ignored `tools/.out/moon-sea/`. The isolated server was stopped. Older detached
+worktrees belong to prior sessions.
 
 ## Next
 
-Review planet placement and the dev control on the main site. Then phase 3 should scale
-the Moon reflection and near-surface ambient with lunar phase and direction, without
-changing wind-wave motion. No new design choice is pending. Do not commit phase 2 without
-a new explicit user request.
+Review phase 3 sea lighting on the main site. Next, build phase 4 mapped lunar detail
+revealed by native zoom toward the Moon, with a keyboard-accessible path and lazy texture.
+The daily lit and unlit hemispheres must match the normal Moon. No new design choice is
+pending. Do not commit phase 3 without a new explicit user request.
 
 ## Other open items
 
@@ -54,9 +65,9 @@ a new explicit user request.
 ## Suggested commit
 
 ```
-feat: add dated planets and a development sky preview
+feat: scale night sea light with lunar phase
 
-Place Mercury through Saturn using JPL daily orbital elements in the existing Moon-centred
-field. Add a development-only date and Moon-phase preview control for visual review.
-Verify positions, renderer lifecycle, phase selection and the production browser gates.
+Dim specular moonlight near new Moon, keep a subtle dark-sky ambient, and centre the
+reflection beneath the composed Moon. Preserve day water and wave motion.
+Verify new/quarter/full and day scenes plus the production browser gates.
 ```

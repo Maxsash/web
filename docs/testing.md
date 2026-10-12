@@ -4,6 +4,21 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Phase-aware sea light (12 October 2026)
+
+`tools/check-moon-sea.mjs` samples the isolated production hero with one sea seed at
+new, quarter and full Moon, plus identical daytime dates. It checks monotonic night
+reflection brightness, the full-Moon path below the framed Moon, new-Moon highlight
+suppression, exact day-region parity and no runtime exceptions. It captures 1440 px and
+390 px frames under `tools/.out/moon-sea/`; phone width uses desktop Chrome emulation,
+not a physical phone. The shader's default/error output still passes the nine drift tests.
+The lunar brightness curve and ambient level are authored rather than photometrically
+calibrated. The final isolated Node 24 webpack build passes 142 Node tests, lint,
+TypeScript, format, 78 SEO cases, headers/CSP, keyboard 22/22 and creative 191 captures
+with no runtime exceptions. `check-moon`, `check-sky-theme`, `check-planets` and
+`check-stars` pass. The repeated 37-query star draw measured 0.191 ms median and 1.21 ms
+p95 on desktop Metal; a prior short run was noisier. This is no phone GPU qualification.
+
 ## Dated planets and development sky preview (12 October 2026)
 
 `tools/planet-sky.test.mjs` compares Mercury–Saturn J2000 equatorial positions against

@@ -1,7 +1,8 @@
 # Night sky — implementation brief
 
-Research and phased build, 12 October 2026. Stars are committed as 12a73f3; the planet
-phase is built and verified. Transition committed as d21757f; planet work is uncommitted.
+Research and phased build, 12 October 2026. The transition was committed as d21757f;
+stars, planets and the temporary preview are committed through 54290fe. Phase 3 sea
+lighting is built in the working tree for review.
 
 ## Direction
 
@@ -43,8 +44,9 @@ The fixed Moon and authored horizon remain the agreed framing.
    phases. Confirm the coupled light reads naturally without implying that this scene
    predicts local tide height.
 
-Each phase gets its own review point, isolated production verification and measured
-desktop/phone rendering where available. Phase 2 planets are the current review target.
+Each phase gets its own review point and isolated production verification. Phase 3 sea
+lighting is the current review target. Phone-width captures are desktop emulation, not
+physical phone performance measurements.
 
 The visibility curve is perceptual rather than an exact naked-eye limiting magnitude:
 sky brightness also depends on the Moon's actual altitude, haze and artificial light,
@@ -98,6 +100,16 @@ pass. Day, date rollover, new/full dates and phone-width scene checks pass. A sh
 Metal timer-query run measured a 0.166 ms median for the planet draw; p95 varied between
 0.20 and 1.65 ms across short runs. The temporary development control exposes eight phases
 and arbitrary dates in JPL's fit interval; production has no control or extra ephemeris asset.
+
+Phase 3 passes the Moon's daily illuminated fraction into the hero sea shader. An authored
+nonlinear curve reduces specular glints near new Moon; a soft screen column focuses them
+below the composed Moon. Restrained sky/body light leaves moonless waves perceptible,
+with a little diffuse ambient increasing as lunar glare falls. No star-by-star reflections
+or change to wave motion. The focused production browser check finds new/quarter/full
+reflection means of 17.0/19.5/37.1 luminance levels on one 1440 px frame; full-Moon
+reflection is 1.76× an off-axis strip and daytime samples are identical across lunar
+dates. Desktop and phone-width captures were inspected. This is perceptual lighting,
+not calibrated Moon illuminance.
 
 ## Measurement evidence
 

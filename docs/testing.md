@@ -4,6 +4,31 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Night-sky feasibility (12 October 2026)
+
+Phase 1 dated stars are built. `tools/star-sky.test.mjs` checks the compact HYG v4.1
+extract, Sirius, malformed data, three independent Astronomy Engine geocentric Moon positions
+and finite/date-varying Tikamgarh frames. `tools/check-stars.mjs` checks a production hero at
+new, quarter and full Moon plus phone width; captures each view and compiles the actual star
+shader to compare visible pixels at three illuminations and at day. Final isolated Node 24
+webpack production build passes 139 Node tests, star captures/visibility (527 → 236 → 48
+star pixels on one fixed frame; day zero), lint/types/format, 78 SEO, headers/CSP,
+keyboard 22/22 and creative 191/191. Live home link and license both returned 200.
+Moon and sky-theme regression checks passed on the same sky code before the final credit link.
+Actual desktop Metal star draw's latest warm 37-query run: median 0.178 ms, p95 1.40 ms,
+max 2.05 ms. Repeats held median ~0.18 ms but p95 varied 0.192–2.02 ms; short samples
+are not a stable p95 qualification. No physical phone GPU/battery check.
+
+Standalone microbenchmark in an isolated worktree, Node 24/native headless Chrome on M4 Pro.
+Astronomy Engine seven-body refresh: median 0.1 ms/p95 0.2 ms. Synthetic 1,000-vector rotation
+p95 0.1 ms; median below clock resolution. GPU timer query (32 passes × 12 samples),
+1440×1000 clear + 1,000 three-pixel sprites: median 0.026 ms/p95 0.045 ms; clear-only 0.0025 ms.
+390×844 uses the same desktop GPU, never a phone qualification. Wall-clock GL measurements
+were below clock resolution; GPU query results replace them. No integrated sea/sky or real
+catalogue was rendered. Library/map sizes, source hash, proposals and limits: [night-sky.md](night-sky.md).
+Report: ignored tools/.out/sky-feasibility/report.json. That earlier research-only step did
+not need a production suite; the completed phase 1 production verification is above.
+
 ## Sun/moon theme interaction (12 October 2026)
 
 `tools/theme-blend.test.mjs` pins the 1,000 ms duration, endpoints/monotonic interpolation,
@@ -49,7 +74,8 @@ and phone crescent; both sides use one surface with procedural markings and phas
 light. Final build with the disc-only shader guard passes 78 SEO cases, headers/CSP, keyboard 22/22
 and creative 191 records with zero failures/runtime exceptions. Own :3041 server stopped;
 latest captures copied to the main working tree's ignored tools/.out/moon/.
-No physical-phone/Safari/Firefox or live-release claim follows. Source remains uncommitted.
+No physical-phone/Safari/Firefox or live-release claim follows. The Moon phase work was
+subsequently committed by the owner as d83de8b.
 
 ## WhatsApp by number (12 October 2026)
 

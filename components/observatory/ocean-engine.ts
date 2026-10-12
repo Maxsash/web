@@ -23,8 +23,15 @@ import { buildShipMesh } from "./ship-mesh";
 import { shipPoseAt } from "./ship-motion";
 import { placeShip, frameShipDrawing, type ShipComposition } from "./ship-placement";
 import { surveyShipVertex, surveyShipFragment, surveyWakeGLSL } from "./ship-shaders";
+import { decodeStarCatalogue, starFrameAt, type Star } from "./star-sky";
+import { starFragment, starVertex } from "./star-shaders";
 
-export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition, compact = false) {
+export function createOceanEngine(
+  canvas: HTMLCanvasElement,
+  edition: SeaEdition,
+  compact = false,
+  onStarsReady?: () => void,
+) {
   const gl = openSeaContext(canvas);
   const resources = new GlResources(gl);
   const { sea, sky, boat } = compilePrograms(resources, {
@@ -70,6 +77,54 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
   let framing = cameraAt(1, 1, [0, 0]);
   let moonDay = NaN;
   let moon = moonForIndiaDay(indiaMoonDay(Date.now()));
+  let catalogue: Star[] | null = null;
+  let starCount = 0;
+  let starLoadStarted = false;
+  let starsProgram: WebGLProgram | null = null;
+  let starsVAO: WebGLVertexArrayObject | null = null;
+  let starsBuffer: WebGLBuffer | null = null;
+  let starsUniforms: ReturnType<GlResources["uniforms"]> | null = null;
+  const starsAbort = new AbortController();
+  const refreshStars = () => {
+    if (!catalogue) return;
+    if (!starsProgram) {
+      starsProgram = resources.program(starVertex, starFragment);
+      starsVAO = resources.vertexArray();
+      starsBuffer = resources.buffer(gl.ARRAY_BUFFER, new Float32Array(0));
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0);
+      starsUniforms = resources.uniforms(starsProgram, [
+        "uAspect",
+        "uNight",
+        "uReveal",
+        "uMoonIllumination",
+      ]);
+    }
+    const frame = starFrameAt(moonDay, catalogue);
+    gl.bindBuffer(gl.ARRAY_BUFFER, starsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, frame, gl.DYNAMIC_DRAW);
+    starCount = frame.length / 4;
+    canvas.dataset.starCount = String(starCount);
+    canvas.dataset.starDay = String(moonDay);
+  };
+  const loadStars = () => {
+    if (starLoadStarted) return;
+    starLoadStarted = true;
+    fetch("/stars-hyg-v41.bin", { signal: starsAbort.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("Star catalogue unavailable");
+        return response.arrayBuffer();
+      })
+      .then((buffer) => {
+        if (starsAbort.signal.aborted) return;
+        catalogue = decodeStarCatalogue(buffer);
+        refreshStars();
+        onStarsReady?.();
+      })
+      .catch(() => {
+        if (!starsAbort.signal.aborted) canvas.dataset.starCount = "unavailable";
+      });
+  };
   const refreshMoon = () => {
     const day = indiaMoonDay(Date.now());
     if (day === moonDay) return false;
@@ -77,6 +132,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     moon = moonForIndiaDay(day);
     canvas.dataset.moonCycle = String(moon.cycle);
     canvas.dataset.moonIllumination = String(moon.illumination);
+    refreshStars();
     return true;
   };
   refreshMoon();
@@ -100,6 +156,7 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
     },
     draw(time: number, reveal: number, pointer: [number, number], night = 0) {
       refreshMoon();
+      if (night > 0) loadStars();
       camera = cameraAt(reveal, aspect, pointer, framing);
       const { eye, target } = camera;
       const vp = multiply(perspective(aspect), lookAt(eye, target));
@@ -115,6 +172,18 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       gl.uniform1f(ku.uAspect, aspect);
       gl.uniform2f(ku.uMoon, moon.illumination, moon.cycle < 0.5 ? 1 : -1);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      if (starCount && starsProgram && starsVAO && starsUniforms && night > 0 && reveal < 0.8) {
+        gl.useProgram(starsProgram);
+        gl.bindVertexArray(starsVAO);
+        gl.uniform1f(starsUniforms.uAspect, aspect);
+        gl.uniform1f(starsUniforms.uNight, night);
+        gl.uniform1f(starsUniforms.uReveal, reveal);
+        gl.uniform1f(starsUniforms.uMoonIllumination, moon.illumination);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.drawArrays(gl.POINTS, 0, starCount);
+        gl.disable(gl.BLEND);
+      }
       gl.enable(gl.DEPTH_TEST);
       gl.useProgram(sea);
       gl.bindVertexArray(surface.array);
@@ -140,6 +209,9 @@ export function createOceanEngine(canvas: HTMLCanvasElement, edition: SeaEdition
       canvas.dataset.nightBlend = String(night);
       canvas.dataset.frameCount = String(++frames);
     },
-    dispose: () => resources.dispose(),
+    dispose: () => {
+      starsAbort.abort();
+      resources.dispose();
+    },
   };
 }

@@ -208,6 +208,7 @@ export default function Shoreline({
             {commit ? ` · ${commit}` : ""}
           </span>
           {seaModel && <span>Sea model v{seaModel} · WebGL2</span>}
+          {seaModel && <a href="/stars-hyg-v41-LICENSE.txt">Star positions: HYG v4.1 ↗</a>}
           <span>© {new Date().getFullYear()} Yash</span>
         </div>
       </div>

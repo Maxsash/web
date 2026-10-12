@@ -1,0 +1,13 @@
+Star positions, magnitudes and colour indices are adapted from the HYG Database v4.1
+by Astronomy Nexus (https://github.com/astronexus/HYG-Database).
+
+The source catalogue is licensed under Creative Commons Attribution-ShareAlike 4.0:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+This site's stars-hyg-v41.bin selects stars of apparent magnitude 5.0 or brighter,
+omits entries without a colour index, and quantizes right ascension, declination,
+magnitude and colour index. The adapted data file is distributed under the same
+Creative Commons Attribution-ShareAlike 4.0 license.
+
+Pinned source: hyg/CURRENT/hygdata_v41.csv
+SHA-256: d9f69fd86bbf90a4e4d52b4c5c53eacfa6dfc0bfdef85bfd94f095e0bebe4ebd

@@ -40,6 +40,7 @@ export class GlResources {
     this.buffers.push(buffer);
     this.gl.bindBuffer(target, buffer);
     this.gl.bufferData(target, data, this.gl.STATIC_DRAW);
+    return buffer;
   }
 
   uniforms(program: WebGLProgram, names: string[]) {

@@ -432,7 +432,7 @@ export default function OceanScene({ edition }: { edition: SeaEdition }) {
       .then(({ createOceanEngine }) => {
         if (disposed) return;
         try {
-          engine = createOceanEngine(canvas, edition, compact);
+          engine = createOceanEngine(canvas, edition, compact, requestFrame);
           resize();
           cancelAnimationFrame(frame);
           frame = 0;

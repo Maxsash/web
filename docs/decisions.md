@@ -124,6 +124,28 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Build the night sky in phases** (owner, 12 October 2026). First dated stars with
+  Moon-dependent visibility, then dated planets, phase-dependent sea light, a mapped
+  high-resolution Moon detail, and a review of water motion. The most stars should show
+  near new Moon; bright stars/planets still show near full Moon. The detail view must
+  shade both the real mapped lit and unlit surface to match the current daily phase.
+  The owner chose to keep the wind-wave recipe independent of lunar phase because
+  a larger tidal range near both new and full Moon does not set wind-wave height. Delivery gates
+  and evidence are in [night-sky.md](night-sky.md).
+
+- **Reference Tikamgarh and let zoom reveal Moon detail** (owner, 12 October 2026).
+  Use a fixed approximately 21:00 IST daily sky for Tikamgarh, keeping the Moon framed
+  even when it would be below the actual horizon. Native zoom toward the Moon should
+  quietly expose the high-resolution mapped, phase-shaded surface, with no visible
+  telescope instruction. Prototype detection without intercepting page zoom or scroll.
+
+- **Next sky uses a daily snapshot and a framed Moon** (owner clarification, 12 October 2026).
+  Accuracy is day-wise; roughly 21:00 IST, not a live ticking sky. Keep the Moon composed in
+  its current place and draw the dated surrounding sky around it; modest shifts are acceptable.
+  Fixed Tikamgarh was then confirmed. The authored horizon cannot always match
+  real local visibility. Implementation/performance/zoom brief: [night-sky.md](night-sky.md).
+
+
 - **Touch the sun/moon to change the sea** (owner approved, 12 October 2026). A click/tap
   or keyboard activation starts one restrained ripple beneath the light's reflection column
   and blends the existing sky/water/ship palettes over one second. Sun and moon keep their

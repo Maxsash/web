@@ -137,6 +137,25 @@ Hidden/offscreen scenes still do not draw; the next visible draw refreshes the d
 Orientation, size, position and sea lighting are authored; only the illuminated shape is dated.
 The static fallback contains no astronomical sky. This is not a local visibility forecast.
 
+### Dated star field
+
+`star-sky.ts` decodes the 9,768-byte HYG v4.1 bright-star subset and builds a Moon-centred
+tangent frame for Tikamgarh at 21:00 IST. It uses the local zenith to keep the daily pattern
+oriented consistently while the authored Moon stays at `SEA_LIGHT_SCREEN`, including dates
+when the real Moon is below the horizon. `moon-phase.ts` now exposes approximate geocentric
+equatorial coordinates from its existing orbit computation. The source CSV SHA-256,
+selection/quantization tool and CC BY-SA attribution accompany `public/stars-hyg-v41.bin`.
+The home shore's colophon links to the attribution and adaptation notice.
+
+The engine fetches this compact file on first night draw, then creates its star program and
+uploads one dated point buffer
+and reuses it across frames. The existing frame loop and WebGL context draw a single blended
+point pass after the sky and before the sea. The point shader fades faint stars as lunar
+illumination rises and suppresses those close to the Moon; bright stars remain. It also
+follows `uNight` and `uReveal`, so day/night fading and Drawing need no separate lifecycle.
+Midnight refresh rebuilds the dated buffer. Fetch failure leaves the sea intact. This is a
+Moon-centred composition, not an exact local horizon, weather or limiting-magnitude model.
+
 ### Error-page seas (`components/drift/`)
 
 Each error page is `DriftFrame` (message on top, sea below; `DriftPage` adds the
@@ -429,6 +448,10 @@ camera, microphone, geolocation and similar. API routes set their own headers.
 | `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA` | Short commit in the footer; omitted when absent  |
 
 ## Not implemented
+
+The dated star field is the first built phase; planets, sea light coupling and lazy
+lunar detail remain planned. [night-sky.md](night-sky.md) records the phased direction, source choices,
+measured microbenchmarks and proposed budgets. No catalogue, ephemeris library or imagery ships yet.
 
 No device tilt, no real ocean data or forecasts, no observation ingestion, no fluid
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies

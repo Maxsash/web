@@ -20,7 +20,7 @@ function orbit(meanAnomaly: number, eccentricity: number, radius: number) {
   return { anomaly: degrees(Math.atan2(y, x)), distance: Math.hypot(x, y) };
 }
 
-export function moonPhaseAt(timestamp: number) {
+function moonGeometryAt(timestamp: number) {
   if (!Number.isFinite(timestamp)) throw new RangeError("A finite timestamp is required");
   const days = (timestamp - EPOCH) / DAY_MS;
   const sunMean = 356.047 + 0.9856002585 * days;
@@ -69,9 +69,26 @@ export function moonPhaseAt(timestamp: number) {
     moonDistance - sunDistance * Math.cos(separation),
   );
   return {
+    longitude,
+    latitude,
+    days,
     cycle: wrap(longitude - sunLongitude) / 360,
     illumination: (1 + Math.cos(phaseAngle)) / 2,
   };
+}
+
+export function moonPhaseAt(timestamp: number) {
+  const { cycle, illumination } = moonGeometryAt(timestamp);
+  return { cycle, illumination };
+}
+
+export function moonEquatorialAt(timestamp: number) {
+  const { longitude, latitude, days } = moonGeometryAt(timestamp);
+  const obliquity = 23.4393 - 0.0000003563 * days;
+  const x = cos(longitude) * cos(latitude);
+  const y = sin(longitude) * cos(latitude) * cos(obliquity) - sin(latitude) * sin(obliquity);
+  const z = sin(longitude) * cos(latitude) * sin(obliquity) + sin(latitude) * cos(obliquity);
+  return { rightAscension: wrap(degrees(Math.atan2(y, x))), declination: degrees(Math.asin(z)) };
 }
 
 export function indiaMoonDay(timestamp: number) {

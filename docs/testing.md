@@ -1,5 +1,15 @@
 # Testing
 
+## Dragon Ball sail emblem (13 October 2026)
+
+Replaces the interim MS mark with an amber ball, orange rim and four red stars.
+Isolated Node 24 production build/lint/types, 145 Node tests, 78 SEO and headers/CSP
+pass. Desktop/phone day and drawing captures plus DPR 2 day/night emblem close-ups
+inspected; four stars visible, no GL errors/overflow/runtime exceptions. Creative
+191 records pass with zero failures/exceptions; keyboard 22/22 and format pass.
+Own server stopped; review worktree/captures/logs and scratch script removed.
+No physical-device check.
+
 ## Daylight refinement (13 October 2026)
 
 Isolated Node 24 Turbopack production build, lint and types pass. All 145 Node

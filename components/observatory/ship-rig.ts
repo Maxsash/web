@@ -1,3 +1,4 @@
+import { buildSailEmblem } from "./ship-emblem.ts";
 import type { ShipBuilder, ShipPoint } from "./ship-builder.ts";
 import { mix, type V3 } from "./vec3.ts";
 
@@ -74,21 +75,11 @@ export function buildShipRig(mesh: ShipBuilder, colors: RigColors) {
         mesh.cloth(a, b, c, seam);
         mesh.cloth(a, c, d, seam);
       }
-    const emblem = (angle: number, radius: number): ShipPoint => {
-      const point = mainPoint(0.53 + Math.cos(angle) * radius, 0.62 + Math.sin(angle) * radius);
-      point.position[0] += side * 0.009;
+    buildSailEmblem(mesh, (u, v, lift) => {
+      const point = mainPoint(0.53 + side * u * 0.13, 0.62 + v * 0.09);
+      point.position[0] += side * lift;
       return point;
-    };
-    const center = emblem(0, 0);
-    for (let i = 0; i < 16; i++) {
-      const radius = (index: number) => (index % 2 ? 0.018 : index % 4 ? 0.047 : 0.075);
-      mesh.cloth(
-        center,
-        emblem((i * Math.PI) / 8, radius(i)),
-        emblem(((i + 1) * Math.PI) / 8, radius(i + 1)),
-        rust,
-      );
-    }
+    });
   }
   for (let i = 0; i < 8; i++) {
     const point = (t: number, top: boolean): ShipPoint => ({

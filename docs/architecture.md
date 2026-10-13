@@ -74,7 +74,8 @@ behind a server-rendered SVG plate, which is also the fallback.
   `sea-grid` and `gl-resources` are its parts. The ship is an authored survey cutter,
   distinct from the brand mark. `ship-builder` writes rigid/cloth triangles and
   fittings; `ship-mesh` owns the shaped hull and deck; `ship-rig` owns the gaff
-  mainsail, jib, spars, rigging and pennant. `ship-motion` samples five hull stations
+  mainsail, jib, spars, rigging and pennant. `ship-emblem.ts` builds the orange four-star Dragon Ball disc/rim/stars as
+  cloth geometry mapped onto both sail faces. `ship-motion` samples five hull stations
   at three times to soften short chop, with bounded heel, pitch and heading.
   `ship-placement` fits the projected mesh around actual copy and reserved controls,
   and frames the drawing camera around the same vessel. Enlarged portrait copy

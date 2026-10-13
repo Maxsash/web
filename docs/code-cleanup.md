@@ -125,3 +125,9 @@ pending badge; no click timers, global DOM listeners or duplicate per-page loadi
 Sky/glitter additions live together in `daylight-shaders.ts`; existing factories
 opt the homepage in and leave pinned error-page defaults intact. Reuse the
 existing scene clock, paused lifecycle and draw passes; no dependencies/assets.
+
+## Sail emblem (13 October 2026)
+
+Deleted the compass and interim MS geometry. `ship-emblem.ts` owns the four-star
+Dragon Ball geometry/palette; the rig maps it onto both cloth faces through its
+existing surface/motion sampler. No assets, dependencies or extra render passes.

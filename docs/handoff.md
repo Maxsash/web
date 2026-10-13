@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 0c8f716 on main (owner committed shared navigation feedback). Tested deployment
+HEAD 56c7195 on main (owner committed daylight refinement). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-daylight refinement and its documentation. No commit, push or release performed by the agent.
+Dragon Ball sail emblem and its documentation. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -27,31 +27,31 @@ Night sky phases 1–4 built; phase 5 water motion and temporary dev preview rem
 
 ## Verification
 
-Existing browser-bar automated/simulator results remain in testing.md. Owner physical
-results above are reported evidence, not fresh agent checks. Isolated Node 24 build, lint, types and format pass. Focused navigation checks pass:
-delayed keyboard Notebook/day and touch case-study/night, stable link layout, badge
-clears on arrival, Reduce Motion icon still. Desktop/day and phone/night captures
-inspected and deleted. 145 Node tests, 78 SEO cases, headers/CSP and keyboard 22/22
-pass. Creative report: 191 records, zero failures/runtime exceptions. Harness
-printed its finished report but lingered; stopped after inspecting report.json.
+Earlier browser-bar/navigation automated results remain in testing.md. Physical
+results above are owner-reported, not fresh agent checks. Latest creative verification
+is below; navigation’s earlier isolated checks passed and output was removed.
 13 October follow-up: read live sitemap and both essay metadata plus official Vercel,
 Google and Bing guides. Owner's later screenshot shows `/home` 404, last crawled
 1 October. Source search in app/components/content/lib/public/config found no `/home`
 reference; prior live sitemap omitted it. Discovery source unknown; no redirect added.
-No fresh local build/tests; no genuine crawler-IP/WAF test.
+No genuine crawler-IP/WAF test.
 
-## Day scene implementation — 13 October
+## Creative state — 13 October
 
-Owner approved options 1 + 2: sparse cirrus/haze/solar halo and richer sun glitter.
-Options 3–5 are shared day/night follow-ups, not exclusive to daytime; not built.
-Homepage shader additions implemented; existing scene clock, reveal and motion
-policy reused. No assets, extra passes or sea-model changes. Isolated Node 24 build/lint/types, 145 tests, 78 SEO and headers pass.
-Desktop/phone day/night/Reduce Motion captures inspected (no GL/runtime errors
-or overflow; still frame counts hold), then deleted with scratch script.
-Keyboard 22/22, creative 191 records (zero failures/exceptions) and format pass.
-Native desktop/phone sea/reveal/drawing captures inspected. Own server stopped;
-review worktree/captures/logs removed. Main-folder accidental build was stopped
-and its new output removed. No new physical-device check. Owner visual review next.
+Daylight options 1 + 2 committed by owner in 56c7195: sparse cirrus/haze/solar
+halo and richer sun glitter. Isolated Node 24 build/lint/types/format, 145 tests,
+78 SEO, headers, keyboard 22/22 and creative 191 records passed; desktop/phone
+captures inspected. Earlier verification output and own server removed.
+
+Owner now chooses a Dragon Ball emblem over the interim MS initials. Orange
+four-star ball implemented on both cloth faces, replacing MS geometry. Existing
+motion/studio logo retained. Isolated Node 24 build/lint/types, 145 tests, 78 SEO
+and headers pass. Desktop/phone day/drawing and DPR 2 day/night close-ups inspected,
+no GL/runtime errors or overflow. Creative 191 records (zero failures/exceptions),
+keyboard 22/22 and format pass. Own server stopped; review worktree, captures/logs
+and scratch script removed. No physical-device check; owner visual review next.
+Recommended next: sparse whitecaps/wake shared by day/night, then cloud shadows
+and authored daily atmosphere. Options 3–5 remain proposals, not built.
 
 ## Next / owner pending
 
@@ -90,11 +90,11 @@ and its new output removed. No new physical-device check. Owner visual review ne
 ## Suggested commit
 
 ```
-feat: enrich daylight sky and sun reflections
+feat: add four-star Dragon Ball sail emblem
 
-Add sparse cirrus, horizon haze and a solar halo with wave-driven glitter.
-Reuse existing rendering/motion policies and preserve sea mathematics/night light.
+Replace the compass/interim MS mark with an orange ball and four red stars.
+Reuse the sail’s geometry and motion with no image assets or extra draw passes.
 Verified isolated Node 24 build/lint/types/format, 145 tests, 78 SEO, headers,
 keyboard 22/22, creative 191 records (zero failures/exceptions), desktop/phone
-day/night/Reduce Motion and reveal/drawing review. No physical-device checks.
+visual review and DPR 2 day/night close-ups. No physical-device check.
 ```

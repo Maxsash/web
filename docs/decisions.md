@@ -133,6 +133,11 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **A Dragon Ball on the sail** (owner, 13 October 2026). Replace the interim
+  MS initials with a Dragon Ball emblem. Use the orange four-star ball: amber disc,
+  darker orange rim and four red five-pointed stars, printed onto both sail faces.
+  Keep the existing cloth motion and studio logo. Supersedes the compass/MS marks.
+
 - **Restrained daylight atmosphere and glitter** (owner, 13 October 2026).
   Build options 1 + 2: sparse feathered cirrus, luminous horizon haze, a soft solar
   halo and a broken sun-reflection path driven by wave-facing normals. Preserve

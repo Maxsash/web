@@ -133,12 +133,19 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Remove cloud shadows and their temporary borders** (owner, 13 October 2026).
+  The faint sea shadows/reflection dimming did not provide enough visible value.
+  Remove the canopy projection, attenuation and red-border diagnostic; restore
+  the accepted sky-cloud version a55dd42. Keep clouds, their star/planet masking,
+  daylight atmosphere/glitter and the four-star sail. No replacement shadow effect
+  is approved; daily variation remains a separate proposal.
+
 - **Review cloud depth before sea shadows** (owner, 13 October 2026). Begin with
   a few soft irregular clusters shared by day and night, warm daylight edges and
   subdued phase-aware moonlight. Keep headline space and the Moon open. Reuse one
   opacity field to soften stars/planets behind clouds and the paused scene clock
-  for slow drift. This pass changes sky only; sea shadows and daily variation follow
-  an accepted cloud composition. Preserve the approved water after its rejected pass.
+  for slow drift. The sky clouds were accepted; the subsequent sea shadows were
+  rejected and removed. Preserve the approved water after its rejected passes.
 
 - **Remove the rejected water pass** (owner, 13 October 2026: “they aren't
   looking any good right now”; improve or remove). The first heading-aligned

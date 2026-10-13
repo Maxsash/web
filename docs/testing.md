@@ -1,5 +1,16 @@
 # Testing
 
+## Cloud shadows removed (13 October 2026)
+
+Owner rejected the visual value of sea shadows. All three rendering files restored
+byte for byte to accepted cloud version a55dd42, removing the canopy projection,
+attenuation and temporary red borders. Sky clouds/point masking remain. The shadow
+candidate’s automated checks passed but did not establish a worthwhile visual effect.
+Border verification was interrupted by removal; no development-border visual review
+was completed. No fresh rollback build/browser check; prior accepted cloud checks
+remain below. Documentation format check passes; own server stopped, review
+worktree/script/captures/build output/logs removed.
+
 ## Cloud depth (13 October 2026)
 
 Isolated Node 24 build, 145 tests, 78 SEO and headers/CSP pass. Native Chrome

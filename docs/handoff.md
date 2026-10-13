@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD e47fea9 on main (owner committed the water-pass removal docs). Tested deployment
+HEAD a55dd42 on main (owner committed shared cloud depth). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-shared cloud depth and documentation. No commit, push or release performed by the agent.
+cloud-shadow removal documentation only. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -42,18 +42,15 @@ No genuine crawler-IP/WAF test.
 Daylight options 1 + 2 committed by owner in 56c7195: sparse cirrus/haze/solar
 halo and richer sun glitter; prior verification/cleanup recorded in testing.md.
 
-Four-star Dragon Ball emblem committed by owner. Rejected water pass removed;
-approved water restored. Owner now approves a sky-first cloud review: two soft
-irregular clusters, warm daytime/subdued phase-aware night light and slow drift.
-One cloud mask softens stars/planets behind them; compact composition preserves
-headline space. Initial build/lint/types, 145 tests, 78 SEO and headers pass.
-Day/new/full desktop/phone/landscape review passes GL/runtime/still checks; cloud
-height lowered in short-wide scenes after visual review. Final placement rebuilt
-and landscape captures reinspected. Final creative 191 records (zero failures/
-exceptions), lint/types/format pass; keyboard 22/22 passes. Final sea/drawing
-captures inspected. Own server stopped and review worktree/output/logs removed.
-No physical-device check. Owner cloud visual review next.
-Sea shadows and daily variation follow accepted clouds; not built in this pass.
+Four-star Dragon Ball and shared sky clouds committed by owner. Owner rejected
+sea shadows as not worth keeping; removed their canopy projection, reflection/body
+attenuation and temporary red borders. Three rendering files now match a55dd42
+byte for byte. Sky clouds, star/planet masking and approved water remain.
+Candidate automated passes did not establish visual value. Border verification
+interrupted; no development-border visual check or fresh rollback build/browser
+review. Documentation format check passes. Own server stopped; review worktree,
+script, captures/build output and logs removed.
+No replacement shadow effect approved; daily variation remains a proposal.
 
 ## Next / owner pending
 
@@ -91,11 +88,9 @@ Sea shadows and daily variation follow accepted clouds; not built in this pass.
 ## Suggested commit
 
 ```
-feat: add soft cloud depth to day and night skies
+docs: record removal of rejected cloud shadows
 
-Compose two restrained cloud clusters with shared star/planet attenuation.
-Preserve the approved water and reuse existing motion and reveal policies.
-Verified isolated Node 24 build/lint/types/format, 145 tests, 78 SEO, headers,
-keyboard 22/22 and creative 191 records (zero failures/exceptions); day/new/full
-Moon matrix, Reduce Motion, final landscape/sea/drawing visual review.
+Restore the accepted sky-cloud rendering and remove shadow/debug-border code.
+Rendering files match a55dd42; no fresh rollback build/browser review.
+Documentation format check passes; own server and all review output removed.
 ```

@@ -2,8 +2,9 @@
 
 Research and phased build, 12 October 2026. The transition was committed as d21757f;
 stars, planets and the temporary preview are committed through 54290fe; phase 3 sea
-lighting is committed as 5654e61. Phase 4, the always-on mapped Moon, is built in the
-working tree for review.
+lighting is committed as 5654e61. Phase 4, the always-on mapped Moon, is built. Phase 5’s first shared water
+refinement was rejected and removed on 13 October; prior normals/wake restored.
+Seeded wind waves remain unchanged across lunar phases.
 
 ## Direction
 
@@ -45,8 +46,8 @@ without a swap or telescope prompt. The fixed Moon and authored horizon remain t
    phases. Confirm the coupled light reads naturally without implying that this scene
    predicts local tide height.
 
-Each phase gets its own review point and isolated production verification. Phase 4, the
-mapped Moon, is the current review target. Phone-width captures are desktop emulation, not
+Each phase gets its own review point and isolated production verification. Phase 5’s
+next visual approach remains unsettled after the owner rejected the first water pass. Phone-width captures are desktop emulation, not
 physical phone performance measurements.
 
 The visibility curve is perceptual rather than an exact naked-eye limiting magnitude:

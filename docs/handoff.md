@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 56c7195 on main (owner committed daylight refinement). Tested deployment
+HEAD 3c65ccb on main (owner committed the four-star Dragon Ball emblem). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-Dragon Ball sail emblem and its documentation. No commit, push or release performed by the agent.
+water-pass removal documentation only. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -23,7 +23,8 @@ control taps; Notebook paper turns remain appropriate. No sound redesign approve
 
 **Test workbench remains discussion only:** manifest/common result format and isolated
 runner, then CI/protected production, then local review dashboard; no production admin.
-Night sky phases 1–4 built; phase 5 water motion and temporary dev preview removal remain.
+Night sky phases 1–4 built; phase 5’s first water pass was rejected and removed.
+Temporary dev preview removal remains after owner sky review.
 
 ## Verification
 
@@ -43,15 +44,14 @@ halo and richer sun glitter. Isolated Node 24 build/lint/types/format, 145 tests
 78 SEO, headers, keyboard 22/22 and creative 191 records passed; desktop/phone
 captures inspected. Earlier verification output and own server removed.
 
-Owner now chooses a Dragon Ball emblem over the interim MS initials. Orange
-four-star ball implemented on both cloth faces, replacing MS geometry. Existing
-motion/studio logo retained. Isolated Node 24 build/lint/types, 145 tests, 78 SEO
-and headers pass. Desktop/phone day/drawing and DPR 2 day/night close-ups inspected,
-no GL/runtime errors or overflow. Creative 191 records (zero failures/exceptions),
-keyboard 22/22 and format pass. Own server stopped; review worktree, captures/logs
-and scratch script removed. No physical-device check; owner visual review next.
-Recommended next: sparse whitecaps/wake shared by day/night, then cloud shadows
-and authored daily atmosphere. Options 3–5 remain proposals, not built.
+Four-star Dragon Ball emblem committed by owner. Owner rejected the first shared
+water pass and allowed improvement or removal. Removed the new micro-normals,
+whitecaps and wake; all three rendering files restored byte for byte to HEAD,
+new water modules/tests deleted. Approved daylight and four-star sail remain.
+Candidate automated checks passed but did not establish visual quality; see testing.md.
+No fresh rollback build/browser review. Documentation format check passes. Own
+server stopped; review worktree/output, captures, scratch script and logs removed.
+Next water approach unsettled; clouds/daily atmosphere remain proposals.
 
 ## Next / owner pending
 
@@ -90,11 +90,9 @@ and authored daily atmosphere. Options 3–5 remain proposals, not built.
 ## Suggested commit
 
 ```
-feat: add four-star Dragon Ball sail emblem
+docs: record rejection of the water refinement
 
-Replace the compass/interim MS mark with an orange ball and four red stars.
-Reuse the sail’s geometry and motion with no image assets or extra draw passes.
-Verified isolated Node 24 build/lint/types/format, 145 tests, 78 SEO, headers,
-keyboard 22/22, creative 191 records (zero failures/exceptions), desktop/phone
-visual review and DPR 2 day/night close-ups. No physical-device check.
+Restore the approved water appearance and record the rejected foam/wake pass.
+Rendering files match HEAD; new modules/tests removed. No fresh rollback build.
+Documentation format check passes; own server and temporary review output removed.
 ```

@@ -133,6 +133,13 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Remove the rejected water pass** (owner, 13 October 2026: “they aren't
+  looking any good right now”; improve or remove). The first heading-aligned
+  micro-normal, crest-foam and thin-wake pass did not earn its place visually.
+  Restore the prior water normals and wake; delete the new foam/roughness modules
+  and their tests. Keep the approved daylight atmosphere/glitter and four-star sail
+  emblem. Any future water pass needs a different visual approach, not more of this.
+
 - **A Dragon Ball on the sail** (owner, 13 October 2026). Replace the interim
   MS initials with a Dragon Ball emblem. Use the orange four-star ball: amber disc,
   darker orange rim and four red five-pointed stars, printed onto both sail faces.
@@ -142,8 +149,8 @@ each group. How the code is built: [architecture.md](architecture.md).
   Build options 1 + 2: sparse feathered cirrus, luminous horizon haze, a soft solar
   halo and a broken sun-reflection path driven by wave-facing normals. Preserve
   headline space, sea mathematics, stage timings and night’s dated lighting.
-  Options 3–5 (cumulus/shadows, whitecaps, daily atmospheric variation) are shared
-  day/night possibilities, not daytime-only features; they remain follow-ups.
+  Cumulus/shadows and daily atmospheric variation are shared day/night possibilities.
+  The first whitecap/wake pass was rejected and removed; no replacement approved.
 
 - **Show the mapped Moon whenever the night sky shows the Moon** (phase 4, owner choice,
   12 October 2026). A zoom-gated reveal still swapped one Moon for another, so the owner

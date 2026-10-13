@@ -1,5 +1,16 @@
 # Testing
 
+## Water pass removed (13 October 2026)
+
+Owner rejected the appearance; restored all three edited rendering modules byte for
+byte to HEAD 3c65ccb and deleted the two water modules and their three tests. Candidate
+build/lint/types, 148 Node tests, 78 SEO, headers and new/quarter/full Moon checks had
+passed; candidate GPU probes found sparse foam and zero Glass foam. These automated
+results did not establish visual quality. Candidate was removed before full creative/
+keyboard checks. Restored code uses prior verified build; no fresh rollback build or
+browser review performed. Documentation format check passes; own server stopped
+and review worktree/output, captures, scratch script and logs removed.
+
 ## Dragon Ball sail emblem (13 October 2026)
 
 Replaces the interim MS mark with an amber ball, orange rim and four red stars.

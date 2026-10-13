@@ -5,15 +5,18 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 ## Owner device report (13 October 2026)
 
 Deployment includes 3261a8d; iPhone Air/iOS 27 Safari bars, Notebook, touch/gull,
-scrolling, sounds, case studies and sea studio reported good. VoiceOver and Reduce
-Motion remain untested; page length is somewhat long and still under review.
+scrolling, sounds, case studies and sea studio reported good. Owner reports all supplied VoiceOver points pass and Reduce
+Motion works well; page length is somewhat long and still under review.
 Owner reports supplied links work on WhatsApp. LinkedIn description-length warning
 remains (both original essay summaries under 100 characters); copy polish pending.
 Google screenshot: integral essay unknown/no crawl. Live sitemap has all 11 public
-URLs; both essays are indexable with self-canonicals. Live test/request indexing and
-sitemap last-read/count check next. Bing not configured. Vercel draft values match,
-but path grouping review, publishing and normal-use/enforcement checks remain.
-- [ ] Release and phone-check new navigation pending badge (implemented after report).
+URLs; both essays are indexable with self-canonicals. Owner completed live tests/request indexing for all eight supplied case-study/article
+URLs; await indexing outcomes and check sitemap last-read/count. Owner confirms sitemap appears on Bing; indexing outcomes pending. Owner confirms Vercel rule published and intended URLs work; excess-limit 429
+enforcement has not been measured.
+- [ ] Investigate long Notebook wait/home link appearing unresponsive on iPhone.
+      d803c16 confirmed live. Throttled/reduced-motion Chrome touch round trip worked
+      with return-home badge; no runtime errors. Cause unresolved; next incident needs
+      approximate IST time/page/network/recording to correlate Vercel logs.
 - [ ] Explore softer wooden taps for controls if requested; paper turns suit Notebook.
 
 ## Backend credibility review (11 October 2026)
@@ -42,7 +45,8 @@ but path grouping review, publishing and normal-use/enforcement checks remain.
 
 - [ ] Release verified publication work: live listing/essays still noindex, sitemap seven
       URLs vs ten locally. Inspect all public pages after release.
-- [ ] Bing Webmaster Tools: sitemap/URL inspection and AI Performance report.
+- [x] Bing Webmaster Tools setup/sitemap presence (owner, 13 October).
+- [ ] Bing URL indexing inspections and AI Performance report.
 - [x] Bingbot and OAI-SearchBot coverage asserts substantial initial HTML, metadata and schema
       on every public route in the local production harness.
 - [ ] Check real crawler logs/WAF after release; a locally supplied user-agent string does not
@@ -140,8 +144,8 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       indexed with valid ProfilePage (11 October). Inspect case studies and, after release,
       the newly indexable real article. See
       [seo-and-sharing.md](seo-and-sharing.md).
-- [ ] **Vercel.** Add a rate-limit rule for `/api/sea-edition*` and `/plate` (Node 24.x was
-      confirmed by the owner on 9 October 2026).
+- [x] **Vercel rate-limit rule:** owner confirms published and URLs still work
+      (13 October). Excess-limit 429 enforcement not measured; Node 24 already confirmed.
 - [ ] **security.txt** expires on 6 October 2027; renew it.
 - [ ] **Social content.** Instagram and LinkedIn posts, profile banners and related assets.
       Needs the owner's answers (brand name, handles, tone, first assets). Use only the three

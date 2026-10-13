@@ -1,8 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 3261a8d on main. Owner confirms tested deployment includes the browser-bar fix.
-Uncommitted: navigation feedback and documentation. No commit, push or release.
+HEAD d803c16 on main (owner committed shared navigation feedback). Tested deployment
+confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
+owner-report documentation. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -10,7 +11,7 @@ Owner tested iPhone Air/iOS 27: Safari day/night scrolling and Notebook look goo
 touch interactions, gull, rotation, scrolling and sounds work as expected. Pages and
 sea studio work well. No exact Safari bar-colour measurement supplied. Homepage sharing
 previews for supplied links work in WhatsApp (owner report); LinkedIn warns that a
-description should be at least 100 characters. VoiceOver and Reduce Motion explicitly not tested. Page length feels
+description should be at least 100 characters. Owner now reports Reduce Motion and all supplied VoiceOver points work well. Page length feels
 somewhat long, though not clearly bad; preserve approved stage timings.
 
 **Navigation feedback implemented and locally verified:** shared public PageLink
@@ -34,26 +35,34 @@ inspected and deleted. 145 Node tests, 78 SEO cases, headers/CSP and keyboard 22
 pass. Creative report: 191 records, zero failures/runtime exceptions. Harness
 printed its finished report but lingered; stopped after inspecting report.json.
 13 October follow-up: read live sitemap and both essay metadata plus official Vercel,
-Google and Bing guides. No fresh local build/tests; no genuine crawler-IP/WAF test.
+Google and Bing guides. Owner's later screenshot shows `/home` 404, last crawled
+1 October. Source search in app/components/content/lib/public/config found no `/home`
+reference; prior live sitemap omitted it. Discovery source unknown; no redirect added.
+No fresh local build/tests; no genuine crawler-IP/WAF test.
 
 ## Next / owner pending
 
-1. Owner review/release of navigation badge, then check it on the real iPhone.
-   Local production verification completed; no real-device claim for the new badge.
-2. Owner Vercel screenshot: fixed window 100/60 s, IP and 429 match proposal; paths
-   are OR-connected, with starts-with `/plate`. Recommend a single Request Path “Is
-   any of” condition for `/api/sea-edition`, `/api/sea-edition/print`, `/plate`, AND the
-   limiter: removes grouping ambiguity and matches only existing intended endpoints.
-   Published state and actual enforcement still unconfirmed; normal studio check next.
+1. Investigate owner navigation report: huge Notebook wait; top-left return-home
+   appeared unresponsive after repeated taps, owner used Back. d803c16 confirmed live.
+   Live Chrome touch diagnostic (390 px, reduced motion, 4× CPU, 150 ms latency,
+   180 KB/s, cache disabled) did not reproduce: Notebook RSC ~0.62 s; immediate
+   top-left home tap showed badge and reached home in ~0.4 s; no runtime errors.
+   This is desktop Chrome emulation, not iPhone Safari. Cause remains unresolved;
+   next occurrence needs approximate IST time/page/network and ideally recording,
+   then correlate Vercel request logs. No speculative code fix made.
+2. Owner confirms Vercel rule published and intended URLs still work (13 October).
+   Normal-use smoke check complete; excess-request 429 enforcement not measured.
 3. Google screenshot: `an-integral-under-sail` unknown to Google, no crawl recorded.
    Live sitemap returns 200 with 11 public URLs including all three articles and five
-   case studies. Both essays return 200, index/follow and self-canonicals. Owner should
-   Test Live URL → Request Indexing; check sitemap Success/last-read/discovered count.
-   Prior sitemap submission does not establish article indexing. Bing not set up;
-   import verified site from Google Search Console and confirm sitemap there.
+   case studies. Both essays return 200, index/follow and self-canonicals. Owner completed Test Live URL → Request Indexing for all eight previously supplied
+   case-study/article URLs. Indexing outcome remains pending; check sitemap last-read/count.
+   Prior sitemap submission does not establish article indexing. Owner confirms Bing setup complete and sitemap appears there. Bing crawling/indexing
+   outcomes remain pending.
 4. LinkedIn description warning: two live essay descriptions under 100 characters;
    copy polish remains open, no metadata change made. VoiceOver/Reduce Motion/Reader.
-5. Revisit phone length and wooden sound idea separately from navigation feedback.
+5. Owner reports all VoiceOver checklist points validated and Reduce Motion works
+   well. These are owner results, not an independent accessibility audit.
+6. Revisit phone length and wooden sound idea separately from navigation feedback.
 
 ## Open items / cleanup
 
@@ -61,6 +70,7 @@ Google and Bing guides. No fresh local build/tests; no genuine crawler-IP/WAF te
   prior handoff counted 360 `/private/tmp/maxsash*` files and three Chrome profiles.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
+- Live-diagnostic worktree, scratch script and log removed; browser closed.
 - Own loopback server stopped. Temporary worktree, build/check logs and captures
   removed. Process inspection found no browsers left from this verification run.
 - Android, private-system evidence, real print, field metrics and follow-ups.md remain.
@@ -77,5 +87,6 @@ Record owner iPhone Air/iOS 27 results and remaining hosting/device checks.
 Verified isolated Node 24 production build, lint/types/format, 145 Node tests,
 78 SEO cases, headers/CSP, keyboard 22/22, creative 191/191 and delayed
 keyboard/touch navigation in day/night and Reduce Motion. Captures inspected.
-New badge not yet released or tested on a physical device.
+Owner committed navigation badge separately; deployment identity and navigation
+regression remains unresolved after a live Chrome diagnostic. New accessibility pass is owner-reported.
 ```

@@ -53,22 +53,27 @@ Hosting is Vercel; `maxsash.com` redirects to `www.maxsash.com` (reported as 308
 dashboard path is Project → Settings → Domains → Edit `maxsash.com` → redirect to
 `www.maxsash.com` with **308 Permanent Redirect**; verify with `curl -sI https://maxsash.com`).
 
-**Sea rate limit (pending owner setup, 13 October 2026):** Project → Firewall →
+**Sea rate limit (owner confirms published, 13 October 2026):** Project → Firewall →
 Configure → New Rule. Match Request Path starts with `/api/sea-edition` OR equals
 `/plate` (not AND). Rate Limit → Fixed Window; proposed starting budget 100 requests
 per 60 seconds keyed by IP; default 429 on excess. Review the pricing dialog, save,
 Review Changes → Publish; then filter Firewall traffic by the rule and check normal
 studio/print usage. This is a proposal, not a traffic-qualified threshold. Owner screenshot shows the proposed limit/IP/429 and OR path rows, but
-publication/enforcement remains unconfirmed. To remove grouping ambiguity, use one
+owner now confirms publication and intended URLs working. Excess-limit 429
+enforcement remains unmeasured. To remove grouping ambiguity, use one
 Request Path “Is any of” condition with `/api/sea-edition`, `/api/sea-edition/print`,
 `/plate`, AND the rate limiter. These are the three current intended endpoints. Hobby permits one rate-limit rule, so combine the paths.
 [Official rate-limit guide](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
 
 **13 October live/report checkpoint:** live sitemap 200 with all 11 public URLs;
 both original essays 200, index/follow, self-canonical. Owner's integral essay URL
-inspection says unknown to Google/no crawl; use Test Live URL then Request Indexing,
-and check submitted sitemap Success, last-read date and discovered count. Bing is not
-set up: import the verified Google Search Console property, then confirm the sitemap.
+inspection says unknown to Google/no crawl. Owner subsequently ran Test Live URL and
+Request Indexing for all eight supplied case-study/article URLs. Indexing outcomes
+remain pending; check submitted sitemap Success, last-read date and discovered count.
+Separate `/home` 404 screenshot records a 1 October crawl; no current source references
+or prior live sitemap entry for `/home`. Discovery source unknown; keep the genuine
+404 unless evidence establishes a meaningful old URL/replacement. Owner confirms Bing setup complete and sitemap appears correctly (13 October);
+crawling/indexing outcomes remain pending.
 Owner reports supplied WhatsApp links work; LinkedIn warns on short descriptions.
 Both original essay summaries are under 100 characters; metadata polish pending.
 
@@ -106,7 +111,7 @@ indexing/citation outcome verified.
 Priority todos:
 
 1. Inspect all ten URLs in Google Search Console and request indexing.
-2. Set up Bing Webmaster Tools, submit sitemap and inspect pages. Its AI Performance
+2. Bing setup/sitemap presence owner-confirmed (13 October); inspect page indexing next. Its AI Performance
    report can measure citations: [official announcement](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/).
 3. Inspect hosting logs/WAF for genuine Bingbot and OAI-SearchBot access after release. The local
    matrix covers their supplied user-agent strings and server-rendered initial HTML, but not

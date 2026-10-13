@@ -9,8 +9,14 @@ Sounds behave as expected. Case-study pages and sea studio reported working well
 Page length feels somewhat too long, though not clearly bad. Homepage sharing preview
 reported good; owner subsequently reports the supplied links work on WhatsApp. LinkedIn
 reports a description-length warning. Google screenshot for `an-integral-under-sail`
-shows URL unknown/no crawl, not an indexed result; Bing remains unconfigured.
-VoiceOver and Reduce Motion explicitly not tested. No battery/thermal measurements,
+shows URL unknown/no crawl. Owner subsequently completed live test/request indexing
+for all eight supplied case-study/article URLs; actual indexing remains pending.
+Owner confirms Bing sitemap appears correctly (13 October); crawling/indexing
+outcomes remain unverified. Separate screenshot shows `/home` 404, last crawled 1 October;
+source search found no `/home` references in app/components/content/lib/public/config.
+Prior live sitemap omitted it; discovery source unknown. No redirect added.
+Owner subsequently reports Reduce Motion works well and all supplied VoiceOver
+checklist points tested and validated. No battery/thermal measurements,
 Android or other physical-browser qualification follows from this report.
 
 Navigation feedback was implemented after this report and remains unreleased.
@@ -29,13 +35,48 @@ What exists, how to run it, and what has never been checked. Rules: never build 
 inside the project folder (a dev server may be running there) and stop only servers you
 started.
 
+## Owner accessibility checklist (13 October 2026; owner reports pass)
+
+Apple setup/gesture guides checked. iPhone Safari production site:
+1. Reduce Motion: Settings → Accessibility → Motion → Reduce Motion, reload home.
+   Sea/ship/gull should stay still; stage controls still reach Drawing/Work; theme swaps
+   without animated fade/ripple; all text remains visible. Check Notebook/case study/sea
+   studio, then toggle setting while home is open and return without reload.
+2. VoiceOver: set Accessibility Shortcut to VoiceOver first (triple side-button toggle).
+   One-finger left/right selects previous/next item; double tap activates; three-finger
+   swipe up scrolls down. Test “Skip to work”, named navigation, sea/stage/theme controls,
+   case-study link, Notebook/back link, copy email notice and shore mute sounds control.
+   Rotor Headings (rotate two fingers, then swipe up/down) should reach main sections.
+   On `/sea`, slider names/values should be announced and one-finger up/down adjust them;
+   preset/dice/copy link controls and notices should be accessible.
+Report page/control and exact spoken words, focus traps, unreachable content, unexpected
+motion or hidden text. New navigation badge remains unreleased and is a later phone check.
+Owner reports both groups working well on iPhone Air/iOS 27. Separate navigation
+issue: very long Notebook wait and top-left home link appeared unresponsive despite
+repeated taps; used Back. Owner confirms d803c16 deployed; live homepage footer and both route chunks agree. No independent
+VoiceOver/device reproduction or new build/tests for this report.
+
+## Live navigation diagnostic (13 October 2026)
+
+Owner reports huge Notebook wait and top-left return-home link appearing unresponsive
+on iPhone Air/iOS 27; d803c16 confirmed deployed. Live public HTTP check: `/blog` 200
+in 0.67 s, `/` 200 in 0.59 s; navigation indicator present in both route chunks. Slowest
+sampled homepage chunk 2.41 s. Single batch, not a latency distribution or cause proof.
+In isolated Chrome touch emulation (390×844, Reduce Motion, 4× CPU, cache disabled,
+150 ms latency and 180 KB/s), home hydrated after ~2.4 s; Notebook RSC 0.62 s; immediate
+top-left home tap showed the pending badge and returned in ~0.4 s. No runtime errors.
+No iPhone Safari reproduction; no cause established or code fix made. Two early scratch
+harness attempts failed their readiness/serialization checks, not site code. Temporary
+worktree, script and log removed at completion; no new build/full regression suite.
+
 ## Live discovery check (13 October 2026)
 
 Read-only public HTTP check: sitemap 200 and 11 public URLs, including all three
 published articles and five case studies. Both original essays return 200 with
 index/follow and self-canonical www URLs. Their descriptions are below 100 characters,
 consistent with the owner's LinkedIn warning. No metadata changed. Screenshot of
-Vercel draft shows 100/60 s/IP/429; publication/enforcement unverified. No genuine
+Vercel draft shows 100/60 s/IP/429; owner now confirms publication and intended URLs working; excess-limit enforcement
+unmeasured. No genuine
 Googlebot/Bingbot-IP access or account changes performed. No new build/test run.
 
 ## Browser bars (12 October 2026)

@@ -71,7 +71,7 @@ uniform float uReveal;
 uniform float uNight;
 uniform vec3 uLight;
 out vec4 outColor;
-${field}${declarations}${moonlight ? "\nuniform float uMoonIllumination;" : ""}
+${field}${declarations}${moonlight ? "\nuniform float uMoonIllumination;" : ""}${daylight ? "\nuniform vec4 uAtmosphere;" : ""}
 float rule(float value,float width) {
   float d=abs(fract(value-.5)-.5);
   return 1.-smoothstep(width,width+fwidth(value)*1.25,d);
@@ -166,7 +166,7 @@ precision highp float;
 in vec2 vUv;
 uniform float uReveal;
 uniform float uNight;
-uniform float uAspect;
+uniform float uAspect;${daylight || clouds ? "\nuniform vec4 uAtmosphere;" : ""}
 out vec4 outColor;${declarations}${moonPhase ? moonDeclarations : ""}${daylight ? daylightDeclarations : ""}${clouds ? cloudFunctions : ""}
 void main(){
   vec3 daylight=mix(vec3(.76,.86,.83),vec3(.36,.65,.76),smoothstep(.1,1.,vUv.y));

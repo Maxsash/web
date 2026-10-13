@@ -1,5 +1,6 @@
 import type { SeaEdition } from "@/lib/sea/types";
 import { cameraAt, seaPointAt } from "./camera";
+import { atmosphereForIndiaDay } from "./daily-atmosphere";
 import { GlResources } from "./gl-resources";
 import { lookAt, multiply, perspective } from "./matrices";
 import { indiaMoonDay, moonForIndiaDay } from "./moon-phase";
@@ -69,9 +70,18 @@ export function createOceanEngine(
     "uMoonIllumination",
     "uRipple",
     "uShip",
+    "uAtmosphere",
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight", "uTime"]),
-    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon", "uMoonMap", "uTime"]);
+    ku = resources.uniforms(sky, [
+      "uReveal",
+      "uNight",
+      "uAspect",
+      "uMoon",
+      "uMoonMap",
+      "uTime",
+      "uAtmosphere",
+    ]);
   gl.useProgram(sea);
   setWaves(gl, su, edition);
   let aspect = 1,
@@ -83,6 +93,7 @@ export function createOceanEngine(
   let moonDay = NaN;
   let previewDay: number | null = null;
   let moon = moonForIndiaDay(indiaMoonDay(Date.now()));
+  let atmosphere = atmosphereForIndiaDay(indiaMoonDay(Date.now()));
   let catalogue: Star[] | null = null;
   let starCount = 0;
   let starLoadStarted = false;
@@ -109,6 +120,7 @@ export function createOceanEngine(
         "uReveal",
         "uMoonIllumination",
         "uTime",
+        "uAtmosphere",
       ]);
     }
     const frame = planetFrameAt(moonDay);
@@ -131,6 +143,7 @@ export function createOceanEngine(
         "uReveal",
         "uMoonIllumination",
         "uTime",
+        "uAtmosphere",
       ]);
     }
     const frame = starFrameAt(moonDay, catalogue);
@@ -163,6 +176,7 @@ export function createOceanEngine(
     if (day === moonDay) return false;
     moonDay = day;
     moon = moonForIndiaDay(day);
+    atmosphere = atmosphereForIndiaDay(day);
     canvas.dataset.moonCycle = String(moon.cycle);
     canvas.dataset.moonIllumination = String(moon.illumination);
     refreshStars();
@@ -213,6 +227,7 @@ export function createOceanEngine(
       gl.uniform1f(ku.uNight, night);
       gl.uniform1f(ku.uAspect, aspect);
       gl.uniform1f(ku.uTime, time);
+      gl.uniform4fv(ku.uAtmosphere, atmosphere);
       gl.uniform2f(ku.uMoon, moon.illumination, moon.cycle < 0.5 ? 1 : -1);
       gl.uniform1f(ku.uMoonMap, moonMap);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -224,6 +239,7 @@ export function createOceanEngine(
         gl.uniform1f(starsUniforms.uReveal, reveal);
         gl.uniform1f(starsUniforms.uMoonIllumination, moon.illumination);
         gl.uniform1f(starsUniforms.uTime, time);
+        gl.uniform4fv(starsUniforms.uAtmosphere, atmosphere);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.drawArrays(gl.POINTS, 0, starCount);
@@ -244,6 +260,7 @@ export function createOceanEngine(
         gl.uniform1f(planetsUniforms.uReveal, reveal);
         gl.uniform1f(planetsUniforms.uMoonIllumination, moon.illumination);
         gl.uniform1f(planetsUniforms.uTime, time);
+        gl.uniform4fv(planetsUniforms.uAtmosphere, atmosphere);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.drawArrays(gl.POINTS, 0, planetCount);
@@ -254,6 +271,7 @@ export function createOceanEngine(
       gl.bindVertexArray(surface.array);
       gl.uniformMatrix4fv(su.uVP, false, vp);
       gl.uniform1f(su.uTime, time);
+      gl.uniform4fv(su.uAtmosphere, atmosphere);
       gl.uniform1f(su.uReveal, reveal);
       gl.uniform1f(su.uNight, night);
       gl.uniform3fv(su.uLight, light);

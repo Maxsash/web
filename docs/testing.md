@@ -1,5 +1,17 @@
 # Testing
 
+## Daily atmosphere (13 October 2026)
+
+Isolated Node 24 production build, lint, types and format pass. 147 Node tests,
+78 SEO cases and headers/CSP pass. Keyboard 22/22; creative report 191 cases,
+zero runtime exceptions. Three consecutive India dates (clearer, hazier,
+wispier) plus a full-Moon date captured in day/night at 1440×1000 and 390×844
+with fixed Home water and Reduce Motion. Ten representative views inspected;
+sky differences remain restrained, the sun/Moon and text clear. WebGL2 reports
+zero errors in all 16 captures. The scratch capture
+script and images are review-only and removed after inspection. No physical
+phone or long-run GPU measurement; daily moods are authored, not forecasts.
+
 ## Cloud shadows removed (13 October 2026)
 
 Owner rejected the visual value of sea shadows. All three rendering files restored

@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD a55dd42 on main (owner committed shared cloud depth). Tested deployment
+HEAD b311e52 on main (owner committed cloud-shadow removal notes). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-cloud-shadow removal documentation only. No commit, push or release performed by the agent.
+daily atmosphere implementation and its docs/test. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -42,15 +42,17 @@ No genuine crawler-IP/WAF test.
 Daylight options 1 + 2 committed by owner in 56c7195: sparse cirrus/haze/solar
 halo and richer sun glitter; prior verification/cleanup recorded in testing.md.
 
-Four-star Dragon Ball and shared sky clouds committed by owner. Owner rejected
-sea shadows as not worth keeping; removed their canopy projection, reflection/body
-attenuation and temporary red borders. Three rendering files now match a55dd42
-byte for byte. Sky clouds, star/planet masking and approved water remain.
-Candidate automated passes did not establish visual value. Border verification
-interrupted; no development-border visual check or fresh rollback build/browser
-review. Documentation format check passes. Own server stopped; review worktree,
-script, captures/build output and logs removed.
-No replacement shadow effect approved; daily variation remains a proposal.
+Four-star Dragon Ball and shared sky clouds committed by owner. Cloud sea
+shadows and temporary borders were rejected/removed; no replacement approved.
+New daily atmosphere uses the India Moon date: three restrained authored moods
+vary cloud placement/strength, cirrus, horizon haze, halo and slight daylight
+glitter; night shares the cloud field and gains faint haze/star attenuation.
+No observed weather, new assets/passes, sea geometry or wake change. Preview
+dates and midnight refresh use the same daily recipe.
+Isolated Node 24 build, lint, types, format, 147 tests, 78 SEO, headers,
+keyboard 22/22 and creative 191 cases pass. Sixteen day/night desktop/phone
+date captures (including full Moon) show zero WebGL errors; ten inspected.
+No physical phone qualification.
 
 ## Next / owner pending
 
@@ -82,15 +84,16 @@ No replacement shadow effect approved; daily variation remains a proposal.
   prior handoff counted 360 `/private/tmp/maxsash*` files and three Chrome profiles.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
-- Prior navigation/sky review servers/worktrees/captures removed; latest cleanup above.
+- Prior navigation/sky review servers/worktrees/captures removed. Daily atmosphere
+  review server, worktree, scratch script, captures and logs removed after checks.
 - Android, private-system evidence, real print, field metrics and follow-ups.md remain.
 
 ## Suggested commit
 
 ```
-docs: record removal of rejected cloud shadows
+feat: add gentle daily atmosphere to the sea sky
 
-Restore the accepted sky-cloud rendering and remove shadow/debug-border code.
-Rendering files match a55dd42; no fresh rollback build/browser review.
-Documentation format check passes; own server and all review output removed.
+Give each India day a bounded sky mood shared by daylight and night.
+Keep the authored sea and rejected shadow/wake effects unchanged.
+Isolated Node 24 build, 147 tests, route/browser checks, lint, types and format pass.
 ```

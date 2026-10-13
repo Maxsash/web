@@ -133,12 +133,21 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Let each India day have a gentle atmosphere** (owner, 13 October 2026).
+  A deterministic daily choice sets one of three restrained moods: clearer,
+  wispier or slightly hazier. The sky shifts cloud position/opacity, cirrus,
+  horizon haze and halo; daylight glitter changes slightly. Night uses the
+  same clouds and a faint horizon haze, with cloud masking shared by stars
+  and planets. The date follows the existing Moon day, including preview
+  and midnight refresh. This is authored visual variety, not weather data;
+  no sea shadows, wakes, extra assets or passes.
+
 - **Remove cloud shadows and their temporary borders** (owner, 13 October 2026).
   The faint sea shadows/reflection dimming did not provide enough visible value.
   Remove the canopy projection, attenuation and red-border diagnostic; restore
   the accepted sky-cloud version a55dd42. Keep clouds, their star/planet masking,
   daylight atmosphere/glitter and the four-star sail. No replacement shadow effect
-  is approved; daily variation remains a separate proposal.
+  is approved; the later daily sky variation is separate from sea lighting.
 
 - **Review cloud depth before sea shadows** (owner, 13 October 2026). Begin with
   a few soft irregular clusters shared by day and night, warm daylight edges and
@@ -163,7 +172,9 @@ each group. How the code is built: [architecture.md](architecture.md).
   Build options 1 + 2: sparse feathered cirrus, luminous horizon haze, a soft solar
   halo and a broken sun-reflection path driven by wave-facing normals. Preserve
   headline space, sea mathematics, stage timings and night’s dated lighting.
-  Cumulus/shadows and daily atmospheric variation are shared day/night possibilities.
+  Cumulus and daily atmospheric variation can apply to both day and night;
+  shared sky clouds and daily variation were subsequently built, while sea
+  shadows were rejected and removed.
   The first whitecap/wake pass was rejected and removed; no replacement approved.
 
 - **Show the mapped Moon whenever the night sky shows the Moon** (phase 4, owner choice,

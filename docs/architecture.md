@@ -55,6 +55,16 @@ and draws variation freely. Nothing about the visitor is read.
 
 ## Rendering
 
+`daily-atmosphere.ts` hashes the existing India Moon day into a bounded
+four-value sky recipe (cloud shift/opacity, cirrus strength, haze). The engine
+refreshes it with the Moon on date/preview changes and sends the same values
+to sky, sea, star and planet shaders. Daylight uses them for cirrus, horizon,
+halo and a small glitter change; night uses them for cloud placement/opacity,
+horizon haze and faint-star visibility. Stars and planets use the exact cloud
+field drawn in the sky. This is authored daily variety, not observed weather.
+Sea geometry, waves and night lighting remain unchanged; only daylight glint
+strength shifts slightly.
+
 `cloud-shaders.ts` owns two sparse soft clusters and their shared opacity/light
 field. The homepage sky opts in through `skyFragmentSource`; star/planet vertex
 shaders sample the same field and clock to attenuate points behind clouds. Six

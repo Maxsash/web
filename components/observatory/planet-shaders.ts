@@ -9,6 +9,7 @@ uniform float uNight;
 uniform float uReveal;
 uniform float uMoonIllumination;
 uniform float uTime;
+uniform vec4 uAtmosphere;
 out vec3 vColor;
 out float vOpacity;
 ${cloudFunctions}
@@ -27,7 +28,7 @@ void main() {
   float clearOfMoon=step(.034,length(aPlanet.xy)*.42);
   vOpacity=uNight*(1.-smoothstep(.05,.8,uReveal))
     *mix(.68,1.,brightness)*(1.-moonWash)*clearOfMoon;
-  vOpacity*=1.-cloudLayers(uv,uAspect,uTime).x;
+  vOpacity*=1.-cloudLayers(uv,uAspect,uTime,uAtmosphere).x;
 }`;
 
 export const planetFragment = `#version 300 es

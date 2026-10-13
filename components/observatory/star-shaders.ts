@@ -9,6 +9,7 @@ uniform float uNight;
 uniform float uReveal;
 uniform float uMoonIllumination;
 uniform float uTime;
+uniform vec4 uAtmosphere;
 out vec3 vColor;
 out float vOpacity;
 ${cloudFunctions}
@@ -27,7 +28,8 @@ void main() {
   float clearOfMoon=step(.033,length(aStar.xy)*.42);
   vOpacity=uNight*(1.-smoothstep(.05,.8,uReveal))*visibility
     *mix(.38,.95,brightness)*clearOfMoon;
-  vOpacity*=1.-cloudLayers(uv,uAspect,uTime).x;
+  vOpacity*=1.-cloudLayers(uv,uAspect,uTime,uAtmosphere).x;
+  vOpacity*=1.-(uAtmosphere.w-.65)*.12;
 }`;
 
 export const starFragment = `#version 300 es

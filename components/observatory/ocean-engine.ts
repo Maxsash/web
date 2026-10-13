@@ -43,9 +43,10 @@ export function createOceanEngine(
         declarations: "uniform vec3 uRipple;\nuniform vec4 uShip;",
         surface: surveyWakeGLSL + rippleGLSL,
         moonlight: true,
+        daylight: true,
       }),
     ],
-    sky: [skyVertex, skyFragmentSource({ moonPhase: true })],
+    sky: [skyVertex, skyFragmentSource({ moonPhase: true, daylight: true })],
     boat: [surveyShipVertex, surveyShipFragment],
   });
   const surface = seaSurface(resources, gl, compact);
@@ -70,7 +71,7 @@ export function createOceanEngine(
     "uShip",
   ]);
   const bu = resources.uniforms(boat, ["uVP", "uModel", "uReveal", "uNight", "uLight", "uTime"]),
-    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon", "uMoonMap"]);
+    ku = resources.uniforms(sky, ["uReveal", "uNight", "uAspect", "uMoon", "uMoonMap", "uTime"]);
   gl.useProgram(sea);
   setWaves(gl, su, edition);
   let aspect = 1,
@@ -209,6 +210,7 @@ export function createOceanEngine(
       gl.uniform1f(ku.uReveal, reveal);
       gl.uniform1f(ku.uNight, night);
       gl.uniform1f(ku.uAspect, aspect);
+      gl.uniform1f(ku.uTime, time);
       gl.uniform2f(ku.uMoon, moon.illumination, moon.cycle < 0.5 ? 1 : -1);
       gl.uniform1f(ku.uMoonMap, moonMap);
       gl.drawArrays(gl.TRIANGLES, 0, 3);

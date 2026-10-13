@@ -133,6 +133,13 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Restrained daylight atmosphere and glitter** (owner, 13 October 2026).
+  Build options 1 + 2: sparse feathered cirrus, luminous horizon haze, a soft solar
+  halo and a broken sun-reflection path driven by wave-facing normals. Preserve
+  headline space, sea mathematics, stage timings and night’s dated lighting.
+  Options 3–5 (cumulus/shadows, whitecaps, daily atmospheric variation) are shared
+  day/night possibilities, not daytime-only features; they remain follow-ups.
+
 - **Show the mapped Moon whenever the night sky shows the Moon** (phase 4, owner choice,
   12 October 2026). A zoom-gated reveal still swapped one Moon for another, so the owner
   chose always on: the 2025 NASA SVS 2K LRO colour map replaces the shader's Moon at its

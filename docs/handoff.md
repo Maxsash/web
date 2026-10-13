@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD d803c16 on main (owner committed shared navigation feedback). Tested deployment
+HEAD 0c8f716 on main (owner committed shared navigation feedback). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-owner-report documentation. No commit, push or release performed by the agent.
+daylight refinement and its documentation. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -40,6 +40,19 @@ Google and Bing guides. Owner's later screenshot shows `/home` 404, last crawled
 reference; prior live sitemap omitted it. Discovery source unknown; no redirect added.
 No fresh local build/tests; no genuine crawler-IP/WAF test.
 
+## Day scene implementation — 13 October
+
+Owner approved options 1 + 2: sparse cirrus/haze/solar halo and richer sun glitter.
+Options 3–5 are shared day/night follow-ups, not exclusive to daytime; not built.
+Homepage shader additions implemented; existing scene clock, reveal and motion
+policy reused. No assets, extra passes or sea-model changes. Isolated Node 24 build/lint/types, 145 tests, 78 SEO and headers pass.
+Desktop/phone day/night/Reduce Motion captures inspected (no GL/runtime errors
+or overflow; still frame counts hold), then deleted with scratch script.
+Keyboard 22/22, creative 191 records (zero failures/exceptions) and format pass.
+Native desktop/phone sea/reveal/drawing captures inspected. Own server stopped;
+review worktree/captures/logs removed. Main-folder accidental build was stopped
+and its new output removed. No new physical-device check. Owner visual review next.
+
 ## Next / owner pending
 
 1. Investigate owner navigation report: huge Notebook wait; top-left return-home
@@ -71,22 +84,17 @@ No fresh local build/tests; no genuine crawler-IP/WAF test.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
 - Live-diagnostic worktree, scratch script and log removed; browser closed.
-- Own loopback server stopped. Temporary worktree, build/check logs and captures
-  removed. Process inspection found no browsers left from this verification run.
+- Prior navigation review server/worktree/captures removed; daylight cleanup above.
 - Android, private-system evidence, real print, field metrics and follow-ups.md remain.
 
 ## Suggested commit
 
 ```
-fix: show feedback while pages open
+feat: enrich daylight sky and sun reflections
 
-Confirm slow Notebook and case-study clicks with a shared navigation status,
-without shifting content or changing route loading/status behaviour.
-Record owner iPhone Air/iOS 27 results and remaining hosting/device checks.
-
-Verified isolated Node 24 production build, lint/types/format, 145 Node tests,
-78 SEO cases, headers/CSP, keyboard 22/22, creative 191/191 and delayed
-keyboard/touch navigation in day/night and Reduce Motion. Captures inspected.
-Owner committed navigation badge separately; deployment identity and navigation
-regression remains unresolved after a live Chrome diagnostic. New accessibility pass is owner-reported.
+Add sparse cirrus, horizon haze and a solar halo with wave-driven glitter.
+Reuse existing rendering/motion policies and preserve sea mathematics/night light.
+Verified isolated Node 24 build/lint/types/format, 145 tests, 78 SEO, headers,
+keyboard 22/22, creative 191 records (zero failures/exceptions), desktop/phone
+day/night/Reduce Motion and reveal/drawing review. No physical-device checks.
 ```

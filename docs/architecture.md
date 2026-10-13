@@ -55,6 +55,14 @@ and draws variation freely. Nothing about the visitor is read.
 
 ## Rendering
 
+Homepage daylight opts into `daylight-shaders.ts` through the existing sky/sea
+shader factories. Three sparse analytic cirrus veils drift on the paused scene
+clock; a horizon wash and solar halo enrich the gradient. The water adds a fine
+normal-based specular lobe to the existing highlights, with a soft reflection
+column beneath the framed sun. No new assets, render passes or wave-model changes.
+Night lighting and the error-page shader defaults remain separate. The existing
+reveal fades the additions into paper; lifecycle still owns Reduce Motion/stilling.
+
 Native WebGL2, no 3D library or downloaded model. The deferred engine sits
 behind a server-rendered SVG plate, which is also the fallback.
 

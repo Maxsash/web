@@ -1,5 +1,21 @@
 # Testing
 
+## Daylight refinement (13 October 2026)
+
+Isolated Node 24 Turbopack production build, lint and types pass. All 145 Node
+tests, 78 SEO cases and headers/CSP pass. Focused SwiftShader Chrome review:
+1440×1000 and 390×844 day, theme switch to night, and Reduce Motion screenshots
+inspected; no overflow, GL errors or runtime exceptions. Reduce Motion frame
+counts stay fixed over one second at both sizes. Captures and scratch script
+deleted. Keyboard 22/22 and the full creative report (191 records, zero failures
+or runtime exceptions) pass; format check passes. Native Chrome sea/reveal/drawing
+captures at desktop/phone sizes inspected. Own production server stopped and all
+review worktree output removed. No new physical-device checks performed.
+A build was accidentally started in the main folder and stopped; its newly
+created output was removed, keeping existing dev/cache directories. Worktree
+node_modules symlinking failed Turbopack’s root check; a local copy succeeded
+with sandbox worker permission. These are local checks, not phone qualification.
+
 ## Owner iPhone report (13 October 2026)
 
 Owner tested the deployment including 3261a8d on iPhone Air, iOS 27. Safari day/night

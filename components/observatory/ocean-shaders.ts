@@ -1,4 +1,5 @@
 import { MOON_SCREEN_RADIUS, SEA_LIGHT_SCREEN, SKY_PAPER_FADE } from "./ocean-light.ts";
+import { daylightDeclarations, daylightGlitterGLSL, daylightSkyGLSL } from "./daylight-shaders.ts";
 
 export const fieldGLSL = `
 uniform vec4 uWaveVectors[6];
@@ -52,7 +53,13 @@ export function seaFragmentSource({
   surface = shipWakeGLSL + rippleGLSL,
   finish = "",
   moonlight = false,
-}: ShaderAdditions & { field?: string; surface?: string; moonlight?: boolean } = {}) {
+  daylight = false,
+}: ShaderAdditions & {
+  field?: string;
+  surface?: string;
+  moonlight?: boolean;
+  daylight?: boolean;
+} = {}) {
   return `#version 300 es
 precision highp float;
 in vec3 vWorld;
@@ -103,7 +110,7 @@ void main() {
   float broad=pow(max(dot(reflect(-light,n),view),0.),18.);
   ${
     moonlight
-      ? `vec3 dayGlint=vec3(1.,.86,.60)*(glint*.95+broad*.04);
+      ? `${daylight ? daylightGlitterGLSL : "vec3 dayGlint=vec3(1.,.86,.60)*(glint*.95+broad*.04);"}
   vec3 nightGlint=vec3(.64,.80,1.)*(glint*.72+broad*.028)*lunarFlux*moonColumn;
   color+=mix(dayGlint,nightGlint,uNight);`
       : "color+=mix(vec3(1.,.86,.60),vec3(.64,.80,1.),uNight)*(glint*.95+broad*.04);"
@@ -144,18 +151,24 @@ export function skyFragmentSource({
   weather = "",
   orbScale = "",
   moonPhase = false,
-}: ShaderAdditions & { weather?: string; orbScale?: string; moonPhase?: boolean } = {}) {
+  daylight = false,
+}: ShaderAdditions & {
+  weather?: string;
+  orbScale?: string;
+  moonPhase?: boolean;
+  daylight?: boolean;
+} = {}) {
   return `#version 300 es
 precision highp float;
 in vec2 vUv;
 uniform float uReveal;
 uniform float uNight;
 uniform float uAspect;
-out vec4 outColor;${declarations}${moonPhase ? moonDeclarations : ""}
+out vec4 outColor;${declarations}${moonPhase ? moonDeclarations : ""}${daylight ? daylightDeclarations : ""}
 void main(){
   vec3 daylight=mix(vec3(.76,.86,.83),vec3(.36,.65,.76),smoothstep(.1,1.,vUv.y));
   float sun=1.-smoothstep(.022,.028,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
-  daylight=mix(daylight,vec3(1.,.92,.70),sun${orbScale});
+  daylight=mix(daylight,vec3(1.,.92,.70),sun${orbScale});${daylight ? daylightSkyGLSL : ""}
   vec3 midnight=mix(vec3(.10,.20,.25),vec3(.012,.028,.07),smoothstep(.1,1.,vUv.y));
   float moon=1.-smoothstep(.017,.021,length((vUv-vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]}))*vec2(uAspect,1.)));
   ${

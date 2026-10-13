@@ -119,3 +119,9 @@ for integration checks. No new route, dependency or asset.
 
 PageLink is the shared public navigation wrapper. NavigationStatus alone renders the
 pending badge; no click timers, global DOM listeners or duplicate per-page loading UI.
+
+## Daylight shaders (13 October 2026)
+
+Sky/glitter additions live together in `daylight-shaders.ts`; existing factories
+opt the homepage in and leave pinned error-page defaults intact. Reuse the
+existing scene clock, paused lifecycle and draw passes; no dependencies/assets.

@@ -131,3 +131,9 @@ existing scene clock, paused lifecycle and draw passes; no dependencies/assets.
 Deleted the compass and interim MS geometry. `ship-emblem.ts` owns the four-star
 Dragon Ball geometry/palette; the rig maps it onto both cloth faces through its
 existing surface/motion sampler. No assets, dependencies or extra render passes.
+
+## Shared cloud field (13 October 2026)
+
+Sky, stars and planets import one analytic cloud field from `cloud-shaders.ts`.
+The existing engine clock/uniform setup drives all three; no extra canvas, assets,
+render pass or DOM animation. Rejected water modules remain deleted.

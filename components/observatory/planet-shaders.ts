@@ -1,4 +1,5 @@
 import { SEA_LIGHT_SCREEN } from "./ocean-light.ts";
+import { cloudFunctions } from "./cloud-shaders.ts";
 
 export const planetVertex = `#version 300 es
 precision highp float;
@@ -7,8 +8,10 @@ uniform float uAspect;
 uniform float uNight;
 uniform float uReveal;
 uniform float uMoonIllumination;
+uniform float uTime;
 out vec3 vColor;
 out float vOpacity;
+${cloudFunctions}
 void main() {
   vec2 uv=vec2(${SEA_LIGHT_SCREEN[0]},${SEA_LIGHT_SCREEN[1]})
     +vec2(aPlanet.x/uAspect,aPlanet.y)*.42;
@@ -24,6 +27,7 @@ void main() {
   float clearOfMoon=step(.034,length(aPlanet.xy)*.42);
   vOpacity=uNight*(1.-smoothstep(.05,.8,uReveal))
     *mix(.68,1.,brightness)*(1.-moonWash)*clearOfMoon;
+  vOpacity*=1.-cloudLayers(uv,uAspect,uTime).x;
 }`;
 
 export const planetFragment = `#version 300 es

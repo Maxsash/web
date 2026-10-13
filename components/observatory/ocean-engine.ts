@@ -46,7 +46,7 @@ export function createOceanEngine(
         daylight: true,
       }),
     ],
-    sky: [skyVertex, skyFragmentSource({ moonPhase: true, daylight: true })],
+    sky: [skyVertex, skyFragmentSource({ moonPhase: true, daylight: true, clouds: true })],
     boat: [surveyShipVertex, surveyShipFragment],
   });
   const surface = seaSurface(resources, gl, compact);
@@ -108,6 +108,7 @@ export function createOceanEngine(
         "uNight",
         "uReveal",
         "uMoonIllumination",
+        "uTime",
       ]);
     }
     const frame = planetFrameAt(moonDay);
@@ -129,6 +130,7 @@ export function createOceanEngine(
         "uNight",
         "uReveal",
         "uMoonIllumination",
+        "uTime",
       ]);
     }
     const frame = starFrameAt(moonDay, catalogue);
@@ -221,6 +223,7 @@ export function createOceanEngine(
         gl.uniform1f(starsUniforms.uNight, night);
         gl.uniform1f(starsUniforms.uReveal, reveal);
         gl.uniform1f(starsUniforms.uMoonIllumination, moon.illumination);
+        gl.uniform1f(starsUniforms.uTime, time);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.drawArrays(gl.POINTS, 0, starCount);
@@ -240,6 +243,7 @@ export function createOceanEngine(
         gl.uniform1f(planetsUniforms.uNight, night);
         gl.uniform1f(planetsUniforms.uReveal, reveal);
         gl.uniform1f(planetsUniforms.uMoonIllumination, moon.illumination);
+        gl.uniform1f(planetsUniforms.uTime, time);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.drawArrays(gl.POINTS, 0, planetCount);

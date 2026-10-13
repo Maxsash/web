@@ -1,9 +1,9 @@
 # Handoff — start here
 
 Updated 13 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD 3c65ccb on main (owner committed the four-star Dragon Ball emblem). Tested deployment
+HEAD e47fea9 on main (owner committed the water-pass removal docs). Tested deployment
 confirmed through browser-bar fix; Owner confirms d803c16 deployed; live chunks also contain navigation status. Uncommitted:
-water-pass removal documentation only. No commit, push or release performed by the agent.
+shared cloud depth and documentation. No commit, push or release performed by the agent.
 
 ## Current state
 
@@ -40,18 +40,20 @@ No genuine crawler-IP/WAF test.
 ## Creative state — 13 October
 
 Daylight options 1 + 2 committed by owner in 56c7195: sparse cirrus/haze/solar
-halo and richer sun glitter. Isolated Node 24 build/lint/types/format, 145 tests,
-78 SEO, headers, keyboard 22/22 and creative 191 records passed; desktop/phone
-captures inspected. Earlier verification output and own server removed.
+halo and richer sun glitter; prior verification/cleanup recorded in testing.md.
 
-Four-star Dragon Ball emblem committed by owner. Owner rejected the first shared
-water pass and allowed improvement or removal. Removed the new micro-normals,
-whitecaps and wake; all three rendering files restored byte for byte to HEAD,
-new water modules/tests deleted. Approved daylight and four-star sail remain.
-Candidate automated checks passed but did not establish visual quality; see testing.md.
-No fresh rollback build/browser review. Documentation format check passes. Own
-server stopped; review worktree/output, captures, scratch script and logs removed.
-Next water approach unsettled; clouds/daily atmosphere remain proposals.
+Four-star Dragon Ball emblem committed by owner. Rejected water pass removed;
+approved water restored. Owner now approves a sky-first cloud review: two soft
+irregular clusters, warm daytime/subdued phase-aware night light and slow drift.
+One cloud mask softens stars/planets behind them; compact composition preserves
+headline space. Initial build/lint/types, 145 tests, 78 SEO and headers pass.
+Day/new/full desktop/phone/landscape review passes GL/runtime/still checks; cloud
+height lowered in short-wide scenes after visual review. Final placement rebuilt
+and landscape captures reinspected. Final creative 191 records (zero failures/
+exceptions), lint/types/format pass; keyboard 22/22 passes. Final sea/drawing
+captures inspected. Own server stopped and review worktree/output/logs removed.
+No physical-device check. Owner cloud visual review next.
+Sea shadows and daily variation follow accepted clouds; not built in this pass.
 
 ## Next / owner pending
 
@@ -83,16 +85,17 @@ Next water approach unsettled; clouds/daily atmosphere remain proposals.
   prior handoff counted 360 `/private/tmp/maxsash*` files and three Chrome profiles.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
-- Live-diagnostic worktree, scratch script and log removed; browser closed.
-- Prior navigation review server/worktree/captures removed; daylight cleanup above.
+- Prior navigation/sky review servers/worktrees/captures removed; latest cleanup above.
 - Android, private-system evidence, real print, field metrics and follow-ups.md remain.
 
 ## Suggested commit
 
 ```
-docs: record rejection of the water refinement
+feat: add soft cloud depth to day and night skies
 
-Restore the approved water appearance and record the rejected foam/wake pass.
-Rendering files match HEAD; new modules/tests removed. No fresh rollback build.
-Documentation format check passes; own server and temporary review output removed.
+Compose two restrained cloud clusters with shared star/planet attenuation.
+Preserve the approved water and reuse existing motion and reveal policies.
+Verified isolated Node 24 build/lint/types/format, 145 tests, 78 SEO, headers,
+keyboard 22/22 and creative 191 records (zero failures/exceptions); day/new/full
+Moon matrix, Reduce Motion, final landscape/sea/drawing visual review.
 ```

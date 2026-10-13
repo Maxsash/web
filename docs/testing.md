@@ -1,5 +1,19 @@
 # Testing
 
+## Cloud depth (13 October 2026)
+
+Isolated Node 24 build, 145 tests, 78 SEO and headers/CSP pass. Native Chrome
+day/new/full Moon matrix at 1440×1000, 390×844 and 844×390 has no GL/runtime errors
+or overflow; still frame counts hold at all three sizes. Visual review included
+day/new/full desktop and day/full phone/landscape. Landscape review moved the
+first cluster below navigation while keeping the light clear. Final placement
+rebuilt; landscape day/full captures reinspected. Keyboard 22/22 passes; final
+creative 191 records (zero failures/exceptions), lint/types/format pass. Final sea
+and drawing captures inspected. Native desktop 30 s cadence: p50/p95 16.7 ms, no
+long tasks, high quality; not a phone/GPU-cost qualification. Focused scratch
+script/captures deleted; own server stopped and review worktree/output/logs removed.
+No physical-device or GPU timer-query measurements; water unchanged.
+
 ## Water pass removed (13 October 2026)
 
 Owner rejected the appearance; restored all three edited rendering modules byte for

@@ -55,6 +55,14 @@ and draws variation freely. Nothing about the visitor is read.
 
 ## Rendering
 
+`cloud-shaders.ts` owns two sparse soft clusters and their shared opacity/light
+field. The homepage sky opts in through `skyFragmentSource`; star/planet vertex
+shaders sample the same field and clock to attenuate points behind clouds. Six
+analytic lobes per cluster with restrained texture give volume; a compact layout
+shifts/scales the main cluster away from the headline. Colours blend with day/night
+and lunar illumination. Existing paper reveal removes the sky; scene pause/Reduce
+Motion freezes drift. No new passes/assets, sea lighting or wave changes.
+
 Homepage daylight opts into `daylight-shaders.ts` through the existing sky/sea
 shader factories. Three sparse analytic cirrus veils drift on the paused scene
 clock; a horizon wash and solar halo enrich the gradient. The water adds a fine

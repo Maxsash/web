@@ -133,6 +133,13 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Review cloud depth before sea shadows** (owner, 13 October 2026). Begin with
+  a few soft irregular clusters shared by day and night, warm daylight edges and
+  subdued phase-aware moonlight. Keep headline space and the Moon open. Reuse one
+  opacity field to soften stars/planets behind clouds and the paused scene clock
+  for slow drift. This pass changes sky only; sea shadows and daily variation follow
+  an accepted cloud composition. Preserve the approved water after its rejected pass.
+
 - **Remove the rejected water pass** (owner, 13 October 2026: “they aren't
   looking any good right now”; improve or remove). The first heading-aligned
   micro-normal, crest-foam and thin-wake pass did not earn its place visually.

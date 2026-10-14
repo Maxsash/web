@@ -15,20 +15,43 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/work/[slug]`, `/work`         | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`.                                                                                                                       |
 | `/api/sea-edition`              | The sea's six waves as JSON. No `version` means version 1.                                                                                                                                                                       |
 | `/api/sea-edition/print`        | The same sea as an SVG plate (`&download=1` to save).                                                                                                                                                                            |
+| `/privacy`                      | Privacy explanation and optional analytics preference (`noindex`, follow).                                                                                                                                                       |
+| `/api/telemetry`                | POST-only, bounded/validated event batches relayed to PostHog when configured; otherwise no-op.                                                                                                                                  |
 | `/robots.txt`, `/sitemap.xml`   | Discovery files; the sitemap lists the homepage, the Notebook listing, the sea studio, two essays, five case studies and published markdown posts.                                                                               |
 | Error pages                     | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
-No database, accounts, cookies or client calls to third parties. The only server-side
-inputs are a sea seed (eight hex characters) and the optional GitHub request below.
+No database, accounts, cookies or browser calls to third parties. Local theme/sound
+preferences remain. Optional configured analytics keeps a random visit ID and pause
+choice in memory only; no analytics local/session storage or cross-visit identity.
+Server inputs include the sea query, optional GitHub request below and bounded
+telemetry batches.
 
-## Behaviour measurement proposal
+## Behaviour measurement
 
-No analytics SDK is currently installed; production CSP permits same-origin
-connections only. Owner wants measurement before audience-specific journeys.
-[telemetry.md](telemetry.md) defines proposed explicit events, report views,
-identity/privacy choices and integration checks. [visitor-journeys.md](visitor-journeys.md)
-contains research. Provider setup and implementation remain pending; no routes or
-runtime data flows changed. Future collection must update the current boundary above.
+`lib/telemetry/schema.ts` owns pure route/property allowlisting and validation;
+`catalog.ts` derives known slugs from published source content. `config.ts` gates
+production with explicit env/token/approved-host checks. `posthog.ts` builds the
+personless payload. `/api/telemetry` checks origin/type/body limits and forwards
+rebuilt fields only; no visitor IP/raw URLs/raw user agents, GeoIP or profiles.
+Existing same-origin CSP stays. The concurrent wizard’s unfinished SDK path and
+CSP/global exception additions were removed; no dependency installation needed.
+
+`components/telemetry/` separates in-memory preference/identity, bounded transport,
+observers, action bridge and React lifecycle. Only configured production measures.
+Section exposure needs 1 visible second; engagement needs end marker + 30 foreground
+seconds. Copies use success hooks; slider events settle for 500 ms. Navigation
+separates timeout/late arrival. Unknown paths collapse to `/unknown`.
+
+Next navigation can share the current memory ID. Reload/new tab/close resets it;
+30-minute recorded-event inactivity and 24-hour limits rotate it too. Pausing at
+`/privacy` clears queued events and aborts requests; resuming starts a fresh ID.
+Pause is forgotten on reload. Already received events cannot be retracted. Global
+layout failure can prevent telemetry itself starting and is outside coverage.
+
+Five dashboard definitions/setup command live under tools; actual reports require
+PostHog account access. Wizard starter dashboard exists per owner report, not agent
+inspection. One schema-0 synthetic event accepted by EU ingestion; no real visitors
+or UI/query visibility verified. [telemetry-setup.md](telemetry-setup.md) is the guide.
 
 ## The sea model
 

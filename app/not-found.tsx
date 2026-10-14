@@ -8,6 +8,7 @@ export default function NotFound() {
   return (
     <DriftPage
       scene="horizon"
+      telemetryError="not-found"
       kicker="Error 404"
       title="Nothing on the horizon."
       actions={

@@ -199,14 +199,18 @@ await withBrowser(
       ),
     );
     await load(seed, 1280, 800);
+    await press("Tab");
     await focus("nav[aria-label=Studio] a");
-    await delay(350);
+    await evaluate(
+      "Promise.all(document.querySelector('nav[aria-label=Studio] a').getAnimations().filter(animation=>animation.effect.getTiming().iterations!==Infinity).map(animation=>animation.finished.catch(()=>{})))",
+    );
     const ring = await evaluate(
-      "(()=>{const c=getComputedStyle(document.querySelector('nav[aria-label=Studio] a'));return [c.outlineStyle,c.outlineWidth,c.outlineColor===c.color]})()",
+      "(()=>{const c=getComputedStyle(document.querySelector('nav[aria-label=Studio] a'));return [c.outlineStyle,c.outlineWidth,c.outlineColor===c.color,c.outlineColor,c.color,document.activeElement===document.querySelector('nav[aria-label=Studio] a')]})()",
     );
     record(
       "hero focus ring follows the text colour",
       ring[0] === "solid" && ring[1] === "2px" && ring[2] === true,
+      JSON.stringify(ring),
     );
 
     const failed = results.filter((r) => !r.pass);

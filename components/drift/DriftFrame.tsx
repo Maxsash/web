@@ -15,6 +15,7 @@ export type DriftFrameProps = {
   id?: string;
   plate?: ReactNode;
   torn?: boolean;
+  telemetryError?: "route-error" | "not-found";
 };
 
 function TornSheet() {
@@ -36,9 +37,15 @@ export default function DriftFrame({
   id,
   plate,
   torn = false,
+  telemetryError,
 }: DriftFrameProps) {
   return (
-    <main id={id} className={`${styles.page} ${styles[scene]}`} data-bar-tint>
+    <main
+      id={id}
+      className={`${styles.page} ${styles[scene]}`}
+      data-bar-tint
+      data-telemetry-error={telemetryError}
+    >
       <div className={styles.sea} data-rendering="fallback">
         {plate ? (
           <div className={styles.fallback} aria-hidden="true">

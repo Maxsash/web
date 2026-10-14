@@ -116,6 +116,7 @@ export function ArticleEnd({ next }: { next: { slug: string; title: string } }) 
         aria-label="About the author"
         data-arrive
         data-arrive-cue="end"
+        data-telemetry-end
       >
         <p>
           Written by {site.owner}, who builds {site.offer} end to end at {site.name}.

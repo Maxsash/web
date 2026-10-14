@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { respond } from "@/components/feedback/respond";
 import { createDetentTicker } from "@/components/sound/ticker";
 import { FEEDBACK } from "@/lib/feedback/vocabulary";
 import { describeSea } from "@/lib/sea/describe";
 import type { SeaSettings } from "@/lib/sea/types";
 import styles from "./SeaStudio.module.css";
+import { track } from "../telemetry/actions";
 
 type Control = { key: keyof SeaSettings; label: string; hint: string; low: string; high: string };
 
@@ -42,6 +43,8 @@ type Props = {
 
 export default function SettingSlider({ control, id, settings, onChange }: Props) {
   const { key, label, hint, low, high } = control;
+  const settled = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(settled.current), []);
   const [tick] = useState(() => createDetentTicker(FEEDBACK.detent.gain));
   const reading =
     key === "variation" ? `No. ${settings.variation + 1} of 256` : describeSea(settings)[key];
@@ -67,6 +70,11 @@ export default function SettingSlider({ control, id, settings, onChange }: Props
           tick(Math.abs(value - settings[key]));
           respond("detent");
           onChange(key, value);
+          clearTimeout(settled.current);
+          settled.current = setTimeout(
+            () => track("studio_action", { action: "setting", setting: key }),
+            500,
+          );
         }}
       />
       <div className={styles.ends} aria-hidden="true">

@@ -9,6 +9,7 @@ export default function NoteNotFound() {
     <DriftPage
       id="atlas-content"
       scene="notebook"
+      telemetryError="not-found"
       kicker="Field note N° —"
       title="This note was torn out."
       actions={

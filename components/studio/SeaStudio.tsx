@@ -12,6 +12,7 @@ import SeedField from "./SeedField";
 import SettingSlider, { CONTROLS } from "./SettingSlider";
 import { randomSettings, useSeaSettings } from "./useSeaSettings";
 import styles from "./SeaStudio.module.css";
+import { track } from "../telemetry/actions";
 
 const STARTS = [...SEA_PRESETS, { name: "Home water", settings: HOME_WATER }];
 
@@ -64,7 +65,10 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
                   key={start.name}
                   data-press="preset"
                   aria-pressed={seedFromSettings(start.settings) === sea.current}
-                  onClick={() => draw(start.settings)}
+                  onClick={() => {
+                    draw(start.settings);
+                    track("studio_action", { action: "preset", setting: "none" });
+                  }}
                 >
                   {start.name}
                 </button>
@@ -76,6 +80,7 @@ export default function SeaStudio({ seed, version }: { seed: string; version: "1
                 onClick={() => {
                   draw(randomSettings());
                   setRolls((count) => count + 1);
+                  track("studio_action", { action: "randomise", setting: "none" });
                 }}
               >
                 <Die

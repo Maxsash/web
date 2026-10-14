@@ -1,6 +1,7 @@
 import PageLink from "@/components/PageLink";
 import { copyText } from "@/components/copy-text";
 import styles from "./SeaStudio.module.css";
+import { track } from "../telemetry/actions";
 
 type Props = {
   query: string;
@@ -33,7 +34,11 @@ export default function KeepActions({ query, copied, onCopied }: Props) {
           type="button"
           data-press="none"
           className={styles.copy}
-          onClick={async () => onCopied(await copyText(`${location.origin}/?${query}`, "share"))}
+          onClick={async () => {
+            const success = await copyText(`${location.origin}/?${query}`, "share");
+            onCopied(success);
+            if (success) track("studio_action", { action: "copy", setting: "none" });
+          }}
         >
           Copy link
         </button>

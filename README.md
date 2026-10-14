@@ -5,7 +5,8 @@ and web apps built end to end: a WebGL sea that resolves into its own mathematic
 (screenshots, and drawings of systems that have none), an about and a contact section, a
 notebook, a sea studio where visitors build and print their own sea, and a shoreline footer.
 Every action gets a small answer of its own, in sound from the first click. Next.js 16,
-React 19 and TypeScript. No database, accounts or cookies.
+React 19 and TypeScript. No database, accounts or cookies. Explicitly configured visitor analytics uses in-memory visits without saved
+visitor identifiers, person profiles or replay.
 
 Working on this repository? Read [AGENTS.md](AGENTS.md), then
 [docs/handoff.md](docs/handoff.md).
@@ -29,6 +30,8 @@ preview of the real page. It exists only in development; a production build has 
 Optional environment variables: `NEXT_PUBLIC_SITE_URL` (canonical origin),
 `GITHUB_TOKEN` (server-only, raises GitHub's rate limit for the commit-log card),
 `NEXT_PUBLIC_BUILD_SHA` (short commit shown in the footer when the host gives none).
+Visitor analytics is off by default; `.env.example` lists its server configuration.
+See [docs/telemetry-setup.md](docs/telemetry-setup.md) for PostHog setup and reports.
 
 ## Engineering contracts
 
@@ -60,6 +63,7 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 | Path                      | What lives there                                                                 |
 | ------------------------- | -------------------------------------------------------------------------------- |
 | `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                  |
+| `lib/telemetry/`          | Explicit-event schema, redaction, configuration and provider payloads            |
 | `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing         |
 | `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, feedback cues            |
 | `lib/feedback/`           | The feedback vocabulary: what every action answers with, and at what level       |
@@ -68,6 +72,7 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 | `components/shore/`       | The shoreline footer and the commit-log card                                     |
 | `components/gull/`        | The gull that lands on "Play waves": its low-poly body, flight and lifecycle     |
 | `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons    |
+| `components/telemetry/`   | Memory-only pause/visit identity, transport and journey observations             |
 | `components/studio/`      | The sea studio                                                                   |
 | `components/atlas/`       | The notebook's scoped styling and plates                                         |
 | `content/`                | Copy and data: `site.ts`, `contact.ts`, `projects.ts`, `about.ts`, `notebook.ts` |
@@ -99,5 +104,6 @@ The browser checks (`check-seo`, `check-headers`, `check-keyboard`, `check-creat
 - [docs/decisions.md](docs/decisions.md): what was decided and why
 - [docs/testing.md](docs/testing.md): the checks, and what has never been checked
 - [docs/seo-and-sharing.md](docs/seo-and-sharing.md): search, link cards and owner setup
+- [docs/telemetry-setup.md](docs/telemetry-setup.md): visitor analytics setup and owner reports
 - [docs/follow-ups.md](docs/follow-ups.md): open items
 - [SECURITY.md](SECURITY.md): reporting a vulnerability

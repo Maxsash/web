@@ -1,14 +1,17 @@
 "use client";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { track } from "@/components/telemetry/actions";
 
 const DriftFrame = lazy(() => import("@/components/drift/DriftFrame"));
 
 export default function PageError({ retry }: { retry: () => void }) {
+  useEffect(() => track("experience_issue", { issue: "route-error" }), []);
   return (
     <Suspense>
       <DriftFrame
         scene="squall"
+        telemetryError="route-error"
         kicker="Something broke"
         title="A rogue wave."
         actions={

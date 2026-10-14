@@ -1,12 +1,35 @@
 # Testing
 
-## Visitor telemetry planning (14 October 2026)
+## Visitor telemetry — memory-only mode (15 October 2026)
 
-Docs only: inspected dependencies, layout, CSP and contact/studio actions; reviewed
-official provider docs and personalisation case studies. No SDK/account/dashboard,
-network ingestion, live journeys, browser checks or production tests performed.
-Node 24 `pnpm format` and `pnpm format:check` pass; explicit changed-docs formatting
-and `git diff --check` pass. telemetry.md defines future acceptance checks.
+Owner selected no persistent tracking after a concurrent PostHog wizard run. The
+unfinished SDK initializer/dependency/CSP/global exception changes were removed.
+Public EU project token moved to ignored server-only env. One synthetic schema-0
+installation event was accepted by EU ingestion (HTTP 200), excluded from version-1
+reports; no visitor data was included.15October query confirms exactly one
+schema-0 event. Five dashboards with21 saved charts execute without query errors.
+
+Fresh isolated Node 24 production build, lint/types/format, 159 Node tests and 78
+SEO cases pass. Sixteen intercepted telemetry browser cases pass: automatic
+configured capture, no analytics browser storage, qualified/deduplicated sections,
+content activation/arrival/engagement, Back/Notebook, keyboard pause, resume with
+new ID, reload with new ID, touch studio action, redaction and collection failure.
+Keyboard 22/22 and headers/CSP pass; creative captures 191 cases with zero runtime
+exceptions and no reported overflow. Privacy captures at 390 px day/night and
+1440 px day were visually inspected: controls and prose are legible, without overflow.
+General browser checks set SEA_TEST_BLOCK_TELEMETRY=1; focused tests intercept
+requests. Real project data is never used by automated browser tests. No physical
+phone, field metrics, quantified bundle delta or deployed visitor ingestion.
+
+Earlier opt-in prototype checks are superseded by this mode. Checks exposed/fixed
+Google hostname matching, shared fixtures, qualification/batch wait and Next’s
+internal request-origin/Host difference. Keyboard harness establishes modality with
+real Tab after fresh navigation and awaits finite focus feedback; no CSS change.
+Final15October build/lint/types/format,159tests, SEO78, telemetry16, keyboard22
+and headers pass after privacy copy/query fixes; creative 191 passes with zero
+runtime exceptions. Final 390 px retention disclosure inspected with no overflow. Chrome
+startup port-file race fixed in the harness; initial launch failed before page tests.
+Turbopack requires worktree-local dependencies; existing Google Fonts need network.
 
 ## Weathered cutter (14 October 2026)
 

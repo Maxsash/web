@@ -36,11 +36,15 @@ function findChrome() {
 
 async function waitForDevToolsPort(profile, chrome, stderr) {
   const portFile = join(profile, "DevToolsActivePort");
-  for (let attempt = 0; !existsSync(portFile); attempt++) {
-    if (attempt > 200 || chrome.exitCode !== null) throw new Error(`Chrome startup: ${stderr()}`);
+  for (let attempt = 0; attempt <= 200; attempt++) {
+    if (chrome.exitCode !== null) throw new Error(`Chrome startup: ${stderr()}`);
+    if (existsSync(portFile)) {
+      const port = readFileSync(portFile, "utf8").split("\n")[0];
+      if (/^\d+$/.test(port) && Number(port) > 0) return port;
+    }
     await delay(50);
   }
-  return readFileSync(portFile, "utf8").split("\n")[0];
+  throw new Error(`Chrome startup: ${stderr()}`);
 }
 
 async function stopChrome(chrome) {
@@ -131,6 +135,10 @@ export async function withBrowser({ name, flags = [] }, run) {
     const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
     connection = connect(targets.find((target) => target.type === "page").webSocketDebuggerUrl);
     await connection.opened;
+    if (process.env.SEA_TEST_BLOCK_TELEMETRY === "1") {
+      await connection.send("Network.enable");
+      await connection.send("Network.setBlockedURLs", { urls: ["*/api/telemetry"] });
+    }
     return await run(createPage(connection));
   } finally {
     connection?.socket.close();

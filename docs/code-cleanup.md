@@ -4,14 +4,14 @@ Goal: a public repository worth reading. Rules: [AGENTS.md](../AGENTS.md). State
 [handoff.md](handoff.md). After each step: verify, update both docs (deleting what is no
 longer true), suggest a commit message, and do not commit.
 
-| Step | What                                               | Status                         |
-| ---- | -------------------------------------------------- | ------------------------------ |
-| 1    | Prettier                                           | done, committed                |
-| 2    | Delete dead code, generators, comments             | done, committed                |
-| 3    | Remove repetition                                  | done, committed                |
-| 4    | Split by responsibility                            | done, committed                |
-| 5    | Cut the docs, rewrite the README                   | done, committed                |
-| 6    | Make it fun to read (needs the owner's approval)   | next, ideas only               |
+| Step | What                                             | Status           |
+| ---- | ------------------------------------------------ | ---------------- |
+| 1    | Prettier                                         | done, committed  |
+| 2    | Delete dead code, generators, comments           | done, committed  |
+| 3    | Remove repetition                                | done, committed  |
+| 4    | Split by responsibility                          | done, committed  |
+| 5    | Cut the docs, rewrite the README                 | done, committed  |
+| 6    | Make it fun to read (needs the owner's approval) | next, ideas only |
 
 ## Step 6 — fun to read (ideas, nothing built)
 
@@ -145,3 +145,13 @@ import it unchanged. `ship-surfaces.ts` is the surface vocabulary shared by the
 builder and the shader constants. The rig's sail, seam, reef and patch strips share
 `clothGrid`/`clothTriangle`; flat deck seams replace 3-sided spars (3,335 → 2,747
 triangles).
+
+## Telemetry foundation (14 October 2026)
+
+Pure schema/redaction is separate from provider payloads, the bounded server relay,
+React lifecycle and DOM observations. Content routes derive from the existing
+project/post catalogs. One typed action bridge and one transport serve all hooks;
+five report definitions share query builders. Memory-only visits; no browser SDK, replay dependency,
+raw click text or duplicate content catalog. Temporary QA worktree, own server, scratch files and captures were removed after
+checks. No runtime dependencies were added. Browser startup waits for a populated
+DevTools port file; existence alone races Chrome’s write.

@@ -95,7 +95,7 @@ export default async function CaseStudy({ params }: Props) {
           <Prose blocks={blocks} />
         </div>
       </article>
-      <nav className={styles.onward} aria-label="More work">
+      <nav className={styles.onward} aria-label="More work" data-telemetry-end>
         <PageLink href="/#work">← All work</PageLink>
         <PageLink href={caseStudyPath(next.slug)}>
           <span className={styles.nextLabel}>Next case study</span>

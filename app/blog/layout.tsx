@@ -37,6 +37,9 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         <p>A notebook for looking closer.</p>
         <ul className={styles.footerLinks} aria-label="Maxsash Studio">
           <li>
+            <PageLink href="/privacy">Privacy & analytics</PageLink>
+          </li>
+          <li>
             <PageLink prefetch={false} href="/">
               Return to the studio <span aria-hidden="true">↗</span>
             </PageLink>

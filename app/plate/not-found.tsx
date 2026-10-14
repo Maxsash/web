@@ -9,6 +9,7 @@ export default function PlateNotFound() {
   return (
     <DriftPage
       scene="plate"
+      telemetryError="not-found"
       kicker="Seed not recognised"
       title="That sea can't be drawn."
       actions={

@@ -26,7 +26,7 @@ export default function Contact() {
               {site.email}
               <span aria-hidden="true">↗</span>
             </a>
-            <CopyButton text={site.email} done="Address copied." className={styles.copy}>
+            <CopyButton text={site.email} done="Address copied." className={styles.copy} contact>
               Copy address
             </CopyButton>
             <a href={site.links.whatsapp} className={styles.whatsapp}>

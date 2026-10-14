@@ -4,10 +4,10 @@ Open items for the owner or a later session. Done work is in [decisions.md](deci
 
 ## Behaviour measurement before personalisation (14 October 2026)
 
-- [ ] Set up the measurement/reporting foundation in [telemetry.md](telemetry.md):
-      provider project, identity/privacy mode, explicit events, five dashboards and
-      production verification. PostHog recommended; Plausible is the simpler alternative.
-      Owner knows of Vercel and Google/Bing Search Console; actual enabled reports unknown.
+- [ ] Release1.1.0 and verify real ingestion. Memory-only tracker and privacy page
+      are built; EU project306242 has five validated dashboards/21charts. See
+      [telemetry-setup.md](telemetry-setup.md). Owner added production env, flag true;
+      billing quota/alerts and Vercel rate limits remain owner review.
 - [ ] Review observed paths and exposure before defining behavioural groups or
       experimenting with Notebook-first versus Work-first. No adaptive order yet.
 - [ ] **Blog: before personalising, understand visitors.** Research and outline in

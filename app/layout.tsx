@@ -7,6 +7,9 @@ import PageTurns from "@/components/sound/PageTurns";
 import { site } from "@/content/site";
 import { siteOrigin, sharingMetadata } from "@/lib/seo";
 import { fontVariables } from "./fonts";
+import Telemetry from "@/components/telemetry/Telemetry";
+import { telemetryConfig } from "@/lib/telemetry/config";
+import { telemetryCatalog } from "@/lib/telemetry/catalog";
 import "./globals.css";
 import "./feedback.css";
 
@@ -46,11 +49,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: `(${applyInitialTheme})()` }} />
       </head>
       <body>
-        {children}
-        <PageTurns />
-        <SmoothLinks />
-        <ThemeColor />
-        <Feedback />
+        <Telemetry enabled={telemetryConfig().enabled} catalog={telemetryCatalog()}>
+          {children}
+          <PageTurns />
+          <SmoothLinks />
+          <ThemeColor />
+          <Feedback />
+        </Telemetry>
       </body>
     </html>
   );

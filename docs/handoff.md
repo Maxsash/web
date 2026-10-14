@@ -1,11 +1,10 @@
 # Handoff — start here
 
-Updated 14 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD on main is a local, unpushed docs commit (removals outside the contract are
-MINOR) on top of fbfe5b6 (telemetry docs) and d1c714b (`v1.0.0`), both pushed.
-`production` is still at 0a4a18e: releasing 1.0.0 is the owner's
-`git push origin main:production`. The site now follows SemVer: every commit that
-changes what production serves bumps `package.json` and CHANGELOG.md (AGENTS.md).
+Updated 15 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
+Telemetry version 1.1.0 is prepared on main. User authorized commit/push and the
+matching annotated tag on 15 October; production release remains the owner’s
+`git push origin main:production`. Main never deploys. Check git log/status for
+current commit/push state. SemVer rules: AGENTS.md; release history: CHANGELOG.md.
 
 ## Ship weathering — 14 October (accepted, in 1.0.0)
 
@@ -28,9 +27,8 @@ built; temporary dev sky preview can go after owner sky review.
 
 ## Verification
 
-Earlier automated results live in testing.md. 13 October: live sitemap and essay
-metadata read; owner's `/home` 404 (crawled 1 October) has no source reference and
-no redirect was added. No genuine crawler-IP/WAF test.
+Earlier checks: testing.md. Owner’s `/home` 404 has no source reference; no
+redirect added. No genuine crawler-IP/WAF test.
 
 ## Creative state — 13 October
 
@@ -39,23 +37,43 @@ Ball, shared sky clouds and daily atmosphere (0a4a18e, three authored India-day
 moods; not weather data). Cloud sea shadows and the first water pass were rejected
 and removed; no replacement approved. No physical phone qualification.
 
-## Visitor telemetry — 14 October
+## Visitor telemetry — 1.1.0, verified 15 October
 
-Owner direction: measure behaviour first, then segmentation and possible
-Notebook-first versus Work-first journeys. [telemetry.md](telemetry.md) is the
-explicit-event/report/setup plan; [visitor-journeys.md](visitor-journeys.md) preserves
-research, sources and blog outline. Telemetry implementation and blog idea added
-to follow-ups.md. Owner knows only Vercel and Google/Bing Search Console; actual
-analytics enablement/account data not inspected. Source has no analytics SDK;
-production CSP currently blocks third-party connections.
-PostHog recommended with explicit events/replay off; provider/account/identity mode
-pending. No runtime changes or telemetry collected. Node 24 repository format
-check and explicit changed-docs formatting check pass. No production/browser tests. No version bump for docs only. Committed and pushed as fbfe5b6.
+Explicit first-party redacted events and bounded PostHog relay. Owner selected no
+persistent tracking: visit IDs/pause stay in memory; ordinary Next navigation
+joins a journey, reload/new tab/resume starts a new ID. No analytics storage,
+SDK/autocapture, replay or profiles. Wizard duplicate SDK path removed; no install
+needed. Real token/host remain only in ignored .env under server-only names.
+Owner added Vercel Production env with TELEMETRY_ENABLED=true. Dev/Preview disabled.
+EU Maxsash Studio project 306242 connected through PostHog plugin. Five pinned
+Maxsash dashboards 1024506–1024510 with 21 saved charts execute successfully.
+Links: telemetry-setup.md. One schema-0 synthetic event query-visible; no visitor
+events yet. Wizard dashboard preserved. Timezone UTC; no account settings changed.
+Privacy discloses EU Cloud and plan-based history (free 1 year / paid 7 years),
+which is not automatic deletion. Billing tier/quota/alerts remain owner review.
+Final isolated Node 24 build/lint/types/format, 159 tests, SEO 78, telemetry 16,
+keyboard 22/22, headers/CSP and creative 191 pass; zero runtime exceptions.
+Final phone privacy disclosure capture inspected; earlier day/night/desktop
+captures inspected. Browser QA intercepted/blocked; no extra live test events.
+Chrome port-file startup race fixed in harness. An accidental main-folder harness
+attempt failed before browser tests; successful checks ran in isolated worktree.
+No physical phone, field metrics, bundle delta or production ingestion verified.
+Own QA server/worktree/logs/captures removed. Production /privacy returned 404
+before this commit: source has not been released. Owner release is next.
+Commit: `feat: instrument visitor journeys without persistent IDs`
+Body: Add redacted first-party analytics, memory-only visits/pause and privacy
+policy; provision 21 charts across five dashboards before journey segmentation.
+Verified Node 24 build/lint/types/format, tests159, SEO78, telemetry16, keys22,
+headers and creative191 plus all saved PostHog queries; production pending.
+Annotated tag: `git tag -a v1.1.0 -m "Release v1.1.0"` (authorized commit workflow).
 
 ## Next / owner pending
 
-0. Release 1.0.0 when ready (owner): `git push origin main:production`, then confirm
-   the footer reads "Release v1.0.0".
+- After owner release, verify schema_version 1 / site_release 1.1.0 in Live events
+  and confirm reports populate; review quota/alerts and Vercel rate limits.
+
+0. Release 1.1.0 when ready (owner): `git push origin main:production`, then confirm
+   footer v1.1.0, /privacy and telemetry ingestion.
 1. Investigate owner navigation report: huge Notebook wait; top-left return-home
    appeared unresponsive after repeated taps, owner used Back. d803c16 confirmed live.
    Live Chrome touch diagnostic (390 px, reduced motion, 4× CPU, 150 ms latency,
@@ -74,8 +92,8 @@ check and explicit changed-docs formatting check pass. No production/browser tes
 
 ## Open items / cleanup
 
-- `/private/tmp/maxsash*` now matches nothing (14 October); the three old Chrome
-  profiles from earlier sessions remain unlocated/unremoved.
+- Telemetry QA artifacts removed (14 October); the three old Chrome profiles
+  from earlier sessions remain unlocated/unremoved.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
 - Weathering review servers, worktree, scratch files, captures and sheet removed.

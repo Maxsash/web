@@ -5,21 +5,30 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 
 ## Routes
 
-| Route                              | What it is                                                                                     |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/`                                | Hero sea, Work, About, Contact, notebook, shoreline footer. Dynamic: a fresh sea per visit. |
-| `/sea`, `/sea?seed=…&version=2`    | The sea studio on its own page (indexed; seeds canonicalise to `/sea`). The hero's "Make your own" opens it with the visitor's sea. |
-| `/?seed=…&version=2`               | A fixed, shareable sea. A seed without `version` means version 1, forever.                     |
-| `/plate?seed=…&version=2`          | Print page for one sea (`noindex`).                                                            |
-| `/blog`, `/blog/[slug]`            | The notebook: two approved essays and written posts (published indexed, drafts dev-only); listing indexed. Unknown slugs render on demand so they reach the notebook 404. |
-| `/work/[slug]`, `/work`            | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`. |
-| `/api/sea-edition`                 | The sea's six waves as JSON. No `version` means version 1.                                     |
-| `/api/sea-edition/print`           | The same sea as an SVG plate (`&download=1` to save).                                          |
-| `/robots.txt`, `/sitemap.xml`      | Discovery files; the sitemap lists the homepage, the Notebook listing, the sea studio, two essays, five case studies and published markdown posts. |
-| Error pages                        | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
+| Route                           | What it is                                                                                                                                                                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                             | Hero sea, Work, About, Contact, notebook, shoreline footer. Dynamic: a fresh sea per visit.                                                                                                                                      |
+| `/sea`, `/sea?seed=…&version=2` | The sea studio on its own page (indexed; seeds canonicalise to `/sea`). The hero's "Make your own" opens it with the visitor's sea.                                                                                              |
+| `/?seed=…&version=2`            | A fixed, shareable sea. A seed without `version` means version 1, forever.                                                                                                                                                       |
+| `/plate?seed=…&version=2`       | Print page for one sea (`noindex`).                                                                                                                                                                                              |
+| `/blog`, `/blog/[slug]`         | The notebook: two approved essays and written posts (published indexed, drafts dev-only); listing indexed. Unknown slugs render on demand so they reach the notebook 404.                                                        |
+| `/work/[slug]`, `/work`         | A case study per Work project (indexed, in the sitemap; unknown slugs 404). `/work` redirects to `/#work`.                                                                                                                       |
+| `/api/sea-edition`              | The sea's six waves as JSON. No `version` means version 1.                                                                                                                                                                       |
+| `/api/sea-edition/print`        | The same sea as an SVG plate (`&download=1` to save).                                                                                                                                                                            |
+| `/robots.txt`, `/sitemap.xml`   | Discovery files; the sitemap lists the homepage, the Notebook listing, the sea studio, two essays, five case studies and published markdown posts.                                                                               |
+| Error pages                     | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
 No database, accounts, cookies or client calls to third parties. The only server-side
 inputs are a sea seed (eight hex characters) and the optional GitHub request below.
+
+## Behaviour measurement proposal
+
+No analytics SDK is currently installed; production CSP permits same-origin
+connections only. Owner wants measurement before audience-specific journeys.
+[telemetry.md](telemetry.md) defines proposed explicit events, report views,
+identity/privacy choices and integration checks. [visitor-journeys.md](visitor-journeys.md)
+contains research. Provider setup and implementation remain pending; no routes or
+runtime data flows changed. Future collection must update the current boundary above.
 
 ## The sea model
 
@@ -28,16 +37,16 @@ plate and the API. `lib/sea/` holds it, with no DOM and no React:
 
 | Module                 | Responsibility                                                        |
 | ---------------------- | --------------------------------------------------------------------- |
-| `types`                | `SeaEdition`, `SeaSettings`, `SeaVersion`                              |
-| `seed`                 | Seed parsing, the four settings as four bytes, default seeds           |
-| `random`, `wave-table` | The 32-bit PRNG and the baseline wave table                            |
-| `edition-v1`           | **Frozen.** Never change its PRNG, coefficients or interpretation       |
-| `edition-v2`           | Settings-driven edition (swell, heading, character, variation)         |
-| `edition`              | `createSeaEdition(seed, version)`                                      |
-| `presets`              | Glass, Trade wind, Squall, Home water; `pickVisitSea` for a new visit  |
-| `describe`, `sample`   | Words for a setting; `sampleSea(edition, x, z, t)` height and slope     |
-| `plate`                | `renderSeaPlate`, the SVG engraving                                    |
-| `request`              | Seed and version parsing for pages and API routes                      |
+| `types`                | `SeaEdition`, `SeaSettings`, `SeaVersion`                             |
+| `seed`                 | Seed parsing, the four settings as four bytes, default seeds          |
+| `random`, `wave-table` | The 32-bit PRNG and the baseline wave table                           |
+| `edition-v1`           | **Frozen.** Never change its PRNG, coefficients or interpretation     |
+| `edition-v2`           | Settings-driven edition (swell, heading, character, variation)        |
+| `edition`              | `createSeaEdition(seed, version)`                                     |
+| `presets`              | Glass, Trade wind, Squall, Home water; `pickVisitSea` for a new visit |
+| `describe`, `sample`   | Words for a setting; `sampleSea(edition, x, z, t)` height and slope   |
+| `plate`                | `renderSeaPlate`, the SVG engraving                                   |
+| `request`              | Seed and version parsing for pages and API routes                     |
 
 `sampleSea` sums six waves: `k = 2π / wavelength`, `ω = √(9.81 k)`,
 `θ = k(cos(direction)·x + sin(direction)·z) − ωt + phase`, height `Σ amplitude·sin θ`,
@@ -401,7 +410,7 @@ the story is in [feedback.md](feedback.md), the rules in decisions.md.
 - **Pure:** `rotation` (3×3 rotations), `pose` (each wing's joints: lift, sweep, twist, reach, wrist
   lift and sweep, and `fold`, which blends the wing into a designed folded shape on the body's
   flank; tail, legs, neck, head, eye, fluff; named poses and `mixPose`), `body` (`gullFacets(pose,
-  view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips and white primary spots, a lofted tail,
+view)`: an eight-sided lofted body, head and bill, two-panel wings with black tips and white primary spots, a lofted tail,
   legs; groups sorted by depth, then facets; flat light; `lookTowards`; `beakTip`, the projected end
   of the bill), `flight` (pure timelines: `planArrival`/`arrivalAt` along a cubic Bézier with
   flap-and-glide bursts and a smootherstep velocity brake, touchdown, wings raised then folded, sitting;
@@ -563,11 +572,11 @@ referrer policy, `Cross-Origin-Opener-Policy`, and a Permissions-Policy that dis
 camera, microphone, geolocation and similar. API routes set their own headers.
 `public/.well-known/security.txt` expires on 6 October 2027.
 
-| Variable                               | Use                                                       |
-| -------------------------------------- | --------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                 | Canonical origin; defaults to `https://www.maxsash.com`   |
-| `GITHUB_TOKEN`                         | Optional, server-only; raises GitHub's rate limit         |
-| `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA` | Short commit in the footer; omitted when absent  |
+| Variable                                         | Use                                                     |
+| ------------------------------------------------ | ------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                           | Canonical origin; defaults to `https://www.maxsash.com` |
+| `GITHUB_TOKEN`                                   | Optional, server-only; raises GitHub's rate limit       |
+| `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA` | Short commit in the footer; omitted when absent         |
 
 ## Not implemented
 

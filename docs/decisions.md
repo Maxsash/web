@@ -5,6 +5,13 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
+- **Measure visitor behaviour before changing journeys** (owner, 14 October 2026).
+  Document research and build a telemetry/reporting foundation before segmentation
+  or Notebook-first versus Work-first experiments. [telemetry.md](telemetry.md) is
+  the setup plan; [visitor-journeys.md](visitor-journeys.md) holds references and the
+  blog brief. PostHog is the agent recommendation, not a selected/connected account.
+  No tracker, persistent profile, replay or reordered experience is shipped.
+
 - **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study
   clicks sometimes wait several seconds without feedback. Shared PageLink uses Next's
   useLinkStatus for a fixed “Opening page…” badge, with no layout shift or fake progress.
@@ -46,7 +53,6 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
   drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four
   modules and shared drawing typography; leave its social capture for recapture after release.
-
 
 - **Show private systems through their real boundaries** (owner, 11 October 2026). The business
   platform explains selectable modules, adaptable insights, privacy and accessible workflows. The
@@ -101,12 +107,12 @@ each group. How the code is built: [architecture.md](architecture.md).
   Mono** only for data (seeds, coordinates, code). The first pick (Besley + Atkinson
   Hyperlegible Next/Mono) was replaced because the owner wanted fresher faces and a build
   without next/font's missing-metrics warning; every face now has Next's fallback metrics.
-  Montagu Slab has no italic, so *Math.* and essay emphasis use the browser's slanted roman.
+  Montagu Slab has no italic, so _Math._ and essay emphasis use the browser's slanted roman.
   Palette **Admiralty chart**: cool chart paper, the existing teal-navy
   ink, chart magenta as the accent (nautical charts use it for lights and cautions). The owner
   first picked navy and brass, then switched to this. Display tracking stays between −0.02em
   and +0.01em (uppercase); sizes were refitted to the wider face.
-  **Italic only where it means something**: *Math.* (mathematics sets variables in italic);
+  **Italic only where it means something**: _Math._ (mathematics sets variables in italic);
   other headings are one roman voice. Project and error-page headlines are single strings; a
   post's `emphasis` field stays for deliberate use and renders as plain italic in ink (the
   samples no longer set it). The sea, sun, ship, engravings and plates are unchanged.
@@ -227,7 +233,6 @@ each group. How the code is built: [architecture.md](architecture.md).
   Fixed Tikamgarh was then confirmed. The authored horizon cannot always match
   real local visibility. Implementation and performance brief: [night-sky.md](night-sky.md).
 
-
 - **Touch the sun/moon to change the sea** (owner approved, 12 October 2026). A click/tap
   or keyboard activation starts one restrained ripple beneath the light's reflection column
   and blends the existing sky/water/ship palettes over one second. Sun and moon keep their
@@ -235,7 +240,6 @@ each group. How the code is built: [architecture.md](architecture.md).
   Reduced motion or a stilled sea changes immediately without a ripple. The sky target is at
   least 44 px, keyboard accessible and hidden in Drawing/fallback or when it would cover text.
   Hover feedback appears only on devices that actually hover. Rapid clicks reverse continuously.
-
 
 - **The hero moon follows the India calendar date** (owner, 12 October 2026). Calculate
   solar/lunar orbits and illumination locally, sampling noon IST for the whole date; refresh
@@ -249,7 +253,6 @@ each group. How the code is built: [architecture.md](architecture.md).
   across the boundary, instead of a black cover. Surface markings are stylised, not a mapped
   lunar photograph. This models the day/night boundary, not an Earth-shadow eclipse.
   Fallback plate and error-page moons stay fixed. Stars remain a follow-up.
-
 
 - **An authored survey cutter** (design interpretation, 10 October 2026). The owner asked for a
   unique ship, refined motion and placement that reflect the whole website. The

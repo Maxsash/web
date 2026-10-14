@@ -38,19 +38,21 @@ Ball, shared sky clouds and daily atmosphere (0a4a18e, three authored India-day
 moods; not weather data). Cloud sea shadows and the first water pass were rejected
 and removed; no replacement approved. No physical phone qualification.
 
-## Visitor journey research — 14 October
+## Visitor telemetry — 14 October
 
-Owner is exploring Notebook-first casual visits versus Work-first client visits;
-no implementation approved. Researched vendor-documented implementations, not live
-personalized variants: Saks (Dynamic Yield intent tiers/layout), Jacamo (previous
-category/brand affinities), Livestorm/DocSend (Clearbit + Mutiny audience content).
-Sources: [Saks](https://www.mastercard.com/global/en/news-and-trends/Insights/2025/saks-fifth-avenue.html),
-[Jacamo](https://www.madewithintent.ai/customer-stories/how-jacamo-increased-conversion-rate-by-6-with-multi-session-experiences),
-[Livestorm/DocSend](https://clearbit.com/resources/books/drive-website-conversions/personalization-strategies-Livestorm-Dropbox-DocSend).
-[Personyze demo](https://www.personyze.com/saas-b2b-personalization-example/) offers
-visitor switches; demo interaction not tested. Browser context alone is weak intent
-evidence; these examples use behavior/history, enrichment or CRM. No code/build/tests.
-Included in the 1.0.0 commit (docs only).
+Owner direction: measure behaviour first, then segmentation and possible
+Notebook-first versus Work-first journeys. [telemetry.md](telemetry.md) is the
+explicit-event/report/setup plan; [visitor-journeys.md](visitor-journeys.md) preserves
+research, sources and blog outline. Telemetry implementation and blog idea added
+to follow-ups.md. Owner knows only Vercel and Google/Bing Search Console; actual
+analytics enablement/account data not inspected. Source has no analytics SDK;
+production CSP currently blocks third-party connections.
+PostHog recommended with explicit events/replay off; provider/account/identity mode
+pending. No runtime changes or telemetry collected. Node 24 repository format
+check and explicit changed-docs formatting check pass. No production/browser tests. No version bump for docs only. No commit/push this turn.
+Suggested commit: `docs: plan visitor telemetry and journey research` — document
+measurement before personalisation and the blog backlog; source/reference review
+and formatting only, no live ingestion verified.
 
 ## Next / owner pending
 

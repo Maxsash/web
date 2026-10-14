@@ -2,6 +2,19 @@
 
 Open items for the owner or a later session. Done work is in [decisions.md](decisions.md).
 
+## Behaviour measurement before personalisation (14 October 2026)
+
+- [ ] Set up the measurement/reporting foundation in [telemetry.md](telemetry.md):
+      provider project, identity/privacy mode, explicit events, five dashboards and
+      production verification. PostHog recommended; Plausible is the simpler alternative.
+      Owner knows of Vercel and Google/Bing Search Console; actual enabled reports unknown.
+- [ ] Review observed paths and exposure before defining behavioural groups or
+      experimenting with Notebook-first versus Work-first. No adaptive order yet.
+- [ ] **Blog: before personalising, understand visitors.** Research and outline in
+      [visitor-journeys.md](visitor-journeys.md). Cover browser-signal limits, Saks,
+      Jacamo, Livestorm/DocSend, event design and eventual findings. Draft later;
+      do not invent measurements or imply telemetry is already running.
+
 ## Owner device report (13 October 2026)
 
 Deployment includes 3261a8d; iPhone Air/iOS 27 Safari bars, Notebook, touch/gull,
@@ -13,6 +26,7 @@ Google screenshot: integral essay unknown/no crawl. Live sitemap has all 11 publ
 URLs; both essays are indexable with self-canonicals. Owner completed live tests/request indexing for all eight supplied case-study/article
 URLs; await indexing outcomes and check sitemap last-read/count. Owner confirms sitemap appears on Bing; indexing outcomes pending. Owner confirms Vercel rule published and intended URLs work; excess-limit 429
 enforcement has not been measured.
+
 - [ ] Investigate long Notebook wait/home link appearing unresponsive on iPhone.
       d803c16 confirmed live. Throttled/reduced-motion Chrome touch round trip worked
       with return-home badge; no runtime errors. Cause unresolved; next incident needs
@@ -97,8 +111,7 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
 - [ ] **Edit and publish the two remaining drafts** in `content/posts/` (each ends with "Notes for the
       editor": delete it, fill the placeholders, then set `status: published`).
 - [ ] **A post from the feedback research and the gull** (owner, 10 October 2026: "we might be able
-      to make a blog out of it"). Material: the report (`../web-research/reports/Website feedback
-      beyond sound.md`, also published as the owner's private doc "Make the sea answer every
+      to make a blog out of it"). Material: the report (`../web-research/reports/Website feedback beyond sound.md`, also published as the owner's private doc "Make the sea answer every
       scroll") and the gull's build ([feedback.md](feedback.md), `components/gull/`). Write it as a
       draft in `content/posts/` when the owner asks.
 - [ ] **Notebook ideas for the next session** (the owner wants a navigator's-notebook feel; all
@@ -155,7 +168,7 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       edit freely into his own voice. Each must keep "The brief" first and "The outcome" last,
       and read in 2–5 minutes (`tools/case-studies.test.mjs`).
 - [ ] **Case-study extras, if wanted:** a share image per case study (three screenshot covers now wired; two drawing cards remain,
-      also listed under *Before applying* above); a more detailed system drawing on the two private case studies; a second
+      also listed under _Before applying_ above); a more detailed system drawing on the two private case studies; a second
       screenshot for the three with public sites.
 - [ ] **Night plate tone.** The night drawing keeps the earlier invert filter and reads
       slightly brown; consider native night colours in the SVG.
@@ -172,8 +185,7 @@ reviewer could notice, most visible first. Content was read; nothing was tested 
       the notebook 404 and the half-drawn plate (maybe, as drawings), the crash and storm pages
       (no: overcast). Stars should twinkle slowly, far below three flashes a second. Hero moon phases are now
       implemented from the India calendar date (12 October); error scenes remain fixed.
-- [ ] **Ideas from the feedback research** (`../web-research/reports/Website feedback beyond
-      sound.md`, 10 October 2026; nothing built). Cheapest first: scroll speed as one shader
+- [ ] **Ideas from the feedback research** (`../web-research/reports/Website feedback beyond sound.md`, 10 October 2026; nothing built). Cheapest first: scroll speed as one shader
       uniform (foam and ink bleed that dry back at rest) and a `scrollend` settle (the compass
       settling on a heading); then the sea's own mathematics as feedback (marks riding phase and
       group velocity, scrubbable wave terms held to the dispersion curve, a "which waves arrive

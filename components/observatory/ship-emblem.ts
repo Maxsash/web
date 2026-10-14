@@ -1,11 +1,11 @@
 import type { ShipBuilder, ShipPoint } from "./ship-builder.ts";
-import type { V3 } from "./vec3.ts";
+import { finish } from "./ship-surfaces.ts";
 
 type EmblemPoint = (u: number, v: number, lift: number) => ShipPoint;
 
-const amber: V3 = [1, 0.61, 0.12];
-const rim: V3 = [0.76, 0.3, 0.035];
-const red: V3 = [0.78, 0.09, 0.045];
+const amber = finish([1, 0.61, 0.12], "plain");
+const rim = finish([0.76, 0.3, 0.035], "plain");
+const red = finish([0.78, 0.09, 0.045], "plain");
 
 export function buildSailEmblem(mesh: ShipBuilder, point: EmblemPoint) {
   const segments = 32;

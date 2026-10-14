@@ -91,8 +91,16 @@ behind a server-rendered SVG plate, which is also the fallback.
   the sun or moon into the scene; `camera`, `matrices`, `vec3`, `ship-mesh`,
   `sea-grid` and `gl-resources` are its parts. The ship is an authored survey cutter,
   distinct from the brand mark. `ship-builder` writes rigid/cloth triangles and
-  fittings; `ship-mesh` owns the shaped hull and deck; `ship-rig` owns the gaff
-  mainsail, jib, spars, rigging and pennant. `ship-emblem.ts` builds the orange four-star Dragon Ball disc/rim/stars as
+  fittings; `ship-mesh` owns the shaped hull and planked deck; `ship-rig` owns the gaff
+  mainsail (reef band and points), jib, corner patches, spars, rigging and pennant.
+  Every triangle carries a `Finish` (colour plus a `ship-surfaces` surface: topsides,
+  brightwork, deck, metal, canvas, rope or plain), written as a per-vertex surface
+  buffer. `ship-weathering` turns surface and object-space position into restrained
+  wear: sun-faded topsides with a waterline grime line and faint salt streaks,
+  bleached varnish tops, tarnished brass with polished tops, mottled canvas with a
+  dirtier foot and greyed rope. Deck planks get their silvered tone on the CPU
+  (`plankFinish`). Emblem, pennant, caulking and ink parts stay plain. Detail that
+  would fall under a few pixels fades out; Drawing mode is unaffected. `ship-emblem.ts` builds the orange four-star Dragon Ball disc/rim/stars as
   cloth geometry mapped onto both sail faces. `ship-motion` samples five hull stations
   at three times to soften short chop, with bounded heel, pitch and heading.
   `ship-placement` fits the projected mesh around actual copy and reserved controls,

@@ -51,6 +51,10 @@ the live site (Vercel → Settings → Environments → Production → Branch Tr
 git push origin main:production
 ```
 
+The released version is the one in `package.json`, shown in the footer. Versions follow
+[Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning)
+and the history in [CHANGELOG.md](CHANGELOG.md).
+
 ## Layout
 
 | Path                      | What lives there                                                                 |

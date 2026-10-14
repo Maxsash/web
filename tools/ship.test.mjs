@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createSeaEdition } from "../lib/sea/edition.ts";
 import { sampleSea } from "../lib/sea/sample.ts";
-import { buildShipMesh } from "../components/observatory/ship-mesh.ts";
+import { buildShipMesh, plankFinish } from "../components/observatory/ship-mesh.ts";
+import { SURFACES, surfaceIndex } from "../components/observatory/ship-surfaces.ts";
 import { shipPoseAt } from "../components/observatory/ship-motion.ts";
 import { placeShip } from "../components/observatory/ship-placement.ts";
 
@@ -27,6 +28,40 @@ test("the cutter contains finite, lit triangles and a matching cloth buffer", ()
     assert.ok(area > 1e-10, "no collapsed triangle at " + i / 36);
     assert.ok(Math.abs(Math.hypot(...vertices.slice(i + 3, i + 6)) - 1) < 1e-6);
   }
+});
+
+test("every triangle carries one known surface and only cloth is canvas", () => {
+  const { vertices, flex, surfaces } = buildShipMesh();
+  assert.equal(surfaces.length, vertices.length / 12);
+  const canvas = surfaceIndex("canvas");
+  for (let i = 0; i < surfaces.length; i += 3) {
+    assert.ok(Number.isInteger(surfaces[i]) && surfaces[i] >= 0 && surfaces[i] < SURFACES.length);
+    assert.equal(surfaces[i + 1], surfaces[i]);
+    assert.equal(surfaces[i + 2], surfaces[i]);
+    if (surfaces[i] === canvas)
+      assert.ok(flex.slice(i * 3, i * 3 + 9).some(Boolean), "canvas at " + i / 3 + " is rigid");
+  }
+  for (const surface of SURFACES)
+    assert.ok(surfaces.includes(surfaceIndex(surface)), surface + " is used");
+});
+
+test("the deck weathers plank by plank, most at the waterways", () => {
+  const brightness = ({ color }) => color.reduce((sum, v) => sum + v, 0) / 3;
+  let outboard = 0,
+    inboard = 0;
+  for (let section = 0; section < 18; section++)
+    for (let plank = 0; plank < 6; plank++) {
+      const tone = brightness(plankFinish(plank, section));
+      assert.ok(tone > 0.5 && tone < 0.65);
+      if (plank === 0 || plank === 5) outboard += tone / 2;
+      else inboard += tone / 4;
+    }
+  assert.ok(outboard < inboard);
+  assert.notEqual(
+    brightness(plankFinish(2, 0)),
+    brightness(plankFinish(3, 0)),
+    "neighbouring planks differ",
+  );
 });
 
 test("cloth can breathe while deck and spars keep their shape", () => {

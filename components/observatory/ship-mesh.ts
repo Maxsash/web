@@ -1,21 +1,47 @@
 import { shipBuilder } from "./ship-builder.ts";
 import { buildShipRig } from "./ship-rig.ts";
-import type { V3 } from "./vec3.ts";
+import { finish, type Finish } from "./ship-surfaces.ts";
+import { mix, type V3 } from "./vec3.ts";
 
-const COLORS = {
-  hull: [0.12, 0.27, 0.28],
-  rust: [0.66, 0.29, 0.18],
-  teak: [0.49, 0.31, 0.19],
-  deck: [0.72, 0.65, 0.48],
-  brass: [0.78, 0.59, 0.29],
-  ink: [0.08, 0.16, 0.17],
-  rope: [0.42, 0.4, 0.31],
-  canvas: [0.94, 0.9, 0.76],
-} satisfies Record<string, V3>;
+const RUST: V3 = [0.66, 0.29, 0.18];
+const TEAK: V3 = [0.49, 0.31, 0.19];
+const DECK: V3 = [0.72, 0.65, 0.48];
+const SILVERED_DECK: V3 = [0.63, 0.62, 0.57];
+
+const FINISHES = {
+  hull: finish([0.12, 0.27, 0.28], "topsides"),
+  sheer: finish(RUST, "topsides"),
+  bottom: finish(TEAK, "topsides"),
+  teak: finish(TEAK, "brightwork"),
+  caulk: finish(TEAK, "plain"),
+  deck: finish(DECK, "deck"),
+  brass: finish([0.78, 0.59, 0.29], "metal"),
+  ink: finish([0.08, 0.16, 0.17], "plain"),
+  pennant: finish(RUST, "plain"),
+  rope: finish([0.42, 0.4, 0.31], "rope"),
+  canvas: finish([0.94, 0.9, 0.76], "canvas"),
+};
+
+const PLANK_EDGES = [-1, -0.66, -0.33, 0, 0.33, 0.66, 1];
+const PLANK_LENGTH = 5;
+
+const scatter = (a: number, b: number) => {
+  const value = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+};
+
+export function plankFinish(plank: number, section: number): Finish {
+  const run = Math.floor((section + plank * 2) / PLANK_LENGTH);
+  const grey = scatter(plank, run);
+  const outboard = plank === 0 || plank === PLANK_EDGES.length - 2;
+  const silvering = 0.15 + grey * 0.3 + (outboard ? 0.15 : 0);
+  const shade = outboard ? 0.88 : 0.9 + grey * 0.14;
+  return finish(DECK.map((v, i) => mix(v, SILVERED_DECK[i], silvering) * shade) as V3, "deck");
+}
 
 export function buildShipMesh() {
   const mesh = shipBuilder();
-  const { hull, rust, teak, deck, brass, ink } = COLORS;
+  const { hull, sheer, bottom, teak, caulk, deck, brass, ink } = FINISHES;
   const sections = 18;
   const edge = (t: number, side: number): V3 => {
     const width = 0.024 + 0.7 * Math.pow(Math.sin(Math.PI * (0.09 + t * 0.91)), 0.72);
@@ -31,6 +57,11 @@ export function buildShipMesh() {
       [x * 0.12, -0.63, z],
     ];
   };
+  const across = (point: V3, fraction: number, offset = 0, lift = 0): V3 => [
+    point[0] * fraction + offset,
+    point[1] + lift,
+    point[2],
+  ];
   for (let i = 0; i < sections; i++) {
     const t = i / sections,
       next = (i + 1) / sections;
@@ -38,23 +69,42 @@ export function buildShipMesh() {
       const a = section(t, side),
         b = section(next, side);
       for (let level = 0; level < 4; level++)
-        mesh.quad(a[level], b[level], b[level + 1], a[level + 1], [rust, hull, hull, teak][level]);
+        mesh.quad(
+          a[level],
+          b[level],
+          b[level + 1],
+          a[level + 1],
+          [sheer, hull, hull, bottom][level],
+        );
       mesh.spar(edge(t, side), edge(next, side), 0.026, brass, 4);
     }
-    const left = edge(t, -1),
-      right = edge(t, 1),
-      nextLeft = edge(next, -1),
+    const right = edge(t, 1),
       nextRight = edge(next, 1);
-    mesh.quad(section(t, -1)[4], section(t, 1)[4], section(next, 1)[4], section(next, -1)[4], teak);
-    for (const point of [left, right, nextLeft, nextRight]) point[1] -= 0.12;
-    mesh.quad(left, right, nextRight, nextLeft, deck);
-    for (const fraction of [-0.66, -0.33, 0, 0.33, 0.66])
-      mesh.spar(
-        [right[0] * fraction, right[1] + 0.004, right[2]],
-        [nextRight[0] * fraction, nextRight[1] + 0.004, nextRight[2]],
-        0.005,
-        teak,
-        3,
+    mesh.quad(
+      section(t, -1)[4],
+      section(t, 1)[4],
+      section(next, 1)[4],
+      section(next, -1)[4],
+      bottom,
+    );
+    for (const point of [right, nextRight]) point[1] -= 0.12;
+    for (let plank = 0; plank < PLANK_EDGES.length - 1; plank++) {
+      const [inner, outer] = PLANK_EDGES.slice(plank, plank + 2);
+      mesh.quad(
+        across(right, inner),
+        across(right, outer),
+        across(nextRight, outer),
+        across(nextRight, inner),
+        plankFinish(plank, i),
+      );
+    }
+    for (const seam of PLANK_EDGES.slice(1, -1))
+      mesh.quad(
+        across(right, seam, -0.0065, 0.004),
+        across(right, seam, 0.0065, 0.004),
+        across(nextRight, seam, 0.0065, 0.004),
+        across(nextRight, seam, -0.0065, 0.004),
+        caulk,
       );
   }
   const sternLeft = section(0, -1),
@@ -65,7 +115,7 @@ export function buildShipMesh() {
       sternLeft[level + 1],
       sternRight[level + 1],
       sternRight[level],
-      level === 0 ? rust : hull,
+      level === 0 ? sheer : hull,
     );
   const bowLeft = section(1, -1),
     bowRight = section(1, 1);
@@ -86,6 +136,6 @@ export function buildShipMesh() {
   }
   mesh.box([0, 0.37, -2.2], [0.08, 0.65, 0.28], hull);
   mesh.spar([0, 0.58, -2.12], [0.2, 0.62, -1.2], 0.027, teak);
-  buildShipRig(mesh, COLORS);
+  buildShipRig(mesh, FINISHES);
   return mesh.build();
 }

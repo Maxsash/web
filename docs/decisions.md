@@ -133,6 +133,14 @@ each group. How the code is built: [architecture.md](architecture.md).
 
 ## The sea
 
+- **Weather the cutter, used but never damaged** (owner, 14 October 2026; accepted,
+  ships in 1.0.0). Wear a working boat earns: sun-faded
+  paint, a waterline grime line, faint salt streaks, silvered deck planks, weathered
+  varnish, tarnished brass with polished touch points, slightly uneven canvas with a
+  dirtier foot, sail corner patches and one reef band with points. No rust, cracks,
+  holes, patches over tears or missing parts. The Dragon Ball emblem, pennant, geometry
+  outline, motion and Drawing mode stay as approved. No assets or render passes.
+
 - **Let each India day have a gentle atmosphere** (owner, 13 October 2026).
   A deterministic daily choice sets one of three restrained moods: clearer,
   wispier or slightly hazier. The sky shifts cloud position/opacity, cirrus,
@@ -598,6 +606,11 @@ Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
   `SECURITY.md`. No secrets, source maps or third-party client calls.
 - **Open:** rate-limit `/api/sea-edition*` and `/plate` with a Vercel Firewall rule (a
   cache miss costs about 6 ms of CPU and a 228 KB response).
+- **Semantic Versioning from 1.0.0** (owner, 14 October 2026). The site has a real
+  public contract (URLs, the sea API, reproducible sea links), so SemVer says what a
+  version means; CalVer would only date it. It is already in production, so it starts
+  at 1.0.0 rather than 0.x. Rules: [AGENTS.md](../AGENTS.md#versioning); history:
+  [CHANGELOG.md](../CHANGELOG.md).
 - **`main` never deploys; only `production` does.** Release with
   `git push origin main:production`. `vercel.json` disables deployments for `main`.
   Vercel's Production Branch Tracking is set to `production`.

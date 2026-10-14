@@ -1,3 +1,5 @@
+import { shipWeatheringGLSL } from "./ship-weathering.ts";
+
 export const surveyShipVertex = `#version 300 es
 precision highp float;
 layout(location=0) in vec3 aPosition;
@@ -5,12 +7,15 @@ layout(location=1) in vec3 aNormal;
 layout(location=2) in vec3 aColor;
 layout(location=3) in vec3 aBary;
 layout(location=4) in vec3 aFlex;
+layout(location=5) in float aSurface;
 uniform mat4 uVP;
 uniform mat4 uModel;
 uniform float uTime;
 out vec3 vWorld;
 out vec3 vColor;
 out vec3 vBary;
+out vec3 vLocal;
+flat out int vSurface;
 void main(){
   vec3 p=aPosition;
   float breath=sin(uTime*1.35+aFlex.y)+.28*sin(uTime*2.1-aFlex.y);
@@ -19,6 +24,8 @@ void main(){
   vWorld=(uModel*vec4(p,1.)).xyz;
   vColor=aColor;
   vBary=aBary;
+  vLocal=aPosition;
+  vSurface=int(aSurface+.5);
   gl_Position=uVP*vec4(vWorld,1.);
 }`;
 
@@ -27,16 +34,22 @@ precision highp float;
 in vec3 vWorld;
 in vec3 vColor;
 in vec3 vBary;
+in vec3 vLocal;
+flat in int vSurface;
 uniform float uReveal;
 uniform float uNight;
 uniform vec3 uLight;
 out vec4 outColor;
+${shipWeatheringGLSL}
 void main(){
   vec3 n=normalize(cross(dFdx(vWorld),dFdy(vWorld)));
-  float canvas=step(.74,vColor.r)*step(.64,vColor.g);
+  vec3 local=normalize(cross(dFdx(vLocal),dFdy(vLocal)));
+  float footprint=length(fwidth(vLocal));
+  float canvas=float(vSurface==CANVAS);
   float diffuse=abs(dot(n,normalize(uLight)));
   float light=mix(.44+.56*diffuse,.72+.28*diffuse,canvas);
-  vec3 color=vColor*light*mix(vec3(1.),vec3(.55,.70,.85),uNight);
+  vec3 surface=weathered(vColor,vSurface,vLocal,local,footprint);
+  vec3 color=surface*light*mix(vec3(1.),vec3(.55,.70,.85),uNight);
   color+=canvas*uNight*vec3(.06,.065,.06);
   vec3 edges=smoothstep(vec3(0.),fwidth(vBary)*.65,vBary);
   float edge=1.-min(min(edges.x,edges.y),edges.z);

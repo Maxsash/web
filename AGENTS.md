@@ -46,6 +46,30 @@ commit message (conventional style: a type, a short summary, a body explaining w
 what was verified) and put it in `docs/handoff.md`. `main` never deploys; only the
 `production` branch does, and releasing is the user's action.
 
+# Versioning
+
+The site follows [Semantic Versioning](https://semver.org/). `package.json` holds the
+version (the footer shows it), [CHANGELOG.md](CHANGELOG.md) records each one, and each
+version commit carries an annotated `vX.Y.Z` tag.
+
+The public contract is what visitors and other programs rely on: page URLs, the
+`/api/sea-edition` JSON and SVG responses and their parameters, and shared sea links
+(a seed and sea model always draw the same sea). The sea model `version` in those URLs
+is separate from the site version.
+
+- MAJOR breaks the contract: a URL removed or moved without a redirect, an API field
+  or parameter removed or changed, a published sea model redrawn.
+- MINOR adds without breaking: a feature, page, creative pass, API field or new sea
+  model. A redesign is MINOR while the contract holds.
+- PATCH refines what exists: bug fixes, copy, tuning, performance, accessibility,
+  dependency updates.
+- No bump when production would serve nothing different: docs, tests, tooling.
+
+Every commit that changes what production serves bumps the version in that commit:
+`package.json`, a dated CHANGELOG entry and a matching commit type (`feat` is MINOR,
+`fix`, `perf` or a shipped `refactor` is PATCH, `!` is MAJOR). Work left for review
+includes its bump; suggest the tag command with the commit message.
+
 # Code conventions
 
 This repository is public. Write code that is a pleasure to read.

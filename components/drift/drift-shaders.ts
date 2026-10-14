@@ -7,6 +7,7 @@ import {
   skyFragmentSource,
   skyVertex,
 } from "../observatory/ocean-shaders.ts";
+import { noiseGLSL } from "../observatory/noise-glsl.ts";
 import type { DriftScene } from "./scenes.ts";
 
 const whirlpoolField = `${fieldGLSL.replace("vec3 field(vec2 p) {", "vec3 waves(vec2 p) {")}
@@ -28,12 +29,6 @@ const whirlpoolFoam = `
   float streak=smoothstep(.55,1.,arm)*(.6+.4*sin(reach*9.-uTime*3.));
   color=mix(color,vec3(.82,.88,.88)*mix(1.,.5,uNight),clamp(streak*exp(-reach*reach/(spread*3.))*.75,0.,1.));
   color*=1.-.8*exp(-reach*reach/(spread*.07));`;
-
-const noiseGLSL = `
-float hash2(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-float valueNoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
-  return mix(mix(hash2(i),hash2(i+vec2(1,0)),f.x),mix(hash2(i+vec2(0,1)),hash2(i+vec2(1,1)),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*valueNoise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}`;
 
 const stormDeclarations = `\nuniform float uTime;${noiseGLSL}`;
 

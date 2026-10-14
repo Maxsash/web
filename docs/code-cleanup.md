@@ -47,9 +47,9 @@ content, new component, new asset or change to the shared printable SVG.
 Hull/deck, rig, geometry writer, motion, placement and shaders have separate
 responsibilities. Removed the obsolete fixed `modelMatrix` and its mesh snapshot;
 new checks assert useful geometry, cloth and buoyancy contracts instead. The
-error-page shaders retain their pinned defaults. Cloth uses one static flex buffer,
-freed with every other GL resource; context-loss checks assert all four buffers
-are released. Placement and drawing-camera fitting share projected bounds and
+error-page shaders retain their pinned defaults. Cloth flex and ship surfaces use one
+static buffer each, freed with every other GL resource; context-loss checks assert
+all five buffers are released. Placement and drawing-camera fitting share projected bounds and
 composition rules. No dependencies or assets added.
 
 ## SEO coverage (11 October 2026)
@@ -137,3 +137,11 @@ existing surface/motion sampler. No assets, dependencies or extra render passes.
 Sky, stars and planets import one analytic cloud field from `cloud-shaders.ts`.
 The existing engine clock/uniform setup drives all three; no extra canvas, assets,
 render pass or DOM animation. Rejected water modules remain deleted.
+
+## Ship weathering (14 October 2026)
+
+`noise-glsl.ts` is the one copy of the value-noise/fbm GLSL; error-page storms
+import it unchanged. `ship-surfaces.ts` is the surface vocabulary shared by the
+builder and the shader constants. The rig's sail, seam, reef and patch strips share
+`clothGrid`/`clothTriangle`; flat deck seams replace 3-sided spars (3,335 → 2,747
+triangles).

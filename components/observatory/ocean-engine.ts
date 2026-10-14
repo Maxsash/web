@@ -56,6 +56,9 @@ export function createOceanEngine(
   resources.buffer(gl.ARRAY_BUFFER, model.flex);
   gl.enableVertexAttribArray(4);
   gl.vertexAttribPointer(4, 3, gl.FLOAT, false, 0, 0);
+  resources.buffer(gl.ARRAY_BUFFER, model.surfaces);
+  gl.enableVertexAttribArray(5);
+  gl.vertexAttribPointer(5, 1, gl.FLOAT, false, 0, 0);
   const skyVAO = resources.vertexArray();
   const su = resources.uniforms(sea, [
     "uVP",

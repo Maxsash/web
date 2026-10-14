@@ -1,5 +1,17 @@
 # Testing
 
+## Weathered cutter (14 October 2026)
+
+Isolated Node 24 production build, types, lint and format pass. 149 Node tests
+(two new: one known surface per triangle with canvas only on cloth; deck planks
+vary and outboard planks weather most), 78 SEO cases, headers/CSP, ship 36/36
+(SwiftShader) and keyboard 22/22 pass. Creative 191 cases, zero failures or
+exceptions; context loss now releases five buffers (the new surface buffer), and
+the desktop 30 s cadence is p50/p95 16.7 ms with no long tasks. Desktop 1440×1000 (DPR 2) and
+phone 390×844 (DPR 3) ship crops, day/night, with Reduce Motion, compared before/after
+and inspected at 2–3× zoom; Drawing mode compared at desktop day/night. WebGL reports
+zero errors. No physical phone check; no GPU timing (one extra fbm per ship fragment).
+
 ## Daily atmosphere (13 October 2026)
 
 Isolated Node 24 production build, lint, types and format pass. 147 Node tests,

@@ -1,8 +1,9 @@
 # Handoff — start here
 
 Updated 14 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-HEAD is the 1.0.0 commit on main (owner asked the agent to commit and push it), tagged
-`v1.0.0`. `production` is still at 0a4a18e: releasing 1.0.0 is the owner's
+HEAD on main is a local, unpushed docs commit (removals outside the contract are
+MINOR) on top of fbfe5b6 (telemetry docs) and d1c714b (`v1.0.0`), both pushed.
+`production` is still at 0a4a18e: releasing 1.0.0 is the owner's
 `git push origin main:production`. The site now follows SemVer: every commit that
 changes what production serves bumps `package.json` and CHANGELOG.md (AGENTS.md).
 
@@ -49,10 +50,7 @@ analytics enablement/account data not inspected. Source has no analytics SDK;
 production CSP currently blocks third-party connections.
 PostHog recommended with explicit events/replay off; provider/account/identity mode
 pending. No runtime changes or telemetry collected. Node 24 repository format
-check and explicit changed-docs formatting check pass. No production/browser tests. No version bump for docs only. No commit/push this turn.
-Suggested commit: `docs: plan visitor telemetry and journey research` — document
-measurement before personalisation and the blog backlog; source/reference review
-and formatting only, no live ingestion verified.
+check and explicit changed-docs formatting check pass. No production/browser tests. No version bump for docs only. Committed and pushed as fbfe5b6.
 
 ## Next / owner pending
 

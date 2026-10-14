@@ -60,7 +60,8 @@ is separate from the site version.
 - MAJOR breaks the contract: a URL removed or moved without a redirect, an API field
   or parameter removed or changed, a published sea model redrawn.
 - MINOR adds without breaking: a feature, page, creative pass, API field or new sea
-  model. A redesign is MINOR while the contract holds.
+  model. A redesign is MINOR while the contract holds, and so is removing or replacing
+  something outside it (the gull, a sound, a creative pass).
 - PATCH refines what exists: bug fixes, copy, tuning, performance, accessibility,
   dependency updates.
 - No bump when production would serve nothing different: docs, tests, tooling.

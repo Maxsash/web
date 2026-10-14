@@ -39,6 +39,7 @@ Each document has one job and a line budget:
 | `docs/telemetry.md`        | The analytics contract, its data boundaries and how to read it     | 120   |
 | `docs/telemetry-setup.md`  | Analytics configuration, dashboards and release checks             | 80    |
 | `docs/visitor-journeys.md` | Personalisation research and its blog brief                        | 90    |
+| `docs/blog-ideas.md`       | Findings and post ideas for the Notebook                           | 120   |
 | `AGENTS.md`                | These rules                                                        | 170   |
 | `README.md`                | What the site is, how to run it and where things live              | 120   |
 

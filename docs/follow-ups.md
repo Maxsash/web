@@ -68,9 +68,9 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       ([visitor-journeys.md](visitor-journeys.md)). Findings only from real data.
 - [ ] Review observed paths and exposure before defining behavioural groups or testing
       Notebook-first against Work-first. No adaptive order yet.
-- [ ] Blog: "Make the sea answer every scroll", from the feedback research
-      (`../web-research/reports/Website feedback beyond sound.md`) and the gull's build. Write it
-      as a draft when the owner asks.
+- [ ] Blog: "Make the sea answer every scroll", from the feedback research and the gull's
+      build ([blog-ideas.md](blog-ideas.md)). Write it as a draft when the owner asks.
+- [ ] Blog: turn a finding in [blog-ideas.md](blog-ideas.md) into a post when the owner asks.
 
 ## Ideas (need the owner's approval)
 

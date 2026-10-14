@@ -41,12 +41,7 @@ Section exposure needs 1 visible second; engagement needs end marker + 30 foregr
 seconds. Copies use success hooks; slider events settle for 500 ms. Navigation
 separates timeout/late arrival. Unknown paths collapse to `/unknown`.
 
-Next navigation can share the current memory ID. Reload/new tab/close resets it;
-30-minute recorded-event inactivity and 24-hour limits rotate it too. Pausing at
-`/privacy` clears queued events and aborts requests; resuming starts a fresh ID.
-Pause is forgotten on reload. Already received events cannot be retracted. Global
-layout failure can prevent telemetry itself starting and is outside coverage.
-
+Visit identity, rotation and pause behaviour are the contract in [telemetry.md](telemetry.md).
 Report definitions and the setup command live in `tools/telemetry/reports.mjs` and
 `tools/setup-telemetry.mjs`; [telemetry-setup.md](telemetry-setup.md) is the guide.
 
@@ -66,7 +61,7 @@ plate and the API. `lib/sea/` holds it, with no DOM and no React:
 | `presets`              | Glass, Trade wind, Squall, Home water; `pickVisitSea` for a new visit |
 | `describe`, `sample`   | Words for a setting; `sampleSea(edition, x, z, t)` height and slope   |
 | `plate`                | `renderSeaPlate`, the SVG engraving                                   |
-| `request`              | Seed and version parsing for pages and API routes                     |
+| `request`              | Seed and version parsing for pages and APIs; repeated values rejected |
 
 `sampleSea` sums six waves: `k = 2π / wavelength`, `ω = √(9.81 k)`,
 `θ = k(cos(direction)·x + sin(direction)·z) − ωt + phase`, height `Σ amplitude·sin θ`,
@@ -84,32 +79,6 @@ and draws variation freely. Nothing about the visitor is read.
 
 ## Rendering
 
-`daily-atmosphere.ts` hashes the existing India Moon day into a bounded
-four-value sky recipe (cloud shift/opacity, cirrus strength, haze). The engine
-refreshes it with the Moon on date/preview changes and sends the same values
-to sky, sea, star and planet shaders. Daylight uses them for cirrus, horizon,
-halo and a small glitter change; night uses them for cloud placement/opacity,
-horizon haze and faint-star visibility. Stars and planets use the exact cloud
-field drawn in the sky. This is authored daily variety, not observed weather.
-Sea geometry, waves and night lighting remain unchanged; only daylight glint
-strength shifts slightly.
-
-`cloud-shaders.ts` owns two sparse soft clusters and their shared opacity/light
-field. The homepage sky opts in through `skyFragmentSource`; star/planet vertex
-shaders sample the same field and clock to attenuate points behind clouds. Six
-analytic lobes per cluster with restrained texture give volume; a compact layout
-shifts/scales the main cluster away from the headline. Colours blend with day/night
-and lunar illumination. Existing paper reveal removes the sky; scene pause/Reduce
-Motion freezes drift. No new passes/assets, sea lighting or wave changes.
-
-Homepage daylight opts into `daylight-shaders.ts` through the existing sky/sea
-shader factories. Three sparse analytic cirrus veils drift on the paused scene
-clock; a horizon wash and solar halo enrich the gradient. The water adds a fine
-normal-based specular lobe to the existing highlights, with a soft reflection
-column beneath the framed sun. No new assets, render passes or wave-model changes.
-Night lighting and the error-page shader defaults remain separate. The existing
-reveal fades the additions into paper; lifecycle still owns Reduce Motion/stilling.
-
 Native WebGL2, no 3D library or downloaded model. The deferred engine sits
 behind a server-rendered SVG plate, which is also the fallback.
 
@@ -121,7 +90,8 @@ behind a server-rendered SVG plate, which is also the fallback.
   `sea-grid` and `gl-resources` are its parts. The ship is an authored survey cutter,
   distinct from the brand mark. `ship-builder` writes rigid/cloth triangles and
   fittings; `ship-mesh` owns the shaped hull and planked deck; `ship-rig` owns the gaff
-  mainsail (reef band and points), jib, corner patches, spars, rigging and pennant.
+  mainsail (reef band and points), jib, corner patches, spars, rigging and pennant; its sail,
+  seam, reef and patch strips share `clothGrid` and `clothTriangle` (2,747 triangles).
   Every triangle carries a `Finish` (colour plus a `ship-surfaces` surface: topsides,
   brightwork, deck, metal, canvas, rope or plain), written as a per-vertex surface
   buffer. `ship-weathering` turns surface and object-space position into restrained
@@ -158,121 +128,12 @@ behind a server-rendered SVG plate, which is also the fallback.
   the ship-layout vertices (position, normal, colour, barycentric). `ocean-shaders.ts`
   exports builders; shared defaults are pinned byte for byte by `tools/drift.test.mjs`.
   The homepage supplies its moving ship wake; error seas keep their own surfaces.
+  `noise-glsl.ts` is the one copy of the value-noise and fbm GLSL (ship wear, storms).
 
-### Sky theme interaction
+### The sky
 
-`theme.ts` is the shared theme authority: applies `html[data-studio-theme]`, persists manual
-choices, emits `studio-theme` with an origin and follows OS changes until a manual choice.
-`initial-theme.ts` (the saved choice, else the OS preference) runs inline in the root
-layout's `<head>`, so the first paint has the visitor's theme, and again in `followTheme`;
-`<html>` carries `suppressHydrationWarning` for the attribute it sets.
-`useStudioTheme` supplies the React snapshot and reference-counted lifecycle used by the shore's
-`ThemeControl` and hero. Neither control duplicates persistence or owns a separate manual flag.
-
-`OceanScene` places a native, labelled `data-sky-theme` button over `SEA_LIGHT_SCREEN`, using
-`sky-control.ts` for its 44 px minimum square hit area. Its existing text measurements hide it
-where copy/header/meta overlap; Drawing and renderer fallback hide it too. Its transparent hit
-area leaves the shader's real disc visible. Hover ring is hover-device-only; focus is explicit.
-
-A sky activation uses the existing `engine.ripple` at `SEA_REFLECTION_SCREEN` beneath the disc
-and does not trigger the canvas pointer ripple (buttons are excluded). `theme-blend.ts` samples
-an interruptible 1,000 ms smootherstep blend in the existing frame loop. Sky, sea and ship receive
-one floating `uNight`; global theme semantics/labels update immediately. Initial loads,
-offscreen/hidden scenes, reduced motion and paused seas snap. A preference/pause change during
-blending settles on the next draw. No extra animation loop, renderer, sound or asset.
-
-### Date-correct hero moon
-
-`moon-phase.ts` is pure: Schlyter's solar/lunar orbital elements, Kepler solution and lunar
-perturbations produce geocentric cycle and distance-corrected illuminated fraction.
-[Algorithm source](https://stjarnhimlen.se/comp/ppcomp.html), sections 3–9 and 15.
-`indiaMoonDay` chooses the calendar day; `moonForIndiaDay` samples noon IST.
-`ocean-engine` caches that day's result and supplies `uMoon` (fraction, waxing/waning side)
-to `skyFragmentSource({ moonPhase: true })`. The shader reconstructs the visible sphere's
-surface normals inside a complete antialiased disc. A phase-derived sunlight vector gives the
-lit/unlit boundary; normal/light incidence supplies spherical shading. The unlit surface stays
-dimly legible with viewer-facing earthshine. Both sides share restrained procedural surface
-markings; their colour is atmospheric sky plus reflected light, avoiding a black overlay.
-Surface lighting/markings run only inside the night disc. Brightness response/earthshine contrast are authored,
-not calibrated photometry. Ordinary phases are sunlight geometry, not an Earth-shadow eclipse
-([NASA](https://science.nasa.gov/moon/moon-phases/)).
-Default shader strings remain byte-identical for error scenes. No dependency, request or asset.
-
-The normal frame refreshes the date cheaply; `OceanScene` checks once a minute so reduced-motion
-and paused scenes redraw after India midnight too. Its effect clears the timer on unmount.
-Hidden/offscreen scenes still do not draw; the next visible draw refreshes the date.
-Orientation, size and position are authored; the sea light now follows the dated illumination.
-The static fallback contains no astronomical sky. This is not a local visibility forecast.
-
-### Dated star field
-
-`star-sky.ts` decodes the 9,768-byte HYG v4.1 bright-star subset and builds a Moon-centred
-tangent frame for Tikamgarh at 21:00 IST. It uses the local zenith to keep the daily pattern
-oriented consistently while the authored Moon stays at `SEA_LIGHT_SCREEN`, including dates
-when the real Moon is below the horizon. `moon-phase.ts` now exposes approximate geocentric
-equatorial coordinates from its existing orbit computation. The source CSV SHA-256,
-selection/quantization tool and CC BY-SA attribution accompany `public/stars-hyg-v41.bin`.
-The home shore's colophon links to the attribution and adaptation notice.
-
-The engine fetches this compact file on first night draw, then creates its star program and
-uploads one dated point buffer
-and reuses it across frames. The existing frame loop and WebGL context draw a single blended
-point pass after the sky and before the sea. The point shader fades faint stars as lunar
-illumination rises and suppresses those close to the Moon; bright stars remain. It also
-follows `uNight` and `uReveal`, so day/night fading and Drawing need no separate lifecycle.
-Midnight refresh rebuilds the dated buffer. Fetch failure leaves the sea intact. This is a
-Moon-centred composition, not an exact local horizon, weather or limiting-magnitude model.
-
-### Dated planets and temporary preview
-
-`planet-sky.ts` uses [JPL's 1800–2050 orbital elements](https://ssd.jpl.nasa.gov/planets/approx_pos.html)
-to place Mercury through Saturn at the same daily 21:00 IST instant, with geocentric J2000
-equatorial coordinates. Apparent brightness includes Sun/observer distance and phase angle;
-Saturn includes a simple ring-tilt term. `skyProjectionAt` keeps planets and catalogue stars
-in one Moon-centred orientation. Planets below 12° solar elongation or fainter than magnitude
-5 are omitted; the authored horizon is still not a real visibility filter. The sparse planet
-point pass allocates only on first night draw, refreshes after India midnight, does not
-twinkle and obeys the existing day/reveal blend. Approximate orbital elements omit full
-light-time, atmospheric and topocentric corrections.
-
-`DevSkyPreview` appears only under `process.env.NODE_ENV === "development"`. It chooses a
-date or one of eight nearby phase dates, calls the engine's preview-day setter and activates
-night. The control is absent from the production DOM and bundle. The engine otherwise
-follows the real India day, including after the preview is reset to Live date.
-
-### Phase-aware sea light
-
-The hero opts into `seaFragmentSource({ moonlight: true })` and supplies the same daily
-illuminated fraction used by the Moon and star field. Its night path applies an authored
-nonlinear brightness curve to the existing specular glint, then confines that glint to a
-soft column under `SEA_LIGHT_SCREEN`. A small diffuse dark-sky baseline and subdued sky/body
-colours keep the water legible near new Moon. Daylight and the wave geometry are unchanged;
-the default shader path used by error seas remains byte-identical. The existing `uNight`
-blend applies to the phase-aware night colours and glint, so the theme transition uses the
-same frame loop. This is a visual response, not calibrated illumination or a tide model.
-
-### Mapped Moon
-
-The first frame that shows the night sky's Moon mounts `MoonDetail` inside a `data-moon-map`
-overlay at the shader Moon's position and diameter (`MOON_SCREEN_RADIUS`, shared with the
-sky shader). It fetches the near-side crop of the 2025 NASA SVS 2K LRO colour map at low
-fetch priority and hands the blob to `moon-detail.worker.ts`. The worker decodes it, shades
-it for the engine's India day with the pure `moon-detail.ts` (longitudes ±90° span the
-crop) and transfers back a 512 px image, then is terminated, so the 4 MiB decoded map
-never stays in memory. A daytime sea
-never requests it. A new India day (or dev preview day) repeats the round trip from the
-HTTP cache.
-
-The overlay is composited with `plus-lighter`: it adds lunar light to the WebGL sky, so
-the unlit side is sky plus faint Earthshine. Once drawn, the frame loop crossfades the
-shader's Moon (`uMoonMap`) into the map with the theme blend's timing, then the shader draws
-only sky inside the disc. Every frame, the overlay's opacity is night × map blend × the
-sky's paper fade (`moonVisibility`, whose GLSL literals are shared through
-`SKY_PAPER_FADE`). If the map or worker fails, the shader's Moon simply stays. The overlay
-has no hit target, so the Moon theme button still responds to clicks; it hides with the
-WebGL scene in fallback. The sea canvas keeps its pixel budget: native pinch zoom
-magnifies the 512 px backing store, which supplies the detail within the same disc. The
-[source credit](../public/moon-lroc-2k-CREDITS.txt) is linked in the footer.
+Daylight, clouds, the theme toggle, the dated Moon, stars and planets, the moonlit sea
+and the mapped Moon: [sky.md](sky.md).
 
 ### Error-page seas (`components/drift/`)
 
@@ -309,8 +170,8 @@ swipe past Drawing and scrolling outside that region stay native.
 The stage grid reserves the larger of the authored copy offset or the header's actual
 height plus its bottom margin. The intro, and the drawing copy on narrow/short screens,
 therefore stay below the controls even when they wrap. The secondary seed link stays
-clear of the pause/stage controls and hides below 620 px viewport height; the studio
-is still available in the page. Mobile title sizing also accommodates larger text. Narrow headers place the brand
+clear of the pause/stage controls and hides below 620 px viewport height; the shore's
+colophon still links `/sea`. Mobile title sizing also accommodates larger text. Narrow headers place the brand
 and wave pill in the first row, navigation in the second; the name can wrap. Short wide
 screens use one header row and put the offer beside the title. Approved sea timings stay.
 
@@ -351,8 +212,9 @@ shore is mounted (see Sound). Theme follows the system until the footer switch o
 override through the shared theme authority.
 
 `GitHubActivity` shows this site's three newest commits (`maxsash/web`, public),
-fetched on the server, cached for an hour, with a 2.5 s timeout and a plain link as
-fallback. It shows no counts or charts. `ShoreFooter` prints the package version and,
+fetched on the server, cached for an hour, with a 2.5 s timeout; on failure only the
+repository link remains. Dates group in Asia/Kolkata and are labelled IST. It shows no
+counts or charts. `ShoreFooter` prints the package version and,
 when the host provides one, a short commit.
 
 ## Sound
@@ -489,7 +351,11 @@ origin sending JSON (so another website cannot write files while the dev server 
   `display: contents` on the workbench/result places the sticky figure in the right column
   beside the introduction and form. Its full SVG is capped at `100svh − 7.5rem`, keeping
   room for the seed/caption. Controls use a 1rem focus scroll margin because the preview
-  sits beside them. Portrait keeps the top-pinned drawing and its larger focus margin.
+  sits beside them. Portrait keeps the top-pinned drawing (capped at 32svh) and its larger focus margin.
+  `StudioPlate` first renders a lazy image from `/api/sea-edition/print` with the same seed
+  and version, then after hydration the same drawing as inline SVG for editing; both share
+  sizing, aspect containment and the night filter, so the large SVG stays out of the
+  initial HTML and no-JavaScript visitors still get the printable drawing.
 - `content/`: `site.ts` (identity; the offer as `offer` and `promise`, joined in `tagline`; the
   email; nav; links; `profiles` for About and the shore; and `afterHero`, the section the skip
   link, the hero's chapter link, the phone's last swipe and the posts' "See the work" lead to),
@@ -523,7 +389,9 @@ origin sending JSON (so another website cannot write files while the dev server 
 - **Type and colour:** `app/fonts.ts` loads Montagu Slab (display and essay text, `opsz`
   follows font size), Rethink Sans (text and labels) and Reddit Mono (data only: seeds, code,
   tables, plate notation) as `--typeface-*`; `globals.css` maps them to `--font-display`,
-  `--font-sans` and `--font-mono`. next/font generates the fallback metrics for all three. `globals.css` is the one palette (Admiralty chart): theme tokens
+  `--font-sans` and `--font-mono`. next/font generates the fallback metrics for all three.
+  Only Montagu Slab is preloaded (the hero title); the others use `preload: false` and load
+  when used, with `display: swap`. `globals.css` is the one palette (Admiralty chart): theme tokens
   (`--paper`, `--sheet`, `--water`, `--ink`, `--ink-2/3`, `--accent`, `--buff`, `--gold`,
   `--band*`, rules) switch with `html[data-studio-theme="night"]`. Day-only pages (the
   Notebook, `/plate`, error pages) read the fixed `--chart-*` constants, because the night
@@ -592,51 +460,16 @@ referrer policy, `Cross-Origin-Opener-Policy`, and a Permissions-Policy that dis
 camera, microphone, geolocation and similar. API routes set their own headers.
 `public/.well-known/security.txt` expires on 6 October 2027.
 
-| Variable                                         | Use                                                     |
-| ------------------------------------------------ | ------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                           | Canonical origin; defaults to `https://www.maxsash.com` |
-| `GITHUB_TOKEN`                                   | Optional, server-only; raises GitHub's rate limit       |
-| `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA` | Short commit in the footer; omitted when absent         |
+| Variable                                                     | Use                                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                                       | Canonical origin; defaults to `https://www.maxsash.com`               |
+| `GITHUB_TOKEN`                                               | Optional, server-only; raises GitHub's rate limit                     |
+| `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA`             | Short commit in the footer; omitted when absent                       |
+| `TELEMETRY_ENABLED`, `POSTHOG_PROJECT_TOKEN`, `POSTHOG_HOST` | Server-only analytics relay; [telemetry-setup.md](telemetry-setup.md) |
 
 ## Not implemented
 
-The dated star field, planets, sea light coupling and the mapped Moon are built;
-the water-motion review remains planned. [night-sky.md](night-sky.md) records the phased
-direction, source choices, measured microbenchmarks and proposed budgets. A compact HYG
-catalogue and a night-only lunar map ship; no ephemeris library ships.
-
 No device tilt, no real ocean data or forecasts, no observation ingestion, no fluid
 simulation, no live sea state, no hidden "C" experience. Do not write copy that implies
-any of these.
-
-## Studio preview delivery
-
-`StudioPlate` initially renders a lazy, unoptimized image from `/api/sea-edition/print`
-with the same seed/version. After hydration it renders the SVG locally for editing.
-`useSeaSettings` supplies the edition, not drawing markup. Both elements share sizing,
-aspect containment and the night filter. No-JavaScript visitors retain the actual printable
-drawing; the large SVG is excluded from initial HTML. The print model/API are unchanged.
-
-## Font loading
-
-`app/fonts.ts` preloads Montagu Slab for the hero title. Rethink Sans (normal and italic)
-and Reddit Mono use `preload: false`; their self-hosted faces still load when used, with
-`display: swap` and Next fallback metrics. Compare cold production loads with
-`tools/compare-font-loading.mjs <baseline URL> <candidate URL>` in isolated worktrees.
-
-## Client-facing polish (11 October 2026)
-
-GitHub log dates group in Asia/Kolkata and are labelled IST. Failures keep only the repository link; the loading state retains its label.
-`projectShareImage` selects the first screenshot from the existing project visuals for
-Open Graph/Twitter (1200 × 750); drawing-only projects retain the sea until cards exist.
-Household Hub uses “Less to remember” as its headline.
-
-## Backend positioning review (11 October 2026)
-
-Hero eyebrow and site description explicitly name backend/real-time systems. Approved
-project order/layout stay fixed. The business system drawing follows selected modules into a
-business-separated PostgreSQL model, adaptable insights and a bilingual or multilingual UI.
-The intrusion drawing shows private-LAN Raspberry Pi compute, a minimum-alert-data notification
-boundary and a separate RTSP-to-browser video service. Case studies describe bounded mechanisms
-rather than absolute security, revenue or request-computation claims. API parameter extraction
-uses one queryParam helper: duplicate seed/version values are rejected by shared parsing.
+any of these. The night sky ships a compact star catalogue and a night-only lunar map, and
+no ephemeris library.

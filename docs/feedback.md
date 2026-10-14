@@ -6,9 +6,9 @@ little thing that can have one, plus other channels. Maximalist first; the owner
 dials down after trying it. The model is the compass dial's tick: small, exactly on the action,
 and could not belong to any other site.
 
-**State:** built, kept and released (`b65671e`, 9 October 2026: the owner tried it and wants
-nothing toned down). Every answer sounds by default; only the waves wait for "Play waves". Next:
-the gull (below), built; its second step (singing, inside the pill) is uncommitted.
+**State:** built, kept and released (9 October 2026: the owner tried it and wants nothing
+toned down), and the gull since (below). Every answer sounds by default; only the waves wait
+for "Play waves". Open ideas are in [follow-ups.md](follow-ups.md).
 
 ## Changing an answer
 
@@ -59,7 +59,7 @@ the gull (below), built; its second step (singing, inside the pill) is uncommitt
 | Hero        | Phone: swipe a stage            | swell, 10 ms buzz (`swipe`) |                                                               | `OceanScene.tsx`                           |
 | Hero, shore | Still or resume the sea, shore  | wind drops, rises (`still`, `stir`) |                                                       | `OceanScene.tsx`, `Shoreline.tsx`          |
 | Hero        | "Make your own"                 | rope pulled taut (`rope`) | Nav underlines draw in left to right and retract                | `Hero.tsx`, `Observatory.module.css`       |
-| Sections    | A section's kicker arrives      |                           | Kicker types in; the heading under it inks in, pale to full, in three steps | `Kicker.tsx`, `Section.module.css` |
+| Sections    | A section's kicker arrives      |                           | Kicker types in; the heading under it stays at full contrast    | `Kicker.tsx`, `Section.module.css`         |
 | Work        | Hover a project image           | paper slide (`slide`)     | The plate lifts 4 px; its head rule inks in                     | `ProjectFeature.tsx`, `Work.module.css`    |
 | Work        | A system drawing arrives        | pen, box by box (`drawing`) | Boxes ink in one by one, then the arrows draw along the data | `SystemPlate.tsx`, `Work.module.css`       |
 | About       | Hover the medal                 | engraving scratch (`engrave`) | Lines return (existed)                                      | `Portrait.tsx`                             |
@@ -83,15 +83,14 @@ buttons, the theme switch), so they do not also click.
 ## Measured
 
 Programmatic scroll through the hero, released build against this one, headless Chrome on an M4
-Pro: frame pacing unchanged (p95 16.7 ms, no long tasks), layouts 1–2 → 4–5 (the heading's three
-settle steps; a smooth settle cost 95 layouts and was changed; the settle is now opacity, with
-no layout). **The one exception:** the depth
+Pro: frame pacing unchanged (p95 16.7 ms, no long tasks); a smooth settle of the headings'
+font axes cost 95 layouts and was dropped. **The one exception:** the depth
 line (and the ribbon on posts) is a scroll-driven animation, and Chrome recalculates style once per
 frame for it (357 recalcs against 125 without it, about 0.1 ms a frame here). The medal's timeline
 already does the same. If that is too much, delete `<ScrollMark kind="depth" />` from
 `app/page.tsx` first.
 
-## The gull (10 October 2026)
+## The gull
 
 **The owner's idea:** "a bird or whatever makes sense flies in and sits on that button... that is all
 the signal we need to give the user to click it without doing it on their face." A herring gull
@@ -140,21 +139,11 @@ notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pos
 in the pill in `Gull.module.css` and `SoundControls.module.css`. To remove it, drop the `gull` prop
 from `WaveSoundControl` in `components/observatory/Hero.tsx`.
 
-**Why inside the pill, not on top (owner, 10 October 2026):** on desktop the button is 21 px below
-the top of the page, so a gull standing on its top edge filled the margin and left no room for
-notes. A gull on the bottom edge would have had to cover the label, the words that are the
-accessible signal. The pill makes room for the gull instead.
-
-**Open:** a takeoff sound (wingbeats, perhaps a call), which needs listening, and whether the
-notes should also sound; the shore version (the waves button there could have its own gull,
-standing on the sand); landing into the sea's own wind (the research's idea); birds in every sky
-([follow-ups.md](follow-ups.md)).
-
 ## Not built
 
-The ship turning toward a hovered nav item; the surf rising slightly when idle; the sail trimming;
-gulls in the sky by day and stars by night ([follow-ups.md](follow-ups.md)); a page curl and marginalia in the
-notebook; a designed print view for every page; thunder and a raft's creak on the error pages; the
-iOS Safari switch haptic (closed to scripts since iOS 26.5, per the research; only a real tap on a
-native switch ticks); the nav marking the section in view (the nav stays in the hero); headings that
-"wonk" on hover.
+The ship turning toward a hovered nav item; the surf rising slightly when idle; the sail
+trimming; birds in the day sky ([follow-ups.md](follow-ups.md)); a page curl and marginalia in
+the notebook; a designed print view for every page; thunder and a raft's creak on the error
+pages; the iOS Safari switch haptic (closed to scripts since iOS 26.5; only a real tap on a
+native switch ticks); the nav marking the section in view (the nav stays in the hero);
+headings that "wonk" on hover. Why the gull sits inside the pill: decisions.md ("Feedback").

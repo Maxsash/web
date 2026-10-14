@@ -1,9 +1,8 @@
 # Website telemetry and reporting
 
-15 October 2026. Owner chose **no persistent visitor tracking**, accepting limited
-journeys. Measure behaviour before segmentation or Work/Notebook reordering.
-Setup/report access: [telemetry-setup.md](telemetry-setup.md).
-Research/blog: [visitor-journeys.md](visitor-journeys.md).
+The analytics contract: what is measured, what never leaves the browser, and how to read
+the reports. Why: [decisions.md](decisions.md) ("Visitor analytics"). Configuration and
+dashboards: [telemetry-setup.md](telemetry-setup.md). Research: [visitor-journeys.md](visitor-journeys.md).
 
 ## Current integration
 
@@ -15,19 +14,19 @@ A random visit ID lives only in memory. Ordinary Next navigation can continue th
 journey; reload, new tab or closing the page loses it. It also rotates after 30
 minutes without a recorded event or 24 hours. Pausing at `/privacy` stops capture,
 drops queued events and aborts pending requests; resuming starts a new ID. The
-pause choice is also memory-only and resets on reload. No across-visit identity.
+pause choice is also memory-only and resets on reload. Events already received cannot be
+retracted. No across-visit identity.
 
 Production requires explicit configuration; development and Vercel previews are
-excluded. Production 1.1.0 ingestion was verified on 14 October: schema-1
-page_view and section_view events arrived redacted. One schema-0 installation
-event predates it and is excluded from reports. PostHog’s own starter dashboard,
-**Analytics basics (wizard)**, remains in the project and is not ours.
+excluded. One schema-0 installation event predates 1.1.0 and is excluded from reports.
+PostHog’s own starter dashboard, **Analytics basics (wizard)**, remains in the project and
+is not ours.
 
 ## Where reports live
 
-Five pinned Maxsash dashboards (1024506–1024510) contain 21 charts in EU project
-306242 and read live events. Links are in telemetry-setup.md. Definitions in `tools/telemetry/reports.mjs` remain the
-reproducible source; tools/setup-telemetry.mjs can provision another project.
+Five pinned Maxsash dashboards with 21 charts in EU project 306242 read live events
+(links: telemetry-setup.md). `tools/telemetry/reports.mjs` is the reproducible source and
+`tools/setup-telemetry.mjs` can provision another project.
 No approved Data Catalog metrics exist; these operational definitions are not governed.
 
 | Dashboard              | What it answers                                                                                             |
@@ -80,9 +79,10 @@ Unknown source/campaign remains unknown/none. No continuous mouse/scroll/frame o
 slider stream. Batches have at most 20 events and 16 KB; provider timeout is 3 s.
 CSP remains same-origin; outbound server hosts are limited to EU/US ingestion.
 
-PostHog stores captured events in EU Cloud. Its current plan-based query history
-is one year on free plans and seven years on paid plans; this is not automatic
-deletion and cannot be shortened to 90 days. The privacy page discloses the policy
+PostHog stores captured events in EU Cloud. Its plan-based query history
+([retention policy](https://posthog.com/docs/data/events-retention)) is one year on free
+plans and seven years on paid plans; this is not automatic deletion and cannot be shortened
+to 90 days. The privacy page discloses the policy
 without claiming the project’s unverified billing tier. Memory-only identity does
 not mean events are never stored. Billing quota/alerts remain owner review.
 No universal consent/legal exemption is claimed for this setup.
@@ -104,9 +104,7 @@ No cookieless hash/fingerprint option is used. Owner exports/keys stay outside g
 
 ## Verification and references
 
-Fresh chosen-mode coverage is recorded in [testing.md](testing.md); setup, actual
-dashboards and synthetic query visibility verified; production ingestion remains pending.
-Official references: [PostHog capture](https://posthog.com/docs/api/capture),
+Checks and the live ingestion result: [testing.md](testing.md). Official references: [PostHog capture](https://posthog.com/docs/api/capture),
 [sessions](https://posthog.com/docs/data/sessions),
 [paths](https://posthog.com/docs/product-analytics/paths),
 [insights](https://posthog.com/docs/product-analytics/insights),

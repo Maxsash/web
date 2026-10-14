@@ -1,7 +1,7 @@
 # Visitor journeys and personalisation research
 
-14 October 2026. Research and design options, not shipped behaviour.
-Next: [telemetry plan](telemetry.md). Work queue: [follow-ups.md](follow-ups.md).
+Research and design options from 14 October 2026, not shipped behaviour. What is measured:
+[telemetry.md](telemetry.md). Tasks: [follow-ups.md](follow-ups.md).
 
 ## The question
 

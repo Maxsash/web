@@ -27,11 +27,10 @@ Writing a notebook post? With `pnpm dev` running, open <http://localhost:3000/wr
 editor with the post's fields, a markdown box with a few insert buttons, autosave, and a live
 preview of the real page. It exists only in development; a production build has no such route.
 
-Optional environment variables: `NEXT_PUBLIC_SITE_URL` (canonical origin),
-`GITHUB_TOKEN` (server-only, raises GitHub's rate limit for the commit-log card),
-`NEXT_PUBLIC_BUILD_SHA` (short commit shown in the footer when the host gives none).
-Visitor analytics is off by default; `.env.example` lists its server configuration.
-See [docs/telemetry-setup.md](docs/telemetry-setup.md) for PostHog setup and reports.
+No environment variable is required. The optional ones (canonical origin, GitHub token,
+build commit, visitor analytics) are listed in
+[docs/architecture.md](docs/architecture.md#headers-security-and-configuration); analytics is
+off unless configured, and `.env.example` lists its server settings.
 
 ## Engineering contracts
 
@@ -62,12 +61,15 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 
 | Path                      | What lives there                                                                 |
 | ------------------------- | -------------------------------------------------------------------------------- |
-| `app/`                    | Routes: `/`, `/plate`, `/blog`, the sea API, robots and sitemap                  |
+| `app/`                    | Routes (`/`, `/sea`, `/work`, `/blog`, `/plate`, `/privacy`), the APIs, sitemap  |
 | `lib/telemetry/`          | Explicit-event schema, redaction, configuration and provider payloads            |
 | `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing         |
 | `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, feedback cues            |
 | `lib/feedback/`           | The feedback vocabulary: what every action answers with, and at what level       |
 | `components/observatory/` | The hero: scene lifecycle, its pure rules, the WebGL engine and shaders          |
+| `components/drift/`       | The error pages' seas and what floats on them                                    |
+| `components/portrait/`    | About's engraved portrait and its compass medal                                  |
+| `components/editor/`      | The development-only post editor behind `/write`                                 |
 | `components/feedback/`    | The page's answers to the visitor: listeners, arrivals, notices                  |
 | `components/shore/`       | The shoreline footer and the commit-log card                                     |
 | `components/gull/`        | The gull that lands on "Play waves": its low-poly body, flight and lifecycle     |
@@ -77,7 +79,7 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 | `components/atlas/`       | The notebook's scoped styling and plates                                         |
 | `content/`                | Copy and data: `site.ts`, `contact.ts`, `projects.ts`, `about.ts`, `notebook.ts` |
 | `tools/`                  | Node tests and browser checks; see [docs/testing.md](docs/testing.md)            |
-| `docs/`                   | Architecture, decisions, testing, SEO, follow-ups and the handoff                |
+| `docs/`                   | The handoff, follow-ups, decisions, architecture and testing; see AGENTS.md      |
 
 To change copy, edit its content file: identity, the offer, navigation, profiles and links in
 [`content/site.ts`](content/site.ts), the "What to expect" steps in
@@ -100,10 +102,6 @@ The browser checks (`check-seo`, `check-headers`, `check-keyboard`, `check-creat
 
 ## Further reading
 
-- [docs/architecture.md](docs/architecture.md): routes, the sea model, rendering, the footer
-- [docs/decisions.md](docs/decisions.md): what was decided and why
-- [docs/testing.md](docs/testing.md): the checks, and what has never been checked
-- [docs/seo-and-sharing.md](docs/seo-and-sharing.md): search, link cards and owner setup
-- [docs/telemetry-setup.md](docs/telemetry-setup.md): visitor analytics setup and owner reports
-- [docs/follow-ups.md](docs/follow-ups.md): open items
-- [SECURITY.md](SECURITY.md): reporting a vulnerability
+Every document and what it holds is listed in
+[AGENTS.md](AGENTS.md#documentation-is-king); start with [docs/handoff.md](docs/handoff.md).
+To report a vulnerability, see [SECURITY.md](SECURITY.md).

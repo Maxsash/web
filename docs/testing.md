@@ -1,790 +1,171 @@
 # Testing
 
-## Visitor telemetry — memory-only mode (15 October 2026)
-
-Production check, 14 October 19:07 UTC (PostHog plugin and curl): live footer
-1.1.0, /privacy 200; schema-1 page_view and section_view events arrived with
-query-free URLs, no IP, GeoIP off and no person profile. Live relay returns 403
-without or with a foreign Origin, 400 for a bad batch, 415 for the wrong type and
-405 for GET. The overview dashboard reads them. Contact, studio and navigation
-events, pause and Vercel rate limits were not checked live.
-
-Fresh isolated Node 24 production build, lint/types/format, 159 Node tests and 78
-SEO cases pass. Sixteen intercepted telemetry browser cases pass: automatic
-configured capture, no analytics browser storage, qualified/deduplicated sections,
-content activation/arrival/engagement, Back/Notebook, keyboard pause, resume with
-new ID, reload with new ID, touch studio action, redaction and collection failure.
-Keyboard 22/22 and headers/CSP pass; creative captures 191 cases with zero runtime
-exceptions and no reported overflow. Privacy captures at 390 px day/night and
-1440 px day were visually inspected: controls and prose are legible, without overflow.
-General browser checks set SEA_TEST_BLOCK_TELEMETRY=1; focused tests intercept
-requests. Real project data is never used by automated browser tests. No physical
-phone, field metrics, quantified bundle delta or deployed visitor ingestion.
-
-Earlier opt-in prototype checks are superseded by this mode. Checks exposed/fixed
-Google hostname matching, shared fixtures, qualification/batch wait and Next’s
-internal request-origin/Host difference. Keyboard harness establishes modality with
-real Tab after fresh navigation and awaits finite focus feedback; no CSS change.
-Final15October build/lint/types/format,159tests, SEO78, telemetry16, keyboard22
-and headers pass after privacy copy/query fixes; creative 191 passes with zero
-runtime exceptions. Final 390 px retention disclosure inspected with no overflow. Chrome
-startup port-file race fixed in the harness; initial launch failed before page tests.
-Turbopack requires worktree-local dependencies; existing Google Fonts need network.
-
-## Weathered cutter (14 October 2026)
-
-Isolated Node 24 production build, types, lint and format pass. 149 Node tests
-(two new: one known surface per triangle with canvas only on cloth; deck planks
-vary and outboard planks weather most), 78 SEO cases, headers/CSP, ship 36/36
-(SwiftShader) and keyboard 22/22 pass. Creative 191 cases, zero failures or
-exceptions; context loss now releases five buffers (the new surface buffer), and
-the desktop 30 s cadence is p50/p95 16.7 ms with no long tasks. Desktop 1440×1000 (DPR 2) and
-phone 390×844 (DPR 3) ship crops, day/night, with Reduce Motion, compared before/after
-and inspected at 2–3× zoom; Drawing mode compared at desktop day/night. WebGL reports
-zero errors. No physical phone check; no GPU timing (one extra fbm per ship fragment).
-
-## Daily atmosphere (13 October 2026)
-
-Isolated Node 24 production build, lint, types and format pass. 147 Node tests,
-78 SEO cases and headers/CSP pass. Keyboard 22/22; creative report 191 cases,
-zero runtime exceptions. Three consecutive India dates (clearer, hazier,
-wispier) plus a full-Moon date captured in day/night at 1440×1000 and 390×844
-with fixed Home water and Reduce Motion. Ten representative views inspected;
-sky differences remain restrained, the sun/Moon and text clear. WebGL2 reports
-zero errors in all 16 captures. The scratch capture
-script and images are review-only and removed after inspection. No physical
-phone or long-run GPU measurement; daily moods are authored, not forecasts.
-
-## Cloud shadows removed (13 October 2026)
-
-Owner rejected the visual value of sea shadows. All three rendering files restored
-byte for byte to accepted cloud version a55dd42, removing the canopy projection,
-attenuation and temporary red borders. Sky clouds/point masking remain. The shadow
-candidate’s automated checks passed but did not establish a worthwhile visual effect.
-Border verification was interrupted by removal; no development-border visual review
-was completed. No fresh rollback build/browser check; prior accepted cloud checks
-remain below. Documentation format check passes; own server stopped, review
-worktree/script/captures/build output/logs removed.
-
-## Cloud depth (13 October 2026)
-
-Isolated Node 24 build, 145 tests, 78 SEO and headers/CSP pass. Native Chrome
-day/new/full Moon matrix at 1440×1000, 390×844 and 844×390 has no GL/runtime errors
-or overflow; still frame counts hold at all three sizes. Visual review included
-day/new/full desktop and day/full phone/landscape. Landscape review moved the
-first cluster below navigation while keeping the light clear. Final placement
-rebuilt; landscape day/full captures reinspected. Keyboard 22/22 passes; final
-creative 191 records (zero failures/exceptions), lint/types/format pass. Final sea
-and drawing captures inspected. Native desktop 30 s cadence: p50/p95 16.7 ms, no
-long tasks, high quality; not a phone/GPU-cost qualification. Focused scratch
-script/captures deleted; own server stopped and review worktree/output/logs removed.
-No physical-device or GPU timer-query measurements; water unchanged.
-
-## Water pass removed (13 October 2026)
-
-Owner rejected the appearance; restored all three edited rendering modules byte for
-byte to HEAD 3c65ccb and deleted the two water modules and their three tests. Candidate
-build/lint/types, 148 Node tests, 78 SEO, headers and new/quarter/full Moon checks had
-passed; candidate GPU probes found sparse foam and zero Glass foam. These automated
-results did not establish visual quality. Candidate was removed before full creative/
-keyboard checks. Restored code uses prior verified build; no fresh rollback build or
-browser review performed. Documentation format check passes; own server stopped
-and review worktree/output, captures, scratch script and logs removed.
-
-## Dragon Ball sail emblem (13 October 2026)
-
-Replaces the interim MS mark with an amber ball, orange rim and four red stars.
-Isolated Node 24 production build/lint/types, 145 Node tests, 78 SEO and headers/CSP
-pass. Desktop/phone day and drawing captures plus DPR 2 day/night emblem close-ups
-inspected; four stars visible, no GL errors/overflow/runtime exceptions. Creative
-191 records pass with zero failures/exceptions; keyboard 22/22 and format pass.
-Own server stopped; review worktree/captures/logs and scratch script removed.
-No physical-device check.
-
-## Daylight refinement (13 October 2026)
-
-Isolated Node 24 Turbopack production build, lint and types pass. All 145 Node
-tests, 78 SEO cases and headers/CSP pass. Focused SwiftShader Chrome review:
-1440×1000 and 390×844 day, theme switch to night, and Reduce Motion screenshots
-inspected; no overflow, GL errors or runtime exceptions. Reduce Motion frame
-counts stay fixed over one second at both sizes. Captures and scratch script
-deleted. Keyboard 22/22 and the full creative report (191 records, zero failures
-or runtime exceptions) pass; format check passes. Native Chrome sea/reveal/drawing
-captures at desktop/phone sizes inspected. Own production server stopped and all
-review worktree output removed. No new physical-device checks performed.
-A build was accidentally started in the main folder and stopped; its newly
-created output was removed, keeping existing dev/cache directories. Worktree
-node_modules symlinking failed Turbopack’s root check; a local copy succeeded
-with sandbox worker permission. These are local checks, not phone qualification.
-
-## Owner iPhone report (13 October 2026)
-
-Owner tested the deployment including 3261a8d on iPhone Air, iOS 27. Safari day/night
-scrolling and Notebook look good; no exact bar-colour measurement or missing-URL result
-was supplied. Touch interactions, gull, rotation and scrolling reported smooth and working.
-Sounds behave as expected. Case-study pages and sea studio reported working well.
-Page length feels somewhat too long, though not clearly bad. Homepage sharing preview
-reported good; owner subsequently reports the supplied links work on WhatsApp. LinkedIn
-reports a description-length warning. Google screenshot for `an-integral-under-sail`
-shows URL unknown/no crawl. Owner subsequently completed live test/request indexing
-for all eight supplied case-study/article URLs; actual indexing remains pending.
-Owner confirms Bing sitemap appears correctly (13 October); crawling/indexing
-outcomes remain unverified. Separate screenshot shows `/home` 404, last crawled 1 October;
-source search found no `/home` references in app/components/content/lib/public/config.
-Prior live sitemap omitted it; discovery source unknown. No redirect added.
-Owner subsequently reports Reduce Motion works well and all supplied VoiceOver
-checklist points tested and validated. No battery/thermal measurements,
-Android or other physical-browser qualification follows from this report.
-
-Navigation feedback was implemented after this report and remains unreleased.
-`node tools/check-navigation.mjs http://127.0.0.1:3041` holds actual RSC requests:
-keyboard Notebook/day and touch case-study/night show one body-portalled status, retain
-link dimensions and keyboard focus, fit the viewport and clear on arrival. Reduce Motion
-keeps the icon still. Captures are generated under ignored `tools/.out/navigation/`.
-Isolated Node 24 production build, lint, types, format, 145 Node tests, 78 SEO cases and
-headers/CSP and keyboard 22/22 pass. Desktop/day and phone/night badge captures
-inspected and deleted. Creative report: 191 records, zero failures/runtime exceptions.
-After printing the finished report, its Node process lingered; stopped after reading
-report.json. Own server stopped; temporary build/check output removed at completion.
-The new badge has no physical-device or VoiceOver qualification yet.
-
-What exists, how to run it, and what has never been checked. Rules: never build or test
-inside the project folder (a dev server may be running there) and stop only servers you
-started.
-
-## Owner accessibility checklist (13 October 2026; owner reports pass)
-
-Apple setup/gesture guides checked. iPhone Safari production site:
-
-1. Reduce Motion: Settings → Accessibility → Motion → Reduce Motion, reload home.
-   Sea/ship/gull should stay still; stage controls still reach Drawing/Work; theme swaps
-   without animated fade/ripple; all text remains visible. Check Notebook/case study/sea
-   studio, then toggle setting while home is open and return without reload.
-2. VoiceOver: set Accessibility Shortcut to VoiceOver first (triple side-button toggle).
-   One-finger left/right selects previous/next item; double tap activates; three-finger
-   swipe up scrolls down. Test “Skip to work”, named navigation, sea/stage/theme controls,
-   case-study link, Notebook/back link, copy email notice and shore mute sounds control.
-   Rotor Headings (rotate two fingers, then swipe up/down) should reach main sections.
-   On `/sea`, slider names/values should be announced and one-finger up/down adjust them;
-   preset/dice/copy link controls and notices should be accessible.
-   Report page/control and exact spoken words, focus traps, unreachable content, unexpected
-   motion or hidden text. New navigation badge remains unreleased and is a later phone check.
-   Owner reports both groups working well on iPhone Air/iOS 27. Separate navigation
-   issue: very long Notebook wait and top-left home link appeared unresponsive despite
-   repeated taps; used Back. Owner confirms d803c16 deployed; live homepage footer and both route chunks agree. No independent
-   VoiceOver/device reproduction or new build/tests for this report.
-
-## Live navigation diagnostic (13 October 2026)
-
-Owner reports huge Notebook wait and top-left return-home link appearing unresponsive
-on iPhone Air/iOS 27; d803c16 confirmed deployed. Live public HTTP check: `/blog` 200
-in 0.67 s, `/` 200 in 0.59 s; navigation indicator present in both route chunks. Slowest
-sampled homepage chunk 2.41 s. Single batch, not a latency distribution or cause proof.
-In isolated Chrome touch emulation (390×844, Reduce Motion, 4× CPU, cache disabled,
-150 ms latency and 180 KB/s), home hydrated after ~2.4 s; Notebook RSC 0.62 s; immediate
-top-left home tap showed the pending badge and returned in ~0.4 s. No runtime errors.
-No iPhone Safari reproduction; no cause established or code fix made. Two early scratch
-harness attempts failed their readiness/serialization checks, not site code. Temporary
-worktree, script and log removed at completion; no new build/full regression suite.
-
-## Live discovery check (13 October 2026)
-
-Read-only public HTTP check: sitemap 200 and 11 public URLs, including all three
-published articles and five case studies. Both original essays return 200 with
-index/follow and self-canonical www URLs. Their descriptions are below 100 characters,
-consistent with the owner's LinkedIn warning. No metadata changed. Screenshot of
-Vercel draft shows 100/60 s/IP/429; owner now confirms publication and intended URLs working; excess-limit enforcement
-unmeasured. No genuine
-Googlebot/Bingbot-IP access or account changes performed. No new build/test run.
-
-## Browser bars (12 October 2026)
-
-`node tools/check-browser-bars.mjs http://localhost:3041` (390 px touch phone, fixed Home
-water sea) computes the colour Safari 26+ takes for each bar and checks that theme-color
-equals it and that it matches the rendered top row (and the hero's bottom row) within 8
-levels: hero day and night, the drawing stage, below the hero, the Notebook after a
-client-side navigation from a night page, the 404, Notebook 404 and plate 404, a night
-load from the OS preference (theme set before the body is parsed; hero and `/plate`), and
-a no-GPU fallback hero. Edge colours were measured across 360–430 px, new and full Moon and
-eight seas; the day sea bottom ranges `#0c3942`–`#1d474e` by sea (Squall is the outlier).
-
-Real Safari behaviour was checked by hand in temporary iOS 26.5 and 27 simulators
-(created and deleted for the check): the hero's bars took the sky above and the sea below
-on a day load, the 404 its sky and sea, the Notebook its paper. Throwaway test pages
-established the rule in architecture.md, including that Safari kept its load-time colours
-through later style changes and programmatic scrolls. With the theme applied before the
-first paint, two OS-dark loads gave night sky `#030b15` above and sea `#06141a` below.
-Full suite on the isolated Node 24 build: format, lint, TypeScript, 145 Node tests, bars,
-12 sky-theme cases, keyboard 22/22, 78 SEO cases, headers/CSP, software fallback, creative
-191 captures with no runtime exceptions. Not verified: real finger scrolls (whether
-leaving the hero restores the body colour), the theme switch and drawing stage updating
-Safari's bars, Chrome on a real Android device.
-
-## Mapped Moon (12 October 2026)
-
-`tools/moon-detail.test.mjs` checks near-side projection, waxing/waning light reversal,
-mapped unlit terrain and that `moonVisibility` matches the sky shader's paper fade.
-`tools/check-moon.mjs` also checks that the sky shader leaves only sky in the disc at
-`uMoonMap = 1`. `tools/check-moon-detail.mjs` checks an isolated production build: no map
-request on a daytime visit; at night, overlay opacity equal to night × crossfade on every
-frame of the theme switch, with the shader Moon crossfading into the map; one low-priority
-request per rendered day; four dated phases with mapped pixel readings; original disc
-diameter and centre at 1440 px, retina, 390 px phone and 3× pinch; click-through theme
-switching; no refetch on a day/night round trip; scroll-away and WebGL context loss hiding
-it; reduced motion swapping without a fade; and a blocked map leaving the shader Moon.
-Captures/report: ignored `tools/.out/moon-detail/`. The unit test also pins the cropped
-map's edges to the west and east limbs.
-
-Near-side crop: decoded with ImageMagick, the 1024×1024 crop matches the original's middle
-half byte for byte. After the switch, the four phases' pixel readings moved by at most
-one level and zoomed captures match the uncropped build (RMSE under 1% except a
-full-Moon frame at 3.1% from moving waves; the Moon itself is unchanged by eye).
-
-Turbopack (`pnpm build`) Node 24 isolated production build with the crop: 145 Node tests,
-lint, TypeScript, format, 78 SEO cases, headers/CSP, keyboard 22/22, creative 191 captures
-with no runtime exceptions; Moon, Moon-sea, sky-theme, star, software-fallback and planet
-checks pass (planets alone: 37 samples, median 0.168 ms). Before the crop,
-`check-dev-sky.mjs` passed on `next dev`, where the preview's Full and New also redraw the
-mapped Moon; it was not rerun after the crop. A throttled (4×
-CPU, 390 px) probe found no main-thread long task from the map; all were in the first
-0.5 s with or without it. Chrome emulation only: no physical phone, Safari or Firefox
-check of `plus-lighter` or the worker. The map is a visualization, not compared with a
-calibrated telescope image.
-
-## Phase-aware sea light (12 October 2026)
-
-`tools/check-moon-sea.mjs` samples the isolated production hero with one sea seed at
-new, quarter and full Moon, plus identical daytime dates. It checks monotonic night
-reflection brightness, the full-Moon path below the framed Moon, new-Moon highlight
-suppression, exact day-region parity and no runtime exceptions. It captures 1440 px and
-390 px frames under `tools/.out/moon-sea/`; phone width uses desktop Chrome emulation,
-not a physical phone. The shader's default/error output still passes the nine drift tests.
-The lunar brightness curve and ambient level are authored rather than photometrically
-calibrated. The final isolated Node 24 webpack build passes 142 Node tests, lint,
-TypeScript, format, 78 SEO cases, headers/CSP, keyboard 22/22 and creative 191 captures
-with no runtime exceptions. `check-moon`, `check-sky-theme`, `check-planets` and
-`check-stars` pass. The repeated 37-query star draw measured 0.191 ms median and 1.21 ms
-p95 on desktop Metal; a prior short run was noisier. This is no phone GPU qualification.
-
-## Dated planets and development sky preview (12 October 2026)
-
-`tools/planet-sky.test.mjs` compares Mercury–Saturn J2000 equatorial positions against
-independent Astronomy Engine 2.1.15 geocentric samples on three dates; all 15 positions
-are within 0.15°. It checks finite apparent magnitudes/elongation and date-varying
-Moon-centred frames. `tools/phase-preview.test.mjs` checks eight distinct nearby phase
-dates, date conversion and invalid input. Astronomy Engine was downloaded to temporary
-scratch space solely for reference figures; the visitor bundle has no such dependency.
-
-`tools/check-planets.mjs` tests the production hero on new/full/later dates and a phone
-width, confirms the actual planet WebGL point call, night pixels/day hiding, dated
-planet lists and no development control. The 37-query actual Metal planet draw measured
-median 0.166 ms in the final run; short-run p95 varied from 0.20 to 1.65 ms across runs.
-This is desktop GPU evidence, not a phone budget. `tools/check-dev-sky.mjs` uses a
-separate `next dev` worktree and `localhost` origin: Full, custom date, Live date and
-night activation pass, with desktop and phone captures inspected. `127.0.0.1` is blocked
-for Next dev resources by its cross-origin policy; use `localhost` for this check.
-
-Final isolated Node 24 webpack production build passes 142 Node tests, lint, TypeScript,
-format, 78 SEO cases, headers/CSP, keyboard 22/22 and creative 191 captures with no
-runtime exceptions. The focused star regression also passes. Browser captures/report:
-ignored `tools/.out/planets/` and `tools/.out/dev-sky/` (copied to the main workspace).
-No physical-phone GPU, Safari/Firefox, atmospheric brightness, exact horizon or
-post-2050 ephemeris qualification.
-
-## Night-sky feasibility (12 October 2026)
-
-Phase 1 dated stars are built. `tools/star-sky.test.mjs` checks the compact HYG v4.1
-extract, Sirius, malformed data, three independent Astronomy Engine geocentric Moon positions
-and finite/date-varying Tikamgarh frames. `tools/check-stars.mjs` checks a production hero at
-new, quarter and full Moon plus phone width; captures each view and compiles the actual star
-shader to compare visible pixels at three illuminations and at day. Final isolated Node 24
-webpack production build passes 139 Node tests, star captures/visibility (527 → 236 → 48
-star pixels on one fixed frame; day zero), lint/types/format, 78 SEO, headers/CSP,
-keyboard 22/22 and creative 191/191. Live home link and license both returned 200.
-Moon and sky-theme regression checks passed on the same sky code before the final credit link.
-Actual desktop Metal star draw's latest warm 37-query run: median 0.178 ms, p95 1.40 ms,
-max 2.05 ms. Repeats held median ~0.18 ms but p95 varied 0.192–2.02 ms; short samples
-are not a stable p95 qualification. No physical phone GPU/battery check.
-
-Standalone microbenchmark in an isolated worktree, Node 24/native headless Chrome on M4 Pro.
-Astronomy Engine seven-body refresh: median 0.1 ms/p95 0.2 ms. Synthetic 1,000-vector rotation
-p95 0.1 ms; median below clock resolution. GPU timer query (32 passes × 12 samples),
-1440×1000 clear + 1,000 three-pixel sprites: median 0.026 ms/p95 0.045 ms; clear-only 0.0025 ms.
-390×844 uses the same desktop GPU, never a phone qualification. Wall-clock GL measurements
-were below clock resolution; GPU query results replace them. No integrated sea/sky or real
-catalogue was rendered. Library/map sizes, source hash, proposals and limits: [night-sky.md](night-sky.md).
-Report: ignored tools/.out/sky-feasibility/report.json. That earlier research-only step did
-not need a production suite; the completed phase 1 production verification is above.
-
-## Sun/moon theme interaction (12 October 2026)
-
-`tools/theme-blend.test.mjs` pins the 1,000 ms duration, endpoints/monotonic interpolation,
-continuous reversal, actual disc coordinates and 44 px targets at five viewport sizes, and
-finite ripple projection onto the sea mesh across portrait/landscape.
-`node tools/check-sky-theme.mjs http://localhost:3041` uses native mouse/touch/Enter/Space:
-one sky ripple, intermediate/final blend, continuous reversal, current labels, saved choice
-across reload and OS changes, focus ring, immediate paused/reduced changes with no ripple,
-phone tap staying in Sea, Drawing hiding the target, viewport alignment and a live reduced-motion
-preference change settling an active fade. A separate no-GPU
-browser checks fallback hiding the target while keeping the labelled toggle. Captures/report:
-`tools/.out/sky-theme/`. This is not a physical-device or real screen-reader qualification.
-
-Final isolated Node 24 webpack production build: lint/types/format, 136 Node tests, 12 native
-sky cases and the lunar surface/area/date/midnight check pass. 78 SEO cases, headers/CSP,
-keyboard 22/22 and creative 191 records pass with zero failures/runtime exceptions. Header
-browser startup once read an empty Chrome DevTools port file; clean rerun passed.
-Desktop transition/night and phone day captures inspected. Own :3041 server stopped; captures
-copied to the main working tree's ignored tools/.out/sky-theme/. No physical-device claim.
-
-## Moon phases (12 October 2026)
-
-`tools/moon-phase.test.mjs` compares six published
-[USNO October/November 2026 primary phases](https://aa.usno.navy.mil/calculated/moon/phases?date=2026-10-01&format=p&nump=6)
-with computed longitude phase (within 0.2 degrees) and illuminated fraction (within 0.5%).
-It pins the 18:30 UTC India-date boundary, noon-IST sampling, waxing/full/waning progression
-and finite/bounded weekly samples across 2000–2100. This is not an ephemeris certification.
-
-`node tools/check-moon.mjs http://localhost:3041` compiles the actual hero sky shader and
-reads supersampled GL pixels: 14 illuminated fractions/sides, new/full limits, right waxing/left
-waning and illuminated area within 1.5 percentage points. Surface checks assert faint Earthshine
-raises the complete night face above equivalent sky RGB (no opaque black cover), quarter
-light/dark contrast, full centre/limb shading and pixel-identical daylight across phase extremes.
-Supersampling avoids counting a tiny feather pixel as a complete illuminated pixel.
-It mocks the production hero clock, checks four dated phases and triggers the minute callback
-across India midnight under reduced motion to verify a fresh draw. Real-size desktop phase and
-phone crescent captures go to `tools/.out/moon/`; inspect them separately from the geometry pass.
-Actual timer throttling, lunar geography and calibrated reflectance/earthshine are not tested.
-
-Continuous-surface Node 24 production build: lint/types/format and 132 Node tests pass.
-Moon material/shading/area/date/midnight checks pass. Inspected desktop crescent/quarters/full
-and phone crescent; both sides use one surface with procedural markings and phase-derived
-light. Final build with the disc-only shader guard passes 78 SEO cases, headers/CSP, keyboard 22/22
-and creative 191 records with zero failures/runtime exceptions. Own :3041 server stopped;
-latest captures copied to the main working tree's ignored tools/.out/moon/.
-No physical-phone/Safari/Firefox or live-release claim follows. The Moon phase work was
-subsequently committed by the owner as d83de8b.
-
-## WhatsApp by number (12 October 2026)
-
-`wa.me/919183636567` resolves to a phone-number chat (`send/?phone=…`). The old username check
-was void: wa.me's web page greets any well-formed username, real or not. Isolated build:
-TypeScript, lint, format, 128/128 Node tests, 78 SEO cases, headers, keyboard 22/22, 191
-creative cases (the shore-channels check reads the link from `site.ts`); both homepage links
-served with the number. Gull, sound and studio-plate suites not rerun (untouched).
-
-## Gull timing (11 October 2026)
-
-`tools/gull.test.mjs` pins `arrivalEntry`: a 390 px sky keeps its left-edge entry; 844, 1440 and
-1920 px skies start hidden above the top edge, fly left to right and land within 2.6 s. Measured
-on a local production build (phase timestamps from `data-gull`): wait 2.0 s at every size;
-flight 2.3 s at 1440, 1920 and 844 × 390 (was 3.9 s at 1440), 1.8 s at 390 (unchanged). A
-1440 px film at 0.33 s steps shows it hidden for about 0.9 s, then gliding down into the pill.
-Isolated Node 24 build: TypeScript, lint, format, 128/128 Node tests, 47 gull layout checks,
-78 SEO cases, headers, keyboard 22/22, sound suite, 191 creative cases, zero failures and
-runtime exceptions. Own server stopped. Not checked on a real phone.
-
-## Sea studio page and studio channels (11 October 2026)
-
-The checks follow the studio to `/sea`: `check-studio-plate` and `e2e/sea-studio.mjs` load it;
-`check-keyboard` sweeps it (desktop forward, phone backward over the pinned drawing), operates
-the studio there and reloads home for the hero focus ring; `check-sound` rolls the dice on `/sea`
-after a first click; `e2e/content.mjs` asserts home order work, about, contact, notebook with no
-studio and one "Make your own" link to `/sea?seed=`, the studio's controls on `/sea`, About's
-portfolio and the shore's email plus WhatsApp, Instagram and LinkedIn Page; `check-seo` adds
-`/sea` and `/sea?seed=…` (canonical `/sea`) for six crawlers and the Organization's founding
-date. The rotation case now asserts one column with the preview first and focus clear: on a
-phone the pinned drawing may cover the top of the form while editing, by design.
-Final isolated Node 24 build: TypeScript, lint, format, 126/126 Node tests, 78 SEO cases,
-headers/CSP, keyboard 22/22, 8 studio-plate cases, sound suite, 191 creative cases (two fewer
-home snapshots) with zero failures and runtime exceptions. Own server stopped. Looked at `/sea`
-(1440, 390), Contact, shore and Notebook footer (390); case-study header pixel-identical to live.
-Not checked: `/sea` on a real phone, Safari, a screen reader.
-
-## Brand icons, share card and manifest (11 October 2026)
-
-`check-seo.mjs` now reads the default card from `site.shareImage`, asserts it is a JPEG under
-WhatsApp's 600 KB preview limit, that `/manifest.webmanifest` names the studio and serves
-each icon as PNG, and that the home graph's Organization has the studio's name, logo, founder
-and `sameAs` profiles. Run twice (icons/card, then Organization), each a fresh worktree: Isolated Node 24 webpack build (detached worktree in the session scratchpad,
-`rsync --delete` so removed files are gone), TypeScript, lint, format, 126/126 Node tests, 66 SEO
-cases, headers/CSP, keyboard 20/20 and 193 creative cases with zero runtime exceptions. Own server
-(:3019) stopped. Not checked: real WhatsApp/LinkedIn/Facebook previews (need the release),
-home-screen install on a phone, Safari pinned tab.
-
-## System drawing labels (11 October 2026)
-
-`node tools/check-drawing-labels.mjs http://localhost:3035` measures SVG text bounds
-with loaded production fonts on `/` and all three drawing case studies at 390/1440 px.
-The “Buying” label replaces overflowing “Purchasing”; labels and notes have at least
-3 SVG units of side clearance. Captured WebP unchanged; recapture after owner release.
-Isolated Node 24 webpack build, lint/types/format, 126 Node tests, 66 SEO cases, headers,
-keyboard 20/20 and 193 creative cases pass with zero runtime exceptions. Turbopack failed
-on sandbox worker-port binding; webpack succeeds with the configured Google fonts.
-Own production server stopped. No live or physical-device check.
-
-## Owner live preview-release results (11 October 13:44–13:50 IST)
-
-Three mobile runs: performance 87/96/95; LCP 2.6 s throughout; FCP 1.8/1.7/1.7 s;
-TBT 330/50/140 ms; CLS 0; accessibility/best practices/SEO 100. Median score 95
-(previous 90), LCP 2.6 s (previous 3.0), FCP 1.7 s (previous 2.0). TTFB breakdown
-360/290/300 ms, no document-latency warning. First run has larger startup blocking;
-not diagnosed from pasted reports. Owner evidence, no fresh local tests this review.
-No field data or physical-device qualification. Released HEAD be20ef1.
-
-## Progressive studio preview (11 October 2026)
-
-Lighthouse 13.5.0 installed outside the repo, disabled GPU,
-default simulated mobile throttling, fixed seed, fresh Chrome per audit. Three rounds:
-current median FCP/LCP 2555/4203 ms (score 82); body-font preload 2407/4415 (82);
-inline CSS 2253/4203 (84), +47 KiB HTML. Rejected both alternatives.
-Final-build confirmation after aspect-containment styling: FCP 2104 ms, LCP 3753 ms,
-score 87, CLS 0, no runtime error.
-Three new alternating baseline/preview rounds: median FCP 2555 → 2105 ms,
-LCP 4203 → 3754 ms, score 82 → 87; HTML transfer ~168 → 84 KiB. Local comparison,
-not predicted live scores.
-
-Final isolated build:
-`tools/check-studio-plate.mjs` passes eight cases: no-JS real vector image loads at
-390/1440 in day/night, has seed/label/containment and no overflow; hydrated SVG
-polylines equal print endpoint before/after a real keyboard slider edit. Phone day
-and desktop night screenshots inspected under `tools/.out/studio-plate/`.
-Native cold three-pair median LCP/FCP 1548 → 1500 ms, last CSS 1465 → 1381 ms.
-Warm two-pair median LCP 740 → 740 ms, FCP 622 → 626 ms; no material warm regression.
-Both use disabled GPU, 390×844, 4× CPU and request-level Slow 4G. Reports in candidate
-`tools/.out/font-loading{,-warm}/`; comparison harness accepts `--warm`.
-Node 24 build/lint/types/format, 126 Node tests, 44 SEO cases, 128 contrast, headers,
-keyboard 20/20 and creative 193 records/129 assertions pass with zero failures/exceptions.
-Completed creative process lingered and was stopped. All own experiment servers stopped. Ship/gull/sound-specific suites not
-rerun. Physical devices, real screen readers and fresh live PageSpeed not verified.
-
-## Owner post-preload PageSpeed (11 October 13:06–13:07 IST)
-
-Performance 90/90/90; LCP 3.0/3.0/3.3 s; FCP 2.0 s throughout; TBT 170/170/30 ms;
-CLS 0; accessibility/best practices/SEO 100. Median LCP improves 3.2 → 3.0 s while
-FCP worsens 1.6 → 2.0 s and performance 91 → 90. First two files share identical
-metrics and capture time (13:06); independence uncertain. TTFB breakdown 390 ms, no
-latency warning. Blocking CSS estimates 930–1130 ms; normal text/mono fonts follow CSS
-in critical tree. Owner evidence only: no fresh local checks or changes for this review.
-
-## Font preload experiment (11 October 2026)
-
-Baseline :3021 versus candidate :3022, separate isolated builds. Five alternating pairs, fixed seed, 390×844 /
-DPR 2, 4× CPU, 180 KB/s and 562.5 ms latency, disabled GPU (static fallback), cleared
-and disabled cache. Median LCP/FCP 2884 → 1552 ms; final CSS 2814 → 1467 ms.
-Four eager font links become one. Font descriptors (13) and unique woff2 content hashes
-(10) match both builds. This is a local controlled experiment, not a predicted live PSI
-score or device qualification. An extra cold pair measured layout-shift sum
-0.000884 baseline / 0.000925 candidate (both about 0.0009); these are raw sums, not
-field CLS. Node 24 build/lint/types/format, 126 tests, 44 SEO and 128 contrast checks pass.
-Headers, keyboard 20/20 and creative 193 records/129 assertions pass with zero
-failures or exceptions. Servers :3021/:3022 stopped; creative process lingered after
-writing its completed report and was stopped. Ship/gull/sound-specific suites not rerun;
-physical devices and fresh live PageSpeed not checked.
-Reproduce:
-`node tools/compare-font-loading.mjs http://localhost:3021 http://localhost:3022`.
-
-## Owner uncached mobile trace (11 October 12:19 IST)
-
-`Trace-20261011T121919.json.gz`: 4× CPU, Slow 4G, viewport settles to 390×844,
-zero cached requests. CSS requests +623 ms; last/main stylesheet finishes +2347 ms.
-Initial style/layout 127 ms starts +2348 ms (style 32 ms, layout 83 ms); FCP/LCP
-+2504 ms. Fonts finish after LCP (four preloaded faces +2897–3643 ms; another
-Montagu subset +4715 ms). Later React/engine long tasks cannot explain this LCP.
-Embedded CSS maps preloads to Montagu normal, Rethink normal/italic and Reddit Mono.
-Trace analysis only; no code or fresh tests. Next: controlled preload/CSS experiment.
-
-## Owner exported trace (11 October 12:14 IST)
-
-`Trace-20261011T121438.json.gz` (Downloads, not copied into public repo): CPU 4×,
-Slow 4G, viewport 1245×1043 / DPR 2. Primary navigation response event +587 ms,
-FCP +704 ms, text LCP +738 ms. Four CSS files and five fonts explicitly marked cached;
-22 cached requests within first 2 s. This verifies a warm desktop load, not PageSpeed
-first mobile load. Main-thread 65 ms task at +1480 ms is after LCP. Corrected capture
-requires phone viewport and Disable cache; no code/build/tests from this review.
-
-## Owner production response baseline (11 October 2026)
-
-Five direct-www curl GETs: TTFB 976/675/618/628/394 ms, median 628 ms; all HTTP 200.
-Gzip, private/no-store and CDN MISS in all; x-vercel-id bom1::iad1 throughout. Dashboard
-confirms iad1. First request has higher DNS/TLS costs. These are owner measurements,
-not pure server durations or proof of cold starts. Owner then moved function to Mumbai: five headers bom1::bom1, TTFB
-1164/660/625/556/539 ms (median 625 ms), median post-TLS wait 400 ms (previous 544 ms),
-median total 742 ms (previous 1374 ms). All 200/gzip/no-store/MISS. Region change confirmed;
-small separate batches do not isolate its performance effect. New owner mobile PageSpeed reports at 11:59:03/11:59:46/12:00:51 IST:
-performance 91/91/91; LCP 3.2/3.2/3.3 s; TBT 90/90/50 ms; CLS 0; other scores 100.
-TTFB breakdown 380 ms throughout; document-latency warning absent. First two reports
-have identical supplied metrics/details; independence uncertain. CSS savings 320/320/340
-ms; Math render delays 1190/1190/520 ms; unattributed reflow 45/45/50 ms. Owner evidence
-only, no fresh tests or profiling trace this review.
-
-## Owner live PageSpeed reruns (11 October 2026)
-
-Three mobile reports at 11:16:57, 11:18:28 and 11:21:36 IST: performance 85/92/91,
-LCP 3.8/3.2/3.2 s, FCP 1.6/1.5/1.6 s, TBT 120/70/120 ms, CLS 0.
-Accessibility, best practices and SEO 100 throughout; contrast failure absent. Median
-performance 91, LCP 3.2 s. No field data or desktop reruns supplied. These are owner
-reports, not this agent running PageSpeed; no fresh tests during report review.
-
-## Heading contrast (11 October 2026)
-
-`tools/check-heading-contrast.mjs <local production URL>` tests pending/arrived headings,
-day/night, 390/1440 px, normal/reduced motion using rendered CSS and ancestor opacity.
-It reproduces the old 0.3-opacity failure on the previous production build. Corrected
-Node 24 isolated production build passes all 128 heading
-checks (lowest ratio 10.33:1), 126 Node tests, 44 SEO cases, lint, types and format.
-Headers, keyboard 20/20 and creative (193 records, 129 assertions, zero failures and
-exceptions) pass. Servers :3019/:3020 stopped. Completed keyboard/creative processes
-lingered and were stopped. Not a full axe audit or fresh
-PageSpeed run; no field performance claim.
-
-## SEO expansion (11 October 2026)
-
-Node 24 isolated production build, server :3018 (stopped):
-126 Node tests, 44 SEO cases, headers, keyboard 20/20, lint, types and format pass.
-Creative report: 193 records, zero failed assertions and zero runtime exceptions. The
-creative process lingered after writing its completed report and was stopped. Expanded
-harness derives all five case studies and real published posts, checks exact sitemap
-membership and index/noindex directives across four crawlers. Samples/listing remain
-noindex; drafts must 404. Owner confirms sitemap success and supplied homepage-indexed
-screenshot. Owner supplied PageSpeed: mobile 85 / desktop 97, accessibility 97, SEO 100.
-These are owner evidence; no fresh PageSpeed or Search Console access by this session.
-
-## Case studies (10 October 2026)
-
-Rerun after the three-cards-two-rows change and again after Velora's drawing (126 Node tests: the drawing count became "every client project leads with a system drawing"), same results otherwise. Node 24 production build with no
-warnings (detached worktree, server :3016, stopped), lint, types, format, 125 Node tests (11 new in `case-studies.test.mjs`),
-28 SEO cases (now with two case studies, the six-entry sitemap, `/work/<unknown>` 404 and the
-`/work` redirect), headers, keyboard 20/20 (the first Tab inside Work now reaches the Velora case
-study link), and the creative suite (193 records, 129 assertions, 0 failed, 0 exceptions, no
-overflow). Screenshots of `/` Work and two case studies at 1440 and 390, and a phone case study
-at night, were inspected on the owner's dev server. Not run this time: ship, gull, software
-fallback and sound (no code they cover changed except the shore's sea-model line). Not
-verified: physical devices, screen readers, a case study's plate draw-in at night.
-
-## Font and theme sprint (10 October 2026)
-
-Final fonts: Montagu Slab, Rethink Sans, Reddit Mono. Node 24 production build with no
-warnings (detached worktree, server :3015), lint, types,
-format, 114 Node tests, 20 SEO cases, headers, keyboard 20/20, ship 36/36, gull 47, software
-fallback, sound and 193 creative records pass, with no runtime exceptions or overflow.
-Scratchpad checks: no headline word wider than its box on six pages at 1440/1100/820/600/
-390/320 px (rerun after the About name moved from 15cqi to 14cqi; the suite above ran on the
-15cqi build, the only difference); kicker arrival settles to opacity 1; day, night and phone
-screenshots inspected; the hero brand sits on the gutter at 390 px. Earlier rounds found and
-fixed: phone "Work" link under 24 px, brand centred on phones by that fix, night studio plate
-turning brown, Notebook masthead and About name breaking mid-word.
-Not checked: physical devices, real screen readers, the private `/write` editor, the hero
-fallback plate at night.
-
-## Ship refinement (10 October 2026)
-
-Node 24 production build, lint, types, format, 114 Node tests, 20 SEO cases, headers,
-20/20 keyboard checks and all 193 creative records pass, with no failed assertions,
-overflow or runtime exceptions. Context loss releases all four buffers, including
-the cloth-flex buffer. Shared shader defaults, sea parity and mobile timings pass.
-
-The five tests in `tools/ship.test.mjs` cover nondegenerate geometry, rigid/cloth
-separation, bounded continuous buoyancy, short-chop damping and finite composition.
-`tools/check-ship.mjs` passes 36/36 checks: actual rendered triangles clear text and
-viewport edges by day/night and in Drawing at 320 × 568, 390 × 844, 768 × 1024,
-844 × 390, 1440 × 1000 and 2560 × 1440; 150% text, live rotation, reduced motion,
-pause/resume and native touch-emulated intermediate reveal/return frames. Screenshots
-inspected at desktop/phone/landscape sizes, both themes, Drawing and enlarged text.
-The ship harness uses SwiftShader; the full creative suite uses the Mac GPU.
-Its 30-second desktop sample delivered 1,801 frames, p95 16.7 ms, zero long tasks,
-high quality. This is headless Chrome evidence, not a physical-device qualification.
-
-All builds/tests ran in a detached worktree; no main-folder test/build was run.
-Physical iPhone/Safari/Firefox, screen readers and battery/GPU qualification remain
-unverified. Gull and sound-specific browser suites were not rerun for this ship work.
+How the site is checked, the latest result of each check, and what has never been checked.
+What a change verified belongs in its commit body; this file keeps only the latest result.
+
+## Rules
+
+- Node 24 and a production build in a detached worktree, never in the project folder (a dev
+  server may be running there). Stop only servers you started; delete the worktree, captures
+  and logs when done.
+- Every change runs the core checks: types, lint, format, Node tests, `check-seo`,
+  `check-headers`, `check-keyboard` and `check-creative-v2`. Add the focused checks for the
+  area it touches. The `testing` upkeep job (AGENTS.md) runs all of them.
+- Automated checks never reach the real PostHog project: the worktree copy leaves out `.env`,
+  and the build and server get a placeholder token instead. Analytics is decided at build time
+  (static pages are prerendered), so the token must be set for `pnpm build` too.
+  `SEA_TEST_BLOCK_TELEMETRY=1` also blocks analytics requests in every browser check except
+  `check-telemetry`, which intercepts its own.
 
 ## Run everything
-
-Use Node 24 and a production build in a detached git worktree:
 
 ```bash
 nvm use
 CHECK_DIR=$(mktemp -d /tmp/maxsash-check.XXXXXX)
 git worktree add --detach "$CHECK_DIR/wt" HEAD
-rsync -a --exclude node_modules --exclude .next --exclude .git --exclude tools/.out ./ "$CHECK_DIR/wt/"
+rsync -a --delete --exclude node_modules --exclude .next --exclude .git --exclude tools/.out \
+  --exclude .env ./ "$CHECK_DIR/wt/"
+export TELEMETRY_ENABLED=true POSTHOG_PROJECT_TOKEN=phc_placeholder_for_checks
 cd "$CHECK_DIR/wt" && pnpm install --frozen-lockfile && pnpm build
 (pnpm exec next start -p 3012 &)
+URL=http://localhost:3012
 
 pnpm exec tsc --noEmit && pnpm lint && pnpm format:check
-SEA_TEST_BASE=http://localhost:3012 node --test tools/*.test.mjs
+SEA_TEST_BASE=$URL node --test tools/*.test.mjs
+node tools/check-telemetry.mjs $URL
+export SEA_TEST_BLOCK_TELEMETRY=1
 node tools/check-seo.mjs http://127.0.0.1:3012
-node tools/check-headers.mjs http://localhost:3012
-node tools/check-keyboard.mjs http://localhost:3012
-node tools/check-ship.mjs http://localhost:3012
-node tools/check-gull.mjs http://localhost:3012
-node tools/check-software-fallback.mjs http://localhost:3012
-node tools/check-sound.mjs http://localhost:3012
-node tools/check-creative-v2.mjs http://localhost:3012
+for check in headers keyboard creative-v2 ship gull sound software-fallback browser-bars \
+  sky-theme moon moon-detail moon-sea stars planets navigation studio-plate \
+  heading-contrast drawing-labels; do node tools/check-$check.mjs $URL || echo "FAILED $check"; done
 
 # Clean up at once: keep only captures the owner still has to review.
 lsof -ti tcp:3012 -sTCP:LISTEN | xargs kill
 cd - && git worktree remove --force "$CHECK_DIR/wt" && rm -rf "$CHECK_DIR"
 ```
 
-Landscape studio (10 October 2026): 43 browser assertions pass across 568 × 320,
-667 × 375, 740 × 360, 844 × 390 and 932 × 430, checking the actual SVG transform
-(full plate visible and larger), all four live sliders, keyboard focus/keep actions,
-sticky preview and rotation back to portrait. Focus visibility allows 1 px for native
-scroll rounding (observed 0.28–0.35 px). Screenshots inspected at 568 × 320 and 844 × 390, including night and editing.
-Also checked the 844 × 390 night view. The seed and actual drawing geometry both change
-with edits. Node 24 production build, lint, types, format, 109 Node tests, 20 SEO cases,
-headers, 20/20 keyboard checks and all 193 creative records pass, without failed assertions,
-overflow or runtime exceptions.
-`tools/e2e/sea-studio.mjs` is part of the creative suite. The existing keyboard sweeps
-continue to cover portrait and desktop studio focus.
-
-Mobile stage correction (10 October 2026): native mobile emulation reproduced an
-enabled-looking Back that ignored taps and a swipe that bypassed the transition at
-just 5 px of scroll. The new browser regressions fail against the baseline and all
-20 targeted assertions pass against the fix. They cover independent Next/Back taps,
-interrupted button/swipe reversal, offsets and a partially visible returning hero,
-rotation, paused/reduced-motion stages, horizontal/multitouch rejection and exit to
-Work. `runStagedSea` now uses Chrome's actual touch emulation rather than overriding
-`matchMedia`. Targeted report/screenshots: isolated worktree `tools/.out/mobile-sea/`.
-Node 24 production build, lint, types, format, 109 Node tests, 20 SEO checks, headers,
-20/20 keyboard checks and 137 creative records pass, with no failed assertions or
-runtime exceptions. Full report: worktree `tools/.out/creative-home/report.json`.
-This is headless Chrome, not physical iPhone/Safari.
-
-Prior gull correction (10 October 2026): Node 24 production build, `tsc`, `lint`,
-`format:check`, 109 Node tests (17 gull), 20 SEO cases, headers and 20/20 keyboard
-checks pass. Creative passed 132 records with no failed assertions or exceptions. Inspected corrected gull over WebGL at desktop/phone sizes.
-
-`check-gull.mjs` passes 47 pixel/contact and visible-layout checks across live resizes:
-widths 320–2560, heights 320–1440, DPR 1/1.25/2/3 (including density-only changes at fixed viewport size), root text sizes 16/20/24 px,
-day/night, standing/sleeping/drawing and rotation during arrival. It checks the actual
-alpha footprint against the border, label clearance, viewport clipping, visible
-text/control collisions and refreshed canvas density. Contact error stays within
-0.36 CSS px (raster antialiasing); no tested overlap/clipping. Reports/screenshots:
-`tools/.out/gull/`. Headless focus tests explicitly focus the page. Gull/keyboard
-harnesses printed passing results but their Node processes lingered; gull exited after
-a delay and only the completed keyboard process was stopped. Creative, static, Node, SEO and header checks exited normally.
-
-The previous refinement also passed software fallback and 23 sound checks, and
-verified night rest with no redraws, live theme switching and reduced-motion changes.
-Those sound checks were not rerun for this placement-only correction.
-
-The earlier geometry timing (~0.1 ms/frame on an M4 Pro) predates this refinement;
-geometry cost and scroll cost were not re-measured. No physical-device conclusions.
-`compare-builds` cannot prove "unchanged" across a change in section heights: a section above
-that ends on a fractional pixel shifts everything below it by a sub-pixel and re-antialiases the
-text. Compare computed styles and relative boxes instead.
-
-**Scroll cost before and after a change:** build the previous commit
-(`git archive HEAD | tar -x -C $SCRATCH/old`) and run `node tools/check-creative-v2.mjs <url>
---diagnose --scroll` against both; compare p95, long tasks and the `RecalcStyleCount` and
-`LayoutCount` metrics, at least twice each.
+`check-dev-sky` needs `pnpm dev` in its own worktree, opened at `localhost` (Next's dev server
+blocks its resources from `127.0.0.1`).
 
 ## What each check covers
 
-| Check                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Covers                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tools/*.test.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Feedback (every cue deterministic, finite, silent at its edges, heard on the laptop model and under a page turn; focus < hover < the dial < a press < a roll; every action names a real cue, a short buzz and a sentence; spacing drops bursts; idle levels; activation classification), the press point on the sea and the sea's pace, sound (page turns soft and varied; the surf seamless, heard on a laptop-speaker model at a -34 LUFS median, never silent, under a ducked page turn, a wash not a hiss; detents sharp, over in 3 ms, mostly above 2 kHz, a trill under the page turn; the ratchet and tick spacing), the About portrait (engraving: rows, light lifts the lines, the sea's ripples, luma sampling; bezel: ticks, face inset, legend arcs), the gull (the sitting gull fits inside the 44 px pill and rests on its floor, reserved seats              |
-| fit sitting and standing sizes with label clearance, short approaches do not reverse, the arrival                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| starts where planned, never jumps and ends at rest on the perch, wingbeats come in bursts with glides,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| every frame of a visit is finite, habits are seeded, spaced at least 4 s, peck at most once and stop                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| after 45 s, the beak tip is the bill's end, the song comes in phrases with quiet between and ends                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| before the gull sleeps, notes rise from the beak and fade in and out, the head lifts for each note,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| the takeoff stands first, climbs and fades out at                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| the exit, departure begins at the current pose during flight/hover, night gets one phrase,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| fewer quiet habits and rests unless engaged, hover stands it up, idling puts it to sleep, the head follows the pointer, the folded                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| wingtips cross the tail, a head-on glide is symmetric), error-page scenes (homepage shaders byte-identical, no ship on error seas, whirlpool sampling, drifting poses, lightning never flickers, torn edge, driftwood meshes), every project's case study (one file per project, opens with the brief, ends with the outcome, 2–5 minutes), the Work system drawings (straight and diagonal arrows, every project drawing fits, overlaps nothing and routes no arrow through a box), markdown parser, post structure, post files and the editor's request guard, and every post's frontmatter, sea model (v1 digest, v2, plate, request parsing), the two API routes, sun and moon lighting, stage easing, reveal mapping, frame pacing, swipes, ship mesh, matrices, camera. `sea-api.test.mjs` needs `SEA_TEST_BASE`. |
-| `check-seo.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 28 crawler and page combinations (WhatsApp, Facebook, Twitter, Google bots): canonical, cards, images, index and noindex, structured data (Organization with logo and profiles on home, Article on case studies); discovery files; share card under 600 KB; manifest and its icons; unknown-article and unknown-case-study 404; `/work` redirect.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `check-headers.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Security headers, `security.txt`, and no CSP violation on the main pages in headless Chrome.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `check-ship.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Rendered ship triangles versus visible text and viewport bounds: six sizes, day/night, Drawing, 150% text, live rotation, paused/reduced-motion cloth and native mobile reveal/return. Outputs to `tools/.out/ship/`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `check-gull.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Live portrait/landscape resize matrix, DPR 1/1.25/2/3, larger text, day/night, standing/sleeping/drawing: pixel contact with the pill border, label clearance, no clipped bird/control, no visible text/control overlap and refreshed canvas density. Outputs to `tools/.out/gull/`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `check-keyboard.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Real Tab, Shift+Tab, Enter, Space and arrow events: visible focus, on screen, not covered, 24 px minimum, and the main controls.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `check-software-fallback.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | A browser with no GPU (`--disable-gpu`) must show the static plate: renderer marked fallback, nothing drawn, plate visible, page readable.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `check-sound.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Every sound against the visitor's choices, with the Web Audio calls spied on: nothing before the first click; after it the answers sound (a hover, the dice, the compass) and the waves do not; "Play waves" starts the loop and remembers it; page turns into and within the notebook (by link and by back and forward), never the same variation twice in a row, none on the page already open; the waves leave with the shore and come back without a click; after a reload a remembered choice waits for the first click (and a first click on the button plays); muting the waves keeps the answers; "Mute sounds" silences everything and outlasts a reload; "Unmute sounds" answers and leaves the waves off. Sounds are told apart by their length (page turns 0.8–0.95 s, detents 0.015 s). How it sounds is not tested: listen to `node tools/render-sounds.mjs`. |
-| `check-creative-v2.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Browser behaviour in isolated headless Chrome: content, viewports, lifecycle (pause, resume, context loss), shader-to-CPU parity, mobile stages, links (a section link glides, the home link on `/` glides to the top and keeps the sea, another page opens at its top, reduced motion jumps), fallbacks, shore, theme, sound, asset sizes. The suites live in `tools/e2e/`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `compare-builds.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Pixel comparison of two builds over 36 views (9 pages and homepage sections, desktop and phone, day and night). The way to prove a refactor changed nothing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `measure-routes.mjs`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Gzipped inventory of the assets each route references. Not Web Vitals.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+- **`tools/*.test.mjs`** (no browser): the sea model (v1 digest, v2, plate, request parsing),
+  the two API routes and the analytics endpoint (skipped unless `SEA_TEST_BASE` names a server), shader defaults byte for byte, sun, Moon,
+  stars, planets and daily atmosphere, the ship, gull, portrait and system drawings, stage
+  easing, reveal mapping, frame pacing and swipes, sounds and feedback cues against a
+  laptop-speaker model, the markdown parser, posts, case studies and the editor's request
+  guard, telemetry schema and redaction, and these documents (`docs.test.mjs`).
+- **`check-seo`**: 78 crawler and page cases (Google, Bing, OAI-SearchBot, social bots):
+  canonicals, cards, index and noindex, structured data, the exact sitemap, discovery files,
+  share-card size, manifest icons, drafts and unknown pages 404, the `/work` redirect.
+- **`check-headers`**: security headers, `security.txt`, no CSP violation on the main pages.
+- **`check-keyboard`**: real Tab, Shift+Tab, Enter, Space and arrows: focus visible, on screen,
+  not covered, at least 24 px, and the main controls work.
+- **`check-creative-v2`**: content, viewports, lifecycle (pause, resume, context loss),
+  shader-to-CPU parity, mobile stages, links, fallbacks, shore, theme, sound and asset sizes.
+  Suites live in `tools/e2e/`. `--quick` takes fewer screenshots; `--diagnose` measures desktop
+  cadence (may target `www.maxsash.com`); `--scroll` or `--native-scroll` measure the reveal.
+- **`check-telemetry`**: configured capture with requests intercepted, no analytics storage,
+  section qualification, content and contact events, pause and resume, redaction, failures.
+- **`check-ship`**: rendered triangles clear text and edges at six sizes, day and night, Drawing,
+  150% text, rotation, paused and reduced-motion cloth, native mobile reveal.
+- **`check-gull`**: contact with the pill border, label clearance and no clipping across live
+  resizes, DPR 1–3, larger text, day and night, standing, sleeping and Drawing.
+- **`check-sound`**: every sound against the visitor's choices with Web Audio spied on. How it
+  sounds is not tested: listen to `node tools/render-sounds.mjs` (WAV files in `tools/.out/`).
+- **`check-software-fallback`**: with `--disable-gpu` the static plate shows and the page reads.
+- **`check-browser-bars`**: the colour Safari 26+ takes for each bar matches `theme-color` and
+  the rendered edge rows, across the hero, Notebook, error pages and a no-GPU fallback.
+- **Sky:** `check-sky-theme` (sun and Moon toggle: ripple, blend, reversal, saved choice,
+  reduced motion), `check-moon` (phase shading from real shader pixels, India midnight),
+  `check-moon-detail` (mapped Moon request, crossfade, geometry, fallbacks), `check-moon-sea`
+  (moonlight on the water by phase), `check-stars` and `check-planets` (dated points, day hiding).
+- **`check-navigation`**: the "Opening page…" badge during real RSC requests, keyboard and touch.
+- **`check-studio-plate`**: the no-JS print image and the hydrated SVG agree, in both themes.
+- **`check-heading-contrast`**: rendered heading contrast in every arrival state and theme.
+- **`check-drawing-labels`**: system-drawing labels fit their boxes with loaded fonts.
+- **Comparisons:** `compare-builds <old> <new>` pixel-compares 36 views (prove a refactor changed
+  nothing); `compare-font-loading <a> <b> [rounds] [--warm]` alternates cold loads;
+  `measure-routes` lists gzipped assets per route (not Web Vitals).
 
-`check-creative-v2.mjs` also takes `--quick` (a small screenshot subset), `--diagnose`
-(read-only desktop cadence; may target `www.maxsash.com`), and `--scroll` or
-`--native-scroll` to measure the sea reveal. Reports and screenshots go to ignored
-`tools/.out/`. `--use-angle=swiftshader` is an explicit software backend that Chrome still accepts as
-WebGL, so the other tools keep it for steadier rendering; only `--disable-gpu` triggers the
-fallback. Every browser tool creates its own Chrome profile and removes it on exit
-(`tools/lib/browser.mjs`).
+## Latest results
 
-For a refactor, build the previous commit on another port and run
-`node tools/compare-builds.mjs <old url> <new url>`. The phone Work image can be flagged
-in a single run, even when a build is compared with itself (lazy-image timing); repeat the
-run. Servers that just started also have a cold image cache.
+Each check appears once, under the date it last passed; move it up when it runs again.
+
+- **15 October, documentation review:** types, lint, format; 163 Node tests against a
+  production build; `check-telemetry` 16 with a placeholder token (the procedure above).
+- **15 October, 1.1.0:** `check-seo` 78 cases; `check-keyboard` 22/22; `check-headers`;
+  `check-creative-v2` 191 records with no runtime exceptions.
+- **14 October, 1.0.0:** `check-ship` 36/36.
+- **13 October:** `check-navigation`.
+- **12 October:** `check-browser-bars`, `check-sky-theme` (12 cases), `check-moon`,
+  `check-moon-detail`, `check-moon-sea`, `check-stars`, `check-planets`,
+  `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
+- **11 October:** `check-gull` (47), `check-sound`, `check-studio-plate` (8),
+  `check-heading-contrast` (128, lowest 10.33:1), `check-drawing-labels`.
+
+**Production, by hand:** 14 Oct 19:07 UTC, schema-1 `page_view` and `section_view` reached
+PostHog redacted; the live relay answers 403 to a missing or foreign Origin, 400 to a bad batch,
+415 to a wrong type and 405 to GET. 13 Oct: the live sitemap lists 11 URLs, and both essays
+are indexable with self-canonicals. Live contact, studio and navigation events, pause and
+Vercel rate limits are not checked.
+
+**Owner, iPhone Air on iOS 27 (13 Oct, the owner's report):** Safari day and night, Notebook,
+touch, gull, rotation, sounds, case studies, sea studio, Reduce Motion and the VoiceOver
+checklist below all work; WhatsApp previews work. The page feels somewhat long.
+
+## Harness notes
+
+- Turbopack needs `node_modules` installed in the worktree (a symlink fails its root check).
+  The build fetches Google Fonts, and in a sandbox Turbopack also needs to bind worker ports;
+  the checks need localhost.
+- `check-seo` refuses anything but a local server. Captures and reports go to ignored
+  `tools/.out/<check>/`; delete them once reviewed.
+- Mobile-stage checks use Chrome's real touch emulation, not a `matchMedia` override.
+- Each browser tool makes and removes its own Chrome profile (`tools/lib/browser.mjs`), and
+  waits for a populated DevTools port file. Some Node processes (keyboard, creative, gull) have
+  lingered after printing their result; stop them once the report is written.
+- `--use-angle=swiftshader` still counts as WebGL, so the tools keep it for steady rendering;
+  only `--disable-gpu` triggers the fallback.
+- `compare-builds` cannot prove "unchanged" once a section above changes height: a fractional
+  shift re-antialiases text. Compare computed styles and relative boxes instead. A lazy phone
+  Work image can differ even between identical builds; repeat the run.
+- **Scroll cost:** build the previous commit (`git archive HEAD | tar -x -C <dir>`) and run
+  `check-creative-v2 --diagnose --scroll` against both, at least twice; compare p95, long tasks,
+  `RecalcStyleCount` and `LayoutCount`.
 
 ## Error pages
 
 See them at `/nope`, `/blog/nope` and `/plate?seed=zz` on any build. The crash pages need a
 throw: in a scratch copy only, add a page that throws (for `error.tsx`) and make the root
 layout throw (for `global-error.tsx`); never commit either. No automated browser check
-covers the error pages yet, and no parity test compares the whirlpool shader with
-`sampleDrift`.
+covers the error pages, and no parity test compares the whirlpool shader with `sampleDrift`.
+
+## Phone checklist
+
+For a physical iPhone on the production site (the owner ran it on 13 October):
+
+1. **Reduce Motion** (Settings → Accessibility → Motion), then reload home: sea, ship and gull
+   stay still; stage controls still reach Drawing and Work; the theme swaps without a fade or
+   ripple; all text shows. Check Notebook, a case study and `/sea`, then toggle the setting
+   with home open and return without reloading.
+2. **VoiceOver** (set the Accessibility Shortcut to VoiceOver; triple-click the side button).
+   Swipe through "Skip to work", the navigation, sea, stage and theme controls, a case-study
+   link, the Notebook and back, the copy-email notice and the shore's mute control. Rotor
+   Headings should reach every section. On `/sea`, sliders announce name and value and adjust
+   with one-finger up and down; presets, dice, copy link and notices are reachable. Report the
+   page, the control and the exact words spoken.
 
 ## Never checked
 
-Automated browser checks run in headless Chrome on a Mac. Owner physical-device
-evidence is recorded above. Remaining coverage gaps:
-
-- a real screen reader (VoiceOver on Mac and iPhone, NVDA, TalkBack) and Reader mode;
-- physical devices beyond the owner-reported iPhone Air/iOS 27 checks above, and
-  battery, thermal or GPU measurements;
-- field Web Vitals and the Vercel runtime (headers and the sea API are tested locally);
-- a printed plate on paper, and the real WhatsApp app's preview;
-- separate speaker/headphone listening results and Firefox audio; owner reports iPhone
-  sounds working as expected, without separate measurements;
-- vibration on Android and notices with a screen reader; owner iPhone touch/ripple
-  and sound behaviour are reported good;
-- physical-browser gull behaviour beyond the owner-reported iPhone Safari pass, and
-  how often visitors actually press it;
-- the hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
-  idle and offline beyond headless Chrome's emulation;
-- Search Console, indexing and AI citation outcomes.
-
-## Approved essays and client-facing polish (11 October 2026)
-
-Node 24.21.0 isolated production build, lint/types/format,
-126 Node tests, 44 crawler/page cases, headers/CSP and 20/20 keyboard checks pass.
-Full creative rerun passes 193 records/129 assertions with no failures/exceptions. Initial
-three failures expected obsolete noindex policy; corrected harness then rerun.
-SEO checks listing/approved essays are indexed and in exact sitemap, no sample labels,
-project screenshot card dimensions/asset responses, owner Build time and two drafts absent.
-Direct component rendering covers footer network/non-OK failure and loading state.
-Six case-study duration/layout checks pass at 390/1440 with no horizontal overflow;
-Notebook phone and case-study phone screenshots inspected. Final shortened Household Hub
-headline rebuild, 44 SEO cases and six layout checks pass, with phone screenshot inspected;
-full creative result predates only that final copy shortening.
-No live, social-app or physical-device review. Accidental main-folder build interrupted;
-all reported passing builds/checks above ran in isolated worktree.
-
-AI discovery review (11 October): read-only live OAI-SearchBot user-agent requests pass
-200 for robots/sitemap/home/listing/wave essay/business-operations. Live listing/essay
-remain noindex and sitemap seven URLs: latest publication changes unreleased. These
-requests do not prove genuine crawler-IP access, WAF settings, indexing or AI citations.
-No fresh build/browser/Node suite in this review; prior verification remains above.
-
-GitHub IST change (11 October): isolated Node 24 rendered-component check passes across
-18:29:59/18:30 UTC (India midnight), same-local-day grouping and IST label. First scratch
-assertion assumed a comma in en-GB output; corrected expected formatting and reran. Types,
-targeted ESLint and format pass. No fresh production build/full browser suite for this edit.
-
-Backend credibility and IST review (11 October): final isolated Node 24.21.0 production build,
-lint, TypeScript and format pass. The full suite passes:
-126 Node tests with `SEA_TEST_BASE`, 44 crawler/page SEO cases, headers/CSP, keyboard 20/20 and
-193 creative records with no runtime exceptions. This includes hero/metadata, repeated-version
-rejection, IST grouping, and current business/intrusion system drawings and prose. The sandbox
-could not resolve Google Fonts or reach its own local server; the successful build/checks used
-narrowly enabled network/localhost access. Focused 390 px headless captures after the drawing
-arrival were inspected: both updated private system plates have legible, unclipped labels, boxes
-and arrows. No live, social-app or physical-device claim follows.
-
-BlogPosting and crawler addition (11 October): source and crawler harness cover factual
-BlogPosting fields plus Bingbot/OAI-SearchBot initial HTML. The focused local production rerun
-passes 66 crawler/page cases; format, lint and TypeScript pass. The same production build had
-already passed the 126 Node tests, headers/CSP, keyboard 20/20 and 193-record creative matrix
-before this test-only crawler expansion. No live crawler-IP, WAF or citation claim follows.
+- Screen readers beyond the owner's iPhone VoiceOver pass: VoiceOver on Mac, NVDA, TalkBack,
+  Reader mode; the "Opening page…" badge with VoiceOver.
+- Android and other physical browsers; battery, thermal or phone GPU measurements.
+- Safari's bars on a real phone: whether finger scrolls out of the hero restore the body
+  colour, and whether the theme switch and Drawing stage update them.
+- Field Web Vitals and the Vercel runtime (headers and the sea API are tested locally).
+- A printed plate on paper; LinkedIn and Facebook previews.
+- Speaker and headphone listening, Firefox audio, Android vibration.
+- The hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
+  idle and offline beyond headless Chrome's emulation.
+- Search Console indexing, real crawler-IP access and AI citations.

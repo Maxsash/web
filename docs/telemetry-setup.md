@@ -1,9 +1,8 @@
 # Telemetry setup and owner reports
 
-15 October 2026. EU project 306242 in Maxsash Studio is connected. All five pinned
-reports below exist, with 21 saved charts. Production 1.1.0
-ingestion verified 14 October 19:07 UTC (page_view and section_view, schema 1);
-the schema-0 installation test is excluded from reports. Design: [telemetry.md](telemetry.md).
+How analytics is configured, where its reports are, and how to check a release. EU project
+306242 in Maxsash Studio is connected and receives production events (verified 14 October
+2026; [testing.md](testing.md)). The contract: [telemetry.md](telemetry.md).
 
 ## Where to see reports
 
@@ -35,11 +34,9 @@ PostHog’s browser SDK, autocapture and replay onboarding: no SDK ships. The
 project’s own replay/autocapture/heatmap toggles are on but inert; changing
 project settings is the owner’s call.
 
-Privacy discloses EU hosting and PostHog’s current [retention policy](https://posthog.com/docs/data/events-retention):
-one-year query history on free plans, seven years on paid plans. This is not a
-promise of automatic deletion. A 90-day retention setting is not available.
-Account billing tier/quota, alerts and any additional access controls remain owner
-review; no billing or project settings were changed by the agent.
+The privacy page discloses EU hosting and PostHog's retention (see telemetry.md, "Data
+boundaries"). Billing tier and quota, alerts and access controls are the owner's to review;
+no billing or project settings were changed by an agent.
 
 ## Verify a release
 
@@ -67,6 +64,6 @@ read/write scopes, then run:
 POSTHOG_APP_HOST=https://eu.posthog.com POSTHOG_PROJECT_ID=YOUR_NUMERIC_PROJECT_ID node tools/setup-telemetry.mjs --apply
 ```
 
-Keep that key outside source/chat and revoke it afterward. The command creates
-missing reports without overwriting existing owner edits. Current project is already
-provisioned; no need to run it again. Verification: [testing.md](testing.md).
+Keep that key outside source and chat, and revoke it afterward. The command creates
+missing reports without overwriting the owner's edits. The current project is already
+provisioned.

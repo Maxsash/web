@@ -6,7 +6,9 @@ issue for it. Machine-readable contact details are at
 
 The production site serves authored content and a read-only sea API. It has no accounts,
 database or cookies. Public inputs are a sea seed (eight hexadecimal characters) and a
-model version, validated before use. The optional GitHub token is used only on the server.
+model version, validated before use, and, when analytics is configured, event batches
+posted to `/api/telemetry`: same-origin JSON only, bounded in size and count, with every
+field rebuilt from an allowlist before it is relayed. Tokens are used only on the server.
 
 The local post editor writes Markdown files only in development. Its routes are excluded
 from production builds, and write requests require same-origin JSON from localhost.

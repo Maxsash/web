@@ -1,127 +1,11 @@
 # Decisions
 
 What was decided, and why, so it is not re-argued or silently undone. Newest first within
-each group. How the code is built: [architecture.md](architecture.md).
+each group. A changed decision rewrites its entry; a rejected idea keeps one line saying why.
+How the code is built: [architecture.md](architecture.md).
 
 ## Direction
 
-- **Measure behaviour before changing journeys** (owner, 14 October 2026).
-  [telemetry.md](telemetry.md) defines explicit events/reports; research/blog brief is
-  [visitor-journeys.md](visitor-journeys.md). Owner chose **no persistent visitor
-  tracking**, accepting limited journeys: in-memory random IDs/pause only, reset on
-  reload/new tab; no analytics storage, profiles, SDK autocapture or replay.
-  PostHog receives events only through the first-party relay; its browser SDK is
-  not used. Released in 1.1.0 with five dashboards. No adaptive page order or
-  segmentation yet.
-- **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study
-  clicks sometimes wait several seconds without feedback. Shared PageLink uses Next's
-  useLinkStatus for a fixed “Opening page…” badge, with no layout shift or fake progress.
-  Reduce Motion keeps the icon still. Keep current prefetch policy and route status codes.
-- **Phone length remains a review item** (owner iPhone Air/iOS 27, 13 October). Smooth
-  and working, but somewhat long; no shortening or approved stage-timing change yet.
-- **Wooden feedback is an idea** (owner, 13 October). Consider restrained plank/wood
-  taps on controls; keep Notebook paper turns. No sound change made or approved yet.
-
-- **One brand everywhere, from the site's own sources** (owner asked for on-brand icons, share
-  images and social profiles, 11 October 2026). Icons keep the mark's geometry and move from the
-  old navy/cream to chart ink `#10303A` and hero cream `#F5F0DF`. The default share card is the
-  live hero (Home water sea and cutter, Montagu Slab headline, the offer), replacing a card with
-  the earlier type, ship and "Software, games, and experiments" copy. Social images use the same
-  captures and fonts; profile copy reuses the site's lines verbatim, with real figures only and
-  the phone number only inside the WhatsApp link. The kit lives beside the public repo in `../brand/`; profile URLs go into the
-  site's structured data once the owner confirms them. `public/mark.svg` was unreferenced since
-  11 September and was deleted (the kit holds mark files); the manifest uses `display: browser`
-  because the site is a website, not an installable app. The studio's LinkedIn Page
-  (`/company/maxsash`) and Instagram (`@maxsashstudio`) are named in the home page's Organization
-  data, with the founding date (June 2026).
-- **WhatsApp links the business number** (owner, 12 October 2026: usernames "aren't currently
-  working"; "use the number instead"). `wa.me/919183636567`, from `whatsappNumber` in
-  `content/site.ts`. The number is never shown as text; the username `@maxsash` stays reserved
-  for later. Replaces 11 October's username link, whose check only proved that WhatsApp's web
-  page accepts any well-formed username.
-- **The shore holds the studio's channels, About holds the person's** (owner: "put in socials on
-  the website wherever it makes sense", 11 October 2026). Contact offers WhatsApp beside the
-  email; the shore and the Notebook footer list WhatsApp, Instagram and the LinkedIn Page; the
-  shore lists the email too. Portfolio, personal LinkedIn and GitHub stay in About only.
-- **The sea studio has its own page, `/sea`** (owner, after real visitors needed it explained
-  in person, 11 October 2026: "this playground is adding confusion to the homepage"). The
-  homepage ends Notebook → shore. `/sea` opens with "Make your own sea.", a plain paragraph
-  (the sea is drawn, not filmed; six waves, four settings) and three numbered steps that match
-  the controls. The hero's "Make your own →" and the print page link to it with the current
-  seed, and the shore's colophon links it on every page; "Sail this sea →" opens the homepage with it. The in-page "You are sailing this sea" pill
-  went with the move. The studio's layouts, presets and drawing are unchanged.
-
-- **Shorten the narrow module label** (11 October 2026). Use “Buying” in the business
-  drawing, retaining purchasing in the module ID and descriptive prose. Preserve the four
-  modules and shared drawing typography; leave its social capture for recapture after release.
-
-- **Show private systems through their real boundaries** (owner, 11 October 2026). The business
-  platform explains selectable modules, adaptable insights, privacy and accessible workflows. The
-  intrusion platform explains local LAN computing, a minimum-data notification boundary and the
-  RTSP-to-browser video service. Do not infer encryption, protocols, metrics or other details the
-  owner did not supply.
-
-- **Make backend credibility explicit** (owner, 11 October 2026). Hero/metadata name
-  backend and real-time systems. Show mechanisms, tradeoffs and known production evidence;
-  do not add superlatives or invent operational metrics. Preserve the agreed client order.
-
-- **GitHub log dates use IST** (owner, 11 October 2026). The owner is based in India;
-  group and label commit dates in Asia/Kolkata rather than UTC.
-
-- **Report private-system build durations** (owner, 11 October 2026): business operations
-  took about six months; intrusion detection about eight. Show Build time, with no invented
-  calendar range; intrusion detection’s deployment history remains a separate proof line.
-
-- **Publish the two approved essays** (owner, 11 October 2026). Keep their existing URLs
-  and authored layouts; label them Essay, index them and the Notebook listing, and include
-  all three in the sitemap. Published Notebook articles expose only their visible title,
-  summary, topic, author, URL and publication date as BlogPosting JSON-LD; drafts remain
-  development-only.
-
-- **Deliver the studio drawing progressively** (11 October 2026). The complete inline
-  SVG below the fold made initial HTML large. Start with a lazy image of the existing
-  print SVG; hydrate to the same inline drawing for editing. Three local Lighthouse
-  mobile rounds improve median FCP 2.555 → 2.105 s, LCP 4.203 → 3.754 s, halve
-  transferred HTML. Keep all visible content/geometry and no-JS drawing. Restoring body
-  font preloads did not help; experimental CSS inlining added 47 KiB without reliable
-  LCP benefit, so neither is adopted. Live improvement awaits owner release.
-
-- **Preload the hero font only** (11 October 2026 measured optimisation). Keep Montagu
-  Slab eager; Rethink Sans (both styles) and Reddit Mono load when used. The four early
-  font files competed with CSS in an uncached phone trace. Five alternating local cold
-  pairs improved median LCP 2.884 → 1.552 s; all font descriptors/assets match. This
-  prioritises requests without changing typefaces or approved sea timing. Live gain awaits release.
-
-- **Headings keep full contrast during arrivals** (11 October 2026 correction). The
-  kicker still reveals, but its following heading no longer dims to 30% opacity. The
-  PageSpeed failures matched that shared rule; readable text takes priority over its fade.
-
-- **Index real published writing** (owner, 11 October 2026). Published real posts enter
-  search and the sitemap; drafts remain excluded. The two original essays and listing were subsequently
-  approved for publication (see above).
-
-- **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
-  stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
-  the generic Claude/AI look, and headings were hard to read. Chosen from a specimen, second
-  round ("Logbook slab"): **Montagu Slab** for display and essay text (optical sizes:
-  high-contrast in headlines, sturdy in text), **Rethink Sans** for text and labels, **Reddit
-  Mono** only for data (seeds, coordinates, code). The first pick (Besley + Atkinson
-  Hyperlegible Next/Mono) was replaced because the owner wanted fresher faces and a build
-  without next/font's missing-metrics warning; every face now has Next's fallback metrics.
-  Montagu Slab has no italic, so _Math._ and essay emphasis use the browser's slanted roman.
-  Palette **Admiralty chart**: cool chart paper, the existing teal-navy
-  ink, chart magenta as the accent (nautical charts use it for lights and cautions). The owner
-  first picked navy and brass, then switched to this. Display tracking stays between −0.02em
-  and +0.01em (uppercase); sizes were refitted to the wider face.
-  **Italic only where it means something**: _Math._ (mathematics sets variables in italic);
-  other headings are one roman voice. Project and error-page headlines are single strings; a
-  post's `emphasis` field stays for deliberate use and renders as plain italic in ink (the
-  samples no longer set it). The sea, sun, ship, engravings and plates are unchanged.
-
-- **Structure first, then feedback** (owner, 9 October 2026). The structure run (below,
-  "Structure and content") settled what goes where and why, and is released. The feedback run
-  was built maximalist and the owner kept all of it (below, "Feedback";
-  [feedback.md](feedback.md)).
 - **A is the main site, B is the blog, C is an optional Easter egg.** A ("Living Atlas")
   is one authored sea that reveals its own mathematics as the visitor scrolls and
   becomes a printable plate. B (the Notebook) is a separate editorial composition in ink
@@ -133,504 +17,398 @@ each group. How the code is built: [architecture.md](architecture.md).
 - **The first creative review was rejected** (notebook too similar to the home page;
   explicit ship controls too simple). The Wind-versus-Helm choice, harbour controls and
   voyage were removed and are not coming back.
-- **Be honest in copy.** The two original essays are owner-approved published writing. Only real projects appear (Velora Rights, Household Hub,
-  Wedding Photo Platform). The sea is an authored study, not
-  an ocean observation, and nothing implies tilt, live data or fluid simulation.
-- Real essays and projects come last.
+- **Be honest in copy.** Only real projects appear (the five in Work) and only
+  owner-approved writing is published. The sea is an authored study, not an ocean
+  observation, and nothing implies tilt, live data or fluid simulation.
+
+## Brand, type and colour
+
+- **One brand everywhere, from the site's own sources** (owner, 11 October 2026). Icons keep
+  the mark's geometry in chart ink `#10303A` and hero cream `#F5F0DF`. The default share card
+  is the live hero (Home water sea and cutter, Montagu Slab headline, the offer). Social
+  images use the same captures and fonts; profile copy reuses the site's lines verbatim, with
+  real figures only and the phone number only inside the WhatsApp link. The kit lives beside
+  the repo in `../brand/`. The manifest uses `display: browser` because the site is a
+  website, not an installable app. The home page's Organization data names the LinkedIn
+  Page (`/company/maxsash`), Instagram (`@maxsashstudio`) and the founding date (June 2026).
+- **WhatsApp links the business number** (owner, 12 October 2026: usernames "aren't currently
+  working"). `wa.me/919183636567`, from `whatsappNumber` in `content/site.ts`, never shown as
+  text; the username `@maxsash` stays reserved. A username check cannot prove anything:
+  WhatsApp's web page accepts any well-formed username.
+- **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
+  stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
+  the generic AI look, and headings were hard to read. Chosen from a specimen ("Logbook
+  slab"): **Montagu Slab** for display and essay text, **Rethink Sans** for text and labels,
+  **Reddit Mono** only for data (seeds, coordinates, code). A first pick (Besley + Atkinson
+  Hyperlegible) was replaced for fresher faces and a build without next/font's missing-metrics
+  warning. Montagu Slab has no italic, so _Math._ and essay emphasis use the browser's slanted
+  roman. Palette **Admiralty chart**: cool chart paper, teal-navy ink, chart magenta as the
+  accent (nautical charts use it for lights and cautions). Display tracking stays between
+  −0.02em and +0.01em. **Italic only where it means something**: _Math._ (mathematics sets
+  variables in italic); other headings are one roman voice.
 
 ## The sea
 
-- **Weather the cutter, used but never damaged** (owner, 14 October 2026; accepted,
-  ships in 1.0.0). Wear a working boat earns: sun-faded
-  paint, a waterline grime line, faint salt streaks, silvered deck planks, weathered
-  varnish, tarnished brass with polished touch points, slightly uneven canvas with a
-  dirtier foot, sail corner patches and one reef band with points. No rust, cracks,
-  holes, patches over tears or missing parts. The Dragon Ball emblem, pennant, geometry
-  outline, motion and Drawing mode stay as approved. No assets or render passes.
-
-- **Let each India day have a gentle atmosphere** (owner, 13 October 2026).
-  A deterministic daily choice sets one of three restrained moods: clearer,
-  wispier or slightly hazier. The sky shifts cloud position/opacity, cirrus,
-  horizon haze and halo; daylight glitter changes slightly. Night uses the
-  same clouds and a faint horizon haze, with cloud masking shared by stars
-  and planets. The date follows the existing Moon day, including preview
-  and midnight refresh. This is authored visual variety, not weather data;
-  no sea shadows, wakes, extra assets or passes.
-
-- **Remove cloud shadows and their temporary borders** (owner, 13 October 2026).
-  The faint sea shadows/reflection dimming did not provide enough visible value.
-  Remove the canopy projection, attenuation and red-border diagnostic; restore
-  the accepted sky-cloud version a55dd42. Keep clouds, their star/planet masking,
-  daylight atmosphere/glitter and the four-star sail. No replacement shadow effect
-  is approved; the later daily sky variation is separate from sea lighting.
-
-- **Review cloud depth before sea shadows** (owner, 13 October 2026). Begin with
-  a few soft irregular clusters shared by day and night, warm daylight edges and
-  subdued phase-aware moonlight. Keep headline space and the Moon open. Reuse one
-  opacity field to soften stars/planets behind clouds and the paused scene clock
-  for slow drift. The sky clouds were accepted; the subsequent sea shadows were
-  rejected and removed. Preserve the approved water after its rejected passes.
-
-- **Remove the rejected water pass** (owner, 13 October 2026: “they aren't
-  looking any good right now”; improve or remove). The first heading-aligned
-  micro-normal, crest-foam and thin-wake pass did not earn its place visually.
-  Restore the prior water normals and wake; delete the new foam/roughness modules
-  and their tests. Keep the approved daylight atmosphere/glitter and four-star sail
-  emblem. Any future water pass needs a different visual approach, not more of this.
-
-- **A Dragon Ball on the sail** (owner, 13 October 2026). Replace the interim
-  MS initials with a Dragon Ball emblem. Use the orange four-star ball: amber disc,
-  darker orange rim and four red five-pointed stars, printed onto both sail faces.
-  Keep the existing cloth motion and studio logo. Supersedes the compass/MS marks.
-
-- **Restrained daylight atmosphere and glitter** (owner, 13 October 2026).
-  Build options 1 + 2: sparse feathered cirrus, luminous horizon haze, a soft solar
-  halo and a broken sun-reflection path driven by wave-facing normals. Preserve
-  headline space, sea mathematics, stage timings and night’s dated lighting.
-  Cumulus and daily atmospheric variation can apply to both day and night;
-  shared sky clouds and daily variation were subsequently built, while sea
-  shadows were rejected and removed.
-  The first whitecap/wake pass was rejected and removed; no replacement approved.
-
-- **Show the mapped Moon whenever the night sky shows the Moon** (phase 4, owner choice,
-  12 October 2026). A zoom-gated reveal still swapped one Moon for another, so the owner
-  chose always on: the 2025 NASA SVS 2K LRO colour map replaces the shader's Moon at its
-  original size and position, and zooming only reveals the resolution already there.
-  Ship only its lossless near-side crop (211 KiB), which is all that is drawn. A
-  daytime sea never requests it. A worker shades it off the main thread; the shader's Moon
-  crossfades into it and stays as the fallback. The map adds light to the sky, so the
-  unlit side shows faint Earthshine and is never darker than the sky. No zoom detection,
-  key shortcut or panel. Preserve the theme click and credit the source in the footer.
-
-- **Let the Moon light the sea, not drive the waves** (phase 3, 12 October 2026).
-  The hero's night specular path follows the dated illuminated fraction with an authored
-  nonlinear brightness curve and a soft column beneath the framed Moon. Keep moonless
-  water readable through restrained sky and diffuse ambient light. Preserve daytime
-  water, wind-wave motion and the error-page shader path. This is visual lighting, not
-  a measured local moonlight or tide prediction.
-
-- **Development sky preview is temporary** (owner, 12 October 2026). In `next dev`, a
-  small collapsible control selects any date from 1800–2050 or one of eight nearby
-  lunar phases and switches the scene to night, including the mapped Moon. Live date
-  restores the real India day. It is excluded from the production experience and can be removed after sky review.
-
-- **Build the night sky in phases** (owner, 12 October 2026). First dated stars with
-  Moon-dependent visibility, then dated planets, phase-dependent sea light, a mapped
-  high-resolution Moon, and a review of water motion. The most stars should show
-  near new Moon; bright stars/planets still show near full Moon. The mapped Moon must
-  shade both the real lit and unlit surface to match the current daily phase.
-  The owner chose to keep the wind-wave recipe independent of lunar phase because
-  a larger tidal range near both new and full Moon does not set wind-wave height. Delivery gates
-  and evidence are in [night-sky.md](night-sky.md).
-
-- **Reference Tikamgarh** (owner, 12 October 2026). Use a fixed approximately 21:00 IST
-  daily sky for Tikamgarh, keeping the Moon framed even when it would be below the
-  actual horizon. Native zoom toward the Moon reveals the mapped surface's detail with no
-  visible telescope instruction and without intercepting page zoom or scroll.
-
-- **Next sky uses a daily snapshot and a framed Moon** (owner clarification, 12 October 2026).
-  Accuracy is day-wise; roughly 21:00 IST, not a live ticking sky. Keep the Moon composed in
-  its current place and draw the dated surrounding sky around it; modest shifts are acceptable.
-  Fixed Tikamgarh was then confirmed. The authored horizon cannot always match
-  real local visibility. Implementation and performance brief: [night-sky.md](night-sky.md).
-
-- **Touch the sun/moon to change the sea** (owner approved, 12 October 2026). A click/tap
-  or keyboard activation starts one restrained ripple beneath the light's reflection column
-  and blends the existing sky/water/ship palettes over one second. Sun and moon keep their
-  position; the real lunar phase remains. Keep the labelled shore control and its saved choice.
-  Reduced motion or a stilled sea changes immediately without a ripple. The sky target is at
-  least 44 px, keyboard accessible and hidden in Drawing/fallback or when it would cover text.
-  Hover feedback appears only on devices that actually hover. Rapid clicks reverse continuously.
-
-- **The hero moon follows the India calendar date** (owner, 12 October 2026). Calculate
-  solar/lunar orbits and illumination locally, sampling noon IST for the whole date; refresh
-  when the date changes, including a still scene. Use conventional northern-hemisphere diagram
-  orientation (waxing right, waning left), with the existing authored size and sky position.
-  This is a date-correct phase, not a local sky observation: no location, rise/set, horizon tilt
-  or weather is read. Owner follow-up: keep the complete disc, shade its spherical surface from
-  the phase-derived sunlight direction and leave the unlit portion faintly legible; a crescent
-  is its illuminated area, not the Moon's silhouette. Further owner direction: the night side
-  should look unlit, with the same subtly marked material and faint earthshine continuing
-  across the boundary, instead of a black cover. Surface markings are stylised, not a mapped
-  lunar photograph. This models the day/night boundary, not an Earth-shadow eclipse.
-  Fallback plate and error-page moons stay fixed. Stars remain a follow-up.
-
-- **An authored survey cutter** (design interpretation, 10 October 2026). The owner asked for a
-  unique ship, refined motion and placement that reflect the whole website. The
-  resulting model is a gaff cutter in ink, rust, brass and bone canvas:
-  shaped hull, useful deck fittings, jib, bowsprit, rigging and a narrow pennant.
-  Let construction appear in the existing engraving reveal. Sample across the
-  hull to soften short chop; keep cloth breathing restrained and fit the ship
-  around actual copy and controls, and frame the drawing camera around the same
-  vessel. Enlarged portrait copy can put it in open water on the left. This remains
-  an authored scene, not a sailing simulator.
-
-- **Landscape sea studio uses two columns** (owner, 10 October 2026). The lower
-  “Make a sea” drawing looked too small in landscape. At 560–960 px wide and ≤620 px
-  high, put the introduction, settings and keep actions on the left and the complete
-  drawing on the right. Keep it visible while editing; use available viewport height
-  rather than the portrait 32svh cap. Portrait and large-screen layouts stay as before.
-
-- **A fresh sea each visit**, chosen from four curated starting points with nudged
-  settings (fully random settings reach ugly corners). **No device, location, IP or
-  weather data is read**; the owner considered those signals and declined them.
+- **Weather the cutter, used but never damaged** (owner, 14 October 2026; in 1.0.0). Sun-faded
+  paint, a waterline grime line, faint salt streaks, silvered deck planks, weathered varnish,
+  tarnished brass with polished touch points, slightly uneven canvas with a dirtier foot,
+  sail corner patches and one reef band. No rust, cracks, holes, patches over tears or
+  missing parts. Emblem, pennant, outline, motion and Drawing mode stay as approved.
+- **A gentle atmosphere for each India day** (owner, 13 October 2026). A deterministic daily
+  choice sets one of three restrained moods (clearer, wispier, slightly hazier) shifting
+  clouds, cirrus, horizon haze, halo and daylight glitter; night shares the clouds and a faint
+  haze. It follows the Moon's day, including the preview and midnight refresh. Authored
+  variety, not weather data.
+- **Clouds live in the sky only** (owner, 13 October 2026). A few soft irregular clusters
+  shared by day and night, warm daylight edges, subdued moonlight, slow drift on the paused
+  scene clock; stars and planets soften behind them. Their sea shadows and reflection dimming
+  were built and removed: not enough visible value. No replacement is approved.
+- **The first water pass was rejected** (owner, 13 October 2026: "they aren't looking any
+  good"). Heading-aligned micro-normals, crest foam and a thin wake were removed with their
+  modules and tests. A future water pass needs a different visual approach, not more of this.
+- **Restrained daylight atmosphere and glitter** (owner, 13 October 2026): sparse feathered
+  cirrus, luminous horizon haze, a soft solar halo and a broken sun-reflection path from
+  wave-facing normals, keeping headline space, sea mathematics, stage timings and night.
+- **A Dragon Ball on the sail** (owner, 13 October 2026): the orange four-star ball (amber
+  disc, darker orange rim, four red stars) on both sail faces, replacing the interim MS
+  initials and compass marks.
+- **The night sky is a dated daily snapshot around a framed Moon** (owner, 12 October 2026).
+  Accuracy is day-wise: about 21:00 IST over Tikamgarh, not a live sky. The Moon stays
+  composed in its place, even on nights it is below the real horizon, and the dated sky is
+  drawn around it. Built in phases: stars dimming with lunar light (most near new Moon, the
+  brightest still at full), planets, moonlit sea, a mapped Moon, then a water-motion review.
+  Wind waves stay independent of lunar phase: the largest tidal range comes near both new and
+  full Moon and does not set wind-wave height. How it is built and its limits: [sky.md](sky.md).
+- **The mapped Moon shows whenever the night sky shows the Moon** (owner, 12 October 2026).
+  A zoom-gated reveal still swapped one Moon for another, so it is always on: the 2025 NASA
+  SVS 2K map at the shader Moon's size and place, near-side crop only, never requested by
+  day, shaded in a worker. Native zoom reveals the detail already there; no zoom detection,
+  shortcut or panel. Credit in the footer.
+- **The Moon lights the sea, not the waves** (12 October 2026). The night specular path
+  follows the dated illuminated fraction with an authored curve beneath the framed Moon;
+  moonless water stays readable. Visual lighting, not measured moonlight or a tide model.
+- **The development sky preview is temporary** (owner, 12 October 2026). In `next dev` only,
+  a control picks any date from 1800–2050 or one of eight nearby phases and switches to night.
+  Remove it after the owner's sky review.
+- **Touch the sun or Moon to change the sea** (owner, 12 October 2026). A click, tap or key
+  starts one restrained ripple beneath the light's reflection and blends sky, water and ship
+  over one second. The labelled shore control and its saved choice stay. Reduced motion or a
+  stilled sea changes at once. The target is at least 44 px, keyboard accessible, hidden in
+  Drawing, fallback or over text; hover feedback only on devices that hover.
+- **The hero Moon follows the India calendar date** (owner, 12 October 2026). Orbits and
+  illumination are computed locally at noon IST for the whole date and refresh at India
+  midnight, even in a still scene. Northern-hemisphere orientation (waxing right). The whole
+  disc stays: the unlit side looks unlit, with faint earthshine across the boundary, never a
+  black cover. Date-correct phase, not a local observation; the fallback plate and error-page
+  moons stay fixed.
+- **An authored survey cutter** (10 October 2026, for the owner's ask of a unique ship): a
+  gaff cutter in ink, rust, brass and bone canvas with a shaped hull, deck fittings, jib,
+  bowsprit, rigging and a narrow pennant. It softens short chop, fits around the actual copy
+  and controls, and frames the Drawing camera on the same vessel. Not a sailing simulator.
+- **Landscape sea studio uses two columns** (owner, 10 October 2026). At 560–960 px wide and
+  ≤620 px high the introduction, settings and keep actions sit left and the whole drawing
+  right, visible while editing. Portrait and large screens are unchanged.
+- **A fresh sea each visit**, from four curated starting points with nudged settings (fully
+  random settings reach ugly corners). **No device, location, IP or weather data is read**;
+  the owner considered those signals and declined them.
 - **Version 1 is frozen.** An unversioned seed or API request means version 1 forever;
   generated links carry `&version=2`. Version 2 exists because version 1 only jittered
   amplitude, direction and phase, so different seeds looked alike.
-- **Four settings are the seed:** swell, heading, character, variation, one byte each.
-  The studio's sliders, presets, dice and typed seed all edit that one recipe, and the
-  live drawing is the very function that prints.
-- Home water (`70806d5e`) is the studio's reset and the sea in the essays.
-- **Squall is "Heavy · choppy", not storm-high** (owner, 9 October 2026: "too wild"). The
-  preset was swell 245, character 225, which half-buried the ship; it is now 190 and 200, one
-  step down on each. The sliders still reach 255. The crash page's "Rogue wave" keeps the old
-  storm-high sea on purpose; one draft's cover sea, which started from Squall, calmed with it.
+- **Four settings are the seed:** swell, heading, character, variation, one byte each. The
+  studio's sliders, presets, dice and typed seed edit that one recipe, and the live drawing is
+  the very function that prints. Home water (`70806d5e`) is the reset and the essays' sea.
+- **Squall is "Heavy · choppy", not storm-high** (owner, 9 October 2026: "too wild"): swell
+  190 and character 200, one step down from 245 and 225. The sliders still reach 255; the crash
+  page's "Rogue wave" keeps the storm-high sea on purpose.
 
 ## Mobile hero
 
-- **Browser bars match the page** (owner, 12 October 2026: the area in the phone's top bar
-  "should ideally match website colors"). The hero's bars take the sky above and the sea
-  below; other pages take their own paper or sky. The colours were measured from the render,
-  not invented, and verified in iOS 26.5/27 Safari simulators and headless Chrome.
-
-- **Mobile stages tolerate scroll offsets** (10 October 2026 bug fix). A 5 px offset
-  previously bypassed the transition. Swipes work while most of the hero is visible,
-  and a confirmed stage change aligns it to the top. Back's enabled state belongs to
-  React rather than being changed directly in the DOM; its old disabled prop silently
-  blocked clicks even when the button looked enabled. Approved timings stay fixed.
-
-- **Sea → Drawing, one stage per swipe**, with continuous scrolling kept on desktop. Two
-  stages since 9 October 2026: the owner found the Structure stage and its text ("Wonder has a
-  structure", the numbered list) "empty words", so the middle text is gone on desktop too, and
-  the scene note is only "Authored sea / seed". Four stages became three earlier because Waves
-  and Structure looked too alike. The 1.8 s opening and 0.6 s moves were approved on a physical
-  iPhone; see architecture.md and never change them while refactoring.
-- Touch and narrow screens use a smaller rendering budget; Writing links straight to
-  `/blog`. Scroll smoothness, not idle cadence, is the measure that matters.
+- **Browser bars match the page** (owner, 12 October 2026). The hero's bars take the sky above
+  and the sea below; other pages take their own paper or sky. Colours are measured from the
+  render, verified in iOS 26.5 and 27 simulators and headless Chrome.
+- **Mobile stages tolerate scroll offsets** (10 October 2026 fix). Swipes work while most of
+  the hero is visible, and a confirmed stage change aligns it to the top. Back's enabled state
+  belongs to React; mutating it in the DOM silently blocked clicks.
+- **Sea → Drawing, one stage per swipe**, continuous scrolling on desktop. Two stages since 9
+  October 2026: the owner found the Structure stage's text "empty words", so it is gone on
+  desktop too. The 1.8 s opening and 0.6 s moves were approved on a physical iPhone; see
+  architecture.md and never change them while refactoring.
+- Touch and narrow screens use a smaller rendering budget; Writing links straight to `/blog`.
+  Scroll smoothness, not idle cadence, is the measure that matters.
 
 ## Structure and content
 
-- **Every section has one job, said once (structure run, 9 October 2026).** A review measured
-  the page (13.1 desktop screens, 15.1 phone) and found the offer said four times, Services
-  asking for trust before any proof, the strongest work missing from Work, Elsewhere repeating
-  About's links, and the real post missing from the home Notebook. The owner answered its
-  questions and the page was rebuilt. **Order:** Hero → Work → About → Contact → Notebook →
-  shore (the sea studio, once last, moved to `/sea` on 11 October). **Nav:** Work,
-  About, Notebook, Contact; the blog's nav is derived from it. Section kickers are named, not
-  numbered; numbers appear only inside lists. Measured after: 11.1 desktop screens, 15.4 on a
-  phone (Work grew from three projects to five).
+- **Every section has one job, said once** (structure run, 9 October 2026). A review found the
+  offer said four times, Services asking for trust before any proof, the strongest work missing
+  from Work, Elsewhere repeating About's links and the real post missing from the home Notebook.
+  **Order:** Hero → Work → About → Contact → Notebook → shore. **Nav:** Work, About, Notebook,
+  Contact; the blog's nav derives from it. Kickers are named, not numbered.
+- **The sea studio has its own page, `/sea`** (owner, 11 October 2026: "this playground is
+  adding confusion to the homepage"). It opens with "Make your own sea.", a plain paragraph
+  and three numbered steps matching the controls. The hero's "Make your own →", the print page
+  and the shore's colophon link it; "Sail this sea →" opens the homepage with the seed.
+- **The shore holds the studio's channels, About holds the person's** (owner, 11 October 2026).
+  Contact offers WhatsApp beside the email; the shore and the Notebook footer list WhatsApp,
+  Instagram and the LinkedIn Page, and the shore the email. Portfolio, personal LinkedIn and
+  GitHub stay in About.
 - **Services is gone.** Its offer is the hero's line; its steps became "What to expect" in
-  Contact (Plan, Build, Launch). Plan carries the owner's promise (9 October): advice on what
-  will work for the client's business, not what looks fancy or costs too much. Contact also
-  holds the backend and real-time line and a "Copy address" button (a `mailto:` link does
-  nothing without a mail app).
-- **Elsewhere is gone.** Its links live in About (they belong to the person); the shore shows
-  the email and the studio's channels, so the end of every page has a way to write. Its compass moved
-  into the home Notebook band (desktop only, 72rem and up).
-- **Work shows five projects** (owner, 9 October: "yes, definitely"). For clients: Velora
-  Rights as the lead spread, then the business-operations SaaS and the real-time intrusion
-  detection platform (order from 10 October: off paper is closest to what a small-business
-  client buys; owner: "let's go with that order for now"). Those two were backend systems with
-  no screenshots worth showing, so each is drawn as a system plate ("the drawing underneath");
-  nothing beyond the case studies and the owner's figures is claimed. Then "Of my own": the
-  wedding platform, then Household Hub.
-- **Three cards, two rows** (owner's choice, 10 October 2026, after asking whether all five
-  belong on the homepage). The three client projects keep full cards; the two personal ones
-  are compact ruled rows (number, kicker, title, summary, proof, case-study link), so every
-  card with a picture was paid for and is in use, and all five stay one click from home. The
-  measure is the distance to Contact, not the page length: what follows Contact is extra.
-  Phone: Work 5.7 → 4.8 screens, Contact from ≈ 9 to 8.1; desktop Work 3.7 → 3.2. Rejected:
-  all work behind a click (the proof is the pitch, after 1.7 screens of sea), and lead plus
-  four rows (loses both system drawings, the only pictures of the two most senior jobs).
-  `/work` stays a redirect until there are more than about six projects.
+  Contact (Plan, Build, Launch). Plan carries the owner's promise: advice on what will work
+  for the client's business, not what looks fancy or costs too much. Contact also holds the
+  backend and real-time line and "Copy address" (a `mailto:` link does nothing without a
+  mail app).
+- **Elsewhere is gone.** Its links live in About; the shore shows the email and the studio's
+  channels, so every page ends with a way to write. Its compass moved into the home Notebook
+  band (desktop only, 72rem and up).
+- **One offer: websites and web apps, built end to end** (the owner's choice, 9 October 2026,
+  plainer than "web products"). One source: `site.offer` and `site.promise`. Backend and
+  real-time work is one line in Contact, not a second service. The hero says "Open to
+  freelance work".
+- **Make backend credibility explicit** (owner, 11 October 2026). Hero and metadata name
+  backend and real-time systems. Show mechanisms, tradeoffs and known production evidence; no
+  superlatives or invented operational metrics.
+- **Work shows five projects** (owner, 9 October 2026). Client work: Velora Rights as the lead
+  spread, then business operations and real-time intrusion detection (order from 10 October:
+  closest to what a small-business client buys). Then "Of my own": the wedding platform, then
+  Household Hub.
+- **Velora Rights leads Work** (9 October 2026, reconfirmed 11 October): the offer itself, a
+  paying client and a business outcome. The wedding platform's strengths are engineering, which
+  a client buys less; its story suits an essay. Leading with business operations is an open
+  option if backend clients become the main audience.
+- **Three cards, two rows** (owner, 10 October 2026). The client projects keep full cards; the
+  personal ones are compact ruled rows, all one click from home. The measure is the distance
+  to Contact, not page length. Rejected: all work behind a click (the proof is the pitch), and
+  lead plus four rows (loses both system drawings). `/work` stays a redirect until there are
+  more than about six projects.
 - **A card is a hook, the case study is the depth** (10 October 2026). Each card: plate,
-  headline, one summary, one **proof** line and one internal link (`CaseStudyLink`), "Read the case study →".
-  Role, stack, dates and demo links moved to the case-study page. Proof lines use the owner's
-  figures (10 October): Velora "five internship applications and a new client in a single
-  month, from search alone"; business operations "four businesses onboarded, teams of 2 to 12";
-  intrusion detection "five sites over a year and a half". The owner felt the numbers were
-  small next to the work; on the site they are evidence that the work is real and used, set in
-  context (a practice that may not advertise), while the headline and summary carry the scope.
-- **The website is for clients, the portfolio for recruiters** (owner, 10 October 2026). The
-  case studies on `/work/<slug>` are rewritten for a client (brief, what was built, the
-  decisions that mattered and why, the outcome; 2–5 minutes) and are not copies of the
-  portfolio's, which keep their recruiter framing and their own URLs (no cross-canonicals).
-  The Work section's "More work … in the Portfolio" footer link was removed; About keeps the
-  portfolio among the owner's profiles.
-- **Desktop hero 180svh** (was 255svh; the owner agreed). Phone timings are untouched. Its
-  seed label opens the sea studio at `/sea` with that seed ("Make your own →").
+  headline, one summary, one **proof** line and "Read the case study →". Role, stack, dates
+  and demo links live on the case study. Proof lines use the owner's figures; small numbers are
+  shown as evidence that the work is real and used, while headline and summary carry scope.
+- **Every client card is a system drawing** (owner, 11 October 2026). Velora's pale screenshot
+  moved under its drawing on the case study. The Work lede says why: "I am a backend engineer
+  first, so the client work is shown as the system underneath".
+- **Show private systems through their real boundaries** (owner, 11 October 2026). Business
+  operations: selectable modules, adaptable insights, privacy, accessible workflows, a build
+  of about six months. Intrusion detection: local LAN computing, a minimum-data notification
+  boundary, the RTSP-to-browser video service, about eight months. Do not infer encryption,
+  protocols, metrics or calendar dates the owner did not supply. The narrow drawing label is
+  "Buying" (purchasing stays in the module ID and prose).
+- **The website is for clients, the portfolio for recruiters** (owner, 10 October 2026). Case
+  studies at `/work/<slug>` are written for a client (brief, what was built, the decisions
+  and why, the outcome; 2–5 minutes) and are not copies of the portfolio's, which keep their
+  own framing and URLs (no cross-canonicals). About keeps the portfolio link.
+- **One page for the pitch, own pages for depth** (9 October 2026, after NN/g attention
+  studies, Chartbeat, long-page A/B tests and Google's handling of fragments). The homepage
+  stays one scroll for one offer; case studies have their own URLs so each can rank. The hero
+  is the main attention risk; judge it with field data.
+- **Desktop hero 180svh** (was 255svh; the owner agreed). Phone timings are untouched.
 - **Every post ends with an author line**: who wrote it, what the studio builds, "See the
-  work" and the email, so a reader arriving at a post can find the offer.
+  work" and the email, so a reader arriving at a post finds the offer.
 - **Links within a page glide; nothing else does** (owner, 9 October 2026). Section links and
-  a link to the page already open (the "Maxsash Studio" links on `/`, "Notebook" on `/blog`)
-  scroll smoothly; the latter scroll to the top and keep the sea instead of drawing a new one,
-  and focus moves to the page's first control. Not a global `scroll-behavior: smooth`, which
-  also glides every Tab focus. Reduced motion jumps. Other pages open at their top at once.
-- **One offer: websites and web apps, built end to end** (the owner's choice of one offer;
-  on 9 October the wording moved from "web products" to the plainer "websites and web apps",
-  which a client understands at once and which covers both kinds of work). One source:
-  `site.offer` and `site.promise`. Backend and real-time work is one line in Contact, not a
-  second service. The hero's line names the offer and says "Open to freelance work".
+  links to the page already open scroll smoothly; the latter go to the top, keep the sea and
+  move focus to the page's first control. Not a global `scroll-behavior: smooth`, which also
+  glides every Tab focus. Reduced motion jumps.
 - **About:** Yash Shrivastava, founding engineer, 5+ years in backend and real-time systems,
-  Tikamgarh, India, working remotely; experience as "Java, then full-stack developer at a
-  product SaaS company, 2021–2026. Founding engineer on two freelance platforms" (the company
-  unnamed; owner, 9 October); tools;
-  links to the portfolio, LinkedIn and GitHub; and the headshot (the owner's GitHub and
-  LinkedIn picture, from the 1254 px original, exported at 720 px with no metadata; approved for
-  the repo on 9 October 2026). No employer, degrees or phone.
-  Facts come from the owner's portfolio (`development/personal/portfolio`, live and current).
-- **About's portrait is "the drawing underneath", in a round compass medal** (9 October 2026).
-  The plain photo was "too vanilla"; a rectangular plate was "better but not it". The owner asked
-  for a round frame (important), a monochrome photo and the same animation when scrolling away.
-  - The photo is monochrome in the theme's own two colours (ink to paper by day, paper to ink by
-    night), so it reads as a print, not a snapshot.
-  - The frame is a compass bezel, echoing the compass in the home Notebook: a tick every 5°, a dotted
-    ring, the name and title on the top arc, Tikamgarh and its coordinates on the bottom. The
-    tick ring turns slightly as the medal passes.
-  - The engraving: 72 lines of Home water lifted by the photo's light, drawn front to back. One
-    scroll timeline covers the medal's whole pass: lines print as it enters, the photo surfaces
-    around the middle and sinks back into lines as it leaves. Hover brings the lines back.
-  - Explored and not chosen: a coin with a beaded rim, a porthole with bolts (more decorative), a
-    navigator's log, and a wave squiggle (the face did not read on this dark background).
-- **One page for the pitch, own pages for depth** (9 October 2026, after reviewing the
-  evidence: NN/g attention studies, Chartbeat, long-page A/B tests, Google's handling of URL
-  fragments). The homepage stays a single scroll for one offer; case studies live on
-  `maxsash.com/work/<project>` (since 10 October 2026) so clients stay on the site and each
-  project can rank. The
-  2.5-screen hero is the main attention risk; judge it with field data.
-- **Velora Rights leads Work** (9 October 2026; reconfirmed 11 October when the owner floated
-  the wedding platform): the offer itself, a paying client and a business outcome. The wedding
-  platform's strengths are engineering, which a client buys less; its story suits a Notebook
-  essay. No demo link on the personal rows (owner): the case studies carry them.
-- **Every client card is a system drawing** (owner, 11 October 2026). The live screenshot of
-  Velora was pale and large for a card that is not about looks; its drawing shows what was
-  built (owner-written Markdown, build checks, static pages, search engines and AI assistants,
-  enquiries). The screenshot (1200 × 750, after the disclaimer; the advocate's name stays off
-  this site) moved under the drawing on its case study. The Work lede says why: "I am a
-  backend engineer first, so the client work is shown as the system underneath".
-- **One name:** the publication is the **Notebook**. It appears once in the header and
-  once as a home section, which shows the three newest entries: written notes first, then the
-  two original essays, approved for publication on 11 October.
-- **One `<main>`**, the footer outside it as the contentinfo landmark, no whole-section
-  links around headings, one `<article>` per essay.
-- **The commit-log card** shows the three newest commits and no counts or charts: a
-  14-day strip and "24 commits in the last 14 days" reads as neglect once the site is
-  stable. It publishes commit messages by design.
-- **Theme follows the system** until the visitor picks day or night using the
-  footer control or the hero sun/moon.
+  Tikamgarh, India, working remotely; "Java, then full-stack developer at a product SaaS
+  company, 2021–2026. Founding engineer on two freelance platforms" (company unnamed); tools;
+  portfolio, LinkedIn and GitHub; the approved headshot (720 px, no metadata). No employer,
+  degrees or phone. Facts come from the owner's portfolio (`development/personal/portfolio`).
+- **About's portrait is "the drawing underneath", in a round compass medal** (9 October 2026;
+  the plain photo was "too vanilla", a rectangular plate "better but not it"). A monochrome
+  photo in the theme's two colours, a compass bezel (tick every 5°, name and title on the top
+  arc, Tikamgarh and coordinates below) whose ring turns as it passes, and an engraving of 72
+  lines of Home water lifted by the photo's light that prints in and sinks back as the medal
+  scrolls. Not chosen: a beaded coin, a bolted porthole, a navigator's log, a wave squiggle.
+- **One name:** the publication is the **Notebook**, once in the header and once as a home
+  section showing the three newest entries.
+- **One `<main>`**, the footer outside it as contentinfo, no whole-section links around
+  headings, one `<article>` per essay.
+- **The commit-log card** shows the three newest commits, no counts or charts (a "24 commits
+  in 14 days" strip reads as neglect once the site is stable). It publishes commit messages by
+  design. Dates group and are labelled in IST (owner, 11 October 2026: based in India).
+- **Theme follows the system** until the visitor picks day or night in the footer or the
+  hero's sun and Moon.
 
 ## Feedback
 
-- **The gull comes sooner and travels less** (owner, 11 October 2026, after asking whether it
-  should come sooner or later). Measured on live: it set off 3.0 s after mounting and flew 1.8 s
-  on a phone but 3.9 s on a 1440 px desktop, crossing the whole hero from the left. Now it waits
-  2 s (the research's 2–3 s range; still after the phone's 1.8 s opening and at a scroll pause),
-  and on wide skies (`arrivalEntry`, `ENTRY.run` 560 px) drops in from just above the top edge, so
-  every flight is about 2.3 s or less, still left to right into the wind. Phones are unchanged.
-  Not later: the pause and on-screen checks already keep it out of the way, and a later gull only
-  reaches fewer visitors. Not at load: it would compete with the opening.
-
+- **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study clicks
+  sometimes waited seconds without feedback. A fixed "Opening page…" badge from Next's
+  `useLinkStatus`, no layout shift or fake progress; Reduce Motion keeps the icon still. Keep
+  the current prefetch policy and route status codes.
+- **Headings keep full contrast during arrivals** (11 October 2026 correction). The kicker
+  still reveals, but its heading no longer dims; the PageSpeed contrast failures matched that
+  rule, and readable text comes before its fade.
 - **One table, one vocabulary** (9 October 2026). Every action's answer lives in
-  `lib/feedback/vocabulary.ts`, so the owner's review turns into one-line edits. The same kind of
-  action answers the same way everywhere.
+  `lib/feedback/vocabulary.ts`, so a review turns into one-line edits; the same kind of action
+  answers the same way everywhere. The owner tried the maximalist build and kept all of it
+  ([feedback.md](feedback.md)).
 - **Every channel answers every visitor**: sound (after the first press; see "Sound"), ink,
-  type, the sea, cursors, notices and haptics. Haptics need a first interaction and only Android
-  vibrates.
-- **Levels are relative, and measured** on the laptop-speaker model: focus < hover < the dial's
-  tick < a press < a roll, every cue under a page turn and none lost (above -56 LUFS). Touch has
-  no hover, so a tap answers with the press.
+  type, the sea, cursors, notices and haptics (after a first interaction; only Android
+  vibrates).
+- **Levels are relative, and measured** on a laptop-speaker model: focus < hover < the dial's
+  tick < a press < a roll, every cue under a page turn and none lost (above −56 LUFS). Touch
+  has no hover, so a tap answers with the press.
 - **What a sound tells is also shown:** copy, mail, offline and online use one polite notice;
   refusals mark the field. Buttons whose result speaks (`data-press="none"`) do not also click.
 - **Responses before arrival exist only with JavaScript** (`html[data-feedback]`), so a reader
   without it sees everything at once.
-- **Keep one coastal character by day and night** (10 October 2026 refinement). The owner
-  asked whether night needs a different creature. One gull is the working design choice:
-  night activity is plausible ([Australian Museum](https://australian.museum/learn/species-identification/ask-an-expert/harbour-bridge-birds/)
-  describes Silver Gulls flying and feeding after dark;
-  [Rutgers](https://www.researchwithrutgers.com/en/publications/nocturnal-behavior-of-gulls-in-coastal-new-jersey)
-  studied nocturnal coastal gull activity). These sources support plausibility, not identical
-  behaviour in every gull species. At night the same stylised herring gull gets moonlight,
-  one brief note phrase, fewer habits and a tucked resting pose after 12 s unless engaged.
-  Hover, keyboard focus and a nearby pointer keep it awake. By day its existing invitation
-  schedule stays. This is an authored coastal scene, not a location-specific wildlife simulation.
-- **The gull touches the pill's edge** (owner, 10 October 2026 correction): remove the 10 px
-  bottom inset and align the projected belly/feet with the border centreline, including standing
-  and sleeping. A responsive header reserves space above the hero copy; short screens use
-  compact copy, without changing the approved sea timing. Resize/DPR changes refit the gull;
-  an arrival interrupted by rotation settles rather than jumping across the new layout.
-  On short screens (620 px or less), hide the secondary seed link to keep the
-  offer and controls clear; the shore's colophon links the sea studio (`/sea`) on every page.
-- **Refine the gull at button size** (owner, 10 October 2026): fuller chest and crown,
-  hooked bill with red mark, visible eyes and white primary spots on black wingtips. More
-  inset space separates it from the label and the pill's curved end. Wingbeats are slower;
-  braking eases smoothly to zero, wing-folding and sitting finish in 1.8 s, and takeoff climbs.
-  A press during arrival or while standing begins departure from its current pose.
-- **A gull is the only moving hint for "Play waves"** (the owner's idea, 10 October 2026: a bird
-  that "flies in and sits on that button ... without doing it on their face"). It is a low-poly
-  herring gull in the ship's style, drawn on a small canvas inside the hero's button. Research
-  (`../web-research/reports/Website feedback beyond sound.md`) shaped the rules: motion onset
-  catches the eye but travelling motion distracts most, so it arrives once, after the button has
-  been in view for 2 s and scrolling has stopped, flies in under 2.5 s, then moves only in place,
-  rarely, and is still after 45 s; it leaves when the waves start and nothing about it is stored.
-  **It comes on every page load while the waves are off, even for a visitor who muted the sounds
-  or turned the waves off before** (owner, 10 October 2026: that visitor may be happy to hear them
-  today); it used to stay away from them. To make it an obvious, deliberate invitation it sings:
-  amber notes leave its beak in phrases until 36 s. It sits **inside** the pill, on its floor, and
-  the pill widens for it as it lands: on top there were 21 px of room (none for notes), and over
-  the label it would hide the words that are the accessible signal. Pressing the gull is pressing
-  the button (it is inside it). "Still the sea" freezes it; reduced motion shows it perched and
-  still, with two still notes. In the drawing chapters it becomes its own ink wireframe. No study
-  shows a creature on a control raises clicks; it is kept for delight and is one prop to remove.
+- **A gull is the only moving hint for "Play waves"** (owner's idea, 10 October 2026: a bird
+  that "flies in and sits on that button … without doing it on their face"). Research
+  (`../web-research/reports/Website feedback beyond sound.md`) set the rules: motion onset
+  catches the eye but travelling motion distracts, so it arrives once, after the button has been
+  in view and scrolling has stopped, then moves only in place, rarely, and is still after 45 s.
+  It sings amber notes until 36 s so the invitation is obvious. It leaves when the waves start;
+  nothing is stored. No study shows a creature on a control raises clicks; it is kept for
+  delight and is one prop to remove. What a visitor sees: [feedback.md](feedback.md).
+- **It comes on every page load while the waves are off** (owner, 10 October 2026), even for a
+  visitor who muted sounds or turned the waves off before: they may want them today.
+- **It sits inside the pill, touching its edge** (owner, 10 October 2026). On top there was no
+  room for notes; over the label it would hide the words that are the accessible signal. The
+  pill widens as it lands, and its belly or feet meet the border centreline in every pose. On
+  screens 620 px high or less the secondary seed link hides to keep the offer clear.
+- **It comes sooner and travels less** (owner, 11 October 2026). It waits 2 s (the research's
+  2–3 s), still after the phone's 1.8 s opening and at a scroll pause; on wide skies it drops in
+  from just above the top edge, so every flight is about 2.3 s or less. Not later: fewer
+  visitors would see it. Not at load: it would compete with the opening.
+- **One gull by day and night** (10 October 2026). Gulls are active after dark
+  ([Australian Museum](https://australian.museum/learn/species-identification/ask-an-expert/harbour-bridge-birds/),
+  [Rutgers](https://www.researchwithrutgers.com/en/publications/nocturnal-behavior-of-gulls-in-coastal-new-jersey)),
+  so at night the same gull gets moonlight, one phrase, fewer habits and a tucked rest after
+  12 s unless engaged. An authored coastal scene, not a wildlife simulation.
 - **Scroll cost is measured, not assumed.** A smooth settle of the headings' font axes reflowed
-  them every frame (95 layouts in one scroll), so they settled in three steps; with Montagu Slab
-  (no such axes) the heading inks in by opacity in three steps, which needs no layout. The depth line and
-  the reading ribbon cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame
-  pacing unchanged); the owner kept them.
+  them every frame (95 layouts in one scroll) and was dropped. The depth line and reading ribbon
+  cost one style recalculation per frame (about 0.1 ms on an M4 Pro, frame pacing unchanged);
+  the owner kept them.
 
 ## Sound
 
 - **The waves are opt-in; every other sound is feedback and plays by default** (owner, 9 October
-  2026: "everything else is feedback by design"). Replaced rule: "one switch for every sound",
-  where page turns and the compass waited for "Play waves". Browsers allow no sound before a
-  visitor's first click, tap or key press, so hovers and scrolling are silent until then; from
-  that press on, every answer sounds. The waves still wait for "Play waves", and that choice holds
-  across pages and visits: they fade out in the notebook, come back with the shore without
-  another click, and after a reload resume at the first click, tap or key press (a first click on
-  the wave button itself plays rather than mutes).
-- **"Mute sounds" lives on the shore only** (owner's choice, 9 October 2026, over no button and
-  over one in the hero too). Earphones and a muted device cover most visitors, but a
-  screen-reader user cannot mute the device without silencing the reader. It silences every
-  sound, waves included, and is remembered (`studio-sound`); "Unmute sounds" brings back the
-  answers, not the waves, and answers with a press. "Play waves" also unmutes.
+  2026: "everything else is feedback by design"). Browsers allow no sound before a visitor's
+  first click, tap or key press, so hovers and scrolling are silent until then. The waves wait
+  for "Play waves", and that choice holds across pages and visits: they fade out in the
+  notebook, come back with the shore, and after a reload resume at the first press.
+- **"Mute sounds" lives on the shore only** (owner's choice, 9 October 2026). A screen-reader
+  user cannot mute the device without silencing the reader. It silences every sound and is
+  remembered (`studio-sound`); "Unmute sounds" brings back the answers, not the waves. "Play
+  waves" also unmutes.
 - **No cue lasts 3 seconds or more**, so nothing that can play unasked (the foghorn when the
   connection drops) needs a stop control.
-- **The surf is mixed to be heard on laptop speakers** (9 October 2026: the owner could not hear
-  it without maxing a MacBook's volume). The old waves sat at about -46 LUFS with most of their
-  energy below 150 Hz, which small speakers cannot play. The surf is now a 33-second loop of
-  three breakers, washed between 300 and 1,600 Hz with the rumble below 90 Hz removed: about
-  -32 LUFS, never fading to silence, its crests 5-6 dB over its lulls. A page turn ducks the
-  waves by 9 dB so it stays on top. Levels are pinned by tests on a laptop-speaker model.
+- **The surf is mixed for laptop speakers** (9 October 2026: the owner could not hear it without
+  maxing a MacBook's volume). The old waves sat near −46 LUFS with most energy below 150 Hz,
+  which small speakers cannot play. Now a 33-second loop of three breakers, washed between 300 and 1,600 Hz
+  with the rumble below 90 Hz removed: about −32 LUFS, never silent, crests 5–6 dB over lulls.
+  A page turn ducks the waves by 9 dB. Levels are pinned by tests.
 - **The waves belong to the shore.** They play on the home page only; the notebook is quiet but
-  for page turns, which also play on the browser's back and forward into or within it.
-- **The compass bezel ticks like a dial** (the owner's idea, 9 October 2026): one tick per
-  degree the ring turns as the medal scrolls past, at most 32 a second so a fast scroll is a
-  "trrrr", never a buzz. Jumps (a link, a restored scroll) turn silently. The ring does not turn
-  under reduced motion, so neither does the sound. The first ticks were pitched and muffled and
-  sounded "underwater, bubbly"; they are now sharp mechanical ticks: a snap with resonances
-  shorter than a millisecond and a softer catch, over in 3 ms, mostly above 2 kHz.
+  for page turns, which also play on back and forward into or within it.
+- **The compass bezel ticks like a dial** (owner's idea, 9 October 2026): one tick per degree the
+  ring turns, at most 32 a second, so a fast scroll is a "trrrr", never a buzz. Jumps turn
+  silently; reduced motion turns neither ring nor sound. Sharp mechanical ticks (over in 3 ms,
+  mostly above 2 kHz) replaced pitched ones that sounded "underwater, bubbly".
 
 ## Writing
 
-- **Posts are markdown, drafts are development-only.** A post marked `draft` is visible in
-  `pnpm dev` and cannot ship by accident: the production build has no page and no link for
-  it, and `check-seo` fails if one is served. Publishing is a one-word edit.
+- **Posts are markdown, drafts are development-only.** A `draft` post shows in `pnpm dev` and
+  cannot ship by accident: production has no page and no link for it, and `check-seo` fails if
+  one is served. Publishing is a one-word edit.
 - **The editor is a development tool, enforced by the build.** Its routes use `.dev.tsx`
-  extensions that only exist outside production, rather than a runtime `if` that could be
-  forgotten. The save endpoint refuses anything but same-origin JSON from localhost.
-- **Published writing is indexed** (owner, 11 October). Approved essays and the listing
-  join published markdown posts; drafts stay excluded.
+  extensions that exist only outside production, not a runtime `if` that could be forgotten.
+  The save endpoint refuses anything but same-origin JSON from localhost.
+- **Published writing is indexed** (owner, 11 October 2026). The two original essays keep their
+  URLs and authored layouts, are labelled Essay and join the listing and published markdown
+  posts in search and the sitemap. Published articles expose only their visible title, summary,
+  topic, author, URL and date as BlogPosting JSON-LD.
+
+## Visitor analytics
+
+- **Measure behaviour before changing journeys, without persistent identity** (owner, 14 October
+  2026). Explicit events through a first-party relay to PostHog; in-memory random visit IDs and
+  pause only, reset on reload or a new tab; no analytics storage, profiles, SDK, autocapture or
+  replay. The owner accepted the limited journeys this gives. Released in 1.1.0 with five
+  dashboards. No adaptive order or segmentation until the data supports it. Contract:
+  [telemetry.md](telemetry.md); research: [visitor-journeys.md](visitor-journeys.md).
 
 ## Error pages
 
-- **Chosen 9 October 2026.** Each error page splits in half: the message centred on top, the
-  real WebGL sea below (the plate when there is no GPU). **What floats tells how bad it is:**
-  the homepage ship means all is well and never appears on an error page; a torn page or bare
-  driftwood for a missing page, a log raft for trouble, a single plank for disaster.
+- **Chosen 9 October 2026.** Each error page splits in half: the message on top, the real WebGL
+  sea below (the plate without a GPU). **What floats tells how bad it is:** the homepage ship
+  means all is well and never appears on an error page; a torn page or driftwood for a missing
+  page, a log raft for trouble, a single plank for disaster.
 - **Which page gets which scene:** unknown address, "Nothing on the horizon" (glassy sea, one
-  plank, no paper); unknown or draft note, "Torn from the notebook" (ruled paper torn across, the
-  scrap floating below); bad `/plate` seed, "Half drawn" (the sea stuck mid-way into its
-  engraving, a raft); a page crash (`error.tsx`), "Rogue wave" (night squall, tilted horizon,
-  raft); the whole site down (`global-error.tsx`), "Caught in the storm" (a whirlpool under a
-  turning storm, lightning, a plank circling the drain).
+  plank); unknown or draft note, "Torn from the notebook" (ruled paper torn across, the scrap
+  floating below); bad `/plate` seed, "Half drawn" (the sea stuck mid-engraving, a raft); a page
+  crash, "Rogue wave" (night squall, tilted horizon, raft); the whole site down, "Caught in the
+  storm" (a whirlpool under a turning storm, lightning, a plank circling the drain).
 - **Rejected:** wireframe-only seas, the "torn out" printed page for the site 404 (the owner
-  preferred the open horizon), and a torpedo hitting the raft. The red upside-down sea
-  ("Capsized") is parked as an Easter egg idea ([follow-ups.md](follow-ups.md)).
-- Lightning is one soft flash every few seconds, never a flicker, and no motion at all under
-  reduced motion.
-- **Unknown notes render on demand** (`dynamicParams` removed from `/blog/[slug]`), because
-  with only prebuilt slugs an unknown note never reached the notebook 404. The page still
-  calls `notFound()`, so the status stays 404.
-- **Error-page weight on every route is kept to the message:** Next loads the error
-  boundaries with every page, so the sea behind them loads lazily (measured on the
-  homepage: about +6 KB gzipped JS and CSS, down from +24 KB when the sea loaded eagerly).
-- After a crash, "Back to the studio" is a full page load, not a client navigation, so the
-  studio starts from a clean state.
+  preferred the open horizon), a torpedo hitting the raft. The red upside-down sea
+  ("Capsized") is parked as an Easter egg idea.
+- Lightning is one soft flash every few seconds, never a flicker, and none under reduced motion.
+- **Unknown notes render on demand** (`dynamicParams` removed from `/blog/[slug]`), so an unknown
+  note reaches the notebook 404; `notFound()` keeps the status 404.
+- **Error pages cost every route little:** Next loads error boundaries with every page, so their
+  sea loads lazily (about +6 KB gzipped on the homepage, down from +24 KB).
+- After a crash, "Back to the studio" is a full page load, so the studio starts clean.
 
 ## Accessibility
 
-Keyboard and automated checks led to: focus never hidden by the pinned phone drawing
-(studio controls carry a scroll margin), visible text is the accessible name (no
-overriding `aria-label` on buttons), the hero pause button follows the site navigation in
-tab order, slider read-outs are not live regions, focus rings hold their contrast on every
-background, and links that open a new tab say so. Forced-colours emulation was reviewed.
-A real screen reader has not been tried.
+Keyboard and automated checks led to: focus never hidden by the pinned phone drawing (studio
+controls carry a scroll margin), visible text is the accessible name (no overriding
+`aria-label` on buttons), the hero pause button follows the navigation in tab order, slider
+read-outs are not live regions, focus rings hold their contrast on every background, and links
+that open a new tab say so. Forced-colours emulation was reviewed. The owner reports the iPhone
+VoiceOver checklist passing (13 October 2026); no other screen reader has been tried.
 
 ## Performance
 
-PageSpeed Insights, 8 October 2026 (lab only, no field data yet): mobile 57, desktop 62;
-LCP 3.3 s mobile and 0.7 s desktop, CLS 0, FCP 1.6 s and 0.4 s. The loss was almost all
-Total Blocking Time, from a continuous WebGL scene on a GPU-less lab machine.
+Latest lab baseline, the owner's live PageSpeed mobile runs on 11 October 2026 (13:44–13:50
+IST): performance 87/96/95, LCP 2.6 s, FCP 1.7 s, TBT 330/50/140 ms, CLS 0; accessibility,
+best practices and SEO 100. No field data yet.
 
-- **Software rendering gets the static plate** (`failIfMajorPerformanceCaveat`). Real
-  visitors without a GPU benefit, and the lab no longer measures software rasterising.
-  Locally, with no GPU, blocking time is 0 ms on desktop and 85 ms on the phone profile.
-  After release (8 October 14:41 IST, one run): desktop 99, mobile 92, TBT 20 ms and 100 ms.
-- **Cached home page: not done, leaning no.** Today the server picks the random sea, so `/`
-  is `private, no-store` and every visit renders (Lighthouse estimates 510–720 ms on the
-  document request). The alternative is a cacheable page whose browser picks one of the
-  four starting seas. Pros: edge-cached HTML, faster first byte, less server work, and
-  `?seed=` links could stay shareable. Cons: no-JavaScript visitors and crawlers always
-  see the default sea; the plate and "Authored sea" text change after load (or are hidden
-  until chosen); `?seed=` would have to be read on the client; hydration mismatch risk
-  around randomness; a real refactor of the hero, the plate and the studio; and it
-  changes the approved "a fresh sea from the first byte". Revisit only if field data
-  shows a slow first byte.
-- **Where the time goes** (PageSpeed mobile LCP breakdown: first byte 820 ms, element render
-  delay 780 ms). First byte: the home page is rendered per request, and the response header
-  `x-vercel-id: bom1::iad1` shows the edge is in Mumbai but the function runs in **iad1 (US
-  East)**; live timings from India were 0.4–1.8 s. Moving the function region closer to the
-  audience (Vercel project settings, or `regions` in `vercel.json`) is a cheaper lever than
-  caching the page, but it depends on where visitors are, so it is the owner's call. Render
-  delay: with Slow 4G and no server latency, the heading paints at about 0.9 s; the two
-  render-blocking stylesheets and the preloaded fonts share the link with the HTML (206 KB
-  with Fraunces; 185 KB in four files with Montagu Slab, Rethink Sans and Reddit Mono, 10 October 2026).
-- **Forced reflow (168 ms in the report)** is the initial hero layout (about 130 ms at 4×
-  CPU throttle locally). `content-visibility: auto` on the sections below changed it by
-  under 10%, so it is not worth doing.
+- **Deliver the studio drawing progressively** (11 October 2026). The complete inline SVG made
+  the initial HTML large. A lazy image of the print SVG comes first and hydrates to the same
+  inline drawing for editing. Local Lighthouse: median FCP 2.555 → 2.105 s, LCP 4.203 → 3.754
+  s, transferred HTML halved. Rejected: restoring body-font preloads (no help) and inlining
+  CSS (+47 KiB, no reliable LCP gain).
+- **Preload the hero font only** (11 October 2026). Montagu Slab stays eager; Rethink Sans and
+  Reddit Mono load when used. Four early font files competed with CSS on an uncached phone;
+  five alternating local cold pairs improved median LCP 2.884 → 1.552 s.
+- **Software rendering gets the static plate** (`failIfMajorPerformanceCaveat`, 8 October 2026).
+  The PageSpeed loss was Total Blocking Time from a continuous WebGL scene on a GPU-less lab
+  machine; real visitors without a GPU benefit too.
+- **The function runs in Mumbai** (owner, 11 October 2026). `x-vercel-id` showed the edge in
+  Mumbai but the function in US East (`bom1::iad1`); it is now `bom1::bom1`. PageSpeed's
+  first-byte share fell to 290–360 ms with no document-latency warning.
+- **Cached home page: not done, leaning no.** The server picks the random sea, so `/` is
+  `private, no-store`. A cacheable page whose browser picks the sea would give a faster first
+  byte, but no-JavaScript visitors and crawlers would always see the default sea, the plate and
+  "Authored sea" text would change after load, `?seed=` would move to the client, and the
+  approved "a fresh sea from the first byte" would change. Revisit only if field data shows a
+  slow first byte.
+- **Forced reflow** in the report is the initial hero layout (about 130 ms at 4× CPU).
+  `content-visibility: auto` below changed it by under 10%, so it is not worth doing.
 
 ## Security and hosting
 
 - **Next.js 16.3.8** (16.2.9 had critical advisories; the site used none of the affected
-  features). `pnpm audit --prod` reports no known vulnerabilities.
-- **Node 24** is the target (`engines.node`, `.nvmrc`, `@types/node`).
-- **No admin panel in production** (owner, 12 October 2026: "too much for a public repo").
-  Test, debugging and performance tooling stays local or in CI; production keeps no
-  accounts, sessions or cookies.
+  features). **Node 24** (`engines.node`, `.nvmrc`, `@types/node`).
+- **No admin panel in production** (owner, 12 October 2026: "too much for a public repo"). Test,
+  debugging and performance tooling stays local or in CI; no accounts, sessions or cookies.
 - **Production CSP and hardening headers**, no `X-Powered-By`, `security.txt` and
   `SECURITY.md`. No secrets, source maps or third-party client calls.
-- **Open:** rate-limit `/api/sea-edition*` and `/plate` with a Vercel Firewall rule (a
-  cache miss costs about 6 ms of CPU and a 228 KB response).
-- **Semantic Versioning from 1.0.0** (owner, 14 October 2026). The site has a real
-  public contract (URLs, the sea API, reproducible sea links), so SemVer says what a
-  version means; CalVer would only date it. It is already in production, so it starts
-  at 1.0.0 rather than 0.x. Rules: [AGENTS.md](../AGENTS.md#versioning); history:
-  [CHANGELOG.md](../CHANGELOG.md).
-- **`main` never deploys; only `production` does.** Release with
-  `git push origin main:production`. `vercel.json` disables deployments for `main`.
-  Vercel's Production Branch Tracking is set to `production`.
-- **Commit identity:** history was rewritten so every commit carries
-  `maxsash <16003409+ctrl-alt-yash@users.noreply.github.com>`; the personal address must
-  never appear in the repository. The old hashes stay reachable on GitHub until garbage
-  collection, which the owner accepted.
+- **A Vercel Firewall rate limit** covers `/api/sea-edition*` and `/plate` (owner published it,
+  13 October 2026; a cache miss costs about 6 ms of CPU and a 228 KB response). Setup:
+  [seo-and-sharing.md](seo-and-sharing.md).
+- **Semantic Versioning from 1.0.0** (owner, 14 October 2026). The site has a public contract
+  (URLs, the sea API, reproducible sea links), so SemVer says what a version means; CalVer would
+  only date it. Already in production, so it started at 1.0.0. Rules:
+  [AGENTS.md](../AGENTS.md#versioning).
+- **`main` never deploys; only `production` does.** `vercel.json` disables deployments for
+  `main`; Vercel's Production Branch Tracking is `production`.
+- **Commit identity:** every commit carries
+  `maxsash <16003409+ctrl-alt-yash@users.noreply.github.com>`; the personal address must never
+  appear in the repository. History was rewritten for it; the old hashes stay reachable on
+  GitHub until garbage collection, which the owner accepted.
 
 ## Code quality
 
-Conventions are in [AGENTS.md](../AGENTS.md). The cleanup in [code-cleanup.md](code-cleanup.md)
-(Prettier, dead code removed, repetition removed, long modules split, docs cut) was done
-without changing behaviour: every step was compared against the previous build.
-
-## Open
-
-Physical-device checks beyond the approved iPhone flow, a real screen reader, field Web
-Vitals, a paper print, social content and real essays are tracked in
-[follow-ups.md](follow-ups.md) and [handoff.md](handoff.md).
+Conventions are in [AGENTS.md](../AGENTS.md#code-conventions). The first cleanup (Prettier,
+dead code, repetition, long modules split, docs cut) changed no behaviour: every step was
+compared against the previous build.

@@ -1,10 +1,10 @@
 # Handoff — start here
 
 Updated 15 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-Telemetry version 1.1.0 is prepared on main. User authorized commit/push and the
-matching annotated tag on 15 October; production release remains the owner’s
-`git push origin main:production`. Main never deploys. Check git log/status for
-current commit/push state. SemVer rules: AGENTS.md; release history: CHANGELOG.md.
+Telemetry 1.1.0 committed as 2264c72 and pushed to origin/main on 15 October, with
+annotated v1.1.0 tag. Working tree clean after release commit; own QA artifacts
+removed. Production release remains owner’s `git push origin main:production`.
+Main never deploys. SemVer: AGENTS.md; release history: CHANGELOG.md.
 
 ## Ship weathering — 14 October (accepted, in 1.0.0)
 
@@ -65,7 +65,7 @@ Body: Add redacted first-party analytics, memory-only visits/pause and privacy
 policy; provision 21 charts across five dashboards before journey segmentation.
 Verified Node 24 build/lint/types/format, tests159, SEO78, telemetry16, keys22,
 headers and creative191 plus all saved PostHog queries; production pending.
-Annotated tag: `git tag -a v1.1.0 -m "Release v1.1.0"` (authorized commit workflow).
+Annotated v1.1.0 tag is pushed and points to 2264c72.
 
 ## Next / owner pending
 

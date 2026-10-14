@@ -1,4 +1,4 @@
-import test from "node:test";
+import nodeTest from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 
@@ -13,6 +13,8 @@ assert.ok(
     !base.hash,
   "SEA_TEST_BASE must be a localhost origin, without credentials, path or query",
 );
+
+const test = (name, run) => nodeTest(name, { skip: !process.env.SEA_TEST_BASE }, run);
 
 const JSON_PATH = "/api/sea-edition";
 const SVG_PATH = "/api/sea-edition/print";

@@ -15,7 +15,7 @@ Every version of the site, newest first. Versions follow
 
 ## 1.0.0 — 2026-10-14
 
-First versioned release: the site as on `production` at 0a4a18e, plus:
+First versioned release: the site as on `production` at c794689, plus:
 
 ### Added
 

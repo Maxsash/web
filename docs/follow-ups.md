@@ -99,7 +99,8 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 - [ ] **Fun to read:** a console greeting with a small ASCII ship, a custom response header,
       `humans.txt`, a hidden sea poem. No right-click blocking, obfuscation or accessibility cost.
 - [ ] **Easter eggs:** Metal Gear Solid style ghost photos of the team near About (trigger
-      undecided; the photo, `ghost-photo-yash.png`, is kept in agent memory, never in this repo); the red upside-down "Capsized" sea.
+      undecided; the owner's photo is `public/images/ghost-photos/yash-shrivastava.webp`, not
+      yet used); the red upside-down "Capsized" sea.
 
 ## Code and tooling
 

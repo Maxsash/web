@@ -212,6 +212,9 @@ How the code is built: [architecture.md](architecture.md).
   company, 2021–2026. Founding engineer on two freelance platforms" (company unnamed); tools;
   portfolio, LinkedIn and GitHub; the approved headshot (720 px, no metadata). No employer,
   degrees or phone. Facts come from the owner's portfolio (`development/personal/portfolio`).
+- **The ghost photo may be public** (owner, 15 October 2026): the Easter egg's photo of the
+  owner is committed at `public/images/ghost-photos/yash-shrivastava.webp` (no metadata),
+  ready for the Metal Gear Solid style ghost photos.
 - **About's portrait is "the drawing underneath", in a round compass medal** (9 October 2026;
   the plain photo was "too vanilla", a rectangular plate "better but not it"). A monochrome
   photo in the theme's two colours, a compass bezel (tick every 5°, name and title on the top

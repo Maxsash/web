@@ -54,7 +54,8 @@ blocks its resources from `127.0.0.1`).
   stars, planets and daily atmosphere, the ship, gull, portrait and system drawings, stage
   easing, reveal mapping, frame pacing and swipes, sounds and feedback cues against a
   laptop-speaker model, the markdown parser, posts, case studies and the editor's request
-  guard, telemetry schema and redaction, and these documents (`docs.test.mjs`).
+  guard, telemetry schema and redaction, these documents (`docs.test.mjs`), and that no image
+  in `public/` or `app/` carries EXIF, XMP, IPTC, text or time metadata (`image-metadata.test.mjs`).
 - **`check-seo`**: 78 crawler and page cases (Google, Bing, OAI-SearchBot, social bots):
   canonicals, cards, index and noindex, structured data, the exact sitemap, discovery files,
   share-card size, manifest icons, drafts and unknown pages 404, the `/work` redirect.

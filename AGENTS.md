@@ -142,6 +142,8 @@ includes its bump; suggest the tag command with the commit message.
 Everything committed here is public. Never commit the owner's personal email, a phone number
 as visible text (the studio's WhatsApp number appears only inside its link), the employer's
 name, degrees, private photos, keys, or the owner's traces, exports and account screenshots.
+Strip every image's metadata before committing it (`magick <file> -strip <file>`); Canva and
+screenshots embed the author's name and account IDs. `tools/image-metadata.test.mjs` checks.
 Research lives in `../web-research/` and the brand kit in `../brand/`, beside the repository.
 Commits use the studio identity in `docs/decisions.md` ("Security and hosting").
 

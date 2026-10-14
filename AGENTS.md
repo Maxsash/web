@@ -46,6 +46,12 @@ commit message (conventional style: a type, a short summary, a body explaining w
 what was verified) and put it in `docs/handoff.md`. `main` never deploys; only the
 `production` branch does, and releasing is the user's action.
 
+A commit holds one logical change, not everything in the working tree. When the
+work spans unrelated changes (a feature and a docs fix, a process rule and a
+refactor), stage and commit them separately, each with its own message, so every
+commit can be reviewed, reverted and versioned on its own. Suggest the split at
+the review point.
+
 # Versioning
 
 The site follows [Semantic Versioning](https://semver.org/). `package.json` holds the

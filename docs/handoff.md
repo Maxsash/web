@@ -1,9 +1,10 @@
 # Handoff — start here
 
 Updated 15 October 2026. Read AGENTS.md, architecture.md, decisions.md and testing.md.
-Telemetry 1.1.0 committed as 2264c72 and pushed to origin/main on 15 October, with
-annotated v1.1.0 tag. Working tree clean after release commit; own QA artifacts
-removed. Production release remains owner’s `git push origin main:production`.
+1.1.0 is released: origin/production is a9239cb (deployed 14 Oct 18:55 UTC) and
+live telemetry ingestion was verified 14 Oct 19:07 UTC (00:37 IST 15 Oct).
+PostHog docs cleanup and the commit-splitting rule (AGENTS.md) were committed
+separately at the owner’s request on 15 October; nothing else is pending commit.
 Main never deploys. SemVer: AGENTS.md; release history: CHANGELOG.md.
 
 ## Ship weathering — 14 October (accepted, in 1.0.0)
@@ -37,43 +38,20 @@ Ball, shared sky clouds and daily atmosphere (0a4a18e, three authored India-day
 moods; not weather data). Cloud sea shadows and the first water pass were rejected
 and removed; no replacement approved. No physical phone qualification.
 
-## Visitor telemetry — 1.1.0, verified 15 October
+## Visitor telemetry — 1.1.0, live
 
-Explicit first-party redacted events and bounded PostHog relay. Owner selected no
-persistent tracking: visit IDs/pause stay in memory; ordinary Next navigation
-joins a journey, reload/new tab/resume starts a new ID. No analytics storage,
-SDK/autocapture, replay or profiles. Wizard duplicate SDK path removed; no install
-needed. Real token/host remain only in ignored .env under server-only names.
-Owner added Vercel Production env with TELEMETRY_ENABLED=true. Dev/Preview disabled.
-EU Maxsash Studio project 306242 connected through PostHog plugin. Five pinned
-Maxsash dashboards 1024506–1024510 with 21 saved charts execute successfully.
-Links: telemetry-setup.md. One schema-0 synthetic event query-visible; no visitor
-events yet. Wizard dashboard preserved. Timezone UTC; no account settings changed.
-Privacy discloses EU Cloud and plan-based history (free 1 year / paid 7 years),
-which is not automatic deletion. Billing tier/quota/alerts remain owner review.
-Final isolated Node 24 build/lint/types/format, 159 tests, SEO 78, telemetry 16,
-keyboard 22/22, headers/CSP and creative 191 pass; zero runtime exceptions.
-Final phone privacy disclosure capture inspected; earlier day/night/desktop
-captures inspected. Browser QA intercepted/blocked; no extra live test events.
-Chrome port-file startup race fixed in harness. An accidental main-folder harness
-attempt failed before browser tests; successful checks ran in isolated worktree.
-No physical phone, field metrics, bundle delta or production ingestion verified.
-Own QA server/worktree/logs/captures removed. Production /privacy returned 404
-before this commit: source has not been released. Owner release is next.
-Commit: `feat: instrument visitor journeys without persistent IDs`
-Body: Add redacted first-party analytics, memory-only visits/pause and privacy
-policy; provision 21 charts across five dashboards before journey segmentation.
-Verified Node 24 build/lint/types/format, tests159, SEO78, telemetry16, keys22,
-headers and creative191 plus all saved PostHog queries; production pending.
-Annotated v1.1.0 tag is pushed and points to 2264c72.
+First-party redacted events relayed to PostHog EU project 306242; no SDK, replay,
+profiles or persistent IDs. Design: telemetry.md; dashboards and setup:
+telemetry-setup.md; checks: testing.md. Production ingestion verified 14 October
+19:07 UTC (page_view and section_view, schema 1, redacted). Not checked live:
+contact/studio/navigation events, pause, Vercel limits. PostHog project settings
+are untouched; its replay/autocapture/heatmap toggles are on but inert.
 
 ## Next / owner pending
 
-- After owner release, verify schema_version 1 / site_release 1.1.0 in Live events
-  and confirm reports populate; review quota/alerts and Vercel rate limits.
+- Owner: review PostHog quota/alerts and Vercel rate limits; optionally switch off
+  the inert project toggles. Let traffic accumulate before reading dashboards.
 
-0. Release 1.1.0 when ready (owner): `git push origin main:production`, then confirm
-   footer v1.1.0, /privacy and telemetry ingestion.
 1. Investigate owner navigation report: huge Notebook wait; top-left return-home
    appeared unresponsive after repeated taps, owner used Back. d803c16 confirmed live.
    Live Chrome touch diagnostic (390 px, reduced motion, 4× CPU, 150 ms latency,
@@ -92,8 +70,7 @@ Annotated v1.1.0 tag is pushed and points to 2264c72.
 
 ## Open items / cleanup
 
-- Telemetry QA artifacts removed (14 October); the three old Chrome profiles
-  from earlier sessions remain unlocated/unremoved.
+- The three old Chrome profiles from earlier sessions remain unlocated/unremoved.
 - Owner decision on five ignored `tools/.out/` early logo/scratch files remains.
 - Turbopack emits a raw worker source copy under `/_next/static/media/`.
 - Weathering review servers, worktree, scratch files, captures and sheet removed.

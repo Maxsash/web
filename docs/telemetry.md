@@ -7,9 +7,8 @@ Research/blog: [visitor-journeys.md](visitor-journeys.md).
 
 ## Current integration
 
-Explicit events go to first-party `/api/telemetry`, then PostHog Cloud EU. Public
-project token/host supplied by the owner’s wizard were migrated to server-only
-names in ignored `.env`. No browser SDK, autocapture, replay, cookies, analytics
+Explicit events go to first-party `/api/telemetry`, then PostHog Cloud EU. The
+public project token and host live under server-only names in ignored `.env`. No browser SDK, autocapture, replay, cookies, analytics
 local storage/session storage, person profiles or company enrichment.
 
 A random visit ID lives only in memory. Ordinary Next navigation can continue the
@@ -19,21 +18,15 @@ drops queued events and aborts pending requests; resuming starts a new ID. The
 pause choice is also memory-only and resets on reload. No across-visit identity.
 
 Production requires explicit configuration; development and Vercel previews are
-excluded. The owner releases via the production branch. A synthetic schema-0
-installation event was accepted by EU ingestion and is query-visible (one event,
-schema0). No real visitor collection or deployment verified.
-
-Wizard also created **Analytics basics (wizard)** with five views, independently
-inspected in Maxsash Studio EU project306242 on15October.
-The unfinished SDK initializer/dependency, exception hook, CSP expansion and
-unused generated wizard files were removed to preserve the selected boundaries.
-The existing pnpm store mismatch needs no SDK installation for this implementation.
+excluded. Production 1.1.0 ingestion was verified on 14 October: schema-1
+page_view and section_view events arrived redacted. One schema-0 installation
+event predates it and is excluded from reports. PostHog’s own starter dashboard,
+**Analytics basics (wizard)**, remains in the project and is not ours.
 
 ## Where reports live
 
-Five pinned Maxsash dashboards1024506–1024510 contain21 charts in project306242.
-All saved charts execute successfully, with no schema-1 visitor events yet. Links
-are in telemetry-setup.md. Definitions in `tools/telemetry/reports.mjs` remain the
+Five pinned Maxsash dashboards (1024506–1024510) contain 21 charts in EU project
+306242 and read live events. Links are in telemetry-setup.md. Definitions in `tools/telemetry/reports.mjs` remain the
 reproducible source; tools/setup-telemetry.mjs can provision another project.
 No approved Data Catalog metrics exist; these operational definitions are not governed.
 
@@ -89,7 +82,7 @@ CSP remains same-origin; outbound server hosts are limited to EU/US ingestion.
 
 PostHog stores captured events in EU Cloud. Its current plan-based query history
 is one year on free plans and seven years on paid plans; this is not automatic
-deletion and cannot be shortened to90days. The privacy page discloses the policy
+deletion and cannot be shortened to 90 days. The privacy page discloses the policy
 without claiming the project’s unverified billing tier. Memory-only identity does
 not mean events are never stored. Billing quota/alerts remain owner review.
 No universal consent/legal exemption is claimed for this setup.

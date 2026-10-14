@@ -10,11 +10,9 @@ each group. How the code is built: [architecture.md](architecture.md).
   [visitor-journeys.md](visitor-journeys.md). Owner chose **no persistent visitor
   tracking**, accepting limited journeys: in-memory random IDs/pause only, reset on
   reload/new tab; no analytics storage, profiles, SDK autocapture or replay.
-  A concurrent PostHog wizard declared an uninstalled SDK and bypassed the intended
-  boundary; its duplicate initializer/exception hook/CSP additions were removed.
-  Its EU public token/host moved to ignored server-only env; starter dashboard is
-  owner-reported. Five report definitions are ready; actual account/report/retention
-  verification and owner release remain. No adaptive page order or segmentation.
+  PostHog receives events only through the first-party relay; its browser SDK is
+  not used. Released in 1.1.0 with five dashboards. No adaptive page order or
+  segmentation yet.
 - **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study
   clicks sometimes wait several seconds without feedback. Shared PageLink uses Next's
   useLinkStatus for a fixed “Opening page…” badge, with no layout shift or fake progress.

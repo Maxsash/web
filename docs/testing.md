@@ -2,12 +2,12 @@
 
 ## Visitor telemetry — memory-only mode (15 October 2026)
 
-Owner selected no persistent tracking after a concurrent PostHog wizard run. The
-unfinished SDK initializer/dependency/CSP/global exception changes were removed.
-Public EU project token moved to ignored server-only env. One synthetic schema-0
-installation event was accepted by EU ingestion (HTTP 200), excluded from version-1
-reports; no visitor data was included.15October query confirms exactly one
-schema-0 event. Five dashboards with21 saved charts execute without query errors.
+Production check, 14 October 19:07 UTC (PostHog plugin and curl): live footer
+1.1.0, /privacy 200; schema-1 page_view and section_view events arrived with
+query-free URLs, no IP, GeoIP off and no person profile. Live relay returns 403
+without or with a foreign Origin, 400 for a bad batch, 415 for the wrong type and
+405 for GET. The overview dashboard reads them. Contact, studio and navigation
+events, pause and Vercel rate limits were not checked live.
 
 Fresh isolated Node 24 production build, lint/types/format, 159 Node tests and 78
 SEO cases pass. Sixteen intercepted telemetry browser cases pass: automatic

@@ -1,9 +1,9 @@
 # Telemetry setup and owner reports
 
-15 October 2026. EU project306242 in Maxsash Studio is connected. All five pinned
-reports below exist, with21 saved charts successfully executed. The only captured
-event is one schema-0 installation test, excluded from reports. No visitor events
-or deployed integration verified yet. Design: [telemetry.md](telemetry.md).
+15 October 2026. EU project 306242 in Maxsash Studio is connected. All five pinned
+reports below exist, with 21 saved charts. Production 1.1.0
+ingestion verified 14 October 19:07 UTC (page_view and section_view, schema 1);
+the schema-0 installation test is excluded from reports. Design: [telemetry.md](telemetry.md).
 
 ## Where to see reports
 
@@ -13,15 +13,15 @@ or deployed integration verified yet. Design: [telemetry.md](telemetry.md).
 - [Content and engagement](https://eu.posthog.com/project/306242/dashboard/1024509): exposure/open funnels, slugs and studio actions.
 - [Experience health](https://eu.posthog.com/project/306242/dashboard/1024510): navigation outcomes/duration and technical issues.
 
-Default window28days. Counts are recorded memory-only visits, not people. Reloads
-and new tabs split journeys. Funnels use ordered session steps within24hours;
-paths show up to12steps. Contact actions are not confirmed enquiries. Project
+Default window 28 days. Counts are recorded memory-only visits, not people. Reloads
+and new tabs split journeys. Funnels use ordered session steps within 24 hours;
+paths show up to 12 steps. Contact actions are not confirmed enquiries. Project
 timezone is UTC; owner may change it to Asia/Kolkata in project settings.
 
-## Configuration and release
+## Configuration
 
-Local ignored `.env` already contains the token/host; `.env.example` has placeholders.
-Owner reports all three variables added to Vercel Production, flag true:
+Local ignored `.env` holds the token/host; `.env.example` has placeholders. Vercel
+Production has all three variables, flag true:
 
 | Variable                | Value                                            |
 | ----------------------- | ------------------------------------------------ |
@@ -30,22 +30,22 @@ Owner reports all three variables added to Vercel Production, flag true:
 | `TELEMETRY_ENABLED`     | `true` enables configured production measurement |
 
 No `NEXT_PUBLIC_` prefix. No personal API key belongs in the app or repository.
-Development/Vercel Preview stay disabled. The new integration must be committed
-and released from `production`; env changes alone do not deploy source code.
-Rebuild/redeploy after env changes. Owner release remains separate from main push.
-Skip browser SDK/autocapture/replay onboarding; no SDK/store repair is needed.
+Development/Vercel Preview stay disabled. Redeploy after env changes. Skip
+PostHog’s browser SDK, autocapture and replay onboarding: no SDK ships. The
+project’s own replay/autocapture/heatmap toggles are on but inert; changing
+project settings is the owner’s call.
 
 Privacy discloses EU hosting and PostHog’s current [retention policy](https://posthog.com/docs/data/events-retention):
 one-year query history on free plans, seven years on paid plans. This is not a
-promise of automatic deletion. A90-day retention setting is not available.
+promise of automatic deletion. A 90-day retention setting is not available.
 Account billing tier/quota, alerts and any additional access controls remain owner
 review; no billing or project settings were changed by the agent.
 
-## Verify after release
+## Verify a release
 
 Visit home → Work → case study; home → Notebook → article; studio → preset/setting.
 Inspect PostHog Live events for page_view, section_view and the relevant actions.
-Confirm site_release1.1.0 and schema_version1; then check the reports above.
+Confirm the new site_release and schema_version 1; then check the reports above.
 Do not send an email/WhatsApp message solely for QA; contact activation is sufficient.
 
 Pause at `/privacy`: new requests stop and queued events drop. Resume/new tab/reload
@@ -53,8 +53,7 @@ starts a new ID. Reload forgets the pause. Ordinary Next navigation preserves th
 current ID. No analytics cookies or browser storage, profile processing or replay.
 Events omit raw URL queries/hashes, contact/input/clipboard contents and visitor IP.
 
-Do not interpret empty reports as zero traffic until ingestion is verified. Use a
-separate QA project for extended tests. Local browser checks intercept/block requests.
+Use a separate QA project for extended tests. Local browser checks intercept/block requests.
 The relay cannot distinguish real people from scripted same-origin-shaped requests;
 review Vercel rate limits and provider quota for the collection endpoint.
 

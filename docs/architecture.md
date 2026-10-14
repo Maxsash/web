@@ -33,8 +33,7 @@ telemetry batches.
 production with explicit env/token/approved-host checks. `posthog.ts` builds the
 personless payload. `/api/telemetry` checks origin/type/body limits and forwards
 rebuilt fields only; no visitor IP/raw URLs/raw user agents, GeoIP or profiles.
-Existing same-origin CSP stays. The concurrent wizard’s unfinished SDK path and
-CSP/global exception additions were removed; no dependency installation needed.
+Existing same-origin CSP stays; no PostHog browser SDK or dependency.
 
 `components/telemetry/` separates in-memory preference/identity, bounded transport,
 observers, action bridge and React lifecycle. Only configured production measures.
@@ -48,10 +47,8 @@ Next navigation can share the current memory ID. Reload/new tab/close resets it;
 Pause is forgotten on reload. Already received events cannot be retracted. Global
 layout failure can prevent telemetry itself starting and is outside coverage.
 
-Five dashboard definitions/setup command live under tools; actual reports require
-PostHog account access. Wizard starter dashboard exists per owner report, not agent
-inspection. One schema-0 synthetic event accepted by EU ingestion; no real visitors
-or UI/query visibility verified. [telemetry-setup.md](telemetry-setup.md) is the guide.
+Report definitions and the setup command live in `tools/telemetry/reports.mjs` and
+`tools/setup-telemetry.mjs`; [telemetry-setup.md](telemetry-setup.md) is the guide.
 
 ## The sea model
 

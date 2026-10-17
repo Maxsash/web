@@ -111,6 +111,9 @@ Each check appears once, under the date it last passed; move it up when it runs 
 - **11 October:** `check-gull` (47), `check-sound`, `check-studio-plate` (8),
   `check-heading-contrast` (128, lowest 10.33:1), `check-drawing-labels`.
 
+**Production, public reads:** 17 Oct: release 1.2.0 and enabled India replay policy, 10%
+sampling and 30 April expiry verified; actual live recording ingestion not checked.
+
 **Production, by hand:** 14 Oct 19:07 UTC, schema-1 `page_view` and `section_view` reached
 PostHog redacted; the live relay answers 403 to a missing or foreign Origin, 400 to a bad batch,
 415 to a wrong type and 405 to GET. 13 Oct: the live sitemap lists 11 URLs, and both essays

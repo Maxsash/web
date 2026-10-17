@@ -6,8 +6,8 @@ upkeep runs: [log.md](log.md).
 
 ## Current state
 
-1.1.0 is live (deployed 14 October 18:55 UTC; production analytics ingestion verified at
-19:07 UTC). `main` never deploys; releasing is the owner's action. The owner's iPhone report
+1.2.0 is live (public page and enabled replay policy checked 17 October 2026).
+Production event ingestion was last verified 14 October at 19:07 UTC. `main` never deploys; releasing is the owner's action. The owner's iPhone report
 and every check's latest result are in [testing.md](testing.md).
 
 On 15 October, at the owner's request, `main` gained the documentation review (three
@@ -41,9 +41,9 @@ in local Codex snapshot refs, never pushed) were left.
 Verified on Node 24.21.0: docs and image-metadata tests pass; `pnpm format:check` passes. No
 build: no served code changed.
 
-## Visit context and regional replay (uncommitted)
+## Visit context and regional replay
 
-Ready for review as 1.2.0: explicit owner/tester labels and work/read/play interests;
+Committed as `9b4b8c9` and publicly served as 1.2.0: explicit owner/tester labels and work/read/play interests;
 regional masked replay and one footer Privacy & recordings link. Settings offer detected
 region, explicit correction and saved automatic-recording refusal, without saved identity.
 Stop saves refusal; other tabs/reloads honour it. Storage failure and DNT/GPC disable automatic
@@ -66,18 +66,16 @@ Provider traffic was intercepted; production replay ingestion remains unverified
 Temporary verification worktree, server, captures and logs removed.
 
 The sixth PostHog dashboard, Visit context and testing (1025313), has three validated queries.
-Old dashboards unchanged. No account settings, DNS, env flags, commits or deployment changed.
-Before release, the owner must enable `REPLAY_ENABLED=true`, verify provider terms/DPA status,
-and confirm a real recording with 30-day retention. Tasks: [follow-ups.md](follow-ups.md).
+Old dashboards unchanged. Public policy responds enabled, detects IN from this request and
+returns 10% sampling with the expected expiry. Actual production replay ingestion and
+provider terms/DPA review remain unverified; see [follow-ups.md](follow-ups.md).
+Owner QA URL: `https://www.maxsash.com/?studio_visit=owner`; add `&studio_intent=play`
+for declared interest. Labels appear on events/snapshots, not person profiles, and never
+grant recording permission. Footer testing offers deliberate voluntary Start.
 
-Suggested feature commit: `feat: add regional replay and persistent privacy controls`.
-Body: Add self-declared visit context, an expiring India replay rule and voluntary testing.
-Let visitors correct geolocation and save recording refusal without identity. Offer voluntary
-Start through footer settings with no arrival prompts. Stop capture
-before policy changes; keep recordings masked and enforce expiry during startup/uploads.
-Verified: isolated production build, types/lint/format, 170 Node tests, replay 37, telemetry
-16, SEO 78, keyboard 22, headers, creative 191 and phone privacy controls. Version 1.2.0;
-suggested tag after commit: `git tag -a v1.2.0 -m "Release 1.2.0"`.
+Current docs-only clarification is uncommitted. Suggested commit:
+`docs: record live replay configuration and owner QA link`.
+Verified: public release/policy reads, source label propagation, docs tests and format.
 
 ## Next
 

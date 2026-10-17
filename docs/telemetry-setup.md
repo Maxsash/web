@@ -32,9 +32,9 @@ Development/Vercel Preview stay disabled. Redeploy after env changes. Autocaptur
 heatmap toggles do not enable those features in our code; replay has its separate gate.
 
 ## Replay and visit labels
-
-Replay is an optional 1.2.0 feature. Set `REPLAY_ENABLED=true` alongside the event variables
-and redeploy; false/missing leaves it off. Project 306242 replay was already enabled on 15 October with 30-day retention. No project settings were changed.
+Production 1.2.0 and its enabled replay policy were verified on 17 October.
+`REPLAY_ENABLED=true` gates replay; false/missing leaves it off after redeploy.
+Project 306242 replay has 30-day retention; actual live replay ingestion remains unverified.
 India’s reviewed 10% rule expires at 2027-04-30T00:00:00Z; other/unknown regions and expired
 rules use voluntary testing. Footer settings offer region correction and saved refusal.
 See [telemetry.md](telemetry.md#replay-and-country-policy) for precedence and data boundaries.
@@ -44,7 +44,7 @@ These only label visits; no URL opens a prompt or grants recording permission. N
 policy and saved preferences still apply. Visitors can start testing through footer settings. Add
 `&studio_intent=work`, `read` or `play` for declared interest. These are public labels,
 not secrets or authentication. Filter owner/tester visits out of audience reports.
-The sixth dashboard is provisioned with three validated queries; new labels arrive with 1.2.0.
+The sixth dashboard has three validated queries for the 1.2.0 labels.
 
 Managed proxy stays off: current events already use a validating relay; optional replay
 connects directly to EU ingestion. A proxy may reduce blocking but adds DNS/CSP setup and

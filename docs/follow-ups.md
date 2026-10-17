@@ -7,7 +7,7 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 ## Owner
 
 - [ ] Review PostHog billing quota and alerts, and Vercel limits for `/api/telemetry`;
-      optionally switch off the project's inert replay, autocapture and heatmap toggles
+      review unused autocapture and heatmap toggles; keep replay enabled while in use
       ([telemetry-setup.md](telemetry-setup.md)).
 - [ ] Search indexing: Google outcomes for the eight case-study and article URLs requested on
       13 October (sitemap last read and count); Bing URL inspections and its AI Performance
@@ -58,8 +58,8 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 
 ## Telemetry recordings
 
-- [ ] Before release: enable replay in production only after local verification and owner
-      review; confirm a real voluntary recording arrives and has 30-day retention.
+- [ ] Production replay is enabled: confirm a real voluntary recording arrives and has
+      30-day retention; owner review remains necessary.
 - [ ] Before release, verify PostHog provider terms/DPA status and the configured production
       replay setting. India safeguards: [review](replay-review.md#implemented-safeguards-and-release-checks).
 - [ ] Before the May 2027 transition, review retained recordings, consent evidence and

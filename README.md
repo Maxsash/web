@@ -6,7 +6,8 @@ and web apps built end to end: a WebGL sea that resolves into its own mathematic
 notebook, a sea studio where visitors build and print their own sea, and a shoreline footer.
 Every action gets a small answer of its own, in sound from the first click. Next.js 16,
 React 19 and TypeScript. No database, accounts or cookies. Explicitly configured visitor analytics uses in-memory visits without saved
-visitor identifiers, person profiles or replay.
+visitor identifiers or person profiles, with separately configured, masked session replay.
+Footer privacy controls save recording refusal and a coarse region correction without identity.
 
 Working on this repository? Read [AGENTS.md](AGENTS.md), then
 [docs/handoff.md](docs/handoff.md).
@@ -62,7 +63,7 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 | Path                      | What lives there                                                                 |
 | ------------------------- | -------------------------------------------------------------------------------- |
 | `app/`                    | Routes (`/`, `/sea`, `/work`, `/blog`, `/plate`, `/privacy`), the APIs, sitemap  |
-| `lib/telemetry/`          | Explicit-event schema, redaction, configuration and provider payloads            |
+| `lib/telemetry/`          | Event/visit schemas, replay policy, redaction and provider payloads              |
 | `lib/sea/`                | The sea model: editions, seeds, sampling, the SVG plate, request parsing         |
 | `lib/sound/`              | The synthesised sounds: page turn, surf, compass ticks, feedback cues            |
 | `lib/feedback/`           | The feedback vocabulary: what every action answers with, and at what level       |
@@ -74,7 +75,7 @@ and the history in [CHANGELOG.md](CHANGELOG.md).
 | `components/shore/`       | The shoreline footer and the commit-log card                                     |
 | `components/gull/`        | The gull that lands on "Play waves": its low-poly body, flight and lifecycle     |
 | `components/sound/`       | The visit's one audio context, the sound choice, the wave bed and its buttons    |
-| `components/telemetry/`   | Memory-only pause/visit identity, transport and journey observations             |
+| `components/telemetry/`   | Memory-only visit context, observations, replay and visitor controls             |
 | `components/studio/`      | The sea studio                                                                   |
 | `components/atlas/`       | The notebook's scoped styling and plates                                         |
 | `content/`                | Copy and data: `site.ts`, `contact.ts`, `projects.ts`, `about.ts`, `notebook.ts` |

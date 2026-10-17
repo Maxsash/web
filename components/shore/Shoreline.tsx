@@ -203,7 +203,7 @@ export default function Shoreline({
         <div className={styles.colophon}>
           <PageLink href="/">Maxsash Studio ↗</PageLink>
           <PageLink href="/sea">The sea studio ↗</PageLink>
-          <PageLink href="/privacy">Privacy & analytics</PageLink>
+          <PageLink href="/privacy">Privacy & recordings</PageLink>
           <span>
             Release v{version}
             {commit ? ` · ${commit}` : ""}

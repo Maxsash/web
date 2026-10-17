@@ -320,12 +320,44 @@ How the code is built: [architecture.md](architecture.md).
   posts in search and the sitemap. Published articles expose only their visible title, summary,
   topic, author, URL and date as BlogPosting JSON-LD.
 
+## Business audience and public-site boundary
+
+- **India-based studio, public site only** (owner, 15 October 2026). Maxsash Studio is
+  legally based in India, expects mostly Indian clients and welcomes clients worldwide.
+  Intended visitors are adult prospective clients and readers. No visitor accounts,
+  checkout, personal-data collection forms or sensitive/private pages, with no planned
+  exceptions. Any proposal that crosses this boundary must be brought to the owner's
+  attention explicitly before implementation; do not silently introduce it.
+- **Replay purpose and UX constraint** (owner, reaffirmed 17 October 2026): diagnose
+  navigation and interaction problems and study intent/section order. Rules and visitor
+  preferences take precedence over collection. No arrival prompts, including tester URLs.
+  Opt-in is initiated through footer settings; nothing requiring permission runs before Start.
+  If noninterruptive controls cannot satisfy a requirement, leave that recording off.
+  Use reviewed regional rules with expiry/sampling; URL labels never open consent dialogs.
+  Owner/tester labels are self-declared context; work/read/play expresses intent. Neither is
+  authentication or consent. Keep a visible recording stop control and honour DNT/GPC.
+- **India automatic replay and regional correction** (owner approved, 17 October 2026). The
+  [India review](replay-review.md) supports a prompt-free, non-SPDI pilot under the current
+  framework. The official 2011 clarification narrows the earlier reading of prior-refusal
+  duties; that was not a demonstrated blanket requirement for this public-site telemetry.
+  Ship accurate disclosure, persistent refusal and footer region correction with 10% India
+  sampling until 2027-04-30T00:00:00Z. Explicit correction takes precedence over detection;
+  it declares current location and is not identity or an analytics field. May DPDP fallback is
+  voluntary replay with consent evidence and withdrawal/deletion handling; exemptions need
+  separate assessment. Evidence, provider-transfer interpretation and residual limits live
+  in the review; do not infer anonymity merely from masking or cookie-free operation.
+- **Other country defaults** (research, 17 October 2026). UK stays voluntary:
+  [ICO](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/)
+  excludes individual recordings from its statistics exception. No blanket US approval:
+  [Javier](https://cdn.ca9.uscourts.gov/datastore/memoranda/2022/05/31/21-16351.pdf) (nonprecedential; other defences unresolved) and [Popa](https://www2.ca3.uscourts.gov/opinarch/212203p.pdf)
+  require state analysis. Worldwide access alone is not EU targeting; assess the [EDPB monitoring test](https://www.edpb.europa.eu/documents/guideline/guidelines-32018-on-the-territorial-scope-of-the-gdpr-article-3-version-adopted_en).
+
 ## Visitor analytics
 
 - **Measure behaviour before changing journeys, without persistent identity** (owner, 14 October
   2026). Explicit events through a first-party relay to PostHog; in-memory random visit IDs and
-  pause only, reset on reload or a new tab; no analytics storage, profiles, SDK, autocapture or
-  replay. The owner accepted the limited journeys this gives. Released in 1.1.0 with five
+  pause only, reset on reload or a new tab; no analytics storage, profiles or autocapture.
+  1.2.0 adds optional browser replay under the policy above. Released in 1.1.0 with five
   dashboards. No adaptive order or segmentation until the data supports it. Contract:
   [telemetry.md](telemetry.md); research: [visitor-journeys.md](visitor-journeys.md).
 
@@ -393,7 +425,7 @@ best practices and SEO 100. No field data yet.
 - **Next.js 16.3.8** (16.2.9 had critical advisories; the site used none of the affected
   features). **Node 24** (`engines.node`, `.nvmrc`, `@types/node`).
 - **No admin panel in production** (owner, 12 October 2026: "too much for a public repo"). Test,
-  debugging and performance tooling stays local or in CI; no accounts, sessions or cookies.
+  debugging and performance tooling stays local or in CI; no accounts, login sessions or cookies.
 - **Production CSP and hardening headers**, no `X-Powered-By`, `security.txt` and
   `SECURITY.md`. No secrets, source maps or third-party client calls.
 - **A Vercel Firewall rate limit** covers `/api/sea-edition*` and `/plate` (owner published it,

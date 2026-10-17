@@ -20,9 +20,9 @@ way: [decisions.md](decisions.md). How it is checked: [testing.md](testing.md).
 | `/robots.txt`, `/sitemap.xml`   | Discovery files; the sitemap lists the homepage, the Notebook listing, the sea studio, two essays, five case studies and published markdown posts.                                                                               |
 | Error pages                     | `app/not-found.tsx` (any unknown address), `app/blog/not-found.tsx` (unknown or draft note), `app/plate/not-found.tsx` (bad seed or version), `app/error.tsx` (a page crashed), `app/global-error.tsx` (the root layout failed). |
 
-No database, accounts, cookies or browser calls to third parties. Local theme/sound
+No database, accounts or cookies. Optional replay calls PostHog EU from the browser. Local theme/sound
 preferences remain. Optional configured analytics keeps a random visit ID and pause
-choice in memory only; no analytics local/session storage or cross-visit identity.
+choice in memory only; saved recording refusal/region contain no cross-visit identity.
 Server inputs include the sea query, optional GitHub request below and bounded
 telemetry batches.
 
@@ -33,7 +33,19 @@ telemetry batches.
 production with explicit env/token/approved-host checks. `posthog.ts` builds the
 personless payload. `/api/telemetry` checks origin/type/body limits and forwards
 rebuilt fields only; no visitor IP/raw URLs/raw user agents, GeoIP or profiles.
-Existing same-origin CSP stays; no PostHog browser SDK or dependency.
+CSP permits EU ingestion connections. Optional replay uses a dynamically imported, locally
+bundled PostHog SDK with external script loading and automatic analytics disabled.
+`replay-policy.ts` owns reviewed country approvals and expiry; the no-store
+`/api/telemetry/replay-policy?region=…` separately gates replay and honours DNT/GPC.
+Coarse region corrections override detection; the endpoint never accepts arbitrary country text.
+`visit-labels.ts` owns role/intent allowlists; consumed URL tags never establish identity.
+`components/telemetry/replay*` separate state, recording lifecycle, redaction and controls.
+Footer Privacy & recordings leads to the inline region/recording controls at `/privacy`.
+`replay-preferences.ts` separates pure parsing from browser storage/events. Local preferences
+store only region and automatic choice. Changes cancel capture before requesting a new policy;
+storage failure disables automatic capture. Only the visitor’s test button opens a Start dialog;
+URL labels never open one. Rules/preferences take precedence; required opt-in stays off until Start.
+Recordings join events using a UUID7 and get no persistent visitor identity.
 
 `components/telemetry/` separates in-memory preference/identity, bounded transport,
 observers, action bridge and React lifecycle. Only configured production measures.
@@ -465,7 +477,7 @@ camera, microphone, geolocation and similar. API routes set their own headers.
 | `NEXT_PUBLIC_SITE_URL`                                       | Canonical origin; defaults to `https://www.maxsash.com`               |
 | `GITHUB_TOKEN`                                               | Optional, server-only; raises GitHub's rate limit                     |
 | `VERCEL_GIT_COMMIT_SHA`, `NEXT_PUBLIC_BUILD_SHA`             | Short commit in the footer; omitted when absent                       |
-| `TELEMETRY_ENABLED`, `POSTHOG_PROJECT_TOKEN`, `POSTHOG_HOST` | Server-only analytics relay; [telemetry-setup.md](telemetry-setup.md) |
+| `TELEMETRY_ENABLED`, `POSTHOG_PROJECT_TOKEN`, `POSTHOG_HOST`, `REPLAY_ENABLED` | Event relay and separate replay gate; [telemetry-setup.md](telemetry-setup.md) |
 
 ## Not implemented
 

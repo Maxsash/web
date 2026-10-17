@@ -25,3 +25,36 @@
   outline: 2px solid currentColor;
   outline-offset: 4px;
 }
+
+.preferences label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  min-height: 44px;
+  margin-block: 1rem;
+}
+.preferences select {
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid currentColor;
+  background: var(--paper, #f2f0e8);
+  color: inherit;
+  font: inherit;
+}
+.preferences input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--ink, #243638);
+}
+.preferences select:focus-visible,
+.preferences input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.preferences label:has(input[type="checkbox"]) {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+}

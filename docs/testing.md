@@ -10,12 +10,12 @@ What a change verified belongs in its commit body; this file keeps only the late
   and logs when done.
 - Every change runs the core checks: types, lint, format, Node tests, `check-seo`,
   `check-headers`, `check-keyboard` and `check-creative-v2`. Add the focused checks for the
-  area it touches. The `testing` upkeep job (AGENTS.md) runs all of them.
+  area it touches. Replay changes also run `check-replay`. The `testing` upkeep job (AGENTS.md) runs all of them.
 - Automated checks never reach the real PostHog project: the worktree copy leaves out `.env`,
   and the build and server get a placeholder token instead. Analytics is decided at build time
   (static pages are prerendered), so the token must be set for `pnpm build` too.
   `SEA_TEST_BLOCK_TELEMETRY=1` also blocks analytics requests in every browser check except
-  `check-telemetry`, which intercepts its own.
+  `check-telemetry` and `check-replay`, which intercept their own.
 
 ## Run everything
 
@@ -33,6 +33,7 @@ URL=http://localhost:3012
 pnpm exec tsc --noEmit && pnpm lint && pnpm format:check
 SEA_TEST_BASE=$URL node --test tools/*.test.mjs
 node tools/check-telemetry.mjs $URL
+node tools/check-replay.mjs $URL
 export SEA_TEST_BLOCK_TELEMETRY=1
 node tools/check-seo.mjs http://127.0.0.1:3012
 for check in headers keyboard creative-v2 ship gull sound software-fallback browser-bars \
@@ -68,6 +69,10 @@ blocks its resources from `127.0.0.1`).
   cadence (may target `www.maxsash.com`); `--scroll` or `--native-scroll` measure the reveal.
 - **`check-telemetry`**: configured capture with requests intercepted, no analytics storage,
   section qualification, content and contact events, pause and resume, redaction, failures.
+- **`check-replay`**: mocked country/privacy policies and intercepted PostHog requests;
+  no arrival/URL prompts, deliberate footer opt-in, snapshots, masking, joined IDs; stop/restart/pause, region correction,
+  real second-tab refusal sync, storage failure, rapid corrections, expiry and voluntary
+  Start after expiry; disabled recording, browser privacy signals and CSP.
 - **`check-ship`**: rendered triangles clear text and edges at six sizes, day and night, Drawing,
   150% text, rotation, paused and reduced-motion cloth, native mobile reveal.
 - **`check-gull`**: contact with the pill border, label clearance and no clipping across live
@@ -93,12 +98,13 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
-- **15 October, documentation review:** types, lint, format; 163 Node tests against a
-  production build; `check-telemetry` 16 with a placeholder token (the procedure above).
-- **15 October, 1.1.0:** `check-seo` 78 cases; `check-keyboard` 22/22; `check-headers`;
-  `check-creative-v2` 191 records with no runtime exceptions.
+- **17 October, 1.2.0:** isolated production build, types, lint and format; 170 Node tests;
+  `check-telemetry` 16 and `check-replay` 37 with provider traffic intercepted; `check-seo`
+  78; `check-keyboard` 22/22; `check-headers`; `check-creative-v2` 191 records, no runtime
+  exceptions. Privacy controls inspected at 390×844; native select, Tab/Space refusal and
+  no horizontal overflow verified. Real production replay ingestion remains unverified.
+- **15 October:** `check-navigation`.
 - **14 October, 1.0.0:** `check-ship` 36/36.
-- **13 October:** `check-navigation`.
 - **12 October:** `check-browser-bars`, `check-sky-theme` (12 cases), `check-moon`,
   `check-moon-detail`, `check-moon-sea`, `check-stars`, `check-planets`,
   `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
@@ -123,6 +129,9 @@ checklist below all work; WhatsApp previews work. The page feels somewhat long.
 - `check-seo` refuses anything but a local server. Captures and reports go to ignored
   `tools/.out/<check>/`; delete them once reviewed.
 - Mobile-stage checks use Chrome's real touch emulation, not a `matchMedia` override.
+- Replay checks emulate ordinary Chrome UA/automation properties because the SDK filters
+  bots before its outgoing event hook. Production bot filtering stays on. Core event-blocking
+  harnesses also block the policy path; `check-replay` separately covers the enabled UI.
 - Each browser tool makes and removes its own Chrome profile (`tools/lib/browser.mjs`), and
   waits for a populated DevTools port file. Some Node processes (keyboard, creative, gull) have
   lingered after printing their result; stop them once the report is written.

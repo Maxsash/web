@@ -8,7 +8,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://eu.i.posthog.com https://eu-assets.i.posthog.com",
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",

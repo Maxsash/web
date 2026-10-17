@@ -1,7 +1,9 @@
+import { visitRoles, visitIntents, type VisitLabels } from "./visit-labels.ts";
+
 export type RouteCatalog = { work: string[]; notebook: string[] };
 export type RouteGroup = "home" | "work" | "notebook" | "studio" | "print" | "privacy" | "error";
 export type TelemetryRoute = { route: string; route_group: RouteGroup };
-export type VisitContext = {
+export type VisitContext = Partial<VisitLabels> & {
   device: "touch" | "pointer" | "unknown";
   browser: "safari" | "chrome" | "firefox" | "edge" | "other";
   viewport: "narrow" | "medium" | "wide";
@@ -67,6 +69,7 @@ export type EventDetails = {
     duration: "under-1s" | "1-3s" | "3-10s" | "over-10s";
     repeated: boolean;
   };
+  replay_choice: { action: "start" | "stop"; reason: "voluntary" | "automatic" };
   experience_issue: { issue: "route-error" | "not-found" | "static-fallback" | "context-lost" };
 };
 export type EventName = keyof EventDetails;
@@ -186,6 +189,10 @@ function eventProperties(
         repeated: p.repeated,
       };
     }
+    case "replay_choice":
+      return member(p.action, ["start", "stop"]) && member(p.reason, ["voluntary", "automatic"])
+        ? { action: p.action, reason: p.reason }
+        : null;
     case "experience_issue":
       return member(p.issue, ["route-error", "not-found", "static-fallback", "context-lost"])
         ? { issue: p.issue }
@@ -203,7 +210,7 @@ export function sanitiseBatch(
   if (
     !record(input) ||
     typeof input.session !== "string" ||
-    !/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(input.session)
+    !/^[a-f\d]{8}-[a-f\d]{4}-[47][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(input.session)
   )
     return null;
   if (!Array.isArray(input.events) || input.events.length < 1 || input.events.length > 20)
@@ -215,10 +222,23 @@ export function sanitiseBatch(
     !member(input.context.viewport, ["narrow", "medium", "wide"])
   )
     return null;
+  if (input.context.visit_role !== undefined && !member(input.context.visit_role, visitRoles))
+    return null;
+  if (
+    input.context.declared_intent !== undefined &&
+    !member(input.context.declared_intent, visitIntents)
+  )
+    return null;
   const context: VisitContext = {
     device: input.context.device,
     browser: input.context.browser,
     viewport: input.context.viewport,
+    ...(input.context.visit_role !== undefined
+      ? { visit_role: input.context.visit_role as VisitLabels["visit_role"] }
+      : {}),
+    ...(input.context.declared_intent !== undefined
+      ? { declared_intent: input.context.declared_intent as VisitLabels["declared_intent"] }
+      : {}),
   };
   const events: TelemetryEvent[] = [];
   for (const item of input.events) {

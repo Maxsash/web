@@ -76,9 +76,21 @@ const content = (name) => [property("content", name)];
 
 export const dashboards = [
   {
+    name: "Visit context and testing",
+    description:
+      "Self-declared visit labels and interests, not verified identities. Filter owner and tester visits out of audience analysis; missing labels on older releases mean unknown context.",
+    insights: [
+      trends("Visit labels", "page_view", "visit_role"),
+      trends("Declared visitor interests", "page_view", "declared_intent", [
+        property("visit_role", "visitor"),
+      ]),
+      trends("Testing and recording choices", "replay_choice", "action"),
+    ],
+  },
+  {
     name: "Website overview",
     description:
-      "Observed in-memory visits. No person profiles, replay or inferred customer identities. Counts are not total site traffic.",
+      "Observed in-memory visits. No person profiles or inferred customer identities. Owner/tester labels are self-declared. Counts are not total site traffic.",
     insights: [
       trends("Observed visits", "page_view"),
       trends("Acquisition source", "page_view", "source"),

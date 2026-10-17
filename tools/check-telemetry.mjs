@@ -42,6 +42,7 @@ await withBrowser(
     await send("Page.navigate", { url: new URL("/privacy", base).href });
     await delay(2500);
     const allEvents = () => batches.flatMap((batch) => batch.events);
+    for (let attempt = 0; attempt < 100 && !allEvents().length; attempt++) await delay(100);
     check("configured analytics starts without saved identity", () =>
       assert.equal(allEvents().filter((event) => event.event === "page_view").length, 1),
     );

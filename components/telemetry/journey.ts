@@ -11,7 +11,7 @@ import {
 import { connectTelemetry } from "./actions";
 import { observeEngagement, observeSections } from "./observations";
 import { eventTransport } from "./transport";
-import { visitSession } from "./session";
+import { currentVisit } from "./session";
 import { preferenceSnapshot } from "./preferences";
 
 type Pending = {
@@ -24,7 +24,7 @@ type Pending = {
 
 export function observeJourney(catalog: RouteCatalog) {
   const transport = eventTransport();
-  const session = visitSession();
+  const session = currentVisit;
   const entry = acquisition(document.referrer, location.origin, location.search);
   let route = normaliseRoute(location.pathname, catalog);
   let currentSession = "";

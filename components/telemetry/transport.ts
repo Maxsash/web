@@ -1,9 +1,11 @@
 import type { TelemetryEvent, VisitContext } from "@/lib/telemetry/schema";
+import { labelSnapshot } from "./visit";
 import { preferenceSnapshot } from "./preferences";
 
 export function eventTransport() {
   const agent = navigator.userAgent;
   const context: VisitContext = {
+    ...labelSnapshot(),
     device: matchMedia("(pointer: coarse)").matches ? "touch" : "pointer",
     browser: /Edg\//.test(agent)
       ? "edge"

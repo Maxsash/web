@@ -74,3 +74,10 @@ in follow-ups. An idea is not permission to publish, and recorded findings are n
   each row by luma, drawn top to bottom with a filled outline so later rows hide earlier ones
   (Joy Division style), read as a face at 72 rows. Rippling the flat parts with the site's own
   `sampleSea` (Home water, 60 m across) kept it "sea" (`components/portrait/`).
+
+- **An SDK's “recording started” state is not proof of uploaded, playable snapshots.**
+  In headless replay checks, the recorder produced DOM snapshots but the SDK's bot filter
+  suppressed capture before the outgoing event hook. Test with an ordinary browser user
+  agent and automation flag while keeping production bot filtering enabled; verify actual
+  snapshot requests, not just the recorder-started boolean. The isolated browser check
+  verified initial snapshots, redaction, joined IDs and stop/restart without uploading to PostHog.

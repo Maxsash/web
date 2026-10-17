@@ -143,7 +143,7 @@ test("PostHog payload pins privacy flags and the random visit identity", () => {
 });
 
 test("contact funnels aggregate by visit rather than multi-visit people", () => {
-  assert.equal(dashboards.length, 5);
+  assert.equal(dashboards.length, 6);
   const funnels = dashboards
     .flatMap((dashboard) => dashboard.insights)
     .filter((insight) => insight.query.source.kind === "FunnelsQuery");

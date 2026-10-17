@@ -51,8 +51,21 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 
 - [ ] Screen readers beyond the owner's iPhone VoiceOver pass (VoiceOver on Mac, NVDA,
       TalkBack, Safari Reader), and the "Opening page…" badge with VoiceOver.
+- [ ] Replay on the owner's iPhone and Android: controls, readability and animation cost;
+      headless browser checks do not qualify physical-device performance.
 - [ ] Feedback on real hardware: speakers and headphones, Android vibration and taps.
 - [ ] A real print of a sea plate on paper.
+
+## Telemetry recordings
+
+- [ ] Before release: enable replay in production only after local verification and owner
+      review; confirm a real voluntary recording arrives and has 30-day retention.
+- [ ] Before release, verify PostHog provider terms/DPA status and the configured production
+      replay setting. India safeguards: [review](replay-review.md#implemented-safeguards-and-release-checks).
+- [ ] Before the May 2027 transition, review retained recordings, consent evidence and
+      withdrawal/deletion handling; use voluntary replay unless another ground is established.
+- [ ] Exclude owner/tester labels when interpreting audience journeys; the new context
+      dashboard is ready ([telemetry-setup.md](telemetry-setup.md)).
 
 ## Content and discovery
 

@@ -25,23 +25,24 @@ affected.
 
 Each document has one job and a line budget:
 
-| Document                   | Its job                                                            | Lines |
-| -------------------------- | ------------------------------------------------------------------ | ----- |
-| `docs/handoff.md`          | Now: work in progress, next steps, what was verified, the commit   | 100   |
-| `docs/follow-ups.md`       | Every open task and idea, as `- [ ]` lines under headings          | 150   |
-| `docs/log.md`              | One line per upkeep run, newest first                              | 40    |
-| `docs/decisions.md`        | Each live decision once: who decided, when and why                 | 450   |
-| `docs/architecture.md`     | How the code is built now and the contracts it keeps               | 500   |
-| `docs/testing.md`          | How to verify, what each check covers, its latest result, the gaps | 200   |
-| `docs/sky.md`              | How the sky is drawn, its accuracy, sources and budgets            | 180   |
-| `docs/feedback.md`         | What answers each visitor action, and how to change it             | 160   |
-| `docs/seo-and-sharing.md`  | Search, link cards and the owner's account setup                   | 120   |
-| `docs/telemetry.md`        | The analytics contract, its data boundaries and how to read it     | 120   |
-| `docs/telemetry-setup.md`  | Analytics configuration, dashboards and release checks             | 80    |
-| `docs/visitor-journeys.md` | Personalisation research and its blog brief                        | 90    |
-| `docs/blog-ideas.md`       | Findings and post ideas for the Notebook                           | 120   |
-| `AGENTS.md`                | These rules                                                        | 170   |
-| `README.md`                | What the site is, how to run it and where things live              | 120   |
+| Document                   | Its job                                                              | Lines |
+| -------------------------- | -------------------------------------------------------------------- | ----- |
+| `docs/handoff.md`          | Now: work in progress, next steps, what was verified, the commit     | 100   |
+| `docs/follow-ups.md`       | Every open task and idea, as `- [ ]` lines under headings            | 150   |
+| `docs/log.md`              | One line per upkeep run, newest first                                | 40    |
+| `docs/decisions.md`        | Each live decision once: who decided, when and why                   | 450   |
+| `docs/architecture.md`     | How the code is built now and the contracts it keeps                 | 500   |
+| `docs/testing.md`          | How to verify, what each check covers, its latest result, the gaps   | 200   |
+| `docs/sky.md`              | How the sky is drawn, its accuracy, sources and budgets              | 180   |
+| `docs/feedback.md`         | What answers each visitor action, and how to change it               | 160   |
+| `docs/seo-and-sharing.md`  | Search, link cards and the owner's account setup                     | 120   |
+| `docs/telemetry.md`        | The analytics contract, its data boundaries and how to read it       | 120   |
+| `docs/telemetry-setup.md`  | Analytics configuration, dashboards and release checks               | 80    |
+| `docs/replay-review.md`    | India replay assessment, evidence, limits and recommended safeguards | 120   |
+| `docs/visitor-journeys.md` | Personalisation research and its blog brief                          | 90    |
+| `docs/blog-ideas.md`       | Findings and post ideas for the Notebook                             | 120   |
+| `AGENTS.md`                | These rules                                                          | 170   |
+| `README.md`                | What the site is, how to run it and where things live                | 120   |
 
 - **Describe now; git holds history.** Rewrite or delete what stops being true instead of
   appending. No heading carries a date, and no document keeps a session's story. What a
@@ -148,6 +149,8 @@ Research lives in `../web-research/` and the brand kit in `../brand/`, beside th
 Commits use the studio identity in `docs/decisions.md` ("Security and hosting").
 
 # Code conventions
+
+Follow the [public-site and replay constraints](docs/decisions.md#business-audience-and-public-site-boundary): flag boundary changes; honour rules/preferences; no arrival consent prompts.
 
 Write code that is a pleasure to read.
 

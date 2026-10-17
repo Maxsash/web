@@ -139,6 +139,15 @@ notes' look and all colours in `paint.ts`; the shape in `body.ts`; poses in `pos
 in the pill in `Gull.module.css` and `SoundControls.module.css`. To remove it, drop the `gull` prop
 from `WaveSoundControl` in `components/observatory/Hero.tsx`.
 
+## Voluntary site testing
+
+Footer “Privacy & recordings” opens `/privacy`: region correction, automatic replay choice
+and a voluntary test invitation. Start records this visit; Stop also saves automatic refusal.
+URL labels never open a prompt. The visitor opens testing deliberately; Escape/Close dismisses.
+Analytics pause stops replay; opt-in capture waits for explicit Start.
+Policy changes stop capture before applying the new region. Controls and
+masking contracts: [telemetry.md](telemetry.md#replay-and-country-policy).
+
 ## Not built
 
 The ship turning toward a hovered nav item; the surf rising slightly when idle; the sail

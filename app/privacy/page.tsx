@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import ReplayPreferences from "@/components/telemetry/ReplayPreferences";
+import VisitLabels from "@/components/telemetry/VisitLabels";
 import AnalyticsPreferences from "@/components/telemetry/AnalyticsPreferences";
 import { site } from "@/content/site";
 import styles from "./Privacy.module.css";
 
 export const metadata: Metadata = {
-  title: "Privacy & analytics",
+  title: "Privacy & recordings",
   description: "What Maxsash Studio measures, what stays private, and your analytics choice.",
   robots: { index: false, follow: true },
 };
@@ -14,8 +16,8 @@ export default function Privacy() {
   return (
     <PageShell skip="Skip to privacy">
       <article className={styles.copy} data-telemetry-ignore>
-        <p>Maxsash Studio · Updated 15 October 2026</p>
-        <h1>Privacy & analytics</h1>
+        <p>Maxsash Studio · Updated 17 October 2026</p>
+        <h1>Privacy & recordings</h1>
         <p>
           I want to understand which parts of this website people find useful, and where the
           experience gets in their way. Analytics uses no saved visitor identity. You can pause it
@@ -23,6 +25,15 @@ export default function Privacy() {
         </p>
         <h2>Your visit</h2>
         <AnalyticsPreferences />
+        <h2>Your region and recording choice</h2>
+        <ReplayPreferences />
+        <h2>Your visit context</h2>
+        <VisitLabels />
+        <p>
+          Visit links can declare an owner or tester visit and an interest in work, reading or the
+          sea. Only these fixed labels are recorded. They are not verified identities, and a link
+          never grants permission to record.
+        </p>
         <h2>What analytics records</h2>
         <p>
           If enabled and allowed, analytics records the pages and homepage sections you visit,
@@ -42,8 +53,8 @@ export default function Privacy() {
         <p>
           The website validates these events before forwarding them to PostHog Cloud. It does not
           forward your IP address or full browser identification string, and disables location
-          lookup and person-profile creation. There are no session recordings, advertising trackers
-          or company-identification services in this integration.
+          lookup and person-profile creation. There are no advertising trackers or
+          company-identification services.
         </p>
         <p>
           Events are used to understand aggregate journeys and improve the website. Access is
@@ -53,12 +64,45 @@ export default function Privacy() {
           <a href="https://posthog.com/docs/data/events-retention">PostHog’s retention policy</a>{" "}
           for details.
         </p>
+        <h2>Session recordings</h2>
+        <p>
+          To improve navigation and understand visitor interests, this site records up to 10% of
+          eligible visits from India automatically under a reviewed rule. Other regions and unknown
+          locations use voluntary testing. The region check uses the host’s approximate IP-derived
+          country; correct it above if it is inaccurate. The region is not sent to analytics.
+        </p>
+        <p>
+          PostHog receives public page content, clicks and scrolling. Inputs and contact links are
+          masked; canvas animations, console logs and network bodies are excluded. Page URL queries
+          and fragments are removed. Recordings use temporary visit identifiers and are retained for
+          up to 30 days. Access is restricted to the studio’s analytics account.
+        </p>
+        <p>
+          The recorder connects to PostHog’s EU service, whose network infrastructure receives the
+          connection’s IP address. IP recording, location lookup and person-profile creation are
+          disabled in capture configuration. There is no advertising or cross-site tracking.
+        </p>
+        <p>
+          A visible Stop control ends recording and saves your refusal of automatic recording. Your
+          automatic-recording choice and region correction are saved in this browser, without a
+          visitor identifier, and apply across reloads and tabs. Clearing browser storage removes
+          those choices. If preferences cannot be saved, automatic recording stays off. Global
+          Privacy Control and Do Not Track block replay, including voluntary tests.
+        </p>
+        <p>
+          “Help test this site” explains recording before you choose Start. That permission covers
+          this visit, ends on reload and does not change your saved automatic-recording choice.
+          Pausing analytics also stops replay. Stopping prevents new uploads; it does not retract
+          recordings already received. Contact the studio below with any privacy or deletion
+          request.
+        </p>
         <h2>What stays in your browser</h2>
         <p>
           The visit identifier and analytics pause choice stay in memory for the current page.
-          Pausing stops new events and drops unsent events. It cannot retract events already
-          received. Reloading forgets the identifier and pause choice; analytics starts again if it
-          is configured.
+          Recording refusal and region correction are saved separately as described above. Pausing
+          stops new events and drops unsent events. It cannot retract events already received.
+          Reloading forgets the identifier and pause choice; analytics starts again if it is
+          configured.
         </p>
         <p>
           The site separately remembers your day/night and sound preferences locally. These settings

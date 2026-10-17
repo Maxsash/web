@@ -3,6 +3,18 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.2.0 — 2026-10-17
+
+### Added
+
+- Explicit, memory-only owner/tester visit labels and work/read/play interests, with URL
+  entry links and privacy-page controls. Labels declare context; they do not verify identity.
+- Location-based masked replay: up to 10% of eligible India visits, with automatic expiry
+  on 30 April 2027 and voluntary testing elsewhere. Footer privacy controls offer a saved
+  region correction and persistent recording refusal; no saved visitor identity. Tester links
+  only label visits. Opt-in is offered through footer settings, with no arrival prompts.
+  Recording has visible Stop; browser privacy signals override it.
+
 ## 1.1.0 — 2026-10-15
 
 ### Added

@@ -24,8 +24,8 @@
 
 .notebook {
   --drift-ink: #131f27;
-  --drift-kicker: var(--chart-magenta);
-  --drift-accent: var(--chart-magenta);
+  --drift-kicker: var(--chart-pennant);
+  --drift-accent: var(--chart-pennant);
   --drift-ground: #f2f3ee;
   --bar-top: #f2f3ee;
   --drift-sky: linear-gradient(var(--bar-top) 50%, #1c4c55 50%, #0f3a43);
@@ -33,8 +33,8 @@
 
 .plate {
   --drift-ink: var(--chart-ink);
-  --drift-kicker: var(--chart-magenta);
-  --drift-accent: var(--chart-magenta);
+  --drift-kicker: var(--chart-pennant);
+  --drift-accent: var(--chart-pennant);
   --drift-ground: var(--chart-paper);
   --drift-plate: var(--chart-ink);
   --bar-top: #bcd1d0;

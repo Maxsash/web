@@ -403,7 +403,7 @@ origin sending JSON (so another website cannot write files while the dev server 
   tables, plate notation) as `--typeface-*`; `globals.css` maps them to `--font-display`,
   `--font-sans` and `--font-mono`. next/font generates the fallback metrics for all three.
   Only Montagu Slab is preloaded (the hero title); the others use `preload: false` and load
-  when used, with `display: swap`. `globals.css` is the one palette (Admiralty chart): theme tokens
+  when used, with `display: swap`. `globals.css` is the one palette (Open water): theme tokens
   (`--paper`, `--sheet`, `--water`, `--ink`, `--ink-2/3`, `--accent`, `--buff`, `--gold`,
   `--band*`, rules) switch with `html[data-studio-theme="night"]`. Day-only pages (the
   Notebook, `/plate`, error pages) read the fixed `--chart-*` constants, because the night
@@ -450,7 +450,7 @@ origin sending JSON (so another website cannot write files while the dev server 
   posts (353 files for `/`, 153 now). The editor's `post-files.ts` imports the same constant.
 - The studio mark lives in `components/Mark.tsx`. `app/icon.svg`, `app/favicon.ico`,
   `app/apple-icon.png`, the manifest icons in `public/` and the default share card
-  (`site.shareImage`, `public/images/studio-card-v1.jpg`) are rendered from it and the live sea by
+  (`site.shareImage`, `public/images/studio-card-v2.jpg`) are rendered from it and the live sea by
   the brand kit beside the repo (`../brand/`, see its README). `app/manifest.ts` and the
   theme colour read `site.colors`.
 - **Navigation feedback:** PageLink renders NavigationStatus inside Next Link;

@@ -98,18 +98,21 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
-- **17 October, 1.2.0:** isolated production build, types, lint and format; 170 Node tests;
-  `check-telemetry` 16 and `check-replay` 37 with provider traffic intercepted; `check-seo`
-  78; `check-keyboard` 22/22; `check-headers`; `check-creative-v2` 191 records, no runtime
-  exceptions. Privacy controls inspected at 390×844; native select, Tab/Space refusal and
-  no horizontal overflow verified. Real production replay ingestion remains unverified.
+- **17 October, 1.3.0** (sandbox without Google Fonts; local copies of the same faces):
+  build, types, lint and format; 170 Node tests; `check-seo` 78; `check-headers`;
+  `check-heading-contrast` (128, lowest 5.33:1); `check-creative-v2` 191 records, no runtime
+  exceptions; `check-studio-plate` (8); `check-drawing-labels`. `check-keyboard`,
+  `check-browser-bars` and `check-sky-theme` failed there exactly as on 1.2.0; rerun on the Mac.
+- **17 October, 1.2.0:** `check-telemetry` 16 and `check-replay` 37 with provider traffic
+  intercepted; `check-keyboard` 22/22. Privacy controls inspected at 390×844; native select,
+  Tab/Space refusal and no horizontal overflow verified. Real production replay ingestion
+  remains unverified.
 - **15 October:** `check-navigation`.
 - **14 October, 1.0.0:** `check-ship` 36/36.
 - **12 October:** `check-browser-bars`, `check-sky-theme` (12 cases), `check-moon`,
   `check-moon-detail`, `check-moon-sea`, `check-stars`, `check-planets`,
   `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
-- **11 October:** `check-gull` (47), `check-sound`, `check-studio-plate` (8),
-  `check-heading-contrast` (128, lowest 10.33:1), `check-drawing-labels`.
+- **11 October:** `check-gull` (47), `check-sound`.
 
 **Production, public reads:** 17 Oct: release 1.2.0 and enabled India replay policy, 10%
 sampling and 30 April expiry verified; actual live recording ingestion not checked.

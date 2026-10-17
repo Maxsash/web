@@ -64,11 +64,11 @@
 }
 .actions :is(a, button):hover {
   color: #fff;
-  background: var(--chart-magenta);
-  border-color: var(--chart-magenta);
+  background: var(--chart-pennant);
+  border-color: var(--chart-pennant);
 }
 .actions :is(a, button):focus-visible {
-  outline: 2px solid var(--chart-magenta);
+  outline: 2px solid var(--chart-pennant);
   outline-offset: 3px;
 }
 .sheet {
@@ -84,7 +84,7 @@
 .sheet figcaption {
   margin-top: 0.8rem;
   font-size: 0.78rem;
-  color: #3f565e;
+  color: #3d5a66;
 }
 @media print {
   @page {

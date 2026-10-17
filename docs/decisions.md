@@ -24,7 +24,7 @@ How the code is built: [architecture.md](architecture.md).
 ## Brand, type and colour
 
 - **One brand everywhere, from the site's own sources** (owner, 11 October 2026). Icons keep
-  the mark's geometry in chart ink `#10303A` and hero cream `#F5F0DF`. The default share card
+  the mark's geometry in hero cream `#F5F0DF` on sea `#1C6894`. The default share card
   is the live hero (Home water sea and cutter, Montagu Slab headline, the offer). Social
   images use the same captures and fonts; profile copy reuses the site's lines verbatim, with
   real figures only and the phone number only inside the WhatsApp link. The kit lives beside
@@ -36,16 +36,16 @@ How the code is built: [architecture.md](architecture.md).
   text; the username `@maxsash` stays reserved. A username check cannot prove anything:
   WhatsApp's web page accepts any well-formed username.
 - **Type and colour of their own** (owner, 10 October 2026). The Fraunces/Inter/JetBrains
-  stack, tight tracking, accent-coloured italic second lines and bone-plus-rust paper read as
-  the generic AI look, and headings were hard to read. Chosen from a specimen ("Logbook
-  slab"): **Montagu Slab** for display and essay text, **Rethink Sans** for text and labels,
-  **Reddit Mono** only for data (seeds, coordinates, code). A first pick (Besley + Atkinson
-  Hyperlegible) was replaced for fresher faces and a build without next/font's missing-metrics
-  warning. Montagu Slab has no italic, so _Math._ and essay emphasis use the browser's slanted
-  roman. Palette **Admiralty chart**: cool chart paper, teal-navy ink, chart magenta as the
-  accent (nautical charts use it for lights and cautions). Display tracking stays between
-  −0.02em and +0.01em. **Italic only where it means something**: _Math._ (mathematics sets
-  variables in italic); other headings are one roman voice.
+  stack read as the generic AI look and its headings were hard to read; a first pick (Besley +
+  Atkinson Hyperlegible) was replaced for fresher faces. **Montagu Slab** for display and essay
+  text, **Rethink Sans** for text and labels, **Reddit Mono** only for data. Montagu Slab has
+  no italic, so _Math._ and essay emphasis use the browser's slanted roman. Palette **Open
+  water** (owner, 17 October 2026; the dark teal-navy "Admiralty chart" read as neither sea,
+  ship nor maths): chart paper, day-sea blue `#1C6894` for bands and tiles with sail cream on
+  it, deep-sea ink `#0E3B4E`, sun `#F2C46B` for _Math._ (sunlight `#F9E0A8` for small text on
+  blue), the pennant red `#B13D1A` as the accent on paper; night stays dark, tinted blue. A
+  pale sky with dark text and a sky gradient lost; chart magenta is retired. Display tracking
+  stays between −0.02em and +0.01em. **Italic only where it means something**: _Math._.
 
 ## The sea
 

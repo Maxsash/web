@@ -13,7 +13,7 @@ What is in place, and what only the owner can do. The crawler checks are `tools/
   two private case studies and every Notebook article use 1200 × 630 cards captured from their
   own drawings (`public/images/work/*-drawing.webp`, `public/images/notebook/<slug>.webp` via
   `lib/note-share.ts`). **Publishing a post needs its card**, and a card is recaptured when its
-  drawing changes. Other pages use `site.shareImage` (`/images/studio-card-v1.jpg`, 1200 × 630,
+  drawing changes. Other pages use `site.shareImage` (`/images/studio-card-v2.jpg`, 1200 × 630,
   117 KB): the live hero's sea, cutter, headline and offer, rendered by the brand kit
   (`../brand/`). WhatsApp needs it under 600 KB (`check-seo` asserts it). Bump the version in
   the filename when it changes so crawlers fetch it fresh.

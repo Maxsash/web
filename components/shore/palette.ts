@@ -18,7 +18,7 @@ const NIGHT: typeof DAY = {
   wetSand: "rgba(51,63,63,.5)",
   footprint: "#282e2b",
   footprintHighlight: "#c6bb9a",
-  water: ["#0b1c26", "#283638", "#647168"],
+  water: ["#0a1b2a", "#283638", "#647168"],
   foam: "#d9e9dc99",
   faintFoam: "#b9d5cc22",
   bubbles: "#aac3b955",

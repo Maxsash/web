@@ -6,7 +6,9 @@ upkeep runs: [log.md](log.md).
 
 ## Current state
 
-1.2.0 is live (public page and enabled replay policy checked 17 October 2026).
+1.2.0 is live (public page and enabled replay policy checked 17 October 2026). `main` holds
+1.3.0, the Open water palette, committed and pushed at the owner's request; production serves
+it once the owner releases.
 Production event ingestion was last verified 14 October at 19:07 UTC. `main` never deploys; releasing is the owner's action. The owner's iPhone report
 and every check's latest result are in [testing.md](testing.md).
 
@@ -15,31 +17,30 @@ commits) and then three more: the ghost photo, [blog-ideas.md](blog-ideas.md), a
 `tools/image-metadata.test.mjs`. No version bump: nothing a visitor reaches changed (the
 photo is not linked yet).
 
+## Open water palette (1.3.0)
+
+The owner replaced "Admiralty chart" on 17 October ([decisions](decisions.md#brand-type-and-colour)).
+`globals.css`: band `#1C6894` with cream, mist and sunlight text; ink `#0E3B4E`; accent
+`--chart-pennant` `#B13D1A` (was `--chart-magenta`); water `#D6E9F0`; gold `#F2C46B`; night
+tinted blue (paper `#0A1B2A`). The plate SVG, shore night water, night browser bar, hero meta
+text, icons (rendered in `../brand/`) and `studio-card-v2.jpg` follow. After the release,
+re-scrape the home page in Facebook's Sharing Debugger and LinkedIn's Post Inspector.
+
+Verified on Node 24.22 in an isolated copy whose sandbox blocks Google Fonts, so the build used
+local copies of the same three faces: build, types, lint, format (only that substitute
+`fonts.ts` differs), 170 Node tests, SEO 78, headers, heading contrast 128 (lowest 5.33:1, cream
+on the new band), creative 191 with no exceptions, studio plate 8, drawing labels. Keyboard
+16/22, browser bars (no-GPU plate) and sky theme (SwiftShader timing) failed identically on an
+unmodified 1.2.0 build in the same sandbox; rerun them on the Mac before releasing.
+
 ## Image metadata scrub (history rewritten)
 
-The owner asked that no committed image carry identifying metadata, history included. The
-current tree was clean. History was not: older `public/images/cover.png` and
-`cover-compressed.png` had XMP with the owner's name as author and Canva user, brand and
-document IDs; two older `app/apple-icon.png` had Canva IDs or a macOS screenshot tag, ICC
-profile and capture times. No image had GPS. SVGs, fonts and media were clean; the stock
-create-next-app favicon's 62-byte EXIF and NASA's Photoshop history in an old Moon JPEG (only
-in local Codex snapshot refs, never pushed) were left.
-
-- `git filter-repo --blob-callback` replaced those five blobs throughout history with
-  stripped copies of identical pixels (`magick compare` AE 0). Every commit hash changed,
-  `production` and the `v1.0.0` and `v1.1.0` tags included; each ref's tree and commit count
-  match the old history. Commit messages were remapped by filter-repo; the one hash cited in
-  a file (CHANGELOG's 1.0.0 base, now c794689) was updated by hand.
-- `main`, `production` and both tags were force-pushed at the owner's request. GitHub keeps
-  old commits reachable by hash until GitHub Support purges them (cached views, any forks).
-- New rule in AGENTS.md ("Public repository"): strip image metadata before committing;
-  `tools/image-metadata.test.mjs` fails on EXIF, XMP, IPTC, text or time metadata in any
-  PNG, JPEG, WebP or ICO under `public/` or `app/` (caught all five planted examples).
-- Another clone of this repository (or a Codex worktree) still holds the old history: reset
-  it to `origin` rather than pull or merge, or the old commits come back.
-
-Verified on Node 24.21.0: docs and image-metadata tests pass; `pnpm format:check` passes. No
-build: no served code changed.
+On 15 October `git filter-repo` replaced five historical images carrying the owner's name,
+Canva IDs or capture times with stripped copies of identical pixels; every hash changed and
+`main`, `production`, `v1.0.0` and `v1.1.0` were force-pushed. GitHub keeps old commits
+reachable by hash until Support purges them. Any other clone or Codex worktree must be reset
+to `origin`, never merged. AGENTS.md now requires stripping metadata, and
+`tools/image-metadata.test.mjs` enforces it.
 
 ## Visit context and regional replay
 
@@ -73,15 +74,15 @@ Owner QA URL: `https://www.maxsash.com/?studio_visit=owner`; add `&studio_intent
 for declared interest. Labels appear on events/snapshots, not person profiles, and never
 grant recording permission. Footer testing offers deliberate voluntary Start.
 
-Current docs-only clarification is uncommitted. Suggested commit:
-`docs: record live replay configuration and owner QA link`.
-Verified: public release/policy reads, source label propagation, docs tests and format.
+The replay-configuration docs are committed as `42326fd`.
 
 ## Next
 
-1. Owner, optional: ask GitHub Support to purge the old commits' cached views.
-2. In Noether's repo (not edited from here): tick "web: adopt the record"; its open item about
+1. Owner: review 1.3.0 on a preview or locally, then release it (merge `main` into
+   `production`) and tag it: `git tag -a v1.3.0 -m "1.3.0: Open water palette" && git push --tags`.
+2. Owner, optional: ask GitHub Support to purge the old commits' cached views.
+3. In Noether's repo (not edited from here): tick "web: adopt the record"; its open item about
    web's "test workbench" line is resolved.
-3. Noether will show `testing` and `code` as never run; the first full run refreshes testing.md.
-4. Then the top of [follow-ups.md](follow-ups.md): the owner's PostHog and Vercel review,
+4. Noether will show `testing` and `code` as never run; the first full run refreshes testing.md.
+5. Then the top of [follow-ups.md](follow-ups.md): the owner's PostHog and Vercel review,
    indexing outcomes, the iPhone navigation report.

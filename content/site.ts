@@ -17,12 +17,12 @@ export const site = {
   email,
   founded: "2026-06",
   shareImage: {
-    url: "/images/studio-card-v1.jpg",
+    url: "/images/studio-card-v2.jpg",
     width: 1200,
     height: 630,
     alt: "Maxsash Studio. Sea. Ship. Math. Websites and web apps, built end to end, beside a gaff cutter on the Living Atlas sea.",
   },
-  colors: { paper: "#eef0ea", night: "#0b1c26" },
+  colors: { paper: "#eef0ea", night: "#0a1b2a" },
   logo: "/icon-512.png",
 
   description:

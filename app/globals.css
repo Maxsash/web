@@ -3,24 +3,24 @@
 
   --chart-paper: #eef0ea;
   --chart-sheet: #f5f6f2;
-  --chart-ink: #10303a;
-  --chart-magenta: #9b2366;
+  --chart-ink: #0e3b4e;
+  --chart-pennant: #b13d1a;
   --chart-buff: #e3d29a;
 
   --paper: var(--chart-paper);
   --sheet: var(--chart-sheet);
-  --water: #d5e4e5;
+  --water: #d6e9f0;
   --ink: var(--chart-ink);
-  --ink-2: #3f565e;
-  --ink-3: #4f646b;
-  --accent: var(--chart-magenta);
+  --ink-2: #3d5a66;
+  --ink-3: #4a6470;
+  --accent: var(--chart-pennant);
   --buff: var(--chart-buff);
-  --gold: #d5be8e;
+  --gold: #f2c46b;
 
-  --band: #12323d;
-  --band-ink: #e9eeec;
-  --band-muted: #b5c7c9;
-  --band-accent: #eaa0c9;
+  --band: #1c6894;
+  --band-ink: #f5f0df;
+  --band-muted: #d3e4ec;
+  --band-accent: #f9e0a8;
   --band-rule: color-mix(in oklab, var(--band-ink) 26%, transparent);
 
   --rule: color-mix(in oklab, var(--ink) 16%, transparent);
@@ -36,16 +36,16 @@
 :root[data-studio-theme="night"] {
   color-scheme: dark;
 
-  --paper: #0b1c26;
-  --sheet: #1a3340;
-  --water: #163039;
-  --ink: #e4ecec;
-  --ink-2: #b4c6c9;
-  --ink-3: #9db3b8;
-  --accent: #e690c2;
+  --paper: #0a1b2a;
+  --sheet: #16334a;
+  --water: #12304a;
+  --ink: #e6eef2;
+  --ink-2: #b3c8d3;
+  --ink-3: #9cb4c1;
+  --accent: #f4a07f;
   --buff: #c9b377;
 
-  --band: #173a47;
+  --band: #17476a;
 }
 
 *,

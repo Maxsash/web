@@ -3,6 +3,14 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.3.0 — 2026-10-17
+
+### Changed
+
+- The "Open water" palette replaces "Admiralty chart": day-sea blue panels and icons with
+  sail-cream type, deep-sea ink, a sun-gold _Math._ and the cutter's pennant red as the accent.
+  Night stays dark, tinted blue. New icons and share card (`studio-card-v2.jpg`).
+
 ## 1.2.0 — 2026-10-17
 
 ### Added

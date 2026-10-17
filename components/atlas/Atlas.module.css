@@ -7,7 +7,7 @@
 .atlas {
   --atlas-ink: #131f27;
   --atlas-muted: #56656c;
-  --atlas-accent: var(--chart-magenta);
+  --atlas-accent: var(--chart-pennant);
   --atlas-rule: #b8c0bf;
   --atlas-code: #e2e7e3;
   --accent: var(--atlas-accent);

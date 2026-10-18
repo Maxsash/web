@@ -10,7 +10,7 @@ What a change verified belongs in its commit body; this file keeps only the late
   and logs when done.
 - Every change runs the core checks: types, lint, format, Node tests, `check-seo`,
   `check-headers`, `check-keyboard` and `check-creative-v2`. Add the focused checks for the
-  area it touches. Replay changes also run `check-replay`. The `testing` upkeep job (AGENTS.md) runs all of them.
+  area it touches. Acquisition changes run `check-acquisition`; replay changes run `check-replay`. The `testing` upkeep job (AGENTS.md) runs all of them.
 - Automated checks never reach the real PostHog project: the worktree copy leaves out `.env`,
   and the build and server get a placeholder token instead. Analytics is decided at build time
   (static pages are prerendered), so the token must be set for `pnpm build` too.
@@ -32,6 +32,7 @@ URL=http://localhost:3012
 
 pnpm exec tsc --noEmit && pnpm lint && pnpm format:check
 SEA_TEST_BASE=$URL node --test tools/*.test.mjs
+node tools/check-acquisition.mjs $URL
 node tools/check-telemetry.mjs $URL
 node tools/check-replay.mjs $URL
 export SEA_TEST_BLOCK_TELEMETRY=1
@@ -69,6 +70,8 @@ blocks its resources from `127.0.0.1`).
   cadence (may target `www.maxsash.com`); `--scroll` or `--native-scroll` measure the reveal.
 - **`check-telemetry`**: configured capture with requests intercepted, no analytics storage,
   section qualification, content and contact events, pause and resume, redaction, failures.
+- **`check-acquisition`**: Instagram/WhatsApp/LinkedIn entry links and contact attribution,
+  with requests intercepted and no external email activation.
 - **`check-replay`**: mocked country/privacy policies and intercepted PostHog requests;
   no arrival/URL prompts, deliberate footer opt-in, snapshots, masking, joined IDs; stop/restart/pause, region correction,
   real second-tab refusal sync, storage failure, rapid corrections, expiry and voluntary
@@ -98,15 +101,18 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
-- **17 October, 1.3.0** (sandbox without Google Fonts; local copies of the same faces):
-  build, types, lint and format; 170 Node tests; `check-seo` 78; `check-headers`;
-  `check-heading-contrast` (128, lowest 5.33:1); `check-creative-v2` 191 records, no runtime
-  exceptions; `check-studio-plate` (8); `check-drawing-labels`. `check-keyboard`,
-  `check-browser-bars` and `check-sky-theme` failed there exactly as on 1.2.0; rerun on the Mac.
-- **17 October, 1.2.0:** `check-telemetry` 16 and `check-replay` 37 with provider traffic
-  intercepted; `check-keyboard` 22/22. Privacy controls inspected at 390×844; native select,
-  Tab/Space refusal and no horizontal overflow verified. Real production replay ingestion
-  remains unverified.
+- **17 October, 1.4.0:** isolated production build on Node 24.21, types, lint, format and
+  172 Node tests. Acquisition 6, telemetry 20 and replay 38 browser checks intercept provider
+  traffic: all five UTM fields, contact actions for Instagram/WhatsApp/LinkedIn, context changes,
+  navigation/pause persistence, fresh-page reset and masked snapshots. SEO 78, headers,
+  keyboard 22/22 and creative 191 records with zero runtime exceptions pass.
+  All seven live acquisition queries and the overview source tile execute without warnings;
+  new production UTM ingestion awaits release. No synthetic events sent to PostHog.
+- **17 October, 1.3.0** (sandbox with local copies of the same font faces): heading contrast
+  128 (lowest 5.33:1), studio plate 8, drawing labels. Browser bars/sky theme failed there
+  exactly as on 1.2.0; rerun on the Mac. The keyboard gap is resolved by the 1.4.0 pass above.
+- **17 October, 1.2.0:** privacy controls inspected at 390×844; native select, Tab/Space
+  refusal and no horizontal overflow verified. Real production replay ingestion unverified.
 - **15 October:** `check-navigation`.
 - **14 October, 1.0.0:** `check-ship` 36/36.
 - **12 October:** `check-browser-bars`, `check-sky-theme` (12 cases), `check-moon`,

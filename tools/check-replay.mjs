@@ -158,7 +158,9 @@ await withBrowser(
       "ordinary navigation retains visit context",
       await evaluate("document.body.textContent.includes('Visit label: owner')"),
     );
-    await navigate("/?studio_visit=tester&studio_intent=play&private=person@example.com");
+    await navigate(
+      "/?studio_visit=tester&studio_intent=play&utm_source=instagram&utm_medium=social&utm_campaign=social&utm_content=link_in_bio&utm_term=brand&private=person@example.com",
+    );
     check(
       "tester URL labels the visit without an arrival prompt or permission",
       !(await evaluate("!!document.querySelector('dialog[open]')")) &&
@@ -226,6 +228,17 @@ await withBrowser(
       ),
     );
     const serialized = JSON.stringify(snapshots);
+    check(
+      "recording snapshots retain validated entry attribution after navigation and tester startup",
+      snapshots.some(
+        (event) =>
+          event.properties?.utm_source === "instagram" &&
+          event.properties?.utm_content === "link_in_bio" &&
+          event.properties?.utm_medium === "social" &&
+          event.properties?.utm_campaign === "social" &&
+          event.properties?.utm_term === "brand",
+      ),
+    );
     check(
       "replay omits private query, inputs, fragments, seeds and URL labels",
       !["person@example.com", "private-input-987", "deadbeef", "studio_visit="].some((value) =>

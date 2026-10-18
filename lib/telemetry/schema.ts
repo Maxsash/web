@@ -1,9 +1,10 @@
+import { acquisitionValues, type Acquisition } from "./acquisition.ts";
 import { visitRoles, visitIntents, type VisitLabels } from "./visit-labels.ts";
 
 export type RouteCatalog = { work: string[]; notebook: string[] };
 export type RouteGroup = "home" | "work" | "notebook" | "studio" | "print" | "privacy" | "error";
 export type TelemetryRoute = { route: string; route_group: RouteGroup };
-export type VisitContext = Partial<VisitLabels> & {
+export type VisitContext = Partial<VisitLabels & Acquisition> & {
   device: "touch" | "pointer" | "unknown";
   browser: "safari" | "chrome" | "firefox" | "edge" | "other";
   viewport: "narrow" | "medium" | "wide";
@@ -19,18 +20,6 @@ export const studioActions = [
   "print",
   "sail",
 ] as const;
-export const sources = [
-  "direct",
-  "google",
-  "bing",
-  "linkedin",
-  "instagram",
-  "whatsapp",
-  "portfolio",
-  "external",
-  "unknown",
-] as const;
-export const campaigns = ["editorial", "portfolio", "social", "outreach"] as const;
 export const placements = [
   "hero",
   "work",
@@ -46,7 +35,7 @@ export const placements = [
 ] as const;
 
 export type EventDetails = {
-  page_view: { source: (typeof sources)[number]; campaign: (typeof campaigns)[number] | "none" };
+  page_view: Pick<Acquisition, "source" | "campaign">;
   section_view: { section: (typeof sections)[number] };
   content_open: {
     content: "work" | "notebook";
@@ -108,33 +97,6 @@ export function normaliseRoute(path: string, catalog: RouteCatalog): TelemetryRo
   return { route: "/unknown", route_group: "error" };
 }
 
-export function acquisition(
-  referrer: string,
-  origin: string,
-  search: string,
-): EventDetails["page_view"] {
-  let source: EventDetails["page_view"]["source"] = "direct";
-  if (referrer) {
-    try {
-      const url = new URL(referrer);
-      const domain = url.hostname.toLowerCase();
-      if (url.origin === origin) source = "unknown";
-      else if (/(^|\.)google\.(com|[a-z]{2}|com\.[a-z]{2}|co\.[a-z]{2})$/.test(domain))
-        source = "google";
-      else if (/(^|\.)bing\.com$/.test(domain)) source = "bing";
-      else if (/(^|\.)linkedin\.com$/.test(domain) || domain === "lnkd.in") source = "linkedin";
-      else if (/(^|\.)instagram\.com$/.test(domain)) source = "instagram";
-      else if (/(^|\.)(whatsapp\.com|wa\.me)$/.test(domain)) source = "whatsapp";
-      else if (domain === "maxsash.com" || domain === "www.maxsash.com") source = "portfolio";
-      else source = "external";
-    } catch {
-      source = "unknown";
-    }
-  }
-  const campaign = new URLSearchParams(search).get("utm_campaign");
-  return { source, campaign: member(campaign, campaigns) ? campaign : "none" };
-}
-
 export function durationBucket(ms: number): EventDetails["navigation_result"]["duration"] {
   return ms < 1000 ? "under-1s" : ms < 3000 ? "1-3s" : ms < 10000 ? "3-10s" : "over-10s";
 }
@@ -146,7 +108,8 @@ function eventProperties(
 ): EventDetails[EventName] | null {
   switch (name) {
     case "page_view":
-      return member(p.source, sources) && member(p.campaign, [...campaigns, "none"])
+      return member(p.source, acquisitionValues.source) &&
+        member(p.campaign, acquisitionValues.campaign)
         ? { source: p.source, campaign: p.campaign }
         : null;
     case "section_view":
@@ -229,7 +192,15 @@ export function sanitiseBatch(
     !member(input.context.declared_intent, visitIntents)
   )
     return null;
+  const attribution: Partial<Acquisition> = {};
+  for (const key of Object.keys(acquisitionValues) as (keyof Acquisition)[]) {
+    const value = input.context[key];
+    if (value === undefined) continue;
+    if (!member(value, acquisitionValues[key])) return null;
+    Object.assign(attribution, { [key]: value });
+  }
   const context: VisitContext = {
+    ...attribution,
     device: input.context.device,
     browser: input.context.browser,
     viewport: input.context.viewport,

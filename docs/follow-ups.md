@@ -58,6 +58,10 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 
 ## Telemetry recordings
 
+- [ ] After 1.4.0 release, verify a real tagged Instagram/WhatsApp/LinkedIn visit in the
+      [Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898), then
+      confirm contact attribution when real activity exists. Do not invent visits for QA.
+
 - [ ] Production replay is enabled: confirm a real voluntary recording arrives and has
       30-day retention; owner review remains necessary.
 - [ ] Before release, verify PostHog provider terms/DPA status and the configured production

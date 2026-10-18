@@ -2,6 +2,7 @@ import type { PostHogConfig } from "posthog-js";
 import type { RouteCatalog } from "@/lib/telemetry/schema";
 import { replayUrl, redactReplay } from "@/lib/telemetry/replay-redaction";
 import { currentVisit, setReplaySession } from "./session";
+import { visitAcquisition } from "./acquisition";
 import { labelSnapshot } from "./visit";
 import { version } from "@/package.json";
 
@@ -87,6 +88,7 @@ export async function startRecorder(
           site_release: version,
           schema_version: 1,
           ...labelSnapshot(),
+          ...visitAcquisition(),
         },
       };
     },

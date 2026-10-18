@@ -1,11 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {
-  acquisition,
-  durationBucket,
-  normaliseRoute,
-  sanitiseBatch,
-} from "../lib/telemetry/schema.ts";
+import { durationBucket, normaliseRoute, sanitiseBatch } from "../lib/telemetry/schema.ts";
+import { acquisition } from "../lib/telemetry/acquisition.ts";
 import { posthogBatch } from "../lib/telemetry/posthog.ts";
 import { dashboards } from "./telemetry/reports.mjs";
 import { telemetryConfig } from "../lib/telemetry/config.ts";
@@ -45,7 +41,15 @@ test("acquisition reduces referrers to known sources and rejects arbitrary campa
       "https://maxsash.com",
       "?utm_campaign=outreach&seed=deadbeef",
     ),
-    { source: "google", campaign: "outreach" },
+    {
+      source: "google",
+      campaign: "outreach",
+      utm_source: "none",
+      utm_medium: "none",
+      utm_campaign: "outreach",
+      utm_content: "none",
+      utm_term: "none",
+    },
   );
   assert.equal(
     acquisition(
@@ -143,7 +147,7 @@ test("PostHog payload pins privacy flags and the random visit identity", () => {
 });
 
 test("contact funnels aggregate by visit rather than multi-visit people", () => {
-  assert.equal(dashboards.length, 6);
+  assert.equal(dashboards.length, 7);
   const funnels = dashboards
     .flatMap((dashboard) => dashboard.insights)
     .filter((insight) => insight.query.source.kind === "FunnelsQuery");
@@ -231,3 +235,67 @@ test(
     assert.equal((await request(" ".repeat(16001), {})).status, 413);
   },
 );
+
+test("explicit UTM tags override referrer without forwarding free text or click IDs", () => {
+  const entry = acquisition(
+    "https://www.google.com/",
+    "https://www.maxsash.com",
+    "?utm_source=Instagram&utm_medium=social&utm_campaign=social&utm_content=link_in_bio&utm_term=brand&fbclid=private-id",
+  );
+  assert.deepEqual(entry, {
+    source: "instagram",
+    campaign: "social",
+    utm_source: "instagram",
+    utm_medium: "social",
+    utm_campaign: "social",
+    utm_content: "link_in_bio",
+    utm_term: "brand",
+  });
+  const batch = makeBatch();
+  Object.assign(batch.context, entry);
+  batch.events.push({
+    event: "contact_action",
+    route: "/",
+    route_group: "home",
+    timestamp: new Date(now).toISOString(),
+    properties: { channel: "email", action: "open", placement: "contact" },
+  });
+  const clean = sanitiseBatch(batch, catalog, now);
+  const event = posthogBatch(clean, "test", "1.4.0", "https://www.maxsash.com").batch[0];
+  for (const forwarded of posthogBatch(clean, "test", "1.4.0", "https://www.maxsash.com").batch)
+    for (const [key, value] of Object.entries(entry))
+      assert.equal(forwarded.properties[key], value);
+  assert.equal(JSON.stringify(event).includes("private-id"), false);
+  for (const search of [
+    "?utm_source=person@example.com",
+    "?utm_source=instagram&utm_source=whatsapp",
+  ]) {
+    assert.equal(acquisition("", "https://www.maxsash.com", search).source, "direct");
+  }
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    assert.equal(
+      acquisition("", "https://www.maxsash.com", `?${key}=person@example.com`)[key],
+      "none",
+    );
+    const invalid = makeBatch();
+    invalid.context[key] = "person@example.com";
+    assert.equal(sanitiseBatch(invalid, catalog, now), null);
+  }
+});
+
+test("acquisition dashboards use visit counts and exclude owner/tester context", () => {
+  const reports = dashboards.find((d) => d.name === "Acquisition").insights;
+  assert.equal(reports.length, 7);
+  for (const { query } of reports) {
+    assert.equal(query.source.series[0].math, "unique_session");
+    assert.ok(
+      query.source.properties.some(
+        (p) =>
+          p.key === "visit_role" &&
+          p.operator === "is_not" &&
+          p.value.includes("owner") &&
+          p.value.includes("tester"),
+      ),
+    );
+  }
+});

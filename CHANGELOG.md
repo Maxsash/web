@@ -3,6 +3,14 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.4.0 — 2026-10-17
+
+### Added
+
+- Privacy-bounded UTM attribution for source, medium, campaign, content and term. Entry tags
+  persist in memory across navigation, visit-label changes and analytics pause/resume, and
+  accompany events and recordings. Audience acquisition reports exclude owner/tester visits.
+
 ## 1.3.0 — 2026-10-17
 
 ### Changed

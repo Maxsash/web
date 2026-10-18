@@ -71,10 +71,37 @@ const sql = (name, query) => ({
     source: { kind: "HogQLQuery", query },
   },
 });
+const audience = {
+  key: "visit_role",
+  value: ["owner", "tester"],
+  operator: "is_not",
+  type: "event",
+};
+const acquisitionChart = (name, event, breakdown) => {
+  const chart = trends(name, event, breakdown);
+  chart.query.source.properties = [...chart.query.source.properties, audience];
+  chart.description =
+    "Entry attribution for observed visits; excludes self-declared owner/tester visits. New UTM fields arrive with 1.4.0; untagged visits use referrer/direct. No people or confirmed enquiries.";
+  return chart;
+};
 const section = (name) => [property("section", name)];
 const content = (name) => [property("content", name)];
 
 export const dashboards = [
+  {
+    name: "Acquisition",
+    description:
+      "Privacy-bounded entry attribution carried through each page lifetime. Owner/tester visits excluded. UTM fields arrive with 1.4.0; historical missing values are not backfilled. Contact activations are not confirmed enquiries.",
+    insights: [
+      acquisitionChart("Audience acquisition source", "page_view", "source"),
+      acquisitionChart("Tagged acquisition source", "page_view", "utm_source"),
+      acquisitionChart("Acquisition medium", "page_view", "utm_medium"),
+      acquisitionChart("Acquisition campaign", "page_view", "utm_campaign"),
+      acquisitionChart("Acquisition placement", "page_view", "utm_content"),
+      acquisitionChart("Acquisition term", "page_view", "utm_term"),
+      acquisitionChart("Contact visits by acquisition source", "contact_action", "source"),
+    ],
+  },
   {
     name: "Visit context and testing",
     description:
@@ -93,7 +120,7 @@ export const dashboards = [
       "Observed in-memory visits. No person profiles or inferred customer identities. Owner/tester labels are self-declared. Counts are not total site traffic.",
     insights: [
       trends("Observed visits", "page_view"),
-      trends("Acquisition source", "page_view", "source"),
+      acquisitionChart("Acquisition source", "page_view", "source"),
       trends("Homepage section reach", "section_view", "section"),
       trends("Contact actions by channel", "contact_action", "channel"),
       sql(

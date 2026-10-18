@@ -358,7 +358,8 @@ How the code is built: [architecture.md](architecture.md).
   2026). Explicit events through a first-party relay to PostHog; in-memory random visit IDs and
   pause only, reset on reload or a new tab; no analytics storage, profiles or autocapture.
   1.2.0 adds optional browser replay under the policy above. Released in 1.1.0 with five
-  dashboards. No adaptive order or segmentation until the data supports it. Contract:
+  dashboards. Owner approved five allowlisted UTM tags and acquisition reports on 17 October;
+  no arbitrary campaign text or click IDs. No adaptive order until data supports it. Contract:
   [telemetry.md](telemetry.md); research: [visitor-journeys.md](visitor-journeys.md).
 
 ## Error pages

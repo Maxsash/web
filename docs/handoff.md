@@ -12,11 +12,6 @@ it once the owner releases.
 Production event ingestion was last verified 14 October at 19:07 UTC. `main` never deploys; releasing is the owner's action. The owner's iPhone report
 and every check's latest result are in [testing.md](testing.md).
 
-On 15 October, at the owner's request, `main` gained the documentation review (three
-commits) and then three more: the ghost photo, [blog-ideas.md](blog-ideas.md), and
-`tools/image-metadata.test.mjs`. No version bump: nothing a visitor reaches changed (the
-photo is not linked yet).
-
 ## Open water palette (1.3.0)
 
 The owner replaced "Admiralty chart" on 17 October ([decisions](decisions.md#brand-type-and-colour)).
@@ -76,10 +71,24 @@ grant recording permission. Footer testing offers deliberate voluntary Start.
 
 The replay-configuration docs are committed as `42326fd`.
 
+## Acquisition implementation (uncommitted)
+
+1.4.0 adds five allowlisted UTM tags, source precedence and memory-only entry attribution
+on all events/replay. [Acquisition](https://eu.posthog.com/project/306242/dashboard/1031898)
+has seven validated live charts; overview source chart also excludes owner/tester visits.
+Verified: isolated build/types/lint/format, 172 Node tests, acquisition 6, telemetry 20,
+replay 38, SEO 78, headers, keyboard 22 and creative 191 without exceptions. All saved
+queries execute without warnings; real UTM ingestion awaits release, not synthetic QA.
+Temporary worktree, server, captures and logs removed. No commit/deployment/public-link edits.
+Suggested commit: `feat: complete UTM attribution and acquisition reporting`.
+Body: Preserve bounded entry tags through navigation/context changes/pause and on contact
+and replay events; reject click IDs/free text. Verified checks above; no live test events.
+Tag after commit: `git tag -a v1.4.0 -m "Release 1.4.0"`. Public links: [setup](telemetry-setup.md#tagged-public-links).
+
 ## Next
 
-1. Owner: review 1.3.0 on a preview or locally, then release it (merge `main` into
-   `production`) and tag it: `git tag -a v1.3.0 -m "1.3.0: Open water palette" && git push --tags`.
+1. Owner: review the Open water palette and 1.4.0 acquisition changes before committing
+   and releasing; verify actual tagged production ingestion afterward.
 2. Owner, optional: ask GitHub Support to purge the old commits' cached views.
 3. In Noether's repo (not edited from here): tick "web: adopt the record"; its open item about
    web's "test workbench" line is resolved.

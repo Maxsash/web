@@ -39,7 +39,12 @@ await withBrowser(
     await send("Fetch.enable", {
       patterns: [{ urlPattern: "*/api/telemetry", requestStage: "Request" }],
     });
-    await send("Page.navigate", { url: new URL("/privacy", base).href });
+    await send("Page.navigate", {
+      url: new URL(
+        "/privacy?utm_source=instagram&utm_medium=social&utm_campaign=social&utm_content=link_in_bio&utm_term=brand&fbclid=private-click-id",
+        base,
+      ).href,
+    });
     await delay(2500);
     const allEvents = () => batches.flatMap((batch) => batch.events);
     for (let attempt = 0; attempt < 100 && !allEvents().length; attempt++) await delay(100);
@@ -50,6 +55,28 @@ await withBrowser(
       "[...Object.keys(localStorage),...Object.keys(sessionStorage)].filter(key=>/analytics|posthog|^ph_/.test(key))",
     );
     check("analytics writes no browser storage", () => assert.deepEqual(storedKeys, []));
+    const entry = {
+      source: "instagram",
+      campaign: "social",
+      utm_source: "instagram",
+      utm_medium: "social",
+      utm_campaign: "social",
+      utm_content: "link_in_bio",
+      utm_term: "brand",
+    };
+    check("UTM entry tags reach the validated transport without raw click IDs", () => {
+      for (const [key, value] of Object.entries(entry))
+        assert.equal(batches[0].context[key], value);
+      assert.equal(JSON.stringify(batches).includes("private-click-id"), false);
+    });
+    await evaluate(
+      "Array.from(document.querySelectorAll('button')).find(button=>button.textContent==='Explore the work').click()",
+    );
+    await delay(2000);
+    check("changing declared intent retains original entry tags", () => {
+      assert.equal(batches.at(-1).context.declared_intent, "work");
+      assert.equal(batches.at(-1).context.utm_content, "link_in_bio");
+    });
     const firstSession = batches[0].session;
     check("visit identifier is random", () => assert.match(firstSession, /^[a-f\d-]{36}$/));
     await evaluate("document.querySelector('a[href=\"/\"]').click()");
@@ -145,6 +172,10 @@ await withBrowser(
     check("resuming starts a fresh visit", () =>
       assert.notEqual(batches.at(-1).session, firstSession),
     );
+    check("entry attribution survives client navigation and pause/resume", () => {
+      for (const batch of batches)
+        for (const [key, value] of Object.entries(entry)) assert.equal(batch.context[key], value);
+    });
     const count = batches.length;
     await send("Page.navigate", {
       url: new URL("/sea?seed=deadbeef&version=2&private=person@example.com", base).href,
@@ -153,6 +184,9 @@ await withBrowser(
     check("reload starts a fresh in-memory visit", () =>
       assert.notEqual(batches.at(-1).session, batches[count - 1].session),
     );
+    check("hard navigation discards previous attribution", () => {
+      assert.equal(batches.at(-1).context.utm_source, "none");
+    });
     await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 1 });
     await evaluate(
       "document.querySelector('[data-press=\"preset\"]').scrollIntoView({block:'center'})",

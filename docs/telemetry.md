@@ -21,7 +21,7 @@ PostHog’s starter **Analytics basics (wizard)** dashboard is separate.
 
 ## Where reports live
 
-Six dashboards with 24 charts: [telemetry-setup.md](telemetry-setup.md). Definitions live in
+Seven dashboards with 31 charts: [telemetry-setup.md](telemetry-setup.md). Definitions live in
 `tools/telemetry/reports.mjs`; `tools/setup-telemetry.mjs` provisions them. Visit context and
 testing separates declared roles/interests and replay choices. These are operational
 definitions; current connector scopes do not allow verifying Data Catalog governance.
@@ -69,11 +69,11 @@ Navigation timeout means no arrival observed within 10 s; unknown paths become `
 Known route slugs derive from existing project/published-post catalogs. The server
 rebuilds allowlisted fields; arbitrary keys, DOM text, typed/clipboard/contact
 contents, raw user-agent, URL queries/hashes/seeds and visitor IP are not forwarded.
-Referrers become fixed source categories; campaign codes are explicitly allowlisted.
-Unknown source/campaign remains unknown/none. No continuous mouse/scroll/frame or
+`acquisition.ts` allowlists all five UTM tags; valid source overrides referrer. Duplicate/unknown
+values become none; click IDs/free text are discarded. Entry labels accompany all events/replay
+in memory across navigation/context changes/pause; reload starts fresh. No continuous mouse/scroll/frame or
 slider stream in the event relay. Batches have at most 20 events and 16 KB; timeout is 3 s.
 Server hosts are limited to EU/US ingestion. Replay browser connections allow EU ingestion.
-
 Events are stored in EU Cloud with plan-based query history (one year free, seven paid),
 not promised automatic deletion. Billing tier/quota remain owner review. No universal
 consent exemption, fingerprints or private exports/keys. [Retention policy](https://posthog.com/docs/data/events-retention).

@@ -53,7 +53,9 @@ Section exposure needs 1 visible second; engagement needs end marker + 30 foregr
 seconds. Copies use success hooks; slider events settle for 500 ms. Navigation
 separates timeout/late arrival. Unknown paths collapse to `/unknown`.
 
-Visit identity, rotation and pause behaviour are the contract in [telemetry.md](telemetry.md).
+`lib/telemetry/acquisition.ts` owns UTM allowlists and referrer fallback; browser acquisition
+caches the initial page entry in memory across observer resets. Transport/replay share it;
+the relay validates every field. Visit identity, rotation and pause behaviour are the contract in [telemetry.md](telemetry.md).
 Report definitions and the setup command live in `tools/telemetry/reports.mjs` and
 `tools/setup-telemetry.mjs`; [telemetry-setup.md](telemetry-setup.md) is the guide.
 

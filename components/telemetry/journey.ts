@@ -1,5 +1,4 @@
 import {
-  acquisition,
   durationBucket,
   normaliseRoute,
   placements,
@@ -8,6 +7,7 @@ import {
   type RouteCatalog,
   type TelemetryEvent,
 } from "@/lib/telemetry/schema";
+import { visitAcquisition } from "./acquisition";
 import { connectTelemetry } from "./actions";
 import { observeEngagement, observeSections } from "./observations";
 import { eventTransport } from "./transport";
@@ -25,7 +25,7 @@ type Pending = {
 export function observeJourney(catalog: RouteCatalog) {
   const transport = eventTransport();
   const session = currentVisit;
-  const entry = acquisition(document.referrer, location.origin, location.search);
+  const entry = visitAcquisition();
   let route = normaliseRoute(location.pathname, catalog);
   let currentSession = "";
   let stopRoute = () => {};

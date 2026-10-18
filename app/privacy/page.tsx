@@ -39,7 +39,9 @@ export default function Privacy() {
           If enabled and allowed, analytics records the pages and homepage sections you visit,
           project and notebook links you open, contact-link actions, sea-studio actions, and a few
           technical issues. It also records a broad browser family, viewport size category and
-          pointer type. It never records the text you type, clipboard contents, sea seeds or contact
+          pointer type. Fixed source, medium, campaign, placement and search-term labels from entry
+          links help show where visits come from. Unapproved labels and advertising click IDs are
+          discarded. It never records the text you type, clipboard contents, sea seeds or contact
           details.
         </p>
         <p>

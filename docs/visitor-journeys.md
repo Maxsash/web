@@ -87,4 +87,4 @@ Working title: **Before personalising my website, I needed to understand its vis
 - Show the measurement design, meaningful events, journey reports and blind spots.
 - Once live data exists, describe findings and a tested change with honest limitations.
 
-Use first-person research; reserve measured results for evidence. No draft or publication. Task: [follow-ups.md](follow-ups.md).
+The first four points are `content/posts/06-know-the-visitors-before-personalising.md` (1.5.0); the fifth waits for data ([follow-ups.md](follow-ups.md)).

@@ -18,9 +18,9 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 - [ ] Read the five case studies (`content/work/*.md`, drafted in the owner's first person
       from the portfolio and his figures) and edit them into his own voice. Each keeps "The
       brief" first and "The outcome" last and reads in 2–5 minutes.
-- [ ] Edit and publish the two remaining drafts in `content/posts/` (delete "Notes for the
-      editor", fill the placeholders, set `status: published`, and add the post's 1200 × 630
-      card at `public/images/cards/<slug>.jpg` from `tools/capture-cards.mjs`).
+- [ ] Review the seven notes published in 1.5.0 (`content/posts/02`–`08`) in your own voice
+      before releasing; then Request indexing for them in Search Console and Bing. A new post
+      needs its card from `tools/capture-cards.mjs`.
 - [ ] Social content: Instagram and LinkedIn posts and banners from the brand kit
       (`../brand/`); only real projects, nothing invented.
 - [ ] The portfolio's `AGENTS.md` still lists deep links from maxsash.com, which now links only
@@ -76,15 +76,11 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       audience (Velora's lead is approved).
 - [ ] Case-study extras if wanted: more detailed drawings for the two private systems, a
       second screenshot for the three with public sites.
-- [ ] Blog: "Before personalising my website, I needed to understand its visitors"
-      ([visitor-journeys.md](visitor-journeys.md)). Findings only from real data.
 - [ ] Review observed paths and exposure before defining behavioural groups or testing
-      Notebook-first against Work-first. No adaptive order yet.
-- [ ] Blog: "My site was fast; the road to it wasn't", the DNS stall and prefetch story
-      ([blog-ideas.md](blog-ideas.md)). Draft it when the owner asks.
-- [ ] Blog: "Make the sea answer every scroll", from the feedback research and the gull's
-      build ([blog-ideas.md](blog-ideas.md)). Write it as a draft when the owner asks.
-- [ ] Blog: turn a finding in [blog-ideas.md](blog-ideas.md) into a post when the owner asks.
+      Notebook-first against Work-first. No adaptive order yet. Then the follow-up to the
+      "Know the visitors" note, with real findings.
+- [ ] Count "Play waves" presses (and whether the gull had landed), so the gull's effect can
+      be measured; the "Make the sea answer" note says it is not counted yet.
 
 ## Ideas (need the owner's approval)
 

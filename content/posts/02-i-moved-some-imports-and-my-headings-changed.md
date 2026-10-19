@@ -2,8 +2,8 @@
 title: Imports that moved the headings
 summary: A refactor that was supposed to change nothing, a pixel-diff tool that disagreed, and a CSS rule that had been losing a fight all along.
 topic: Refactoring & CSS
-date: 2026-10-08
-status: draft
+date: 2026-10-19
+status: published
 caption: Two rules, one specificity, and an import order that decided between them.
 closing: No behaviour change is a claim, and a claim needs a tool.
 ---
@@ -63,12 +63,13 @@ and the Work section's stylesheet has its own:
 ```
 
 Both selectors have the same specificity: one class and one element. When specificity ties,
-the rule that appears **later in the final CSS wins**. And which stylesheet comes later is
-decided by the order the bundler sees the imports. By moving imports around, I had flipped
-the order.
+the rule that appears **later in the final CSS wins**. My best explanation is that the order of
+the stylesheets follows the order the bundler meets the imports, so by moving imports around I
+had flipped it. It fits everything I saw (identical rules, a different winner, nothing changed
+but imports), but I did not read the bundler's ordering code to prove it.
 
-The surprising part is the direction. Ever since I wrote those styles, my site had been using the home page's
-rule. The Work section's own heading styles had been losing the tie all along, so they were
+The surprising part is the direction. The old build, the one I had approved, was using the home
+page's rule. The Work section's own heading styles had been losing the tie all along, so they were
 dead code. The "wrong" rule was the approved design.
 
 ## The fix is to delete, not to reorder
@@ -112,6 +113,20 @@ same thing happened later with an arrow character at the end of a link.
 
 You would never see it. The tool did, and that was the point.
 
+## When the page above moves, everything below changes
+
+> 0.8 px / Tens of thousands of pixels / Zero real changes
+
+A later refactor taught me the limit of the whole approach. One section grew to 1180.8 px tall,
+so everything under it, Work, the studio and the Notebook, moved down by 0.8 px. The pixel diff
+lit up: tens of thousands of text pixels differed, with channel differences around 200.
+
+Nothing below had changed. I compared every element's computed style and its box relative to its
+section instead: 309 of 311 matched exactly, and the other two were zero-size SVG nodes. A shift
+of a fraction of a pixel makes the browser antialias every glyph differently, so a pixel diff
+cannot prove "unchanged" once anything above moves. For that, compare computed styles and
+relative boxes.
+
 ## Controls, or you will chase ghosts
 
 > Build against itself / Then trust the diff
@@ -126,34 +141,13 @@ flaky one in a minute.
 
 ## What I would tell myself
 
-> A tool / A reason / A control
+> A tool / A reason / A control / A limit
 
-1. "No behaviour change" needs a tool. Eyeballing would not have caught 12 pixels of
+1. "No behaviour change" needs a tool. Eyeballing would not have caught a dozen pixels of
    heading width.
 2. A pixel diff tells you _that_ something changed. A computed-style comparison tells you
    _why_.
 3. Dead CSS can hide behind a tie. If a declaration has never mattered, delete it before it
    starts to.
 4. Always run the control: build against itself.
-
----
-
-## Notes for the editor (delete before publishing)
-
-- Numbers are from my own runs on 8 October 2026: Work section diff 30,469 pixels, largest
-  channel difference 211 (198 in dark); computed letter-spacing -6.336px vs -6.912px at a
-  115.2px heading; 28 of 32 views identical before, 31 of 32 after (the last one was the
-  image flake). The first diff was reported as 31,078 pixels in the first run and 30,469 in
-  later runs; I used the stable figure.
-- "Roughly a dozen pixels" is read from the screenshots ("Ideas, made" ended near x=518 vs
-  x=506 at the displayed scale). Re-measure if you want to state it precisely.
-- The Work stylesheet declared `letter-spacing` and `font-weight: 400` on the h2 and h3. Four
-  declarations were deleted; see `components/Work.module.css`.
-- If you publish the comparison tool, it is `tools/compare-builds.mjs` plus
-  `tools/lib/browser.mjs`.
-- The five-pixel label diff and the arrow diff were both on the Work section.
-- The explanation that import order decided the stylesheet order is an inference: it fits the
-  evidence (identical rules, different outcome, only imports moved) but I did not read the
-  bundler's ordering code. Say "my best explanation" if you want to be careful.
-- "Ever since I wrote those styles" is true by the evidence (the old build used the home
-  page rule); I did not check older history.
+5. Once a section above changes height, stop trusting pixels and compare styles and boxes.

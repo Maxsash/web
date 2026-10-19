@@ -63,7 +63,8 @@ can measure citations. IndexNow is optional and not needed for a site this small
 
 ## Current state
 
-As of 13 October 2026: the live sitemap lists all 11 public URLs; both essays return 200,
+1.5.0 adds seven notes, so the sitemap lists 18 URLs once it is released; each needs Request
+indexing. As of 13 October 2026: the live sitemap listed all 11 public URLs; both essays return 200,
 `index, follow`, self-canonical. The owner ran Test Live URL and Request Indexing in Google
 Search Console for the eight case-study and article URLs; by 19 October Google showed 9 URLs
 indexed (owner). Bing (19 October): Business Operations indexed with title and description

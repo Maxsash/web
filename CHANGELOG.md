@@ -3,6 +3,15 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.5.0 — 2026-10-19
+
+### Added
+
+- Seven Notebook notes: imports that moved the headings, reading PageSpeed with a WebGL hero,
+  the DNS route behind random slow page loads, making the sea answer every scroll, knowing
+  visitors before personalising, a face drawn as a sea, and four things the site's checks
+  caught. Each has its own cover and 1200 × 630 link card.
+
 ## 1.4.3 — 2026-10-19
 
 ### Fixed

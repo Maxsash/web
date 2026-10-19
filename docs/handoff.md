@@ -8,8 +8,26 @@ upkeep runs: [log.md](log.md).
 
 1.4.2 is live (`982e42e` on `main` and `production`). Its subject line carries a stray "then
 run git tag…" phrase; it is pushed, so it stays. `v1.4.2` is tagged locally, not pushed.
-1.4.3 (LinkedIn cards) is committed on `main` by the agent at the owner's request, not pushed.
-Every check's latest result is in [testing.md](testing.md).
+1.4.3 (LinkedIn cards) is committed on `main` (`bfeb5de`, tagged `v1.4.3`) by the agent at the
+owner's request, not pushed. 1.5.0 (seven Notebook notes) is uncommitted, for the owner's
+review. Every check's latest result is in [testing.md](testing.md).
+
+## Seven notes for review (1.5.0, uncommitted)
+
+The owner asked for every blog idea written and marked live. `content/posts/02`–`08` are all
+`status: published`, dated 19 October, written in the owner's first person from recorded
+evidence only (this repo's docs and code, the research report, and the 19 October probes).
+Drafts 02 and 03 lost their editor notes; the claims those notes flagged are now hedged or
+resolved (bundle order is "my best explanation"; the LCP breakdown is "one run's"; the
+function move and the after-fix scores are added). The visitors note covers the brief without
+results. Each has a card from `tools/capture-cards.mjs`. Read especially: the voice, the
+personal details (Jio, the photo's description) and anything you would phrase differently.
+
+Verified in an isolated build: types, lint, format, 173 Node tests, SEO 120, headers, keyboard
+22/22, navigation 3, heading contrast 128, creative 191 without exceptions, no overflow at
+390 px. Suggested commit: `feat: publish seven Notebook notes`, body: the list in
+CHANGELOG 1.5.0, written from recorded evidence; the checks above. Then
+`git tag -a v1.5.0 -m "Release 1.5.0"`.
 
 ## Recent changes
 
@@ -45,8 +63,9 @@ ingestion, contact attribution and production replay ingestion stay unverified.
 
 ## Next
 
-1. Owner: push `main` and the `v1.4.2`/`v1.4.3` tags, release 1.4.3, re-inspect cards on
-   LinkedIn; Bing Live URL test and Request indexing for Velora.
+1. Owner: review the seven notes, commit 1.5.0; push `main` and tags `v1.4.2`, `v1.4.3`,
+   `v1.5.0`; release; re-inspect cards on LinkedIn; Request indexing for the new notes and for
+   Velora on Bing.
 2. Once real visits arrive: a tagged Instagram/WhatsApp/LinkedIn visit in the Acquisition
    dashboard, then a voluntary replay recording with 30-day retention. Do not fake visits.
 3. Before relying on replay: PostHog provider terms/DPA status.

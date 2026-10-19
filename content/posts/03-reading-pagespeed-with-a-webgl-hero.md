@@ -2,8 +2,8 @@
 title: What PageSpeed saw in the sea
 summary: Which numbers to worry about, which to ignore, and the header that told me my server was on the wrong continent.
 topic: Performance & hosting
-date: 2026-10-08
-status: draft
+date: 2026-10-19
+status: published
 caption: A lab report read slowly: first byte, render delay, and the number that would not reproduce.
 closing: Treat the lab as a list of leads, not a verdict.
 ---
@@ -34,8 +34,9 @@ Look at what each metric contributes. On desktop, paint timings and layout shift
 Nearly all the missing points were one metric: Total Blocking Time, worth about a third of
 the score. 27.7 seconds, with 33.9 seconds of main-thread work.
 
-My page runs a WebGL scene continuously. Lighthouse waits for the page to go quiet, and mine
-never does. On a machine with no GPU, WebGL falls back to a software renderer, and that is
+My page runs a WebGL scene continuously. My understanding, which I have not checked in
+Lighthouse's source, is that it keeps measuring while the main thread is busy, and mine never
+goes quiet. On a machine with no GPU, WebGL falls back to a software renderer, and that is
 slow enough to keep the browser busy for the whole test. I wrote about that
 [separately](/blog/the-webgl-flag-that-half-works); the short version is one line of code
 that makes software-rendered browsers show a static plate instead.
@@ -58,7 +59,7 @@ be the next report. That is an uncomfortable position, and it is the honest one.
 
 > bom1 edge / iad1 function / 0.4–1.8 s
 
-The LCP breakdown said **time to first byte 820 ms** and **element render delay 780 ms**.
+One run's LCP breakdown said **time to first byte 820 ms** and **element render delay 780 ms**.
 The first number was the larger, and it was a surprise: my page is simple.
 
 I asked my own site for its response headers:
@@ -76,8 +77,9 @@ Three requests from India took 1.8, 0.57 and 0.38 seconds to the first byte.
 
 I would not have found that from the PageSpeed report. It does not name regions. The header
 did. If your site is dynamic, check where your function runs against where your readers
-are. There is a setting for it, and I left it alone for now because I do not yet know where
-the readers are.
+are. I am based in India, so three days later I moved the function to Mumbai: the header
+now reads `bom1::bom1`, and in the next PageSpeed runs the first byte's share of LCP fell to
+290–360 ms, with no document-latency warning.
 
 ## Render delay: not my code
 
@@ -122,6 +124,20 @@ The same report flagged two links with identical text ("Read the case study") th
 different places. A screen-reader user hears them as the same. I added the project name to
 each as visually hidden text.
 
+## After the fixes
+
+> 62 → 99 desktop / 57 → 92 mobile / One run each
+
+The next report, after the static plate for software rendering and the move to Mumbai:
+
+| Lab result          | Desktop before | Desktop after | Mobile before | Mobile after |
+| ------------------- | -------------- | ------------- | ------------- | ------------ |
+| Performance         | 62             | **99**        | 57            | **92**       |
+| Total Blocking Time | 27,700 ms      | **20 ms**     | 3,160 ms      | **100 ms**   |
+
+One run each, on a lab machine, so I read it as "the lead was right", not as a measurement of
+real visitors. Those numbers will come from field data once there is enough of it.
+
 ## What I would do again
 
 > Leads / Headers / Measure first
@@ -130,21 +146,3 @@ each as visually hidden text.
 - When you cannot reproduce a number, say so, and fix the mechanism you can show.
 - Read your response headers. `x-vercel-id` told me more than the report did.
 - Measure the cure before you ship it. My best guess for the reflow was wrong.
-
----
-
-## Notes for the editor (delete before publishing)
-
-- All numbers are from the PageSpeed report pasted on 8 October 2026 (Lighthouse 13.5.0,
-  HeadlessChromium 153; mobile profile "Emulated Moto G Power", Slow 4G) and my local runs.
-- Which run produced the LCP breakdown (820 ms / 780 ms) was not labelled in the paste;
-  I assumed mobile. Check before publishing, and drop the sentence if unsure.
-- "Time to first byte from India: 1.8, 0.57, 0.38 s" came from three `curl` requests to the
-  live site from my machine on 8 October 2026.
-- Decide whether to keep "the wrong continent" in the subtitle: the audience's location is
-  unknown. The function region is still `iad1` and the decision is open.
-- "A third of the score" for TBT is the Lighthouse desktop and mobile weighting of 30%.
-- "Lighthouse waits for the page to go quiet, and mine never does" is my understanding of why
-  the blocking time keeps growing; I did not read Lighthouse's source. Soften or verify.
-- Link to draft 1 should become the real URL once published.
-- To fill in after release: new PageSpeed scores (and whether a region change was made).

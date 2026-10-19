@@ -465,6 +465,8 @@ origin sending JSON (so another website cannot write files while the dev server 
   for the one scroll a click on a `#` link starts, until `scrollend` or 1.5 s. `PageLink` wraps
   `Link`: pointing at the page already open (path and query), a plain click scrolls to the top
   instead, dropping any `#hash` with `pushState`. `NotebookLink` (page turns) builds on it.
+  `PageLink` prefetches only where `prefetchesAhead` (`lib/prefetch.ts`) allows: `/blog`, its
+  notes and `/work/*`; every other destination is `prefetch={false}`.
 
 ## Headers, security and configuration
 

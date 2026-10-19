@@ -3,6 +3,14 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.4.1 — 2026-10-19
+
+### Performance
+
+- Links to the Notebook, its notes and the case studies load those pages in the background as
+  they scroll into view, so a tap opens them at once. Home and the sea studio still load on
+  demand, keeping their sea engine off the network until a visitor heads there.
+
 ## 1.4.0 — 2026-10-17
 
 ### Added

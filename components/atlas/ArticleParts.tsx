@@ -122,9 +122,7 @@ export function ArticleEnd({ next }: { next: { slug: string; title: string } }) 
           Written by {site.owner}, who builds {site.offer} end to end at {site.name}.
         </p>
         <p>
-          <PageLink prefetch={false} href={`/#${site.afterHero.id}`}>
-            See the work
-          </PageLink>
+          <PageLink href={`/#${site.afterHero.id}`}>See the work</PageLink>
           <a href={site.links.email}>{site.email}</a>
         </p>
       </aside>

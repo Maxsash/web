@@ -14,12 +14,10 @@ export default function PlateNotFound() {
       title="That sea can't be drawn."
       actions={
         <>
-          <PageLink prefetch={false} href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>
+          <PageLink href={`/plate?seed=${DEFAULT_SEA_SEED_V2}&version=2`}>
             Draw the default sea
           </PageLink>
-          <PageLink prefetch={false} href="/sea">
-            Back to the sea studio
-          </PageLink>
+          <PageLink href="/sea">Back to the sea studio</PageLink>
         </>
       }
     >

@@ -41,6 +41,7 @@ await withBrowser({ name: "navigation", flags: NO_GPU_FLAGS }, async (page) => {
     await send("Page.navigate", { url: new URL("/?seed=70806d5e&version=2", base).href });
     await waitFor("document.querySelector('html[data-feedback]') !== null");
     await evaluate(`localStorage.setItem('studio-theme', '${reduced ? "night" : "day"}')`);
+    await send("Fetch.enable", { patterns: [{ urlPattern: "*_rsc=*", requestStage: "Request" }] });
     await send("Page.reload");
     await waitFor("document.querySelector('html[data-feedback]') !== null");
     const selector = `a[href="${href}"]`;
@@ -51,7 +52,6 @@ await withBrowser({ name: "navigation", flags: NO_GPU_FLAGS }, async (page) => {
       const {x,y,width,height} = link.getBoundingClientRect();
       return {x,y,width,height};
     })()`);
-    await send("Fetch.enable", { patterns: [{ urlPattern: "*_rsc=*", requestStage: "Request" }] });
     if (phone) {
       const point = { x: target.x + target.width / 2, y: target.y + target.height / 2 };
       await send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -62,7 +62,7 @@ await withBrowser({ name: "navigation", flags: NO_GPU_FLAGS }, async (page) => {
     await waitFor(
       "document.querySelector('[role=status]')?.textContent.includes('Opening page') || [...document.querySelectorAll('[role=status]')].some(el => el.textContent.includes('Opening page'))",
     );
-    assert.ok(held.size > 0, "A real navigation request is delayed");
+    assert.ok(held.size > 0, "A real prefetch or navigation request is delayed");
     await delay(1000);
     const pending = await evaluate(`(() => {
       const badge = [...document.querySelectorAll('[role=status]')].find(el => el.textContent.includes('Opening page'));
@@ -108,4 +108,33 @@ await withBrowser({ name: "navigation", flags: NO_GPU_FLAGS }, async (page) => {
       `PASS ${href}: delayed ${phone ? "touch" : "keyboard"} navigation, stable layout, ${reduced ? "still night" : "animated day"} badge, clears on arrival`,
     );
   }
+
+  const href = "/work/velora-rights";
+  const pageRequests = [];
+  onMessage(({ method, params }) => {
+    if (method === "Network.requestWillBeSent" && params.request.url.includes("_rsc="))
+      pageRequests.push(new URL(params.request.url).pathname);
+  });
+  const requestsFor = (path) => pageRequests.filter((requested) => requested === path).length;
+  await send("Network.setCacheDisabled", { cacheDisabled: false });
+  await send("Page.navigate", { url: new URL("/", base).href });
+  await waitFor("document.querySelector('html[data-feedback]') !== null");
+  await evaluate(`document.querySelector('a[href="${href}"]').scrollIntoView({block: 'center'})`);
+  for (let attempt = 0; requestsFor(href) === 0; attempt++) {
+    assert.ok(attempt < 100, "A case-study link prefetches once it is in view");
+    await delay(100);
+  }
+  await delay(1000);
+  const prefetched = requestsFor(href);
+  await evaluate(`document.querySelector('a[href="${href}"]').focus()`);
+  await pressKey("Enter");
+  await waitFor(
+    `location.pathname === ${JSON.stringify(href)} && !!document.querySelector('main h1')`,
+  );
+  assert.equal(requestsFor(href), prefetched, "A prefetched page opens without another request");
+  for (const unwanted of ["/", "/sea", "/privacy"])
+    assert.equal(requestsFor(unwanted), 0, `${unwanted} is not prefetched`);
+  console.log(
+    `PASS ${href}: prefetched in view, opens without another request; home not prefetched`,
+  );
 });

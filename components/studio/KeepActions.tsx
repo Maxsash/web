@@ -27,7 +27,7 @@ export default function KeepActions({ query, copied, onCopied }: Props) {
         <a href={`/api/sea-edition/print?${query}&download=1`} download>
           Save as SVG
         </a>
-        <PageLink prefetch={false} href={`/?${query}`} data-press="sail">
+        <PageLink href={`/?${query}`} data-press="sail">
           Sail this sea <span aria-hidden="true">→</span>
         </PageLink>
         <button

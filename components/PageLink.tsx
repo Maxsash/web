@@ -4,6 +4,7 @@ import type { ComponentProps, MouseEvent } from "react";
 import Link from "next/link";
 import { glideNextScroll } from "@/components/SmoothLinks";
 import NavigationStatus from "@/components/NavigationStatus";
+import { prefetchesAhead } from "@/lib/prefetch";
 
 export const isPlainClick = (event: MouseEvent) =>
   event.button === 0 && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
@@ -21,7 +22,7 @@ function returnToTop(href: string) {
 export default function PageLink({ onClick, children, ...props }: ComponentProps<typeof Link>) {
   return (
     <Link
-      prefetch={false}
+      prefetch={typeof props.href === "string" && prefetchesAhead(props.href) ? "auto" : false}
       {...props}
       onClick={(event) => {
         onClick?.(event);

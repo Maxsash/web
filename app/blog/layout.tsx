@@ -24,7 +24,7 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
         Skip to the notebook
       </a>
       <header className={styles.runningHead}>
-        <PageLink prefetch={false} href="/" className={styles.harbourLink}>
+        <PageLink href="/" className={styles.harbourLink}>
           <Mark /> <span>Maxsash Studio</span>
         </PageLink>
         <StudioNav />
@@ -40,7 +40,7 @@ export default function AtlasLayout({ children }: { children: React.ReactNode })
             <PageLink href="/privacy">Privacy & recordings</PageLink>
           </li>
           <li>
-            <PageLink prefetch={false} href="/">
+            <PageLink href="/">
               Return to the studio <span aria-hidden="true">↗</span>
             </PageLink>
           </li>

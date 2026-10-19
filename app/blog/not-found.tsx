@@ -14,12 +14,8 @@ export default function NoteNotFound() {
       title="This note was torn out."
       actions={
         <>
-          <PageLink prefetch={false} href="/blog">
-            Open the notebook
-          </PageLink>
-          <PageLink prefetch={false} href="/">
-            Back to the studio
-          </PageLink>
+          <PageLink href="/blog">Open the notebook</PageLink>
+          <PageLink href="/">Back to the studio</PageLink>
         </>
       }
     >

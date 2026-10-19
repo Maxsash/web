@@ -9,6 +9,8 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 - [ ] Review PostHog billing quota and alerts, and Vercel limits for `/api/telemetry`;
       review unused autocapture and heatmap toggles; keep replay enabled while in use
       ([telemetry-setup.md](telemetry-setup.md)).
+- [ ] Optional: report the stalling Vercel ranges to Vercel Support
+      ([evidence](seo-and-sharing.md#owner-setup)).
 - [ ] Search indexing: Google outcomes for the eight case-study and article URLs requested on
       13 October (sitemap last read and count); Bing URL inspections and its AI Performance
       report ([seo-and-sharing.md](seo-and-sharing.md)).
@@ -27,13 +29,6 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 
 ## Investigate
 
-- [ ] **Slow navigation on the owner's iPhone** (13 October): a very long Notebook wait, and
-      the top-left home link seemed unresponsive after repeated taps (the owner used Back).
-      Chrome touch emulation (390 px, Reduce Motion, 4× CPU, 150 ms latency, 180 KB/s, cache
-      off) did not reproduce it: Notebook RSC about 0.62 s, the home badge showed and arrived in
-      about 0.4 s. But home took about 2.4 s to hydrate (slowest live chunk 2.41 s), so early
-      taps are a suspect. The next occurrence needs the IST time,
-      page, network and ideally a recording, to correlate with Vercel request logs.
 - [ ] **Phone length.** Smooth, but somewhat long on the owner's iPhone. After three cards and
       two rows: phone 14.7 screens, Work 4.8, Contact at 8.1; the remaining weight is the hero
       (1.7 screens) and three plates. Keep the approved stage timings.
@@ -89,6 +84,8 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       ([visitor-journeys.md](visitor-journeys.md)). Findings only from real data.
 - [ ] Review observed paths and exposure before defining behavioural groups or testing
       Notebook-first against Work-first. No adaptive order yet.
+- [ ] Blog: "My site was fast; the road to it wasn't", the DNS stall and prefetch story
+      ([blog-ideas.md](blog-ideas.md)). Draft it when the owner asks.
 - [ ] Blog: "Make the sea answer every scroll", from the feedback research and the gull's
       build ([blog-ideas.md](blog-ideas.md)). Write it as a draft when the owner asks.
 - [ ] Blog: turn a finding in [blog-ideas.md](blog-ideas.md) into a post when the owner asks.

@@ -43,12 +43,8 @@ export default async function PlatePage({ searchParams }: Props) {
           <a href={`/api/sea-edition/print?${encoded}&download=1`} download>
             Save as SVG
           </a>
-          <PageLink prefetch={false} href={`/?${encoded}`}>
-            Sail this sea ↑
-          </PageLink>
-          <PageLink prefetch={false} href={`/sea?${encoded}`}>
-            Back to the sea studio
-          </PageLink>
+          <PageLink href={`/?${encoded}`}>Sail this sea ↑</PageLink>
+          <PageLink href={`/sea?${encoded}`}>Back to the sea studio</PageLink>
         </div>
       </header>
       <figure className={styles.sheet}>

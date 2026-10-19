@@ -89,7 +89,8 @@ blocks its resources from `127.0.0.1`).
   reduced motion), `check-moon` (phase shading from real shader pixels, India midnight),
   `check-moon-detail` (mapped Moon request, crossfade, geometry, fallbacks), `check-moon-sea`
   (moonlight on the water by phase), `check-stars` and `check-planets` (dated points, day hiding).
-- **`check-navigation`**: the "Opening page…" badge during real RSC requests, keyboard and touch.
+- **`check-navigation`**: the "Opening page…" badge while a page's requests are held, keyboard
+  and touch; a case study prefetched in view opens without another request; home is not prefetched.
 - **`check-studio-plate`**: the no-JS print image and the hydrated SVG agree, in both themes.
 - **`check-heading-contrast`**: rendered heading contrast in every arrival state and theme.
 - **`check-drawing-labels`**: system-drawing labels fit their boxes with loaded fonts.
@@ -101,24 +102,20 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
+- **19 October, 1.4.1** (isolated build, Node 24.21): types, lint, format, 173 Node tests,
+  SEO 78, headers, keyboard 22/22, navigation 3, creative 191 with no exceptions. Taps at 4×
+  CPU: 0.05–0.08 s on 4G and 3G (were 0.5 s and 1 s).
 - **19 October, 1.4.0** (isolated production build on the Mac, Node 24.21):
   `check-browser-bars` 30/30 and `check-sky-theme` 12 cases, both on the Open water palette.
-- **17 October, 1.4.0:** isolated production build on Node 24.21, types, lint, format and
-  172 Node tests. Acquisition 6, telemetry 20 and replay 38 browser checks intercept provider
-  traffic: all five UTM fields, contact actions for Instagram/WhatsApp/LinkedIn, context changes,
-  navigation/pause persistence, fresh-page reset and masked snapshots. SEO 78, headers,
-  keyboard 22/22 and creative 191 records with zero runtime exceptions pass.
-  All seven live acquisition queries and the overview source tile execute without warnings;
-  new production UTM ingestion awaits release. No synthetic events sent to PostHog.
+- **17 October, 1.4.0:** acquisition 6, telemetry 20 and replay 38, provider traffic
+  intercepted; all seven live acquisition queries run without warnings. No synthetic events.
 - **17 October, 1.3.0** (sandbox with local copies of the same font faces): heading contrast
   128 (lowest 5.33:1), studio plate 8, drawing labels.
 - **17 October, 1.2.0:** privacy controls inspected at 390×844; native select, Tab/Space
   refusal and no horizontal overflow verified. Real production replay ingestion unverified.
-- **15 October:** `check-navigation`.
 - **14 October, 1.0.0:** `check-ship` 36/36.
-- **12 October:** `check-moon`,
-  `check-moon-detail`, `check-moon-sea`, `check-stars`, `check-planets`,
-  `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
+- **12 October:** `check-moon`, `check-moon-detail`, `check-moon-sea`, `check-stars`,
+  `check-planets`, `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
 - **11 October:** `check-gull` (47), `check-sound`.
 
 **Production, public reads:** 19 Oct: the footer shows 1.4.0 (the owner's check). 17 Oct:
@@ -134,6 +131,8 @@ PostHog redacted; the live relay answers 403 to a missing or foreign Origin, 400
 415 to a wrong type and 405 to GET. 13 Oct: the live sitemap lists 11 URLs, and both essays
 are indexable with self-canonicals. Live contact, studio and navigation events, pause and
 Vercel rate limits are not checked.
+
+**Network path (19 Oct, Jio):** new `www` addresses 0 stalls in 480; [why](seo-and-sharing.md#owner-setup).
 
 **Owner, iPhone Air on iOS 27 (13 Oct, the owner's report):** Safari day and night, Notebook,
 touch, gull, rotation, sounds, case studies, sea studio, Reduce Motion and the VoiceOver

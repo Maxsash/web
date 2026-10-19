@@ -228,15 +228,15 @@ How the code is built: [architecture.md](architecture.md).
 - **The commit-log card** shows the three newest commits, no counts or charts (a "24 commits
   in 14 days" strip reads as neglect once the site is stable). It publishes commit messages by
   design. Dates group and are labelled in IST (owner, 11 October 2026: based in India).
-- **Theme follows the system** until the visitor picks day or night in the footer or the
-  hero's sun and Moon.
+- **Theme follows the system** until a visitor picks day or night (footer or hero sun/Moon).
 
 ## Feedback
 
-- **Show pending page navigation** (owner, 13 October 2026). Notebook and case-study clicks
-  sometimes waited seconds without feedback. A fixed "Opening page…" badge from Next's
-  `useLinkStatus`, no layout shift or fake progress; Reduce Motion keeps the icon still. Keep
-  the current prefetch policy and route status codes.
+- **Pending navigation shows** (owner, 13 October 2026): a fixed "Opening page…" badge from
+  `useLinkStatus`, no layout shift or fake progress, still under Reduce Motion; route status
+  codes kept. **Reading pages prefetch** (owner, 19 October): `/blog`, notes and case studies
+  load in view (taps 0.05 s, were 0.5–1 s; ~100 KB a full home scroll). Home, the sea studio,
+  plate and privacy stay on demand, sparing the WebGL engine.
 - **Headings keep full contrast during arrivals** (11 October 2026 correction). The kicker
   still reveals, but its heading no longer dims; the PageSpeed contrast failures matched that
   rule, and readable text comes before its fade.

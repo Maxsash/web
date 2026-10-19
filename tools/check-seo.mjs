@@ -52,6 +52,13 @@ const crawlerAgents = [
   "OAI-SearchBot",
 ];
 const attribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1];
+const entities = { amp: "&", lt: "<", gt: ">", quot: '"' };
+const decode = (text) =>
+  text.replace(/&(#x[\da-f]+|#\d+|\w+);/gi, (entity, code) =>
+    code[0] === "#"
+      ? String.fromCodePoint(Number(code[1] === "x" ? `0${code.slice(1)}` : code.slice(1)))
+      : (entities[code] ?? entity),
+  );
 const structuredData = (html) => {
   const match = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s);
   assert.ok(match, "Expected JSON-LD");
@@ -110,8 +117,14 @@ for (const agent of crawlerAgents) {
     assert.ok(!directives.includes(shouldIndex ? "noindex" : "index"));
     assert.ok(directives.includes("follow"));
     if (article) assert.notEqual(meta("og:title"), "Maxsash Studio — Sea. Ship. Math.");
-    if (article)
-      assert.match(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "", / \| Maxsash Studio$/);
+    const title = decode(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "");
+    if (path.startsWith("/blog/")) assert.match(title, / \| Maxsash Studio$/);
+    assert.ok(title.length <= 65, `${path} title fits Bing (${title.length})`);
+    const description = decode(meta("description"));
+    assert.ok(
+      description.length >= 25 && description.length <= 160,
+      `${path} description fits Bing (${description.length})`,
+    );
     if (agent === "bingbot" || agent === "OAI-SearchBot") {
       assert.ok(
         serverRenderedMain(html).length > 200,

@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { caseStudyPath, caseStudyTitle, projects, type Project } from "@/content/projects";
+import {
+  caseStudyPath,
+  caseStudyTitle,
+  projects,
+  searchDescription,
+  type Project,
+} from "@/content/projects";
 import { site } from "@/content/site";
 
 export const siteOrigin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? site.url).origin;
@@ -75,7 +81,7 @@ export const studioStructuredData = {
       hasPart: projects.map((project) => ({
         "@type": "CreativeWork",
         name: project.title,
-        description: project.summary,
+        description: searchDescription(project),
         url: absoluteUrl(caseStudyPath(project.slug)),
         creator: { "@id": absoluteUrl("/#yash") },
       })),
@@ -87,7 +93,7 @@ export const caseStudyStructuredData = (project: Project) => ({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: caseStudyTitle(project),
-  description: project.summary,
+  description: searchDescription(project),
   url: absoluteUrl(caseStudyPath(project.slug)),
   inLanguage: "en",
   author: { "@type": "Person", "@id": absoluteUrl("/#yash"), name: site.owner },

@@ -6,12 +6,11 @@ upkeep runs: [log.md](log.md).
 
 ## Current state
 
-1.4.0 is live: `production` is at `6bb2115` (`main` is ahead by docs only), and the footer
-shows 1.4.0 (the owner checked 19 October). It carries the Open water palette (1.3.0,
-[decisions](decisions.md#brand-type-and-colour)) and UTM attribution with the
-[Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898) (1.4.0,
-[setup](telemetry-setup.md#tagged-public-links)). Tags `v1.0.0`–`v1.4.0` are all pushed; the
-release checks are recorded in `c7fbe73`. Every check's latest result is in [testing.md](testing.md).
+1.4.1 is live: `main` and `production` are at `c881014`, and the footer shows 1.4.1. It adds
+prefetching to 1.4.0's Open water palette ([decisions](decisions.md#brand-type-and-colour)) and
+UTM attribution ([Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898),
+[setup](telemetry-setup.md#tagged-public-links)). `v1.4.1` is tagged locally but not pushed
+(`git push origin v1.4.1`). Every check's latest result is in [testing.md](testing.md).
 
 ## Verified after the release
 
@@ -25,7 +24,7 @@ release checks are recorded in `c7fbe73`. Every check's latest result is in [tes
 Not yet possible: no real tagged visit or voluntary replay recording has arrived, so UTM
 ingestion, contact attribution and production replay ingestion stay unverified.
 
-## Slow page loads: DNS fixed, prefetch ready for review (1.4.1, uncommitted)
+## Slow page loads: DNS fixed, prefetch live (1.4.1)
 
 **DNS (done, live).** The random 5 s+ waits were the Jio route to Vercel's `64.29.17.x` and
 `216.198.79.x`, not the site ([details](seo-and-sharing.md#owner-setup)). On 19 October the
@@ -33,7 +32,7 @@ owner pointed `www` at `cname.vercel-dns.com` and the apex at `76.76.21.21`; the
 addresses then served 480 probe requests without a stall while the old one timed out again.
 Ignore Vercel's "DNS Change Recommended" banners: its suggested record is the stalling range.
 
-**Prefetch (1.4.1, uncommitted).** `PageLink` prefetches only `/blog`, notes and `/work/*`
+**Prefetch (1.4.1, `c881014`).** `PageLink` prefetches only `/blog`, notes and `/work/*`
 (`lib/prefetch.ts`, tested by `tools/prefetch.test.mjs`); the scattered `prefetch={false}`
 props are gone. `check-navigation` now holds requests from before the reload and adds a
 prefetch case. Verified in an isolated build: types, lint, format, 173 Node tests, SEO 78,
@@ -43,13 +42,21 @@ of data and 10 KB of code. Worktree, server and scripts removed.
 
 **Blog** "My site was fast; the road to it wasn't" is in [blog-ideas.md](blog-ideas.md).
 
-Suggested commits (split by change):
+## Bing title and description fixes (1.4.2, uncommitted)
 
-1. `docs/seo-and-sharing.md` and `docs/blog-ideas.md`: `docs: record the DNS fix for slow
-   navigation`, body: the probe results above; the blog idea the owner asked for.
-2. Everything else: `perf: prefetch the Notebook and case studies`, body: taps 0.05–0.08 s
-   (were 0.5–1 s) for ~100 KB per full home scroll; home and the sea studio stay on demand;
-   the checks above. Then `git tag -a v1.4.1 -m "Release 1.4.1"`.
+Owner chose (19 October): case-study titles drop " | Maxsash Studio" (all ≤ 60 characters);
+the home page, Velora, Business Operations and Intrusion Detection get search descriptions
+under 160 characters, leaving page text unchanged. `check-seo` now enforces both limits.
+Verified in an isolated build: types, lint, format, 173 Node tests, SEO 78, headers, keyboard
+22/22, navigation 3, creative 191 without exceptions. Velora's Bing "Indexing allowed: No"
+dates from its 13 October crawl; the site served `index, follow` then, so no code caused it
+([seo-and-sharing](seo-and-sharing.md#current-state)).
+
+Suggested commit: `fix: fit search titles and descriptions to Bing`, body: Bing flagged
+Business Operations' 73-character title and 179-character description; case-study titles
+drop the suffix, four pages get descriptions under 160, check-seo enforces both; the checks
+above. Tag: `git tag -a v1.4.2 -m "Release 1.4.2"`. The handoff edit marking 1.4.1 released
+can go in the same commit or its own `docs:` commit.
 
 ## Standing context
 
@@ -65,7 +72,8 @@ Suggested commits (split by change):
 
 ## Next
 
-1. Owner: review and commit 1.4.1 (above), release, then tap through on the iPhone.
+1. Owner: push `v1.4.1`; review, commit and release 1.4.2; then Bing's Live URL test and
+   Request indexing for Velora; tap through the Notebook on the iPhone.
 2. Once real visits arrive: a tagged Instagram/WhatsApp/LinkedIn visit in the Acquisition
    dashboard, then a voluntary replay recording with 30-day retention. Do not fake visits.
 3. Before relying on replay: PostHog provider terms/DPA status.

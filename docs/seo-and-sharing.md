@@ -5,6 +5,10 @@ What is in place, and what only the owner can do. The crawler checks are `tools/
 
 ## In place
 
+- **Lengths fit Bing** (owner, 19 October): `<title>` at most 65 characters, description 25–160;
+  `check-seo` enforces both on every public page. Case-study titles are `caseStudyTitle`
+  without the studio suffix; a project's optional `description` overrides its visible
+  `summary` for search, cards and JSON-LD (`searchDescription`).
 - **One origin.** `NEXT_PUBLIC_SITE_URL` (default `https://www.maxsash.com`) supplies
   metadata, canonical URLs, discovery files and JSON-LD (`lib/seo.ts`).
 - **Per-page cards.** The home page, Notebook pages and five case studies have their own Open
@@ -59,9 +63,11 @@ can measure citations. IndexNow is optional and not needed for a site this small
 
 As of 13 October 2026: the live sitemap lists all 11 public URLs; both essays return 200,
 `index, follow`, self-canonical. The owner ran Test Live URL and Request Indexing in Google
-Search Console for the eight case-study and article URLs (outcomes pending), and earlier saw
-the sitemap succeed and home indexed with one valid ProfilePage. Bing Webmaster Tools is set
-up and shows the sitemap. A Search Console screenshot shows a `/home` 404 crawled on 1
+Search Console for the eight case-study and article URLs; by 19 October Google showed 9 URLs
+indexed (owner). Bing (19 October): Business Operations indexed with title and description
+warnings (fixed in 1.4.2); Velora Rights "cannot appear" from its only crawl, 13 October
+08:32, "Indexing allowed: No", though the page served `index, follow` then and now. The owner
+requested indexing; Bing's Live URL tab shows what it reads today. A Search Console screenshot shows a `/home` 404 crawled on 1
 October; nothing in the source or any earlier sitemap references `/home`, so it stays a
 genuine 404 unless evidence shows a meaningful old URL. WhatsApp previews work (owner);
 LinkedIn warns on the essays' short descriptions.

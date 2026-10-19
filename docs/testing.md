@@ -59,7 +59,7 @@ blocks its resources from `127.0.0.1`).
   guard, telemetry schema and redaction, these documents (`docs.test.mjs`), and that no image
   in `public/` or `app/` carries EXIF, XMP, IPTC, text or time metadata (`image-metadata.test.mjs`).
 - **`check-seo`**: 78 crawler and page cases (Google, Bing, OAI-SearchBot, social bots):
-  canonicals, cards, index and noindex, structured data, the exact sitemap, discovery files,
+  canonicals, title and description lengths, cards, index and noindex, structured data, the exact sitemap, discovery files,
   share-card size, manifest icons, drafts and unknown pages 404, the `/work` redirect.
 - **`check-headers`**: security headers, `security.txt`, no CSP violation on the main pages.
 - **`check-keyboard`**: real Tab, Shift+Tab, Enter, Space and arrows: focus visible, on screen,
@@ -102,9 +102,10 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
-- **19 October, 1.4.1** (isolated build, Node 24.21): types, lint, format, 173 Node tests,
-  SEO 78, headers, keyboard 22/22, navigation 3, creative 191 with no exceptions. Taps at 4×
-  CPU: 0.05–0.08 s on 4G and 3G (were 0.5 s and 1 s).
+- **19 October, 1.4.2** (isolated build): types, lint, format, 173 Node tests, SEO 78 (now
+  with title ≤ 65 and description 25–160 on every page), headers, keyboard 22/22,
+  navigation 3, creative 191 without exceptions.
+- **19 October, 1.4.1:** taps at 4× CPU 0.05–0.08 s on 4G and 3G (were 0.5 s and 1 s).
 - **19 October, 1.4.0** (isolated production build on the Mac, Node 24.21):
   `check-browser-bars` 30/30 and `check-sky-theme` 12 cases, both on the Open water palette.
 - **17 October, 1.4.0:** acquisition 6, telemetry 20 and replay 38, provider traffic

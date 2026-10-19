@@ -8,7 +8,13 @@ import PageShell from "@/components/PageShell";
 import ProjectPlate from "@/components/ProjectPlate";
 import Prose from "@/components/Prose";
 import { readCaseStudy } from "@/content/case-studies";
-import { caseStudyPath, caseStudyTitle, projects, projectShareImage } from "@/content/projects";
+import {
+  caseStudyPath,
+  caseStudyTitle,
+  projects,
+  projectShareImage,
+  searchDescription,
+} from "@/content/projects";
 import { formatIndex, sentenceCase } from "@/lib/format";
 import { caseStudyStructuredData, sharingMetadata } from "@/lib/seo";
 import section from "@/components/Section.module.css";
@@ -26,12 +32,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = projects[findProject((await params).slug)];
   if (!project) notFound();
   const title = caseStudyTitle(project);
+  const description = searchDescription(project);
   return {
-    title,
-    description: project.summary,
+    title: { absolute: title },
+    description,
     ...sharingMetadata(
       `${title} | Maxsash Studio`,
-      project.summary,
+      description,
       caseStudyPath(project.slug),
       "article",
       projectShareImage(project),

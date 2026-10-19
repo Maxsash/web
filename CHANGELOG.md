@@ -3,6 +3,14 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.4.2 — 2026-10-19
+
+### Fixed
+
+- Search titles and descriptions fit Bing's limits: case-study titles drop the studio suffix,
+  and the home page and three case studies get descriptions under 160 characters. Page text
+  is unchanged.
+
 ## 1.4.1 — 2026-10-19
 
 ### Performance

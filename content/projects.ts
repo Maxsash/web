@@ -13,6 +13,7 @@ export type Project = {
   kicker: string;
   tagline?: readonly [string, string];
   summary: string;
+  description?: string;
   proof: string;
   role: string;
   period?: string;
@@ -25,6 +26,7 @@ export type Project = {
 export const caseStudyPath = (slug: string) => `/work/${slug}`;
 export const caseStudyTitle = ({ title, headline }: Project) =>
   `${title}: ${headline.replace(/\.$/, "")}`;
+export const searchDescription = (project: Project) => project.description ?? project.summary;
 
 export const projectShareImage = (project: Project) => {
   const screenshot = project.visuals.find((visual) => visual.kind === "image");
@@ -50,6 +52,8 @@ export const projects: Project[] = [
     tagline: ["Found through search.", "Edited without a developer."],
     summary:
       "The website for an Indian intellectual property law practice, a profession that may not advertise, built so search engines and AI assistants find it and its owner publishes without a developer.",
+    description:
+      "Website for an Indian IP law practice that may not advertise, built so search engines and AI assistants find it and its owner publishes without a developer.",
     proof: "In a single month, from search alone: five internship applications and a new client.",
     role: "Solo developer",
     period: "June – August 2026",
@@ -128,6 +132,8 @@ export const projects: Project[] = [
     kicker: "A client's SaaS product",
     summary:
       "Modular operations software for teams moving off paper: clients choose and pay for what they need, their data stays separate, and practical insights adapt to the modules they use.",
+    description:
+      "Modular operations software for teams moving off paper: clients pay for the modules they need, their data stays separate, and insights adapt to what they use.",
     proof: "Four businesses onboarded, with teams of 2 to 12.",
     role: "CTO, founding engineer",
     duration: "About six months",
@@ -201,6 +207,8 @@ export const projects: Project[] = [
     kicker: "A client's security system",
     summary:
       "Fibre-optic sensing turned into live security alerts: Raspberry Pis detect anomalies on private LANs; only alert details reach the notification server, while operators see events beside switchable CCTV and webcam video.",
+    description:
+      "Fibre-optic sensing turned into live security alerts: Raspberry Pis detect anomalies on private LANs, and operators see events beside CCTV and webcam video.",
     proof: "Deployed at five sites over a year and a half.",
     role: "Founding engineer, lead developer",
     duration: "About eight months",

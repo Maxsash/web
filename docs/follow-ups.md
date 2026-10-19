@@ -11,9 +11,9 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       ([telemetry-setup.md](telemetry-setup.md)).
 - [ ] Optional: report the stalling Vercel ranges to Vercel Support
       ([evidence](seo-and-sharing.md#owner-setup)).
-- [ ] Search indexing: Google outcomes for the eight case-study and article URLs requested on
-      13 October (sitemap last read and count); Bing URL inspections and its AI Performance
-      report ([seo-and-sharing.md](seo-and-sharing.md)).
+- [ ] Bing, after 1.4.2 is live: Live URL test for Velora Rights (expect indexing allowed),
+      then Request indexing for it and Business Operations; later its AI Performance report
+      ([seo-and-sharing.md](seo-and-sharing.md#current-state)).
 - [ ] LinkedIn warns that both original essays' descriptions are under 100 characters.
 - [ ] Read the five case studies (`content/work/*.md`, drafted in the owner's first person
       from the portfolio and his figures) and edit them into his own voice. Each keeps "The

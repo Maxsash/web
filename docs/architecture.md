@@ -376,7 +376,7 @@ origin sending JSON (so another website cannot write files while the dev server 
   `contact.ts` (the three "What to expect" steps), `projects.ts` (five projects: `kind` client
   or personal; `visuals`, one or more screenshots or system drawings, each with its plate
   title and note (the first is the card's, the case study shows all); a `proof` line; facts (`period` for calendar dates, `duration` for approximate Build time);
-  the first project is the lead; `caseStudyPath` and `caseStudyTitle`), `work/<slug>.md` (each case study's prose,
+  the first project is the lead; `caseStudyPath`, `caseStudyTitle` and `searchDescription`), `work/<slug>.md` (each case study's prose,
   body only: the file name is the slug; loaded by `case-studies.ts` with `parseMarkdown`),
   `about.ts` (the about facts), `notebook.ts` (the approved essays' copy and captions).
 - Homepage sections are one component each: `Work` (the lead through `ProjectFeature`, then a

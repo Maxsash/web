@@ -26,8 +26,8 @@ export const site = {
   logo: "/icon-512.png",
 
   description:
-    `Maxsash Studio is Yash Shrivastava's one-person studio: ${offer} ${promise}, ` +
-    "from the first plan to the launch, with a focus on backend and real-time systems. Open to freelance work.",
+    `Yash Shrivastava's one-person studio: ${offer} ${promise}, ` +
+    "with a focus on backend and real-time systems. Open to freelance work.",
 
   url: "https://www.maxsash.com",
 

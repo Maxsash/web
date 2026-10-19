@@ -75,6 +75,15 @@ crawler-IP or WAF access, AI citations.
 (Vercel → Project → Settings → Domains → Edit `maxsash.com`); verify with
 `curl -sI https://maxsash.com`.
 
+**DNS** (Hostinger, owner, 19 October): `www` CNAME `cname.vercel-dns.com`; apex A
+`76.76.21.21`. Both draw Vercel's "DNS Change Recommended"; ignore it. Do not take Vercel's "DNS Change Recommended" project CNAME
+(`…vercel-dns-017.com`): it resolves to `64.29.17.x` and `216.198.79.x`, which from the owner's
+Jio connection stalled requests 2–60 s about every 70 s and killed connections (the random
+Notebook and case-study waits). Vercel's ID timestamps showed requests reaching its edge late,
+so the loss is on the route. `cname.vercel-dns.com` (`76.76.21.x`, `66.33.60.x`) never stalled;
+Vercel says it keeps working. Re-check by pinning one HTTP/2 connection per address and
+requesting `/favicon.ico` every 1.5 s for 6 minutes, with `64.29.17.1` as control.
+
 **Sea rate limit** (published by the owner, 13 October 2026; normal use works, 429
 enforcement past the budget is unmeasured): Vercel → Project → Firewall → Configure → New
 Rule. Rate Limit, Fixed Window, 100 requests per 60 seconds keyed by IP, default 429, for

@@ -34,6 +34,18 @@ in follow-ups. An idea is not permission to publish, and recorded findings are n
     the first frame after rest has a zero time step; compare against the targets instead.
   - CDP `Page.captureScreenshot` clips are in document coordinates: after scrolling, a clip
     built from `getBoundingClientRect()` needs `scrollY` added or it shows the wrong area.
+- **"My site was fast; the road to it wasn't": random 5–26 s page loads traced to DNS.**
+  The owner asked for it (19 October). Taps on Notebook and case-study links sometimes hung,
+  though every page is a cache HIT in Mumbai. The method is the post: reproduce in a real
+  browser against production (16.5 s and 26.4 s taps, ~1 in 15); read the timings (first byte
+  waited, later requests on the same HTTP/2 connection were fast); decode `x-vercel-id`'s
+  timestamp (the request reached the edge ~5 s late, so the server was innocent); probe one
+  connection per address. The domain's project CNAME (`64.29.17.x`, `216.198.79.x`) stalled
+  together about every 70 s from Jio; Vercel's legacy `cname.vercel-dns.com` and
+  `76.76.21.21` did not, though Vercel's dashboard keeps recommending the stalling record.
+  Then the second half: links that never prefetched (0.5 s on 4G, 1 s on 3G) now open in
+  0.05 s for about 100 KB per full home scroll. Evidence in
+  [seo-and-sharing.md](seo-and-sharing.md#owner-setup); approved figures only.
 - **"Before personalising my website, I needed to understand its visitors":** the brief is in
   [visitor-journeys.md](visitor-journeys.md).
 

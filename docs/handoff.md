@@ -6,57 +6,30 @@ upkeep runs: [log.md](log.md).
 
 ## Current state
 
-1.4.1 is live: `main` and `production` are at `c881014`, and the footer shows 1.4.1. It adds
-prefetching to 1.4.0's Open water palette ([decisions](decisions.md#brand-type-and-colour)) and
-UTM attribution ([Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898),
-[setup](telemetry-setup.md#tagged-public-links)). `v1.4.1` is tagged locally but not pushed
-(`git push origin v1.4.1`). Every check's latest result is in [testing.md](testing.md).
+1.4.2 is live (`982e42e` on `main` and `production`). Its subject line carries a stray "then
+run git tag…" phrase; it is pushed, so it stays. `v1.4.2` is tagged locally, not pushed.
+1.4.3 (LinkedIn cards) is committed on `main` by the agent at the owner's request, not pushed.
+Every check's latest result is in [testing.md](testing.md).
 
-## Verified after the release
+## Recent changes
 
-- 19 October: `check-browser-bars` 30/30 and `check-sky-theme` 12 cases pass on the Mac against an
-  isolated 1.4.0 production build. These two had failed only in the 1.3.0 sandbox (identically
-  on 1.2.0). Worktree, server and logs removed.
-- The owner re-scraped home, a case study and an article in Facebook's Sharing Debugger and
-  LinkedIn's Post Inspector, and tested WhatsApp: all show the new cards. LinkedIn renders the
-  case-study and article images slightly soft (minor; [follow-ups](follow-ups.md#investigate)).
+- **DNS (live).** Random 5 s+ waits were the Jio route to Vercel's `64.29.17.x` and
+  `216.198.79.x`; `www` now points at `cname.vercel-dns.com`, the apex at `76.76.21.21`
+  ([details](seo-and-sharing.md#owner-setup)). Ignore Vercel's "DNS Change Recommended".
+- **Prefetch (1.4.1).** `PageLink` prefetches only `/blog`, notes and `/work/*`
+  (`lib/prefetch.ts`); taps 0.05–0.08 s, ~102 KB per full home scroll.
+- **Bing lengths (1.4.2).** Case-study titles drop the studio suffix; four pages get search
+  descriptions under 160 characters; `check-seo` enforces both. Velora's Bing "Indexing
+  allowed: No" dates from its 13 October crawl, not from the site.
+- **LinkedIn cards (1.4.3).** Every case study and note has a 1200 × 630 JPEG card in
+  `public/images/cards/`, recaptured sharp at 2× in the Open water palette by the new
+  `tools/capture-cards.mjs`; the old WebP cards are deleted. Verified in an isolated build:
+  types, lint, format, 173 Node tests, SEO 78, headers, keyboard 22/22, navigation 3,
+  creative 191 without exceptions. After release, re-inspect a case study and an article in
+  LinkedIn's Post Inspector.
 
 Not yet possible: no real tagged visit or voluntary replay recording has arrived, so UTM
 ingestion, contact attribution and production replay ingestion stay unverified.
-
-## Slow page loads: DNS fixed, prefetch live (1.4.1)
-
-**DNS (done, live).** The random 5 s+ waits were the Jio route to Vercel's `64.29.17.x` and
-`216.198.79.x`, not the site ([details](seo-and-sharing.md#owner-setup)). On 19 October the
-owner pointed `www` at `cname.vercel-dns.com` and the apex at `76.76.21.21`; the new `www`
-addresses then served 480 probe requests without a stall while the old one timed out again.
-Ignore Vercel's "DNS Change Recommended" banners: its suggested record is the stalling range.
-
-**Prefetch (1.4.1, `c881014`).** `PageLink` prefetches only `/blog`, notes and `/work/*`
-(`lib/prefetch.ts`, tested by `tools/prefetch.test.mjs`); the scattered `prefetch={false}`
-props are gone. `check-navigation` now holds requests from before the reload and adds a
-prefetch case. Verified in an isolated build: types, lint, format, 173 Node tests, SEO 78,
-headers, keyboard 22/22, navigation 3, creative 191 without exceptions; taps 0.05–0.08 s at
-4× CPU on 4G and 3G (were 0.5 s and 1 s); a full home scroll prefetches 8 pages for ~102 KB
-of data and 10 KB of code. Worktree, server and scripts removed.
-
-**Blog** "My site was fast; the road to it wasn't" is in [blog-ideas.md](blog-ideas.md).
-
-## Bing title and description fixes (1.4.2, uncommitted)
-
-Owner chose (19 October): case-study titles drop " | Maxsash Studio" (all ≤ 60 characters);
-the home page, Velora, Business Operations and Intrusion Detection get search descriptions
-under 160 characters, leaving page text unchanged. `check-seo` now enforces both limits.
-Verified in an isolated build: types, lint, format, 173 Node tests, SEO 78, headers, keyboard
-22/22, navigation 3, creative 191 without exceptions. Velora's Bing "Indexing allowed: No"
-dates from its 13 October crawl; the site served `index, follow` then, so no code caused it
-([seo-and-sharing](seo-and-sharing.md#current-state)).
-
-Suggested commit: `fix: fit search titles and descriptions to Bing`, body: Bing flagged
-Business Operations' 73-character title and 179-character description; case-study titles
-drop the suffix, four pages get descriptions under 160, check-seo enforces both; the checks
-above. Tag: `git tag -a v1.4.2 -m "Release 1.4.2"`. The handoff edit marking 1.4.1 released
-can go in the same commit or its own `docs:` commit.
 
 ## Standing context
 
@@ -72,8 +45,8 @@ can go in the same commit or its own `docs:` commit.
 
 ## Next
 
-1. Owner: push `v1.4.1`; review, commit and release 1.4.2; then Bing's Live URL test and
-   Request indexing for Velora; tap through the Notebook on the iPhone.
+1. Owner: push `main` and the `v1.4.2`/`v1.4.3` tags, release 1.4.3, re-inspect cards on
+   LinkedIn; Bing Live URL test and Request indexing for Velora.
 2. Once real visits arrive: a tagged Instagram/WhatsApp/LinkedIn visit in the Acquisition
    dashboard, then a voluntary replay recording with 30-day retention. Do not fake visits.
 3. Before relying on replay: PostHog provider terms/DPA status.

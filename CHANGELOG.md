@@ -3,6 +3,13 @@
 Every version of the site, newest first. Versions follow
 [Semantic Versioning](https://semver.org/); the rules are in [AGENTS.md](AGENTS.md#versioning).
 
+## 1.4.3 — 2026-10-19
+
+### Fixed
+
+- Link cards for case studies and Notebook articles are sharp 1200 × 630 JPEGs in the current
+  palette, instead of soft WebP and 1200 × 750 covers that LinkedIn recompressed and cropped.
+
 ## 1.4.2 — 2026-10-19
 
 ### Fixed

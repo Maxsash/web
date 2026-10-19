@@ -29,17 +29,8 @@ export const caseStudyTitle = ({ title, headline }: Project) =>
 export const searchDescription = (project: Project) => project.description ?? project.summary;
 
 export const projectShareImage = (project: Project) => {
-  const screenshot = project.visuals.find((visual) => visual.kind === "image");
-  if (screenshot) return { url: screenshot.src, width: 1200, height: 750, alt: screenshot.alt };
-  const drawing = project.visuals.find((visual) => visual.kind === "drawing");
-  return drawing
-    ? {
-        url: `/images/work/${project.slug}-drawing.webp`,
-        width: 1200,
-        height: 630,
-        alt: drawing.alt,
-      }
-    : undefined;
+  const visual = project.visuals.find(({ kind }) => kind === "image") ?? project.visuals[0];
+  return { url: `/images/cards/${project.slug}.jpg`, width: 1200, height: 630, alt: visual.alt };
 };
 
 export const projects: Project[] = [

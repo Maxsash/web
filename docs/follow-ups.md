@@ -20,7 +20,7 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       brief" first and "The outcome" last and reads in 2–5 minutes.
 - [ ] Edit and publish the two remaining drafts in `content/posts/` (delete "Notes for the
       editor", fill the placeholders, set `status: published`, and add the post's 1200 × 630
-      card at `public/images/notebook/<slug>.webp`, which its link card points to).
+      card at `public/images/cards/<slug>.jpg` from `tools/capture-cards.mjs`).
 - [ ] Social content: Instagram and LinkedIn posts and banners from the brand kit
       (`../brand/`); only real projects, nothing invented.
 - [ ] The portfolio's `AGENTS.md` still lists deep links from maxsash.com, which now links only
@@ -36,10 +36,6 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       CSS files (23 KiB, est. 310–410 ms), Math render delay varying 620–1630 ms, a first-run
       TBT outlier (330 ms against 50/140), unused JS 54 KiB, legacy JS 14 KiB. Trace before
       blaming a component; estimates do not add up.
-- [ ] **Soft LinkedIn cards.** In Post Inspector the case-study and article images look
-      slightly blurry; home is fine (owner, 19 October, minor). Home's card is a 1200 × 630 JPEG;
-      the others are WebP, and case studies are 1200 × 750, which LinkedIn crops to 1.91:1.
-      Suspect LinkedIn re-encoding WebP; try dedicated 1200 × 630 JPEG share cards.
 - [ ] Hero length without WebGL: in fallback the 180svh hero scrolls a lot for little change;
       consider a shorter hero there.
 - [ ] Real crawler logs and WAF: a user-agent string from our network does not prove genuine

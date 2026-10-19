@@ -202,10 +202,9 @@ for (const shareImage of [
   ...projects.map(projectShareImage),
   ...[...blogArticles.keys()].map((slug) => noteShareImage(slug, "")),
 ]) {
-  if (!shareImage) continue;
   const response = await fetch(new URL(shareImage.url, base));
   assert.equal(response.status, 200);
-  assert.equal(response.headers.get("content-type"), "image/webp");
+  assert.equal(response.headers.get("content-type"), "image/jpeg");
 }
 assert.equal((await fetch(new URL("/blog/not-a-post", base))).status, 404);
 assert.equal((await fetch(new URL("/work/not-a-project", base))).status, 404);

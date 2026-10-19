@@ -41,6 +41,10 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
       CSS files (23 KiB, est. 310–410 ms), Math render delay varying 620–1630 ms, a first-run
       TBT outlier (330 ms against 50/140), unused JS 54 KiB, legacy JS 14 KiB. Trace before
       blaming a component; estimates do not add up.
+- [ ] **Soft LinkedIn cards.** In Post Inspector the case-study and article images look
+      slightly blurry; home is fine (owner, 19 October, minor). Home's card is a 1200 × 630 JPEG;
+      the others are WebP, and case studies are 1200 × 750, which LinkedIn crops to 1.91:1.
+      Suspect LinkedIn re-encoding WebP; try dedicated 1200 × 630 JPEG share cards.
 - [ ] Hero length without WebGL: in fallback the 180svh hero scrolls a lot for little change;
       consider a shorter hero there.
 - [ ] Real crawler logs and WAF: a user-agent string from our network does not prove genuine
@@ -58,7 +62,7 @@ belongs ([decisions.md](decisions.md), [architecture.md](architecture.md) or
 
 ## Telemetry recordings
 
-- [ ] After 1.4.0 release, verify a real tagged Instagram/WhatsApp/LinkedIn visit in the
+- [ ] 1.4.0 is live; verify a real tagged Instagram/WhatsApp/LinkedIn visit in the
       [Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898), then
       confirm contact attribution when real activity exists. Do not invent visits for QA.
 

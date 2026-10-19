@@ -101,6 +101,8 @@ blocks its resources from `127.0.0.1`).
 
 Each check appears once, under the date it last passed; move it up when it runs again.
 
+- **19 October, 1.4.0** (isolated production build on the Mac, Node 24.21):
+  `check-browser-bars` 30/30 and `check-sky-theme` 12 cases, both on the Open water palette.
 - **17 October, 1.4.0:** isolated production build on Node 24.21, types, lint, format and
   172 Node tests. Acquisition 6, telemetry 20 and replay 38 browser checks intercept provider
   traffic: all five UTM fields, contact actions for Instagram/WhatsApp/LinkedIn, context changes,
@@ -109,19 +111,23 @@ Each check appears once, under the date it last passed; move it up when it runs 
   All seven live acquisition queries and the overview source tile execute without warnings;
   new production UTM ingestion awaits release. No synthetic events sent to PostHog.
 - **17 October, 1.3.0** (sandbox with local copies of the same font faces): heading contrast
-  128 (lowest 5.33:1), studio plate 8, drawing labels. Browser bars/sky theme failed there
-  exactly as on 1.2.0; rerun on the Mac. The keyboard gap is resolved by the 1.4.0 pass above.
+  128 (lowest 5.33:1), studio plate 8, drawing labels.
 - **17 October, 1.2.0:** privacy controls inspected at 390×844; native select, Tab/Space
   refusal and no horizontal overflow verified. Real production replay ingestion unverified.
 - **15 October:** `check-navigation`.
 - **14 October, 1.0.0:** `check-ship` 36/36.
-- **12 October:** `check-browser-bars`, `check-sky-theme` (12 cases), `check-moon`,
+- **12 October:** `check-moon`,
   `check-moon-detail`, `check-moon-sea`, `check-stars`, `check-planets`,
   `check-software-fallback`; `check-dev-sky` before the Moon map was cropped.
 - **11 October:** `check-gull` (47), `check-sound`.
 
-**Production, public reads:** 17 Oct: release 1.2.0 and enabled India replay policy, 10%
-sampling and 30 April expiry verified; actual live recording ingestion not checked.
+**Production, public reads:** 19 Oct: the footer shows 1.4.0 (the owner's check). 17 Oct:
+enabled India replay policy, 10% sampling and 30 April expiry verified; actual live recording
+ingestion not checked.
+
+**Link previews (the owner, 19 Oct, 1.4.0):** Facebook Sharing Debugger, LinkedIn Post
+Inspector and WhatsApp show the new cards for home, a case study and an article. On LinkedIn the
+case-study and article images look slightly soft; see [follow-ups.md](follow-ups.md).
 
 **Production, by hand:** 14 Oct 19:07 UTC, schema-1 `page_view` and `section_view` reached
 PostHog redacted; the live relay answers 403 to a missing or foreign Origin, 400 to a bad batch,
@@ -186,7 +192,7 @@ For a physical iPhone on the production site (the owner ran it on 13 October):
 - Safari's bars on a real phone: whether finger scrolls out of the hero restore the body
   colour, and whether the theme switch and Drawing stage update them.
 - Field Web Vitals and the Vercel runtime (headers and the sea API are tested locally).
-- A printed plate on paper; LinkedIn and Facebook previews.
+- A printed plate on paper.
 - Speaker and headphone listening, Firefox audio, Android vibration.
 - The hidden tab's title and icon in a real browser (tested by faking `document.hidden`), and
   idle and offline beyond headless Chrome's emulation.

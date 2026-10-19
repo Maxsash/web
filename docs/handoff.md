@@ -1,97 +1,72 @@
 # Handoff — start here
 
-Updated 17 October 2026. Read [AGENTS.md](../AGENTS.md) (the rules, the document map and the
+Updated 19 October 2026. Read [AGENTS.md](../AGENTS.md) (the rules, the document map and the
 record), then only the documents the task needs. Tasks: [follow-ups.md](follow-ups.md);
 upkeep runs: [log.md](log.md).
 
 ## Current state
 
-1.2.0 is live (public page and enabled replay policy checked 17 October 2026). `main` holds
-1.3.0, the Open water palette, committed and pushed at the owner's request; production serves
-it once the owner releases.
-Production event ingestion was last verified 14 October at 19:07 UTC. `main` never deploys; releasing is the owner's action. The owner's iPhone report
-and every check's latest result are in [testing.md](testing.md).
+1.4.0 is live: `main` and `production` are both at `6bb2115`, and the footer on production
+shows 1.4.0 (the owner checked 19 October). It carries the Open water palette (1.3.0,
+[decisions](decisions.md#brand-type-and-colour)) and UTM attribution with the
+[Acquisition dashboard](https://eu.posthog.com/project/306242/dashboard/1031898) (1.4.0,
+[setup](telemetry-setup.md#tagged-public-links)). The working tree holds only the docs updates
+below. Every check's latest result is in [testing.md](testing.md).
 
-## Open water palette (1.3.0)
+**Missing tags.** Only `v1.0.0`, `v1.1.0` and `v1.3.0` exist. The owner's action:
 
-The owner replaced "Admiralty chart" on 17 October ([decisions](decisions.md#brand-type-and-colour)).
-`globals.css`: band `#1C6894` with cream, mist and sunlight text; ink `#0E3B4E`; accent
-`--chart-pennant` `#B13D1A` (was `--chart-magenta`); water `#D6E9F0`; gold `#F2C46B`; night
-tinted blue (paper `#0A1B2A`). The plate SVG, shore night water, night browser bar, hero meta
-text, icons (rendered in `../brand/`) and `studio-card-v2.jpg` follow. After the release,
-re-scrape the home page in Facebook's Sharing Debugger and LinkedIn's Post Inspector.
+```bash
+git tag -a v1.2.0 9b4b8c9 -m "Release 1.2.0"
+git tag -a v1.4.0 6bb2115 -m "Release 1.4.0"
+git push origin v1.2.0 v1.4.0
+```
 
-Verified on Node 24.22 in an isolated copy whose sandbox blocks Google Fonts, so the build used
-local copies of the same three faces: build, types, lint, format (only that substitute
-`fonts.ts` differs), 170 Node tests, SEO 78, headers, heading contrast 128 (lowest 5.33:1, cream
-on the new band), creative 191 with no exceptions, studio plate 8, drawing labels. Keyboard
-16/22, browser bars (no-GPU plate) and sky theme (SwiftShader timing) failed identically on an
-unmodified 1.2.0 build in the same sandbox; rerun them on the Mac before releasing.
+## Verified after the release
 
-## Image metadata scrub (history rewritten)
+- 19 October: `check-browser-bars` 30/30 and `check-sky-theme` 12 cases pass on the Mac against an
+  isolated 1.4.0 production build. These two had failed only in the 1.3.0 sandbox (identically
+  on 1.2.0). Worktree, server and logs removed.
+- The owner re-scraped home, a case study and an article in Facebook's Sharing Debugger and
+  LinkedIn's Post Inspector, and tested WhatsApp: all show the new cards. LinkedIn renders the
+  case-study and article images slightly soft (minor; [follow-ups](follow-ups.md#investigate)).
 
-On 15 October `git filter-repo` replaced five historical images carrying the owner's name,
-Canva IDs or capture times with stripped copies of identical pixels; every hash changed and
-`main`, `production`, `v1.0.0` and `v1.1.0` were force-pushed. GitHub keeps old commits
-reachable by hash until Support purges them. Any other clone or Codex worktree must be reset
-to `origin`, never merged. AGENTS.md now requires stripping metadata, and
-`tools/image-metadata.test.mjs` enforces it.
+Not yet possible: no real tagged visit or voluntary replay recording has arrived, so UTM
+ingestion, contact attribution and production replay ingestion stay unverified.
 
-## Visit context and regional replay
+## Standing context
 
-Committed as `9b4b8c9` and publicly served as 1.2.0: explicit owner/tester labels and work/read/play interests;
-regional masked replay and one footer Privacy & recordings link. Settings offer detected
-region, explicit correction and saved automatic-recording refusal, without saved identity.
-Stop saves refusal; other tabs/reloads honour it. Storage failure and DNT/GPC disable automatic
-replay. Owner reaffirmed rules/preferences first and no arrival prompts. Removed tester-URL
-auto-opening; only a visitor’s deliberate footer testing action opens the Start explanation.
-If a requirement cannot be met noninterruptively, recording stays off.
-India samples 10% until 2027-04-30T00:00:00Z. Expiry ends automatic capture in open/future
-visits and leaves voluntary testing available. No post-transition exemption is presumed.
-The [review](replay-review.md) records the rationale; the [contract](telemetry.md#replay-and-country-policy)
-records region precedence, privacy boundaries and storage. Removed duplicate footer test CTA
-and unused regional state. Recorder transitions serialize cleanup before another startup.
+- **History rewrite (15 October).** `git filter-repo` replaced five images that carried
+  metadata, and every branch and tag was force-pushed. Any other clone or Codex worktree must be
+  reset to `origin`, never merged. GitHub keeps the old commits reachable by hash until Support
+  purges them. `tools/image-metadata.test.mjs` enforces stripped images.
+- **Replay.** Regional masked replay with persistent refusal; India samples 10% until
+  2027-04-30T00:00:00Z. No arrival prompts. Rationale in [replay-review.md](replay-review.md),
+  contract in [telemetry.md](telemetry.md#replay-and-country-policy).
+- **Owner QA URL:** `https://www.maxsash.com/?studio_visit=owner` (add `&studio_intent=play`).
+  Labels appear on events and snapshots, never grant recording, and are excluded from the
+  overview source chart.
 
-Verified on Node 24.21.0 in an isolated production worktree: build, types, lint, format,
-170 Node tests; telemetry 16, replay 37, SEO 78, keyboard 22/22, headers and creative 191
-records with no runtime exceptions. Replay checks cover no arrival/URL prompts, deliberate
-footer opt-in, actual compressed snapshots, masking, IDs, persistent refusal, real second-tab
-sync, rapid corrections, storage failure, expiry and voluntary Start after expiry. Previous
-phone 390×844 visual/native keyboard checks pass; layout unchanged in this refinement.
-Provider traffic was intercepted; production replay ingestion remains unverified.
-Temporary verification worktree, server, captures and logs removed.
+## Suggested commit
 
-The sixth PostHog dashboard, Visit context and testing (1025313), has three validated queries.
-Old dashboards unchanged. Public policy responds enabled, detects IN from this request and
-returns 10% sampling with the expected expiry. Actual production replay ingestion and
-provider terms/DPA review remain unverified; see [follow-ups.md](follow-ups.md).
-Owner QA URL: `https://www.maxsash.com/?studio_visit=owner`; add `&studio_intent=play`
-for declared interest. Labels appear on events/snapshots, not person profiles, and never
-grant recording permission. Footer testing offers deliberate voluntary Start.
+Docs only, no version bump:
 
-The replay-configuration docs are committed as `42326fd`.
+```
+docs: record the 1.4.0 release checks
 
-## Acquisition implementation (uncommitted)
-
-1.4.0 adds five allowlisted UTM tags, source precedence and memory-only entry attribution
-on all events/replay. [Acquisition](https://eu.posthog.com/project/306242/dashboard/1031898)
-has seven validated live charts; overview source chart also excludes owner/tester visits.
-Verified: isolated build/types/lint/format, 172 Node tests, acquisition 6, telemetry 20,
-replay 38, SEO 78, headers, keyboard 22 and creative 191 without exceptions. All saved
-queries execute without warnings; real UTM ingestion awaits release, not synthetic QA.
-Temporary worktree, server, captures and logs removed. No commit/deployment/public-link edits.
-Suggested commit: `feat: complete UTM attribution and acquisition reporting`.
-Body: Preserve bounded entry tags through navigation/context changes/pause and on contact
-and replay events; reject click IDs/free text. Verified checks above; no live test events.
-Tag after commit: `git tag -a v1.4.0 -m "Release 1.4.0"`. Public links: [setup](telemetry-setup.md#tagged-public-links).
+Production serves 1.4.0. Browser-bars (30) and sky-theme (12) pass on the Mac
+against an isolated production build, closing the 1.3.0 sandbox gap. The owner
+checked Facebook, LinkedIn and WhatsApp previews; LinkedIn's case-study and
+article cards look slightly soft, now a follow-up.
+```
 
 ## Next
 
-1. Owner: review the Open water palette and 1.4.0 acquisition changes before committing
-   and releasing; verify actual tagged production ingestion afterward.
-2. Owner, optional: ask GitHub Support to purge the old commits' cached views.
-3. In Noether's repo (not edited from here): tick "web: adopt the record"; its open item about
-   web's "test workbench" line is resolved.
-4. Noether will show `testing` and `code` as never run; the first full run refreshes testing.md.
-5. Then the top of [follow-ups.md](follow-ups.md): the owner's PostHog and Vercel review,
-   indexing outcomes, the iPhone navigation report.
+1. Owner: add and push the missing `v1.2.0` and `v1.4.0` tags (above).
+2. Once real visits arrive: a tagged Instagram/WhatsApp/LinkedIn visit in the Acquisition
+   dashboard, then a voluntary replay recording with 30-day retention. Do not fake visits.
+3. Before relying on replay: PostHog provider terms/DPA status.
+4. Upkeep: `testing` and `code` have never run (Noether shows them due); `docs` last ran
+   15 October.
+5. Optional: ask GitHub Support to purge the old commits' cached views; in Noether's repo,
+   tick "web: adopt the record".
+6. Then the top of [follow-ups.md](follow-ups.md).
